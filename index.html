@@ -851,7 +851,287 @@
             font-size: 13px;
         }
         
-        /* ===== بوت الدردشة ===== */
+        /* ===== بوت Gemini الذكي (المضافة الجديدة) ===== */
+        .gemini-chat-btn {
+            position: fixed;
+            bottom: 15px;
+            right: 80px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #ff9800, #f44336);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 999;
+            border: 2px solid white;
+            transition: all 0.3s;
+        }
+        
+        .gemini-chat-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .gemini-chat-btn i {
+            font-size: 24px;
+            color: white;
+        }
+        
+        .gemini-chat-window {
+            position: fixed;
+            bottom: 75px;
+            right: 80px;
+            width: 350px;
+            height: 500px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            z-index: 999;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid #ff9800;
+        }
+        
+        .gemini-chat-window.open {
+            display: flex;
+        }
+        
+        .gemini-chat-header {
+            background: linear-gradient(135deg, #ff9800, #f44336);
+            padding: 12px 15px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .gemini-header-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .gemini-header-info i {
+            font-size: 20px;
+        }
+        
+        .gemini-header-info h4 {
+            font-size: 14px;
+            margin: 0;
+        }
+        
+        .gemini-header-info p {
+            font-size: 10px;
+            opacity: 0.8;
+            margin: 0;
+        }
+        
+        .gemini-chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: #f5f5f5;
+        }
+        
+        body.dark-mode .gemini-chat-messages {
+            background: #1e2a1e;
+        }
+        
+        .gemini-message {
+            display: flex;
+            gap: 10px;
+            max-width: 85%;
+            animation: fadeInUp 0.3s ease;
+        }
+        
+        .gemini-message.user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+        
+        .gemini-message.bot {
+            align-self: flex-start;
+        }
+        
+        .gemini-msg-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 14px;
+        }
+        
+        .gemini-message.bot .gemini-msg-avatar {
+            background: linear-gradient(135deg, #ff9800, #f44336);
+            color: white;
+        }
+        
+        .gemini-message.user .gemini-msg-avatar {
+            background: #4caf50;
+            color: white;
+        }
+        
+        .gemini-msg-bubble {
+            background: white;
+            padding: 8px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            line-height: 1.5;
+            color: #333;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        body.dark-mode .gemini-msg-bubble {
+            background: #2a3a2a;
+            color: white;
+        }
+        
+        .gemini-message.user .gemini-msg-bubble {
+            background: #4caf50;
+            color: white;
+        }
+        
+        .gemini-typing {
+            display: flex;
+            gap: 4px;
+            padding: 8px 12px;
+            background: white;
+            border-radius: 15px;
+            width: fit-content;
+        }
+        
+        .gemini-typing span {
+            width: 6px;
+            height: 6px;
+            background: #ff9800;
+            border-radius: 50%;
+            animation: typingBounce 1.4s infinite;
+        }
+        
+        .gemini-typing span:nth-child(2) { animation-delay: 0.2s; }
+        .gemini-typing span:nth-child(3) { animation-delay: 0.4s; }
+        
+        @keyframes typingBounce {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+            30% { transform: translateY(-6px); opacity: 1; }
+        }
+        
+        .gemini-suggestions {
+            padding: 10px;
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            border-top: 1px solid #eee;
+            background: white;
+        }
+        
+        body.dark-mode .gemini-suggestions {
+            background: #1e2a1e;
+            border-color: #333;
+        }
+        
+        .gemini-suggest-btn {
+            background: #f0f0f0;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        body.dark-mode .gemini-suggest-btn {
+            background: #2a3a2a;
+            color: white;
+        }
+        
+        .gemini-suggest-btn:hover {
+            background: #ff9800;
+            color: white;
+        }
+        
+        .gemini-input-area {
+            padding: 10px;
+            background: white;
+            display: flex;
+            gap: 8px;
+            border-top: 1px solid #eee;
+        }
+        
+        body.dark-mode .gemini-input-area {
+            background: #1e2a1e;
+            border-color: #333;
+        }
+        
+        .gemini-input-area input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            font-size: 12px;
+            outline: none;
+            font-family: inherit;
+        }
+        
+        body.dark-mode .gemini-input-area input {
+            background: #2a3a2a;
+            border-color: #4caf50;
+            color: white;
+        }
+        
+        .gemini-send-btn {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(135deg, #ff9800, #f44336);
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .gemini-send-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .gemini-chat-messages::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        .gemini-chat-messages::-webkit-scrollbar-track {
+            background: #e0e0e0;
+            border-radius: 10px;
+        }
+        
+        .gemini-chat-messages::-webkit-scrollbar-thumb {
+            background: #ff9800;
+            border-radius: 10px;
+        }
+        
+        @media (max-width: 550px) {
+            .gemini-chat-window {
+                width: calc(100% - 40px);
+                right: 20px;
+                height: 450px;
+            }
+            .gemini-chat-btn {
+                right: 70px;
+            }
+        }
+        
+        /* ===== بوت Botpress القديم (يمكن إزالته أو الاحتفاظ به) ===== */
         .chat-button {
             position: fixed;
             bottom: 15px;
@@ -935,7 +1215,6 @@
             100% { opacity: 0; transform: translateX(20px); display: none; }
         }
         
-        /* ===== تحسينات الهواتف ===== */
         @media (max-width: 768px) {
             body { padding: 10px; }
             .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
@@ -944,7 +1223,6 @@
             .charts-grid { grid-template-columns: 1fr; }
             .satellite-form { grid-template-columns: 1fr; }
             .selected-area-info { flex-direction: column; text-align: center; }
-            .chat-window { width: calc(100% - 30px); right: 15px; left: 15px; bottom: 70px; height: 400px; }
             .sidebar { width: 260px; }
         }
         
@@ -1014,7 +1292,7 @@
         <!-- شريط التنبيهات -->
         <div class="alert-ticker" id="alertTicker">
             <div class="ticker-content" id="tickerContent">
-                <i class="fas fa-circle"></i> 🌾 Agri Maroc Précis | انقر على زر "تحديد موقع NDVI" لاختيار منطقة التحليل
+                <i class="fas fa-circle"></i> 🌾 Agri Maroc Précis | بوت Gemini الذكي متاح (الزر البرتقالي)
             </div>
         </div>
         
@@ -1160,7 +1438,7 @@
                 <div class="footer-item"><i class="fas fa-database"></i><h4>ThingSpeak</h4><p>المناخ</p></div>
                 <div class="footer-item"><i class="fas fa-brain"></i><h4>AI Analysis</h4><p>تحليل</p></div>
                 <div class="footer-item"><i class="fas fa-satellite"></i><h4>Copernicus</h4><p>الأقمار</p></div>
-                <div class="footer-item"><i class="fas fa-robot"></i><h4>Botpress</h4><p>المساعد</p></div>
+                <div class="footer-item"><i class="fas fa-robot"></i><h4>Gemini AI</h4><p>المساعد الذكي</p></div>
             </div>
             <div class="last-update">آخر تحديث: <span id="last-update-time">جار التحميل...</span></div>
             <div style="font-size: 10px;">© 2026 Agri Maroc Précis</div>
@@ -1202,7 +1480,49 @@
         </div>
     </div>
     
-    <!-- Botpress Chat -->
+    <!-- ===== بوت Gemini الذكي (الجديد) ===== -->
+    <div class="gemini-chat-btn" id="geminiChatBtn" onclick="toggleGeminiChat()">
+        <i class="fas fa-brain"></i>
+    </div>
+    
+    <div class="gemini-chat-window" id="geminiChatWindow">
+        <div class="gemini-chat-header">
+            <div class="gemini-header-info">
+                <i class="fas fa-brain"></i>
+                <div>
+                    <h4>خبير الفلاحة الذكي</h4>
+                    <p>مدعوم بـ Google Gemini AI</p>
+                </div>
+            </div>
+            <button onclick="toggleGeminiChat()" style="background: none; border: none; color: white; font-size: 18px; cursor: pointer;">&times;</button>
+        </div>
+        
+        <div class="gemini-chat-messages" id="geminiChatMessages">
+            <div class="gemini-message bot">
+                <div class="gemini-msg-avatar"><i class="fas fa-brain"></i></div>
+                <div class="gemini-msg-bubble">
+                    🌾 مرحباً! أنا خبير الفلاحة الذكي المدعوم بـ Google Gemini AI.<br>
+                    اسألني عن أي شيء يخص الزراعة والمحاصيل في المغرب.
+                </div>
+            </div>
+        </div>
+        
+        <div class="gemini-suggestions">
+            <button class="gemini-suggest-btn" onclick="sendGeminiQuick('ما هي أعراض اللفحة المتأخرة؟')">🍅 اللفحة المتأخرة</button>
+            <button class="gemini-suggest-btn" onclick="sendGeminiQuick('ما هي أفضل طريقة للري في الصيف؟')">💧 نصائح الري</button>
+            <button class="gemini-suggest-btn" onclick="sendGeminiQuick('ما هو NDVI؟')">📊 مؤشر NDVI</button>
+            <button class="gemini-suggest-btn" onclick="sendGeminiQuick('ما هي حالة منطقة مراكش؟')">📍 مراكش</button>
+        </div>
+        
+        <div class="gemini-input-area">
+            <input type="text" id="geminiUserInput" placeholder="اسأل خبير الفلاحة..." onkeypress="handleGeminiEnter(event)">
+            <button class="gemini-send-btn" onclick="sendGeminiMessage()">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+    
+    <!-- Botpress Chat (قديم - يمكن إزالته) -->
     <div class="chat-button" onclick="toggleChat()"><i class="fas fa-robot"></i></div>
     <div class="chat-window" id="chatWindow">
         <div class="chat-header">
@@ -1218,7 +1538,114 @@
     <div class="welcome-toast"><i class="fas fa-robot"></i><span>🤖 اسأل البوت</span></div>
     
     <script>
-        // التكوينات الأساسية
+        // ===========================================
+        // Google Gemini API Key
+        // ===========================================
+        const GEMINI_API_KEY = "AIzaSyD-3V8N2RC77Y47y0jqrQmozEv0myfmQVU";
+        
+        // ===========================================
+        // بوت Gemini الذكي
+        // ===========================================
+        const geminiChatMessages = document.getElementById('geminiChatMessages');
+        const geminiUserInput = document.getElementById('geminiUserInput');
+        
+        function toggleGeminiChat() {
+            document.getElementById('geminiChatWindow').classList.toggle('open');
+        }
+        
+        async function getGeminiResponse(message) {
+            try {
+                const prompt = `أنت خبير زراعي متخصص في الفلاحة المغربية. أجب عن السؤال التالي بطريقة مفيدة وعملية للمزارع. استخدم اللغة العربية.
+
+السؤال: ${message}`;
+                
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{ text: prompt }]
+                        }],
+                        generationConfig: {
+                            temperature: 0.7,
+                            maxOutputTokens: 600,
+                        }
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+                    return data.candidates[0].content.parts[0].text;
+                } else {
+                    return 'عذراً، لم أستطع معالجة سؤالك حالياً. يرجى المحاولة مرة أخرى.';
+                }
+            } catch (error) {
+                console.error('Gemini Error:', error);
+                return '❌ حدث خطأ في الاتصال بالذكاء الاصطناعي. يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.';
+            }
+        }
+        
+        function addGeminiMessage(text, isUser = false) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `gemini-message ${isUser ? 'user' : 'bot'}`;
+            msgDiv.innerHTML = `
+                <div class="gemini-msg-avatar"><i class="${isUser ? 'fas fa-user' : 'fas fa-brain'}"></i></div>
+                <div class="gemini-msg-bubble">${text.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</div>
+            `;
+            geminiChatMessages.appendChild(msgDiv);
+            geminiChatMessages.scrollTop = geminiChatMessages.scrollHeight;
+        }
+        
+        function showGeminiTyping() {
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'gemini-message bot';
+            typingDiv.id = 'geminiTyping';
+            typingDiv.innerHTML = `
+                <div class="gemini-msg-avatar"><i class="fas fa-brain"></i></div>
+                <div class="gemini-typing"><span></span><span></span><span></span></div>
+            `;
+            geminiChatMessages.appendChild(typingDiv);
+            geminiChatMessages.scrollTop = geminiChatMessages.scrollHeight;
+        }
+        
+        function hideGeminiTyping() {
+            const typing = document.getElementById('geminiTyping');
+            if (typing) typing.remove();
+        }
+        
+        async function sendGeminiMessage() {
+            const message = geminiUserInput.value.trim();
+            if (!message) return;
+            
+            addGeminiMessage(message, true);
+            geminiUserInput.value = '';
+            showGeminiTyping();
+            
+            try {
+                const response = await getGeminiResponse(message);
+                hideGeminiTyping();
+                addGeminiMessage(response);
+            } catch (error) {
+                hideGeminiTyping();
+                addGeminiMessage('❌ عذراً، حدث خطأ. يرجى المحاولة مرة أخرى.');
+            }
+        }
+        
+        function sendGeminiQuick(question) {
+            geminiUserInput.value = question;
+            sendGeminiMessage();
+        }
+        
+        function handleGeminiEnter(event) {
+            if (event.key === 'Enter') {
+                sendGeminiMessage();
+            }
+        }
+        
+        // ===========================================
+        // باقي دوال المنصة (بدون تغيير)
+        // ===========================================
         const INSTANCE_ID = "58cc80db-773c-4a02-8873-3825522ef875";
         const WMS_BASE_URL = "https://sh.dataspace.copernicus.eu/ogc/wms";
         const MAX_RESOLUTION = 200;
@@ -1252,20 +1679,17 @@
         let ndviSelectionMap = null, ndviMarker = null, ndviRectangle = null;
         let tempLat = 31.7917, tempLng = -7.0926;
         
-        // دوال القوائم القابلة للطي
         function toggleCollapsible(btn) {
             btn.classList.toggle('open');
             const content = btn.nextElementSibling;
             content.classList.toggle('open');
         }
         
-        // دوال الشريط الجانبي
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('open');
             document.getElementById('sidebarOverlay').classList.toggle('open');
         }
         
-        // حساب الدقة
         function calculateResolution(bbox, width, height) {
             const [minLon, minLat, maxLon, maxLat] = bbox.split(',').map(Number);
             const earthRadius = 6371000;
@@ -1290,7 +1714,6 @@
             return { valid: true, resolution };
         }
         
-        // دالة NDVI
         async function fetchNDVI() {
             const bbox = document.getElementById('bboxInput').value;
             const dateFrom = document.getElementById('dateFromInput').value;
@@ -1348,7 +1771,6 @@
             }
         }
         
-        // الخريطة الرئيسية
         function initMap() {
             map = L.map('map').setView([31.7917, -7.0926], 6);
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(map);
@@ -1363,7 +1785,6 @@
             });
         }
         
-        // خريطة NDVI
         function openNdviMapModal() {
             document.getElementById('ndviMapModal').classList.add('show');
             setTimeout(() => {
@@ -1421,7 +1842,6 @@
             }
         }
         
-        // إضافة علامة بلاغ
         function addReportMarker(lat, lng, reportData) {
             const icon = L.icon({
                 iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-orange.png',
@@ -1434,7 +1854,6 @@
             document.getElementById('sidebar-reports').innerText = reportsMarkers.length;
         }
         
-        // نافذة الإبلاغ
         function openReportModal() { document.getElementById('reportModal').classList.add('show'); }
         function closeReportModal() { document.getElementById('reportModal').classList.remove('show'); }
         
@@ -1451,7 +1870,6 @@
             closeReportModal();
         });
         
-        // دوال المناطق والبيانات
         function renderRegions() {
             const grid = document.getElementById('regionGrid');
             grid.innerHTML = '';

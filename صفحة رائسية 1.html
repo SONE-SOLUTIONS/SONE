@@ -1,0 +1,860 @@
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Agri Maroc Précis | المنصة المتكاملة للفلاحة الذكية</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: #0A1408;
+            color: #FBFCFB;
+            overflow-x: hidden;
+        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1C2A16; }
+        ::-webkit-scrollbar-thumb { background: #A8842A; border-radius: 10px; }
+
+        /* ===== الهيدر ===== */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 15px 5%;
+            background: rgba(10, 20, 8, 0.95);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(168, 132, 66, 0.2);
+        }
+        .header.scrolled { padding: 10px 5%; }
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #A8842A, #D4A843);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(168, 132, 42, 0.7); }
+            50% { box-shadow: 0 0 0 15px rgba(168, 132, 42, 0); }
+        }
+        .logo-text h1 {
+            font-size: 22px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FBFCFB, #A8842A);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .logo-text p { font-size: 10px; color: #C1DCB5; }
+        .nav-links { display: flex; gap: 25px; align-items: center; }
+        .nav-links a {
+            color: #FBFCFB;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover { color: #A8842A; }
+        .mobile-menu { display: none; font-size: 24px; cursor: pointer; }
+
+        /* ===== شريط الأزرار السريعة ===== */
+        .quick-buttons {
+            position: fixed;
+            top: 80px;
+            left: 0;
+            right: 0;
+            z-index: 999;
+            background: rgba(10, 20, 8, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 12px 5%;
+            border-bottom: 1px solid rgba(168, 132, 66, 0.3);
+            overflow-x: auto;
+            white-space: nowrap;
+            scrollbar-width: thin;
+        }
+        .quick-buttons::-webkit-scrollbar { height: 4px; }
+        .quick-buttons-container {
+            display: inline-flex;
+            gap: 10px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .quick-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(168, 132, 66, 0.3);
+            padding: 8px 18px;
+            border-radius: 50px;
+            color: #FBFCFB;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+            text-decoration: none;
+        }
+        .quick-btn:hover {
+            background: #A8842A;
+            color: #000;
+            transform: translateY(-2px);
+        }
+        .quick-btn i { font-size: 14px; }
+
+        /* ===== إزاحة المحتوى ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            padding: 140px 20px 60px;
+        }
+        @media (max-width: 768px) {
+            .hero { padding: 160px 20px 60px; }
+            .quick-buttons { top: 70px; padding: 10px 5%; }
+            .quick-btn { padding: 6px 14px; font-size: 11px; }
+        }
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+            opacity: 0.25;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(168,132,66,0.1) 0%, #0A1408 100%);
+            z-index: -1;
+        }
+        .hero-content { max-width: 900px; margin: 0 auto; }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(168, 132, 66, 0.2);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(168, 132, 66, 0.5);
+        }
+        .hero h1 {
+            font-size: 56px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #FFFFFF, #A8842A, #C1DCB5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero p {
+            font-size: 18px;
+            color: #C1DCB5;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #A8842A, #C49B3A);
+            color: #000;
+            border: none;
+            padding: 14px 35px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(168, 132, 42, 0.3); }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #A8842A;
+            color: #FBFCFB;
+            padding: 14px 35px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-outline:hover { background: rgba(168, 132, 42, 0.1); transform: translateY(-3px); }
+
+        /* ===== إحصائيات ===== */
+        .stats-section {
+            padding: 60px 5%;
+            background: linear-gradient(180deg, #0A1408, #1C2A16);
+        }
+        .stats-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px 20px;
+            text-align: center;
+            border: 1px solid rgba(168, 132, 66, 0.2);
+            transition: all 0.3s;
+        }
+        .stat-card:hover { transform: translateY(-5px); border-color: #A8842A; }
+        .stat-icon { font-size: 45px; margin-bottom: 15px; }
+        .stat-number { font-size: 36px; font-weight: 800; color: #A8842A; }
+        .stat-label { font-size: 14px; color: #C1DCB5; margin-top: 8px; }
+
+        /* ===== خدماتنا ===== */
+        .services-section {
+            padding: 80px 5%;
+            background: #1C2A16;
+        }
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .section-header .kicker {
+            color: #A8842A;
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        .section-header h2 { font-size: 40px; font-weight: 800; margin-bottom: 15px; }
+        .section-header p {
+            color: #C1DCB5;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .services-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+        }
+        .service-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.4s;
+            border: 1px solid rgba(168, 132, 66, 0.2);
+            text-decoration: none;
+            color: #FBFCFB;
+            display: block;
+            position: relative;
+            overflow: hidden;
+        }
+        .service-card:hover {
+            transform: translateY(-8px);
+            border-color: #A8842A;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        .service-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 16px;
+            margin-bottom: 15px;
+            transition: transform 0.3s;
+        }
+        .service-card:hover .service-img { transform: scale(1.03); }
+        .service-icon {
+            width: 55px;
+            height: 55px;
+            background: rgba(168, 132, 66, 0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            font-size: 28px;
+            transition: all 0.3s;
+        }
+        .service-card:hover .service-icon {
+            background: #A8842A;
+            transform: scale(1.1);
+        }
+        .service-card h3 { font-size: 20px; margin-bottom: 8px; text-align: center; }
+        .service-card p { font-size: 13px; color: #C1DCB5; line-height: 1.5; text-align: center; }
+        .service-price {
+            display: inline-block;
+            background: rgba(168, 132, 66, 0.2);
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 12px;
+            margin-top: 12px;
+            color: #A8842A;
+            font-weight: 600;
+        }
+        .service-tag {
+            display: inline-block;
+            background: rgba(168, 132, 66, 0.15);
+            padding: 3px 10px;
+            border-radius: 50px;
+            font-size: 10px;
+            margin-top: 10px;
+            margin-right: 5px;
+        }
+
+        /* ===== الفوتر ===== */
+        .footer {
+            background: #0A1408;
+            padding: 50px 5% 30px;
+            border-top: 1px solid rgba(168, 132, 66, 0.2);
+        }
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+        .footer-col h4 { font-size: 18px; margin-bottom: 20px; color: #A8842A; }
+        .footer-col p, .footer-col a {
+            color: #C1DCB5;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+        .footer-col a:hover { color: #A8842A; }
+        .social-links { display: flex; gap: 15px; margin-top: 20px; }
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: rgba(168, 132, 66, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .social-links a:hover { background: #A8842A; transform: translateY(-3px); }
+        .copyright {
+            text-align: center;
+            padding-top: 40px;
+            margin-top: 40px;
+            border-top: 1px solid rgba(168, 132, 66, 0.2);
+            color: #C1DCB5;
+            font-size: 12px;
+        }
+
+        /* ===== أنماط إضافية ===== */
+        .animals-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+            justify-content: center;
+        }
+        .animal-badge {
+            background: rgba(168, 132, 66, 0.2);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+        }
+        .price-range {
+            color: #A8842A;
+            font-weight: 700;
+            font-size: 14px;
+            margin-top: 8px;
+        }
+        .tech-feature {
+            display: inline-block;
+            background: rgba(168, 132, 66, 0.25);
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            margin: 5px 3px;
+        }
+        .sone-feature, .agrinet-feature {
+            display: inline-block;
+            background: rgba(168, 132, 66, 0.25);
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            margin: 5px 3px;
+        }
+        .manager-feature {
+            display: inline-block;
+            background: rgba(168, 132, 66, 0.25);
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            margin: 5px 3px;
+        }
+
+        @media (max-width: 1024px) {
+            .stats-container { grid-template-columns: repeat(2, 1fr); }
+            .hero h1 { font-size: 42px; }
+        }
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: #0A1408;
+                flex-direction: column;
+                padding: 20px;
+                text-align: center;
+                border-bottom: 1px solid #A8842A;
+            }
+            .nav-links.active { display: flex; }
+            .mobile-menu { display: block; }
+            .stats-container { grid-template-columns: 1fr; }
+            .services-grid { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 32px; }
+            .section-header h2 { font-size: 28px; }
+        }
+    </style>
+</head>
+<body data-aos-easing="ease" data-aos-duration="800" data-aos-delay="0">
+
+    <header class="header" id="header">
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <div class="logo-icon"><i class="fas fa-leaf"></i></div>
+                <div class="logo-text">
+                    <h1>Agri Maroc Précis</h1>
+                    <p>المنصة المتكاملة للفلاحة الذكية</p>
+                </div>
+            </a>
+            <div class="mobile-menu" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+            <div class="nav-links" id="navLinks">
+                <a href="#home">الرئيسية</a>
+                <a href="#services">الخدمات</a>
+                <a href="#contact">اتصل بنا</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- شريط الأزرار السريعة -->
+    <div class="quick-buttons">
+        <div class="quick-buttons-container">
+            <a href="#home" class="quick-btn"><i class="fas fa-home"></i> الرئيسية</a>
+            <a href="#services" class="quick-btn"><i class="fas fa-cogs"></i> الخدمات</a>
+            <a href="agri-manager.html" class="quick-btn"><i class="fas fa-chalkboard-user"></i> مدبر Agri Manager</a>
+            <a href="market.html" class="quick-btn"><i class="fas fa-store"></i> سوق الفلاحة</a>
+            <a href="mylibrary.html" class="quick-btn"><i class="fas fa-book"></i> مكتبتي</a>
+            <a href="ndvi.html" class="quick-btn"><i class="fas fa-satellite"></i> تحليل NDVI</a>
+            <a href="disease.html" class="quick-btn"><i class="fas fa-biohazard"></i> خريطة الأمراض</a>
+            <a href="weather.html" class="quick-btn"><i class="fas fa-cloud-sun"></i> الطقس</a>
+            <a href="vegetables.html" class="quick-btn"><i class="fas fa-carrot"></i> الخضروات</a>
+            <a href="fruits.html" class="quick-btn"><i class="fas fa-apple-alt"></i> الفواكه</a>
+            <a href="pesticides.html" class="quick-btn"><i class="fas fa-bug"></i> المبيدات</a>
+            <a href="equipment.html" class="quick-btn"><i class="fas fa-tractor"></i> المعدات</a>
+            <a href="fertilizers.html" class="quick-btn"><i class="fas fa-leaf"></i> الأسمدة</a>
+            <a href="news.html" class="quick-btn"><i class="fas fa-newspaper"></i> الأخبار</a>
+            <a href="courses.html" class="quick-btn"><i class="fas fa-graduation-cap"></i> الدورات</a>
+            <a href="offers.html" class="quick-btn"><i class="fas fa-building"></i> عروض الشركات</a>
+            <a href="jobs.html" class="quick-btn"><i class="fas fa-briefcase"></i> طلبات عمل</a>
+            <a href="trainings.html" class="quick-btn"><i class="fas fa-chalkboard-user"></i> طلبات تدريب</a>
+            <a href="agritech.html" class="quick-btn"><i class="fas fa-microchip"></i> تكنولوجيا فلاحية</a>
+            <a href="livestock.html" class="quick-btn"><i class="fas fa-paw"></i> قطاع حيواني</a>
+            <a href="sone.html" class="quick-btn"><i class="fas fa-microchip"></i> مساحة SONE</a>
+            <a href="agrinet.html" class="quick-btn"><i class="fas fa-network-wired"></i> AGRI NET</a>
+        </div>
+    </div>
+
+    <section class="hero" id="home">
+        <img class="hero-bg" id="heroBg" src="https://cci.bj/admin1/public/upload/articles/news_photo_420022ea70e8cea401c64adb0cc8eb13.jpg" alt="خلفية زراعية متغيرة" style="opacity: 0.3;">
+        <div class="hero-content">
+            <span class="hero-badge"><i class="fas fa-leaf"></i> الثورة الزراعية 4.0</span>
+            <h1>Agri Maroc Précis<br>زراعة دقيقة ببيانات فورية</h1>
+            <p>منصة متكاملة تجمع بين تحليل الأقمار الصناعية، مراقبة الطقس، رسم خرائط الأمراض، وأسعار السوق</p>
+            <div class="hero-buttons">
+                <a href="#services" class="btn-primary"><i class="fas fa-rocket"></i> استكشف الخدمات</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats-section">
+        <div class="stats-container">
+            <div class="stat-card aos-init" data-aos="fade-up"><div class="stat-icon">🛰️</div><div class="stat-number">92%</div><div class="stat-label">دقة تحليل NDVI</div></div>
+            <div class="stat-card aos-init" data-aos="fade-up" data-aos-delay="100"><div class="stat-icon">🌍</div><div class="stat-number">100+</div><div class="stat-label">مدينة مغربية</div></div>
+            <div class="stat-card aos-init" data-aos="fade-up" data-aos-delay="200"><div class="stat-icon">⚠️</div><div class="stat-number">48h</div><div class="stat-label">إنذار مبكر</div></div>
+            <div class="stat-card aos-init" data-aos="fade-up" data-aos-delay="300"><div class="stat-icon">📊</div><div class="stat-number">24/7</div><div class="stat-label">بيانات حية</div></div>
+        </div>
+    </section>
+
+    <section class="services-section" id="services">
+        <div class="section-header">
+            <span class="kicker"><i class="fas fa-cogs"></i> خدماتنا</span>
+            <h2>كل ما تحتاجه في منصة واحدة</h2>
+            <p>نقدم لك مجموعة متكاملة من الخدمات الزراعية الذكية</p>
+        </div>
+        <div class="services-grid">
+            <!-- ===== بطاقة مدبر | Agri Manager ===== -->
+            <a href="agri-manager.html" class="service-card aos-init" data-aos="fade-up" data-aos-delay="50">
+                <img class="service-img" src="https://images.pexels.com/photos/1108572/pexels-photo-1108572.jpeg?auto=compress&cs=tinysrgb&w=600" alt="مدبر Agri Manager">
+                <div class="service-icon"><i class="fas fa-chalkboard-user"></i></div>
+                <h3>📊 مدبر | Agri Manager</h3>
+                <p>النظام المتكامل لتدبير الضيعات الفلاحية - رسم الخرائط، إدارة الأجزاء، تتبع العمال والمهام</p>
+                <div>
+                    <span class="manager-feature">🗺️ خرائط تفاعلية</span>
+                    <span class="manager-feature">👥 إدارة العمال</span>
+                    <span class="manager-feature">📊 تتبع المهام</span>
+                    <span class="manager-feature">🌾 تتبع المحاصيل</span>
+                </div>
+                <span class="service-price">💼 نظام متكامل للمزارع</span>
+                <span class="service-tag">إدارة متقدمة</span>
+                <span class="service-tag">تتبع فوري</span>
+            </a>
+
+            <!-- 1. تحليل NDVI -->
+            <a href="ndvi.html" class="service-card aos-init" data-aos="fade-up">
+                <img class="service-img" src="https://doc.arcgis.com/ar/arcgis-online/analyze/GUID-5F58FFB9-45B6-40A0-A6A1-B7365039EAA1-web.gif" alt="تحليل NDVI">
+                <div class="service-icon"><i class="fas fa-satellite"></i></div>
+                <h3>🛰️ تحليل NDVI</h3>
+                <p>مراقبة صحة المحاصيل عبر الأقمار الصناعية وتحديد المناطق المتضررة</p>
+                <span class="service-tag">دقة عالية</span>
+                <span class="service-tag">مجاني</span>
+            </a>
+            <!-- 2. خريطة الأمراض -->
+            <a href="disease.html" class="service-card aos-init" data-aos="fade-up" data-aos-delay="100">
+                <img class="service-img" src="https://globalenergymonitor.org/wp-content/uploads/2022/08/geothermal-map.png" alt="خريطة الأمراض">
+                <div class="service-icon"><i class="fas fa-biohazard"></i></div>
+                <h3>🗺️ خريطة الأمراض</h3>
+                <p>رصد وتتبع الإصابات الزراعية في الوقت الفعلي والتبليغ عن إصابات جديدة</p>
+                <span class="service-tag">إنذار مبكر</span>
+                <span class="service-tag">تبليغ فوري</span>
+            </a>
+            <!-- 3. الطقس الدقيق -->
+            <a href="weather.html" class="service-card aos-init" data-aos="fade-up" data-aos-delay="200">
+                <img class="service-img" src="https://images.pexels.com/photos/209831/pexels-photo-209831.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=600" alt="الطقس">
+                <div class="service-icon"><i class="fas fa-cloud-sun"></i></div>
+                <h3>🌤️ الطقس الدقيق</h3>
+                <p>توقعات جوية دقيقة لأكثر من 100 مدينة مغربية لمساعدتك في التخطيط</p>
+                <span class="service-tag">تحديث فوري</span>
+                <span class="service-tag">مجاني</span>
+            </a>
+            <!-- 4. أسعار الخضروات -->
+            <a href="vegetables.html" class="service-card aos-init" data-aos="fade-up" data-aos-delay="300">
+                <img class="service-img" src="https://www.edarabia.com/ar/wp-content/uploads/2020/04/learn-about-15-types-vegetables-their-names-benefits.jpg" alt="أسعار الخضروات">
+                <div class="service-icon"><i class="fas fa-carrot"></i></div>
+                <h3>🥬 أسعار الخضروات</h3>
+                <p>أحدث أسعار الخضروات في السوق المغربية محدثة يومياً</p>
+                <span class="service-price">تحديث يومي</span>
+            </a>
+            <!-- 5. أسعار الفواكه -->
+            <a href="fruits.html" class="service-card aos-init" data-aos="fade-up" data-aos-delay="400">
+                <img class="service-img" src="https://images.pexels.com/photos/1092730/pexels-photo-1092730.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=600" alt="أسعار الفواكه">
+                <div class="service-icon"><i class="fas fa-apple-alt"></i></div>
+                <h3>🍎 أسعار الفواكه</h3>
+                <p>أحدث أسعار الفواكه الموسمية محدثة باستمرار</p>
+                <span class="service-price">تحديث يومي</span>
+            </a>
+            <!-- 6. المبيدات الزراعية -->
+            <a href="pesticides.html" class="service-card aos-init" data-aos="fade-up" data-aos-delay="500">
+                <img class="service-img" src="https://jihadbinaa.org.lb/static/images/800x450/77716a0562a5a2a8675828ca369eb144.jpg" alt="المبيدات الزراعية">
+                <div class="service-icon"><i class="fas fa-bug"></i></div>
+                <h3>🧪 المبيدات الزراعية</h3>
+                <p>مبيدات كيميائية وبيولوجية معتمدة لحماية محاصيلك من الآفات</p>
+                <span class="service-price">أسعار تنافسية</span>
+                <span class="service-tag">معتمد</span>
+            </a>
+            <!-- 7. المعدات الفلاحية -->
+            <a href="equipment.html" class="service-card aos-init" data-aos="fade-up" data-aos-delay="600">
+                <img class="service-img" src="https://agri.rutreatment.com/wp-content/uploads/2022/10/%D8%A7%D9%84%D9%85%D8%B9%D8%AF%D8%A7%D8%AA-%D9%88%D8%A7%D9%84%D8%A7%D9%84%D8%A7%D8%AA-%D8%A7%D9%84%D8%B2%D8%B1%D8%A7%D8%B9%D9%8A%D8%A9-1.webp" alt="المعدات الفلاحية">
+                <div class="service-icon"><i class="fas fa-tractor"></i></div>
+                <h3>🚜 المعدات الفلاحية</h3>
+                <p>أحدث المعدات والجرارات الزراعية لتحسين الإنتاجية والكفاءة</p>
+                <span class="service-price">أسعار خاصة</span>
+                <span class="service-tag">جودة عالية</span>
+            </a>
+            <!-- 8. الأسمدة الزراعية -->
+            <a href="fertilizers.html" class="service-card aos-init" data-aos="fade-up" data-aos-delay="700">
+                <img class="service-img" src="https://zoomnews.ma/wp-content/uploads/2022/05/%D8%A7%D9%94%D9%86%D9%88%D8%A7%D8%B9-%D8%A7%D9%84%D8%A7%D8%B3%D9%85%D8%AF%D8%A9.jpeg" alt="الأسمدة الزراعية">
+                <div class="service-icon"><i class="fas fa-leaf"></i></div>
+                <h3>🌱 الأسمدة الزراعية</h3>
+                <p>أسمدة عضوية وكيميائية لتحسين خصوبة التربة وزيادة الإنتاجية</p>
+                <span class="service-price">أسعار مخفضة</span>
+                <span class="service-tag">متنوع</span>
+            </a>
+            <!-- 9. أخبار القطاع -->
+            <a href="news.html" class="service-card aos-init" data-aos="fade-up" data-aos-delay="800">
+                <img class="service-img" src="https://images.pexels.com/photos/261949/pexels-photo-261949.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=600" alt="أخبار القطاع">
+                <div class="service-icon"><i class="fas fa-newspaper"></i></div>
+                <h3>📰 أخبار القطاع</h3>
+                <p>آخر المستجدات والأخبار في المجال الفلاحي المغربي والعالمي</p>
+                <span class="service-tag">مستجدات</span>
+            </a>
+            <!-- 10. الدورات الزراعية -->
+            <a href="courses.html" class="service-card aos-init" data-aos="fade-up" data-aos-delay="900">
+                <img class="service-img" src="https://www.fao.org/images/afraslibraries/news/whatsapp-image-2024-07-30-at-8-33-16-pm.jpeg?sfvrsn=d3290c3e_3" alt="الدورات الزراعية">
+                <div class="service-icon"><i class="fas fa-graduation-cap"></i></div>
+                <h3>🎓 الدورات الزراعية</h3>
+                <p>دورات تدريبية متخصصة في المجال الفلاحي مع شهادات معتمدة</p>
+                <span class="service-tag">شهادة معتمدة</span>
+            </a>
+            <!-- 11. عروض الشركات -->
+            <a href="offers.html" class="service-card aos-init" data-aos="fade-up" data-aos-delay="1000">
+                <img class="service-img" src="https://en.7news.ma/wp-content/uploads/2025/03/agriculture.jpg" alt="عروض الشركات">
+                <div class="service-icon"><i class="fas fa-building"></i></div>
+                <h3>🏢 عروض الشركات</h3>
+                <p>فرص عمل ومناصب شاغرة في الشركات الفلاحية المغربية</p>
+                <span class="service-tag">فرص عمل</span>
+                <span class="service-tag">متجددة</span>
+            </a>
+            <!-- 12. طلبات العمل -->
+            <a href="jobs.html" class="service-card aos-init" data-aos="fade-up" data-aos-delay="1100">
+                <img class="service-img" src="https://jornews.com/assets/2022-10-23/images/48672_1718408279.webp" alt="طلبات العمل">
+                <div class="service-icon"><i class="fas fa-briefcase"></i></div>
+                <h3>💼 طلبات العمل</h3>
+                <p>باحثون عن عمل في القطاع الفلاحي بخبرات متنوعة</p>
+                <span class="service-tag">باحثون</span>
+                <span class="service-tag">خبرات متنوعة</span>
+            </a>
+            <!-- 13. طلبات التدريب -->
+            <a href="trainings.html" class="service-card aos-init" data-aos="fade-up" data-aos-delay="1200">
+                <img class="service-img" src="https://jumelages-partenariats.com/admin/ckeditor/fileman/Uploads/2f715b50bbfaac" alt="طلبات التدريب">
+                <div class="service-icon"><i class="fas fa-chalkboard-user"></i></div>
+                <h3>🎓 طلبات التدريب</h3>
+                <p>باحثون عن تدريب في المجال الفلاحي لتطوير مهاراتهم المهنية</p>
+                <span class="service-tag">تدريب ميداني</span>
+                <span class="service-tag">تطوير مهني</span>
+            </a>
+            
+            <!-- ===== بطاقة سوق الفلاحة ===== -->
+            <a href="market.html" class="service-card aos-init" data-aos="fade-up" data-aos-delay="1300">
+                <img class="service-img" src="https://png.pngtree.com/element_our/20200610/ourlarge/pngtree-shopping-mall-logo-image_2235997.jpg" alt="سوق الفلاحة">
+                <div class="service-icon"><i class="fas fa-store"></i></div>
+                <h3>🏪 سوق الفلاحة</h3>
+                <p>منصة متكاملة لعرض السلع والمعدات والتواصل بين العارضين والزوار</p>
+                <span class="service-tag">أكثر من 1000+ عارض</span>
+                <span class="service-tag">بيع وشراء</span>
+            </a>
+            
+            <!-- ===== بطاقة مكتبتي ===== -->
+            <a href="mylibrary.html" class="service-card aos-init" data-aos="fade-up" data-aos-delay="1400">
+                <img class="service-img" src="https://images.pexels.com/photos/256541/pexels-photo-256541.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=600" alt="مكتبتي">
+                <div class="service-icon"><i class="fas fa-book"></i></div>
+                <h3>📚 مكتبتي</h3>
+                <p>تخزين وحفظ المحتوى الزراعي المفضل لديك، مقالات، دورات، فيديوهات</p>
+                <span class="service-tag">احفظ محتواك المفضل</span>
+                <span class="service-tag">مكتبة شخصية</span>
+            </a>
+
+            <!-- ===== بطاقة Agri AI ===== -->
+            <a href="agri-ai.html" class="service-card aos-init" data-aos="fade-up" data-aos-delay="1500">
+                <img class="service-img" src="https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=600" alt="Agri AI">
+                <div class="service-icon"><i class="fas fa-robot"></i></div>
+                <h3>🤖 Agri AI</h3>
+                <p>مساعد ذكي بالذكاء الاصطناعي للإجابة على استفساراتك الزراعية وتقديم النصائح</p>
+                <span class="service-tag">ذكاء اصطناعي</span>
+                <span class="service-tag">دعم فوري</span>
+            </a>
+
+            <!-- ===== بطاقة أوقات شروق وغروب الشمس ===== -->
+            <a href="sun-times.html" class="service-card aos-init" data-aos="fade-up" data-aos-delay="1600">
+                <img class="service-img" src="https://modo3.com/thumbs/fit630x300/2311/1441198319/%D8%A3%D8%B0%D9%83%D8%A7%D8%B1_%D8%B7%D9%84%D9%88%D8%B9_%D8%A7%D9%84%D8%B4%D9%85%D8%B3_%D9%88%D8%BA%D8%B1%D9%88%D8%A8%D9%87%D8%A7.jpg" alt="أوقات شروق وغروب الشمس">
+                <div class="service-icon"><i class="fas fa-sun"></i></div>
+                <h3>🌅 أوقات شروق وغروب الشمس</h3>
+                <p>تعرف على مواعيد شروق وغروب الشمس حسب منطقتك لتنظيم مواعيد الري والعمل</p>
+                <span class="service-tag">مواعيد دقيقة</span>
+                <span class="service-tag">حسب الموقع</span>
+            </a>
+
+            <!-- ===== بطاقة تكنولوجيا فلاحية ===== -->
+            <a href="agritech.html" class="service-card aos-init" data-aos="fade-up" data-aos-delay="1700">
+                <img class="service-img" src="https://ar.industries.ma/wp-content/uploads/2026/02/AgricultureTech_LOgreen.jpg" alt="تكنولوجيا فلاحية">
+                <div class="service-icon"><i class="fas fa-microchip"></i></div>
+                <h3>💻 تكنولوجيا فلاحية</h3>
+                <p>أحدث الابتكارات التكنولوجية في القطاع الفلاحي: الزراعة الذكية، إنترنت الأشياء، الطائرات بدون طيار</p>
+                <div>
+                    <span class="tech-feature">🚁 طائرات زراعية</span>
+                    <span class="tech-feature">📡 إنترنت الأشياء</span>
+                    <span class="tech-feature">🤖 روبوتات</span>
+                    <span class="tech-feature">💧 ري ذكي</span>
+                </div>
+                <span class="service-price">تقنيات متطورة</span>
+            </a>
+
+            <!-- ===== بطاقة قطاع حيواني ===== -->
+            <a href="livestock.html" class="service-card aos-init" data-aos="fade-up" data-aos-delay="1800">
+                <img class="service-img" src="https://alalam24.press.ma/static/uploads/2022/10/%D8%A7%D9%86%D8%AA%D8%A7%D8%AC-%D8%A7%D9%84%D8%AD%D9%84%D9%8A%D8%A8-%D9%84%D8%AF%D9%89-%D8%A7%D9%84%D8%A3%D8%A8%D9%82%D8%A7%D8%B1-%D8%A7%D9%84%D8%AD%D9%84%D9%88%D8%A8.jpg" alt="قطاع حيواني">
+                <div class="service-icon"><i class="fas fa-paw"></i></div>
+                <h3>🐄 قطاع حيواني</h3>
+                <p>دليل شامل للثروة الحيوانية: الأنواع، التغذية، الأمراض، العلاج، والأسعار</p>
+                <div class="animals-list">
+                    <span class="animal-badge">🐄 بقر</span>
+                    <span class="animal-badge">🐑 غنم</span>
+                    <span class="animal-badge">🐐 ماعز</span>
+                    <span class="animal-badge">🐫 إبل</span>
+                    <span class="animal-badge">🐓 دواجن</span>
+                    <span class="animal-badge">🐴 خيول</span>
+                </div>
+                <div class="price-range">أسعار تنافسية | أدوية بيطرية | أعلاف</div>
+                <span class="service-tag">تغذية</span>
+                <span class="service-tag">أمراض</span>
+                <span class="service-tag">علاج</span>
+                <span class="service-tag">أسعار</span>
+            </a>
+
+            <!-- ===== بطاقة مساحة SONE ===== -->
+            <a href="sone.html" class="service-card aos-init" data-aos="fade-up" data-aos-delay="1900">
+                <img class="service-img" src="https://imgs.search.brave.com/WCNMee_ZhMH-R25v2RjoVTZCW0wDI7nNhU3_gexl4ug/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/dGlzY29udHJvbC5j/b20vdHBfUHVibGlj/L0hvbWUvaW1nL3Nv/bHV0aW9ucy9zbWFy/dF9mYXJtL2Zhcm0u/cG5n" alt="مساحة SONE">
+                <div class="service-icon"><i class="fas fa-microchip"></i></div>
+                <h3>📡 مساحة SONE</h3>
+                <p>منصة متخصصة في إدارة المساحات الزراعية باستخدام أحدث التقنيات الجغرافية المكانية</p>
+                <div>
+                    <span class="sone-feature">🗺️ خرائط تفاعلية</span>
+                    <span class="sone-feature">📊 تحليل البيانات</span>
+                    <span class="sone-feature">🌾 تتبع المحاصيل</span>
+                    <span class="sone-feature">📈 تقارير دورية</span>
+                </div>
+                <span class="service-price">متوفر الآن</span>
+            </a>
+
+            <!-- ===== بطاقة شبكة AGRI NET ===== -->
+            <a href="agrinet.html" class="service-card aos-init" data-aos="fade-up" data-aos-delay="2000">
+                <img class="service-img" src="https://imgs.search.brave.com/p39TVcUsTDQm-SrdkV7I2wHF4yAfbYP-T0OcNDzIRdM/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9kMzl0/ZWN2MjlrZTkybi5j/bG91ZGZyb250Lm5l/dC9hc3NldHMvY29t/cGV0aXRvcnMvYWdy/aW5ldC05YmJmYmUx/YmM2MjI4ZThkYjNi/ODBmMDk5NjhkN2E1/YzhmMzEyYjg2N2Fh/ZDlmMTdkMTMyZjlm/ZWQ0MzA2ZjQ0LnBu/Zw" alt="شبكة AGRI NET">
+                <div class="service-icon"><i class="fas fa-network-wired"></i></div>
+                <h3>🌐 شبكة AGRI NET</h3>
+                <p>شبكة تواصل زراعية متكاملة تربط المزارعين والخبراء والشركات في منصة واحدة</p>
+                <div>
+                    <span class="agrinet-feature">🤝 تواصل اجتماعي زراعي</span>
+                    <span class="agrinet-feature">📢 إعلانات وظيفية</span>
+                    <span class="agrinet-feature">💬 استشارات فورية</span>
+                    <span class="agrinet-feature">📚 مكتبة معرفية</span>
+                </div>
+                <span class="service-price">انضم الآن مجاناً</span>
+            </a>
+        </div>
+    </section>
+
+    <footer class="footer" id="contact">
+        <div class="footer-container">
+            <div class="footer-col">
+                <h4><i class="fas fa-leaf"></i> Agri Maroc Précis</h4>
+                <p>المنصة المتكاملة للفلاحة الذكية</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>روابط سريعة</h4>
+                <a href="#home">الرئيسية</a>
+                <a href="#services">الخدمات</a>
+                <a href="#contact">اتصل بنا</a>
+            </div>
+            <div class="footer-col">
+                <h4>خدماتنا</h4>
+                <a href="agri-manager.html">مدبر Agri Manager</a>
+                <a href="ndvi.html">تحليل NDVI</a>
+                <a href="weather.html">الطقس</a>
+                <a href="disease.html">خريطة الأمراض</a>
+                <a href="vegetables.html">أسعار الخضروات</a>
+                <a href="sone.html">مساحة SONE</a>
+                <a href="agrinet.html">شبكة AGRI NET</a>
+            </div>
+            <div class="footer-col">
+                <h4>اتصل بنا</h4>
+                <p><i class="fas fa-envelope"></i> contact@agrimaroc.ma</p>
+                <p><i class="fas fa-phone"></i> +212 5XX XXX XXX</p>
+                <p><i class="fas fa-map-marker-alt"></i> الدار البيضاء، المغرب</p>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>© 2026 Agri Maroc Précis - جميع الحقوق محفوظة | المنصة المتكاملة للفلاحة الذكية</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 800, once: true });
+
+        let header = document.getElementById('header');
+        window.addEventListener('scroll', () => { header.classList.toggle('scrolled', window.scrollY > 50); });
+
+        function toggleMenu() { document.getElementById('navLinks').classList.toggle('active'); }
+
+        // ===== كود خلفية الهيرو المتحركة =====
+        const heroImages = [
+            "https://www.agrimaroc.ma/wp-content/uploads/formations_agriculture.jpg",
+            "https://www.hellio.com/hubfs/Blog%20Corporate%20-%20Images/elevage-bovin-vaches-champs-agriculture-coucher-soleil.jpeg",
+            "https://cci.bj/admin1/public/upload/articles/news_photo_420022ea70e8cea401c64adb0cc8eb13.jpg",
+            "https://www.dahu.bio/images/photos/agriculture/agriculture.jpg",
+            "https://www.mapleleaffoods.com/fr/wp-content/uploads/sites/7/2025/04/MLF-RegenerativeAgriculture-Cover.jpg",
+            "https://www.agrirs.co.uk/rails/active_storage/blobs/proxy/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBNVdMTHc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--eb47d68403ed777863b7ebc70ec2a23a006403d2/iStock-1280715716.jpg",
+            "https://framerusercontent.com/images/WuyZbJIN4W7zf2F6xXWXSOg.jpg?width=1500&height=844",
+            "https://mkulima.net/wp-content/uploads/2024/09/image-credit-agriculture.jpg"
+        ];
+
+        let currentImageIndex = 0;
+        const heroBgElement = document.getElementById('heroBg');
+
+        function changeHeroBackground() {
+            if (heroBgElement) {
+                heroBgElement.style.opacity = '0.3';
+                setTimeout(() => {
+                    heroBgElement.src = heroImages[currentImageIndex];
+                    heroBgElement.style.opacity = '0.25';
+                }, 400);
+                currentImageIndex = (currentImageIndex + 1) % heroImages.length;
+            }
+        }
+
+        if (heroBgElement) {
+            setInterval(changeHeroBackground, 5000);
+        }
+    </script>
+
+</body>
+</html>

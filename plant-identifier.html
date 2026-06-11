@@ -1,9 +1,12 @@
-<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>مُعرف النباتات - Identificateur de Plantes</title>
+    <meta name="description" content="مُعرف النباتات - خدمة احترافية للتعرف على النباتات عبر الصور">
+    <meta name="theme-color" content="#0A1408">
+    <title>SONE | مُعرف النباتات</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -12,107 +15,126 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Cairo', 'Tahoma', sans-serif;
-            background: #f5f7f0;
+            font-family: 'Cairo', 'Segoe UI', Tahoma, sans-serif;
+            background: #0A1408;
             min-height: 100vh;
         }
 
         /* الهيدر العلوي */
         .top-bar {
-            background: white;
-            padding: 12px 20px;
+            background: #1C2A16;
+            padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #e5e7e0;
+            border-bottom: 1px solid rgba(168, 132, 66, 0.3);
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 1rem;
         }
 
         .logo {
-            font-size: 22px;
-            font-weight: bold;
-            background: linear-gradient(135deg, #2e7d32, #4caf50);
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FBFCFB, #A8842A);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
+            letter-spacing: 2px;
         }
 
         .logo-sub {
-            font-size: 11px;
-            color: #8a9a7c;
+            font-size: 0.7rem;
+            color: #C1DCB5;
             font-weight: normal;
             margin-right: 5px;
         }
 
         .lang-selector {
             display: flex;
-            gap: 12px;
+            gap: 1rem;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         .lang-selector select {
-            padding: 6px 12px;
-            border-radius: 20px;
-            border: 1px solid #ddd;
-            background: white;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            border: 1px solid rgba(168, 132, 66, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            color: #FBFCFB;
+            font-family: 'Cairo', sans-serif;
+            cursor: pointer;
+        }
+
+        .lang-selector select option {
+            background: #1C2A16;
         }
 
         .nav-buttons {
             display: flex;
-            gap: 15px;
+            gap: 1rem;
         }
 
         .nav-buttons a {
             text-decoration: none;
-            color: #5a6e53;
-            font-size: 14px;
+            color: #C1DCB5;
+            font-size: 0.85rem;
+            transition: color 0.2s;
+            padding: 0.3rem 0.8rem;
+            border-radius: 2rem;
+        }
+
+        .nav-buttons a:hover {
+            color: #A8842A;
+            background: rgba(168, 132, 66, 0.1);
         }
 
         /* المحتوى الرئيسي */
         .container {
             max-width: 800px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 2rem;
         }
 
         /* بطاقة رفع الصورة */
         .upload-card {
-            background: white;
+            background: #1C2A16;
             border-radius: 28px;
-            padding: 30px;
+            padding: 2rem;
             text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            margin-bottom: 25px;
-            border: 1px solid #e8ece2;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.3);
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(168, 132, 66, 0.3);
             cursor: pointer;
             transition: all 0.2s;
         }
 
         .upload-card:hover {
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            box-shadow: 0 15px 35px -12px rgba(0,0,0,0.4);
             transform: translateY(-2px);
+            border-color: rgba(168, 132, 66, 0.5);
         }
 
         .upload-icon {
-            font-size: 60px;
-            margin-bottom: 12px;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #A8842A;
         }
 
         .upload-title {
-            font-size: 18px;
-            font-weight: 500;
-            color: #333;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #FBFCFB;
         }
 
         .upload-sub {
-            font-size: 13px;
-            color: #8a9a7c;
-            margin-top: 8px;
+            font-size: 0.8rem;
+            color: #C1DCB5;
+            margin-top: 0.5rem;
         }
 
         .preview-area {
-            margin: 20px 0;
+            margin: 1.5rem 0;
             display: none;
             text-align: center;
         }
@@ -121,168 +143,198 @@
             max-width: 100%;
             max-height: 250px;
             border-radius: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
-            border: 3px solid #4caf50;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            border: 2px solid #A8842A;
         }
 
         /* أزرار الإجراءات */
         .action-buttons {
             display: flex;
-            gap: 12px;
-            margin: 20px 0;
+            gap: 1rem;
+            margin: 1.5rem 0;
         }
 
         .btn-primary {
             flex: 1;
-            background: linear-gradient(135deg, #2e7d32, #4caf50);
-            color: white;
+            background: linear-gradient(135deg, #A8842A, #C49B3A);
+            color: #0A1408;
             border: none;
-            padding: 14px;
+            padding: 0.9rem;
             border-radius: 40px;
-            font-size: 16px;
-            font-weight: bold;
+            font-size: 1rem;
+            font-weight: 700;
             cursor: pointer;
             transition: 0.2s;
+            font-family: 'Cairo', sans-serif;
         }
 
         .btn-secondary {
             flex: 1;
-            background: #f0f2e8;
-            color: #2e5c2e;
-            border: 1px solid #d0dcc4;
-            padding: 14px;
+            background: rgba(168, 132, 66, 0.15);
+            color: #C1DCB5;
+            border: 1px solid rgba(168, 132, 66, 0.3);
+            padding: 0.9rem;
             border-radius: 40px;
-            font-size: 16px;
-            font-weight: bold;
+            font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
             transition: 0.2s;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #C49B3A, #A8842A);
+            transform: scale(0.98);
+            box-shadow: 0 5px 15px rgba(168, 132, 66, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(168, 132, 66, 0.25);
+            color: #FBFCFB;
         }
 
         .btn-primary:disabled {
-            background: #b8d4ae;
+            background: #4a5a40;
             cursor: not-allowed;
+            opacity: 0.6;
         }
 
         /* بطاقات النتائج */
         .result-card {
-            background: white;
+            background: #1C2A16;
             border-radius: 24px;
-            margin-bottom: 20px;
+            margin-bottom: 1.5rem;
             overflow: hidden;
-            border: 1px solid #e5e9df;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            border: 1px solid rgba(168, 132, 66, 0.3);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
         .result-header {
-            background: #fafcf5;
-            padding: 12px 16px;
-            border-bottom: 1px solid #edf2e6;
+            background: rgba(10, 20, 8, 0.8);
+            padding: 0.8rem 1.2rem;
+            border-bottom: 1px solid rgba(168, 132, 66, 0.2);
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 0.5rem;
         }
 
         .result-time {
-            font-size: 12px;
-            color: #8faa8a;
+            font-size: 0.75rem;
+            color: #C1DCB5;
         }
 
         .result-actions {
             display: flex;
-            gap: 15px;
+            gap: 1rem;
         }
 
         .result-actions span {
-            font-size: 12px;
-            color: #7c9a6e;
+            font-size: 0.75rem;
+            color: #A8842A;
             cursor: pointer;
+            transition: color 0.2s;
         }
 
         .result-actions span:hover {
-            color: #2e7d32;
+            color: #C49B3A;
         }
 
         .plant-content {
-            padding: 20px;
+            padding: 1.5rem;
         }
 
         .plant-name-main {
-            font-size: 24px;
+            font-size: 1.5rem;
             font-weight: 700;
-            color: #1b5e20;
-            margin-bottom: 8px;
+            color: #A8842A;
+            margin-bottom: 0.5rem;
         }
 
         .plant-scientific {
-            font-size: 14px;
-            color: #7c9a6e;
+            font-size: 0.85rem;
+            color: #C1DCB5;
             font-style: italic;
-            margin-bottom: 12px;
+            margin-bottom: 0.8rem;
         }
 
         .plant-common {
-            background: #eef5ea;
+            background: rgba(168, 132, 66, 0.15);
             display: inline-block;
-            padding: 6px 14px;
+            padding: 0.3rem 1rem;
             border-radius: 30px;
-            font-size: 13px;
-            color: #2d693a;
-            margin-bottom: 15px;
+            font-size: 0.75rem;
+            color: #C1DCB5;
+            margin-bottom: 1rem;
         }
 
         .confidence-badge {
-            background: #e8f0e4;
+            background: rgba(168, 132, 66, 0.2);
             display: inline-block;
-            padding: 4px 12px;
+            padding: 0.2rem 0.8rem;
             border-radius: 50px;
-            font-size: 12px;
-            margin-right: 10px;
+            font-size: 0.7rem;
+            color: #A8842A;
+            font-weight: 600;
         }
 
         .button-group {
             display: flex;
-            gap: 12px;
-            margin: 18px 0 10px;
+            gap: 0.8rem;
+            margin: 1.2rem 0 0.5rem;
             flex-wrap: wrap;
         }
 
         .btn-google {
-            background: #f8f9fa;
-            border: 1px solid #dadce0;
-            padding: 10px 20px;
+            background: rgba(168, 132, 66, 0.15);
+            border: 1px solid rgba(168, 132, 66, 0.3);
+            padding: 0.6rem 1.2rem;
             border-radius: 28px;
-            font-size: 14px;
+            font-size: 0.8rem;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            color: #3c4043;
+            gap: 0.5rem;
+            color: #C1DCB5;
             text-decoration: none;
+            font-family: 'Cairo', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .btn-google:hover {
+            background: rgba(168, 132, 66, 0.25);
+            color: #FBFCFB;
         }
 
         .btn-details {
-            background: #e8f0fe;
-            border: none;
-            padding: 10px 20px;
+            background: rgba(168, 132, 66, 0.15);
+            border: 1px solid rgba(168, 132, 66, 0.3);
+            padding: 0.6rem 1.2rem;
             border-radius: 28px;
-            font-size: 14px;
+            font-size: 0.8rem;
             cursor: pointer;
-            color: #1967d2;
+            color: #C1DCB5;
+            font-family: 'Cairo', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .btn-details:hover {
+            background: rgba(168, 132, 66, 0.25);
+            color: #FBFCFB;
         }
 
         .loading-spinner {
             display: none;
             text-align: center;
-            padding: 30px;
+            padding: 2rem;
         }
 
         .spinner {
             width: 45px;
             height: 45px;
-            border: 4px solid #e0e0e0;
-            border-top: 4px solid #2e7d32;
+            border: 4px solid rgba(168, 132, 66, 0.2);
+            border-top: 4px solid #A8842A;
             border-radius: 50%;
             animation: spin 0.7s linear infinite;
             margin: 0 auto;
@@ -292,26 +344,41 @@
             to { transform: rotate(360deg); }
         }
 
+        .loading-spinner p {
+            margin-top: 0.8rem;
+            color: #A8842A;
+        }
+
         .error-msg {
-            background: #ffebee;
-            color: #c62828;
-            padding: 12px;
+            background: rgba(244, 67, 54, 0.15);
+            color: #fecaca;
+            padding: 0.8rem;
             border-radius: 20px;
-            margin: 15px 0;
+            margin: 1rem 0;
             text-align: center;
             display: none;
+            border: 1px solid #f44336;
         }
 
         .footer {
             text-align: center;
-            padding: 20px;
-            font-size: 11px;
-            color: #9abb8b;
+            padding: 1.5rem;
+            font-size: 0.7rem;
+            color: #C1DCB5;
+            border-top: 1px solid rgba(168, 132, 66, 0.2);
+            margin-top: 2rem;
+        }
+
+        .footer span {
+            color: #A8842A;
+            font-weight: 600;
         }
 
         @media (max-width: 550px) {
-            .container { padding: 12px; }
-            .plant-name-main { font-size: 20px; }
+            .container { padding: 1rem; }
+            .top-bar { padding: 0.8rem 1rem; }
+            .logo { font-size: 1.3rem; }
+            .plant-name-main { font-size: 1.2rem; }
             .button-group { flex-direction: column; }
             .btn-google, .btn-details { justify-content: center; }
         }
@@ -319,70 +386,70 @@
 </head>
 <body>
 
-<!-- الهيدر العلوي - الاسم الجديد بالعربية والفرنسية -->
 <div class="top-bar">
     <div class="logo">
-        🌿 مُعرف النباتات 
-        <span class="logo-sub">Identificateur de Plantes</span>
+        SONE
+        <span class="logo-sub">مُعرف النباتات</span>
     </div>
     <div class="lang-selector">
         <select id="langSelect">
-            <option value="ar">🇸🇦 العربية</option>
-            <option value="en">🇬🇧 English</option>
-            <option value="fr">🇫🇷 Français</option>
+            <option value="ar">العربية</option>
+            <option value="en">English</option>
+            <option value="fr">Français</option>
         </select>
         <div class="nav-buttons">
             <a href="#">تعريف جديد</a>
             <a href="#">نباتاتي</a>
-            <a href="#">تثبيت ▲</a>
+            <a href="#">تثبيت</a>
         </div>
     </div>
 </div>
 
 <div class="container">
-    <!-- بطاقة رفع الصورة -->
     <div class="upload-card" id="uploadCard">
-        <div class="upload-icon">📸🌿</div>
+        <div class="upload-icon">
+            <i class="fas fa-camera"></i>
+        </div>
         <div class="upload-title">اضغط أو اسحب صورة نبات</div>
         <div class="upload-sub">يفضل تصوير الورقة أو الزهرة عن قرب</div>
         <input type="file" id="fileInput" accept="image/*" capture="environment" style="display: none;">
     </div>
 
-    <!-- معاينة الصورة -->
     <div class="preview-area" id="previewArea">
         <img id="previewImg" alt="معاينة النبات">
     </div>
 
-    <!-- أزرار الإجراءات -->
     <div class="action-buttons">
-        <button class="btn-primary" id="identifyBtn" disabled>🔍 التعرف على النبات</button>
-        <button class="btn-secondary" id="resetBtn">🗑️ مسح</button>
+        <button class="btn-primary" id="identifyBtn" disabled>
+            <i class="fas fa-search"></i> التعرف على النبات
+        </button>
+        <button class="btn-secondary" id="resetBtn">
+            <i class="fas fa-trash-alt"></i> مسح
+        </button>
     </div>
 
-    <!-- تحميل -->
     <div class="loading-spinner" id="loading">
         <div class="spinner"></div>
-        <p style="margin-top: 12px; color:#2e5c2e;">جاري التعرف على النبات...</p>
+        <p>جاري التعرف على النبات...</p>
     </div>
 
     <div class="error-msg" id="errorMsg"></div>
 
-    <!-- منطقة عرض النتائج -->
     <div id="resultsContainer"></div>
 
     <div class="footer">
-        🌱 بواسطة Plant.id API | التعرف الذكي على النباتات
+        بواسطة <span>Plant.id API</span> | التعرف الذكي على النباتات
+        <br>
+        © 2025 SONE - SMART SOLUTIONS, GREEN FUTURE
     </div>
 </div>
 
 <script>
-    // 🔑 مفتاح Plant.id API
     const PLANTID_KEY = "Rd1zUfeDaGkchXCIUR3PwqSBpD89Foqp6gqLcs7PqcUAqUU2k9";
     
     let currentImageFile = null;
     let currentImageBase64 = null;
 
-    // عناصر DOM
     const uploadCard = document.getElementById('uploadCard');
     const fileInput = document.getElementById('fileInput');
     const previewArea = document.getElementById('previewArea');
@@ -393,7 +460,6 @@
     const errorDiv = document.getElementById('errorMsg');
     const resultsContainer = document.getElementById('resultsContainer');
 
-    // رفع الصورة
     uploadCard.addEventListener('click', () => fileInput.click());
     
     fileInput.addEventListener('change', (e) => {
@@ -412,17 +478,18 @@
         }
     });
 
-    // سحب وإفلات
     uploadCard.addEventListener('dragover', (e) => {
         e.preventDefault();
-        uploadCard.style.background = '#eef5ea';
+        uploadCard.style.background = 'rgba(168, 132, 66, 0.1)';
     });
+    
     uploadCard.addEventListener('dragleave', () => {
-        uploadCard.style.background = 'white';
+        uploadCard.style.background = '#1C2A16';
     });
+    
     uploadCard.addEventListener('drop', (e) => {
         e.preventDefault();
-        uploadCard.style.background = 'white';
+        uploadCard.style.background = '#1C2A16';
         const file = e.dataTransfer.files[0];
         if (file && file.type.startsWith('image/')) {
             currentImageFile = file;
@@ -456,7 +523,6 @@
         });
     }
 
-    // الاتصال بـ Plant.id API
     async function identifyWithPlantId(imageBase64) {
         const requestBody = {
             images: [imageBase64],
@@ -478,8 +544,7 @@
         return await response.json();
     }
 
-    // عرض النتائج بنفس التصميم الجميل
-    function displayResultsAsPlantIdStyle(data) {
+    function displayResults(data) {
         if (!data.suggestions || data.suggestions.length === 0) {
             showError("لم يتم التعرف على نبات. جرب صورة أوضح.");
             return;
@@ -489,14 +554,19 @@
         const timeStr = now.toLocaleString('ar-EG');
 
         let html = `
-            <div style="margin-bottom:10px; font-size:13px; color:#7c9a6e;">🕐 ${timeStr}</div>
-            <div style="margin-bottom:16px; display:flex; gap:12px; flex-wrap:wrap;">
-                <span style="background:#edf2e6; padding:4px 12px; border-radius:20px; font-size:12px;">🌍 ${getLanguageName()}</span>
-                <span style="background:#edf2e6; padding:4px 12px; border-radius:20px; font-size:12px; cursor:pointer;" onclick="resetAndRetry()">🔄 محاولة جديدة</span>
+            <div style="margin-bottom:0.8rem; font-size:0.75rem; color:#C1DCB5;">
+                <i class="far fa-clock"></i> ${timeStr}
+            </div>
+            <div style="margin-bottom:1rem; display:flex; gap:0.8rem; flex-wrap:wrap;">
+                <span style="background:rgba(168,132,66,0.15); padding:0.2rem 0.8rem; border-radius:20px; font-size:0.7rem; color:#C1DCB5;">
+                    <i class="fas fa-globe"></i> ${getLanguageName()}
+                </span>
+                <span style="background:rgba(168,132,66,0.15); padding:0.2rem 0.8rem; border-radius:20px; font-size:0.7rem; color:#C1DCB5; cursor:pointer;" onclick="resetAndRetry()">
+                    <i class="fas fa-sync-alt"></i> محاولة جديدة
+                </span>
             </div>
         `;
 
-        // عرض أول 3 نتائج
         const topSuggestions = data.suggestions.slice(0, 3);
         
         topSuggestions.forEach((suggestion, idx) => {
@@ -509,22 +579,34 @@
             html += `
                 <div class="result-card">
                     <div class="result-header">
-                        <div class="result-time">🆔 نبات ${idx + 1}</div>
+                        <div class="result-time">
+                            <i class="fas fa-leaf"></i> نبات ${idx + 1}
+                        </div>
                         <div class="result-actions">
-                            <span onclick="changePlantLanguage('${escapeHtml(plantName)}')">🌐 تغيير لغة النبات</span>
-                            <span onclick="deleteResult(this)">🗑️ حذف</span>
+                            <span onclick="changePlantLanguage('${escapeHtml(plantName)}')">
+                                <i class="fas fa-language"></i> تغيير اللغة
+                            </span>
+                            <span onclick="deleteResult(this)">
+                                <i class="fas fa-trash-alt"></i> حذف
+                            </span>
                         </div>
                     </div>
                     <div class="plant-content">
-                        <div class="plant-name-main">🌿 ${escapeHtml(plantName)}</div>
+                        <div class="plant-name-main">${escapeHtml(plantName)}</div>
                         <div class="plant-scientific">${escapeHtml(scientificName)}</div>
-                        ${commonNamesText ? `<div class="plant-common">📖 ${escapeHtml(commonNamesText)} ${commonNames.length > 3 ? '...' : ''}</div>` : ''}
+                        ${commonNamesText ? `<div class="plant-common"><i class="fas fa-book-open"></i> ${escapeHtml(commonNamesText)} ${commonNames.length > 3 ? '...' : ''}</div>` : ''}
                         <div>
-                            <span class="confidence-badge">🎯 نسبة الدقة: ${probability}%</span>
+                            <span class="confidence-badge">
+                                <i class="fas fa-chart-line"></i> نسبة الدقة: ${probability}%
+                            </span>
                         </div>
                         <div class="button-group">
-                            <a href="https://www.google.com/search?q=${encodeURIComponent(plantName + ' نبات')}" target="_blank" class="btn-google">🔍 Google</a>
-                            <button class="btn-details" onclick="showDetails('${escapeHtml(plantName)}', '${escapeHtml(scientificName)}', '${escapeHtml(commonNamesText)}', ${probability})">📋 Details</button>
+                            <a href="https://www.google.com/search?q=${encodeURIComponent(plantName + ' نبات')}" target="_blank" class="btn-google">
+                                <i class="fab fa-google"></i> بحث في Google
+                            </a>
+                            <button class="btn-details" onclick="showDetails('${escapeHtml(plantName)}', '${escapeHtml(scientificName)}', '${escapeHtml(commonNamesText)}', ${probability})">
+                                <i class="fas fa-info-circle"></i> تفاصيل
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -534,7 +616,6 @@
         resultsContainer.innerHTML = html;
     }
 
-    // وظيفة التعرف الرئيسية
     async function startIdentification() {
         if (!currentImageFile) {
             showError("الرجاء اختيار صورة أولاً");
@@ -554,7 +635,7 @@
             }
             
             const data = await identifyWithPlantId(base64);
-            displayResultsAsPlantIdStyle(data);
+            displayResults(data);
             
         } catch (error) {
             console.error(error);
@@ -567,9 +648,8 @@
 
     identifyBtn.addEventListener('click', startIdentification);
 
-    // ============= دوال إضافية =============
     function showDetails(name, scientific, common, score) {
-        alert(`🌿 الاسم: ${name}\n🔬 الاسم العلمي: ${scientific}\n📖 الأسماء الشائعة: ${common || 'غير متوفر'}\n🎯 نسبة الدقة: ${score}%`);
+        alert(`الاسم: ${name}\nالاسم العلمي: ${scientific}\nالأسماء الشائعة: ${common || 'غير متوفر'}\nنسبة الدقة: ${score}%`);
     }
     window.showDetails = showDetails;
     
@@ -616,5 +696,6 @@
         errorDiv.style.display = 'none';
     }
 </script>
+
 </body>
 </html>

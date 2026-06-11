@@ -38,7 +38,7 @@
             margin: 0 auto;
         }
 
-        /* header premium - SONE style */
+        /* header premium */
         .premium-header {
             background: #1C2A16;
             border-radius: 2rem;
@@ -60,19 +60,17 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            letter-spacing: 2px;
         }
 
-        .logo-area h1 i:first-child {
-            color: #A8842A;
-        }
-
-        .logo-area h1 i:last-child {
+        .logo-area h1 .logo-highlight {
             color: #A8842A;
         }
 
         .logo-area p {
             color: #C1DCB5;
             font-size: 0.85rem;
+            margin-top: 4px;
         }
 
         .badge-area {
@@ -208,10 +206,11 @@
         }
 
         .big-result .label {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             color: #C1DCB5;
+            font-weight: 500;
         }
 
         .big-result .value {
@@ -333,7 +332,7 @@
             border: 1px solid rgba(168, 132, 66, 0.2);
         }
 
-        /*闪烁效果 عند الحساب */
+        /* pulse animation */
         @keyframes pulse {
             0% { transform: scale(1); background: rgba(10, 20, 8, 0.6); }
             50% { transform: scale(1.02); background: rgba(168, 132, 66, 0.15); }
@@ -355,11 +354,15 @@
 <div class="professional-container">
     <div class="premium-header">
         <div class="logo-area">
-            <h1><i class="fas fa-leaf"></i> SONE <i class="fas fa-tractor"></i> حاسبة رش المبيدات</h1>
-            <p>معايرة دقيقة للبخاخات · اضغط "حساب دقيق" لعرض النتيجة</p>
+            <h1>
+                <span class="logo-highlight">SONE</span>
+                <span> | </span>
+                <span>حاسبة رش المبيدات</span>
+            </h1>
+            <p>معايرة دقيقة للبخاخات · نظام احترافي للمحطات الزراعية</p>
         </div>
         <div class="badge-area">
-            <span><i class="fas fa-chart-line"></i> المعادلة: (لتر/هكتار × كم/س × م) / (600 × عدد البخاخات)</span>
+            <span>المعادلة: (لتر/هكتار × كم/س × م) ÷ (600 × عدد البخاخات)</span>
         </div>
     </div>
 
@@ -406,11 +409,11 @@
                 </div>
 
                 <div class="input-group-modern">
-                    <label><i class="fas fa-chart-pie"></i> نوعية المحصول (توصية)</label>
+                    <label><i class="fas fa-chart-pie"></i> نوعية المحصول</label>
                     <div class="input-with-icon">
                         <i class="fas fa-seedling"></i>
                         <select id="cropType">
-                            <option value="general">عام / حبوب</option>
+                            <option value="general">محاصيل حقلية / حبوب</option>
                             <option value="fruit">أشجار مثمرة</option>
                             <option value="veg">خضروات</option>
                         </select>
@@ -449,10 +452,12 @@
                     </div>
                 </div>
 
-                <div id="stepByStep" class="equation-banner" style="text-align:right;">📐 اضغط على زر <strong style="color:#A8842A;">'حساب دقيق'</strong> لعرض الخطوات والنتيجة بناءً على المعادلة الزراعية الدقيقة.</div>
+                <div id="stepByStep" class="equation-banner" style="text-align:right;">
+                    اضغط على زر <strong style="color:#A8842A;">حساب دقيق</strong> لعرض الخطوات والنتيجة بناءً على المعادلة الزراعية الدقيقة.
+                </div>
 
                 <div id="customAdvice" class="equation-banner" style="background:rgba(168,132,66,0.08); margin-top:0.8rem;">
-                    <i class="fas fa-info-circle"></i> يرجى التأكد من استخدام بخاخات بنفس اللون والرؤية لضمان تجانس الرش.
+                    <i class="fas fa-info-circle"></i> يرجى التأكد من استخدام بخاخات بنفس المواصفات لضمان تجانس الرش.
                 </div>
             </div>
         </div>
@@ -463,11 +468,11 @@
             </div>
             <div class="card-body">
                 <div id="historyList" class="history-log">
-                    <p style="color:#A8842A;">✨ سيتم حفظ الحسابات بعد الضغط على "حفظ النتيجة"</p>
+                    <p style="color:#A8842A;">سيتم حفظ الحسابات بعد الضغط على حفظ النتيجة</p>
                 </div>
                 <button id="clearHistoryBtn" class="btn-secondary" style="width:100%; margin-top:12px;"><i class="fas fa-trash-alt"></i> مسح السجل</button>
                 <div class="equation-banner" style="margin-top:1rem;">
-                    <i class="fas fa-microscope"></i> المعادلة المعتمدة ISO: <strong style="color:#A8842A;">q = (R × S × W) / (600 × n)</strong><br>
+                    <i class="fas fa-microscope"></i> المعادلة المعتمدة ISO: <strong style="color:#A8842A;">q = (R × S × W) ÷ (600 × n)</strong><br>
                     R: لتر/هكتار , S: كم/س , W: متر , n: عدد البخاخات
                 </div>
             </div>
@@ -492,7 +497,6 @@
 
     let historyArray = [];
 
-    // helpers
     function getPosFloat(value, def=0) {
         let v = parseFloat(value);
         return (isNaN(v) || v<0) ? def : v;
@@ -502,21 +506,18 @@
         return (isNaN(v) || v<=0) ? def : v;
     }
 
-    // core formula
     function computeFlow(mix, speed, width, nozzles) {
         if(mix <= 0 || speed <= 0 || width <= 0 || nozzles <= 0) return 0;
         const total = (mix * speed * width) / 600;
         return total / nozzles;
     }
 
-    // main calculation function
     function calculateAndDisplay() {
         let mix = getPosFloat(mixInput.value);
         let speed = getPosFloat(speedInput.value);
         let width = getPosFloat(widthInput.value);
         let nozzles = getPosInt(nozzlesInput.value);
         
-        // check for empty/invalid
         if(mixInput.value === "" || isNaN(parseFloat(mixInput.value))) mix = 0;
         if(speedInput.value === "" || isNaN(parseFloat(speedInput.value))) speed = 0;
         if(widthInput.value === "" || isNaN(parseFloat(widthInput.value))) width = 0;
@@ -524,7 +525,6 @@
         const flowPerNozzle = computeFlow(mix, speed, width, nozzles);
         const totalFlow = (mix * speed * width) / 600;
         
-        // update display
         if(flowPerNozzle > 0 || (mix>0 && speed>0 && width>0 && nozzles>0)) {
             flowSpan.innerText = flowPerNozzle.toFixed(2);
             totalFlowSpan.innerText = totalFlow.toFixed(2);
@@ -536,41 +536,38 @@
             tankEstimateSpan.innerText = "—";
         }
         
-        // Step by step details in arabic
         if(mix > 0 && speed > 0 && width > 0 && nozzles > 0) {
             stepDiv.innerHTML = `
-                <i class="fas fa-calculator"></i> <strong>📐 خطوات الحساب (معادلة دقيقة):</strong><br>
-                • التدفق الكلي = (${mix.toFixed(2)} × ${speed.toFixed(2)} × ${width.toFixed(2)}) / 600 = ${totalFlow.toFixed(3)} لتر/دقيقة<br>
-                • التدفق لكل بخاخ = ${totalFlow.toFixed(3)} / ${nozzles} = <strong style="color:#A8842A; font-size:1rem;">${flowPerNozzle.toFixed(3)} لتر/دقيقة</strong><br>
+                <i class="fas fa-calculator"></i> <strong>خطوات الحساب (معادلة دقيقة):</strong><br>
+                • التدفق الكلي = (${mix.toFixed(2)} × ${speed.toFixed(2)} × ${width.toFixed(2)}) ÷ 600 = ${totalFlow.toFixed(3)} لتر/دقيقة<br>
+                • التدفق لكل بخاخ = ${totalFlow.toFixed(3)} ÷ ${nozzles} = <strong style="color:#A8842A; font-size:1rem;">${flowPerNozzle.toFixed(3)} لتر/دقيقة</strong><br>
                 • الثابت 600: تحويل الوحدات (هكتار ← دقائق) وفق المنظمات الزراعية العالمية.
             `;
         } else {
-            stepDiv.innerHTML = `⚠️ قيمة غير صالحة: تأكد من أن جميع الحقول تحتوي على أرقام موجبة (كمية الخليط، السرعة، العرض، وعدد البخاخات أكبر من صفر).`;
+            stepDiv.innerHTML = `قيمة غير صالحة: تأكد من أن جميع الحقول تحتوي على أرقام موجبة (كمية الخليط، السرعة، العرض، وعدد البخاخات أكبر من صفر).`;
         }
         
-        // smart recommendation with crop type
-        let cropMsg = "";
         const crop = cropSelect.value;
+        let cropMsg = "";
         if(crop === "fruit") cropMsg = "للأشجار المثمرة يفضل تدفق بين 0.8 - 2.2 لتر/دقيقة لكل بخاخ. ";
         else if(crop === "veg") cropMsg = "للخضروات ينصح بتيار رش ناعم وتدفق 0.5 - 1.8 لتر/دقيقة. ";
         else cropMsg = "للمحاصيل الحقلية يُفضل تدفق 1.0 - 2.5 لتر/دقيقة. ";
         
         let adviceText = "";
         if(flowPerNozzle === 0 && (mix>0 && speed>0 && width>0 && nozzles>0)) {
-            adviceText = "⚠️ تحقق من القيم، النتيجة صفر رغم وجود بيانات إيجابية؟ تأكد من صحة الأرقام.";
+            adviceText = "تحقق من القيم، النتيجة صفر رغم وجود بيانات إيجابية؟ تأكد من صحة الأرقام.";
         } else if(flowPerNozzle < 0.4 && flowPerNozzle > 0) {
-            adviceText = "⚠️ التدفق منخفض جدًا، زِد السرعة أو غيّر الفتحات لتحسين التغطية.";
+            adviceText = "التدفق منخفض جدًا، زِد السرعة أو غيّر الفتحات لتحسين التغطية.";
         } else if(flowPerNozzle > 3.8) {
-            adviceText = "⚠️ تدفق مرتفع جداً، قد يؤدي للغسيل والتلوث. خفّض السرعة أو غيّر الفوهات.";
+            adviceText = "تدفق مرتفع جداً، قد يؤدي للغسيل والتلوث. خفّض السرعة أو غيّر الفوهات.";
         } else if(flowPerNozzle > 0) {
-            adviceText = "✅ التدفق مثالي ضمن النطاق المعياري للرش الزراعي الفعال.";
+            adviceText = "التدفق مثالي ضمن النطاق المعياري للرش الزراعي الفعال.";
         } else {
-            adviceText = "📝 أدخل قيماً صحيحة في جميع الحقول ثم اضغط 'حساب دقيق'.";
+            adviceText = "أدخل قيماً صحيحة في جميع الحقول ثم اضغط حساب دقيق.";
         }
         
-        adviceDiv.innerHTML = `<i class="fas fa-clipboard-list"></i> ${cropMsg} ${adviceText} <strong style="color:#A8842A;">يرجى التأكد من استخدام بخاخات بنفس اللون والرؤية الرش والمعايرة الدورية.</strong>`;
+        adviceDiv.innerHTML = `<i class="fas fa-clipboard-list"></i> ${cropMsg} ${adviceText} <strong style="color:#A8842A;">يرجى التأكد من استخدام بخاخات بنفس المواصفات والمعايرة الدورية.</strong>`;
         
-        // add animation on result box
         resultBox.classList.add('result-animate');
         setTimeout(() => {
             resultBox.classList.remove('result-animate');
@@ -579,7 +576,6 @@
         return {mix, speed, width, nozzles, flowPerNozzle, totalFlow};
     }
     
-    // save current calculation to history
     function saveCurrentToHistory() {
         let mix = getPosFloat(mixInput.value);
         let speed = getPosFloat(speedInput.value);
@@ -588,12 +584,12 @@
         let flow = computeFlow(mix, speed, width, nozzles);
         
         if(mix === 0 || speed === 0 || width === 0 || nozzles === 0 || flow === 0) {
-            alert("⚠️ لا يمكن حفظ النتيجة: تأكد من إدخال بيانات صحيحة واضغط 'حساب دقيق' أولاً، وتأكد من أن التدفق أكبر من صفر.");
+            alert("لا يمكن حفظ النتيجة: تأكد من إدخال بيانات صحيحة واضغط حساب دقيق أولاً، وتأكد من أن التدفق أكبر من صفر.");
             return;
         }
         
         const timestamp = new Date().toLocaleTimeString('ar-EG');
-        const historyEntry = `🕒 ${timestamp} | خليط:${mix.toFixed(1)} ل/هـ | سرعة:${speed.toFixed(1)} كم/س | عرض:${width.toFixed(1)}م | بخاخات:${nozzles}  →  التدفق: ${flow.toFixed(2)} لتر/دقيقة`;
+        const historyEntry = `${timestamp} | خليط:${mix.toFixed(1)} ل/هـ | سرعة:${speed.toFixed(1)} كم/س | عرض:${width.toFixed(1)}م | بخاخات:${nozzles}  →  التدفق: ${flow.toFixed(2)} لتر/دقيقة`;
         historyArray.unshift(historyEntry);
         if(historyArray.length > 6) historyArray.pop();
         renderHistory();
@@ -601,7 +597,7 @@
     
     function renderHistory() {
         if(historyArray.length === 0) {
-            historyDiv.innerHTML = `<p style="color:#A8842A;">📋 لا توجد حسابات محفوظة. اضغط "حفظ النتيجة" بعد الحساب.</p>`;
+            historyDiv.innerHTML = `<p style="color:#A8842A;">لا توجد حسابات محفوظة. اضغط حفظ النتيجة بعد الحساب.</p>`;
             return;
         }
         let html = '';
@@ -625,7 +621,7 @@
         const total = (mix * speed * width) / 600;
         
         if(mix === 0 || speed === 0 || width === 0 || nozzles === 0) {
-            alert("لا يمكن الطباعة: أدخل بيانات صحيحة واضغط 'حساب دقيق' أولاً.");
+            alert("لا يمكن الطباعة: أدخل بيانات صحيحة واضغط حساب دقيق أولاً.");
             return;
         }
         
@@ -639,21 +635,21 @@
                 .logo{color:#A8842A; font-size:24px; font-weight:bold;}
             </style>
             </head><body>
-            <div class="logo"><i class="fas fa-leaf"></i> SONE</div>
-            <h2><i class="fas fa-tractor"></i> تقرير معايرة البخاخات - دقيق</h2>
+            <div class="logo">SONE</div>
+            <h2>تقرير معايرة البخاخات</h2>
             <hr style="border-color:#A8842A;"/>
             <table>
-            <tr><th style="text-align:right;"><strong>كمية الخليط:</strong></th><td>${mix.toFixed(2)} لتر/هكتار</td></tr>
-            <tr><th style="text-align:right;"><strong>سرعة الجرار:</strong></th><td>${speed.toFixed(2)} كم/ساعة</td></tr>
-            <tr><th style="text-align:right;"><strong>عرض العمل:</strong></th><td>${width.toFixed(2)} متر</td></tr>
-            <tr><th style="text-align:right;"><strong>عدد البخاخات:</strong></th><td>${nozzles}</td></tr>
-            <tr><th style="text-align:right;"><strong>💧 التدفق لكل بخاخ:</strong></th><td><strong style="color:#A8842A;">${flow.toFixed(2)} لتر/دقيقة</strong></td></tr>
-            <tr><th style="text-align:right;"><strong>التدفق الكلي للآلة:</strong></th><td>${total.toFixed(2)} لتر/دقيقة</td></tr>
+                <tr><th style="text-align:right;">كمية الخليط:</th><td>${mix.toFixed(2)} لتر/هكتار</td></tr>
+                <tr><th style="text-align:right;">سرعة الجرار:</th><td>${speed.toFixed(2)} كم/ساعة</td></tr>
+                <tr><th style="text-align:right;">عرض العمل:</th><td>${width.toFixed(2)} متر</td></tr>
+                <tr><th style="text-align:right;">عدد البخاخات:</th><td>${nozzles}</td></tr>
+                <tr><th style="text-align:right;">التدفق لكل بخاخ:</th><td><strong style="color:#A8842A;">${flow.toFixed(2)} لتر/دقيقة</strong></td></tr>
+                <tr><th style="text-align:right;">التدفق الكلي للآلة:</th><td>${total.toFixed(2)} لتر/دقيقة</td></tr>
             </table>
             <hr style="border-color:#A8842A;"/>
-            <p>✅ تأكد من استخدام بخاخات بنفس اللون والرؤية ومعايرة دورية.</p>
-            <p>📅 تاريخ التقرير: ${new Date().toLocaleString('ar-EG')}</p>
-            <p style="font-size:12px;">المعادلة: q = (R × S × W) / (600 × n)</p>
+            <p>تأكد من استخدام بخاخات بنفس المواصفات والمعايرة الدورية.</p>
+            <p>تاريخ التقرير: ${new Date().toLocaleString('ar-EG')}</p>
+            <p style="font-size:12px;">المعادلة: q = (R × S × W) ÷ (600 × n)</p>
             <p style="font-size:12px; color:#A8842A;">© 2025 SONE - SMART SOLUTIONS, GREEN FUTURE</p>
             </body></html>
         `;
@@ -663,7 +659,6 @@
         win.print();
     }
     
-    // Event binding
     function bindEvents() {
         const calcButton = document.getElementById('calcBtn');
         calcButton.addEventListener('click', (e) => {
@@ -675,7 +670,6 @@
         document.getElementById('printBtn').addEventListener('click', printSummary);
         document.getElementById('clearHistoryBtn').addEventListener('click', clearHistory);
         
-        // Enter key triggers calc
         const inputs = [mixInput, speedInput, widthInput, nozzlesInput];
         inputs.forEach(inp => {
             inp.addEventListener('keypress', (e) => {
@@ -687,13 +681,12 @@
         });
     }
     
-    // initial state
     function init() {
         bindEvents();
         flowSpan.innerText = "—";
         totalFlowSpan.innerText = "—";
         tankEstimateSpan.innerText = "—";
-        stepDiv.innerHTML = "📐 اضغط على زر <strong style='color:#A8842A;'>'حساب دقيق'</strong> لعرض الخطوات والنتيجة بناءً على المعادلة الزراعية الدقيقة.";
+        stepDiv.innerHTML = "اضغط على زر <strong style='color:#A8842A;'>حساب دقيق</strong> لعرض الخطوات والنتيجة بناءً على المعادلة الزراعية الدقيقة.";
     }
     
     init();

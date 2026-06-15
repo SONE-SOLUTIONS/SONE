@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>الرئيسية - SONE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #0A1408 0%, #0d2a0a 100%);
+            font-family: 'Cairo', system-ui, sans-serif;
+        }
+        .glass-card {
+            backdrop-filter: blur(12px);
+            background: rgba(10, 20, 8, 0.85);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+        }
+        .stat-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -12px rgba(0, 0, 0, 0.3);
+        }
+        .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: #ef4444;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body class="min-h-screen animate-fade-in">
+
+    <!-- Header -->
+    <header class="glass-card sticky top-0 z-50 shadow-lg">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-green-600/20 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-leaf text-green-400 text-xl"></i>
+                </div>
+                <h1 class="text-2xl font-bold text-white">SONE</h1>
+            </div>
+            <div class="flex items-center gap-4">
+                <span id="userEmail" class="text-gray-300 text-sm hidden md:inline-block"></span>
+                <button id="logoutBtn" class="logout-btn flex items-center gap-2 bg-white/5 border border-white/10 hover:border-red-500 text-white px-4 py-2 rounded-xl transition-all duration-200">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span class="hidden sm:inline">تسجيل خروج</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <!-- Welcome Section -->
+        <div class="glass-card rounded-2xl p-6 mb-8">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h2 class="text-2xl md:text-3xl font-bold text-white mb-2" id="welcomeMessage">
+                        مرحباً بك في منصة SONE 👋
+                    </h2>
+                    <p class="text-gray-300">منصتك المتكاملة لإدارة المحتوى والتحليلات</p>
+                </div>
+                <div class="flex gap-3">
+                    <div class="bg-green-600/20 rounded-xl px-4 py-2 text-center">
+                        <div class="text-green-400 text-sm">حالة الاتصال</div>
+                        <div class="text-white font-semibold flex items-center gap-1">
+                            <i class="fas fa-circle text-green-500 text-xs"></i> متصل
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+            <div class="glass-card stat-card rounded-xl p-5">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-400 text-sm">المستخدمين النشطين</p>
+                        <p class="text-3xl font-bold text-white mt-1">1,234</p>
+                        <p class="text-green-400 text-xs mt-2"><i class="fas fa-arrow-up"></i> +12%</p>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-users text-blue-400 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="glass-card stat-card rounded-xl p-5">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-400 text-sm">إجمالي المحتوى</p>
+                        <p class="text-3xl font-bold text-white mt-1">567</p>
+                        <p class="text-green-400 text-xs mt-2"><i class="fas fa-arrow-up"></i> +5%</p>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-file-alt text-purple-400 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="glass-card stat-card rounded-xl p-5">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-400 text-sm">المشاهدات</p>
+                        <p class="text-3xl font-bold text-white mt-1">45.2K</p>
+                        <p class="text-green-400 text-xs mt-2"><i class="fas fa-arrow-up"></i> +18%</p>
+                    </div>
+                    <div class="w-12 h-12 bg-yellow-500/20 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-eye text-yellow-400 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="glass-card stat-card rounded-xl p-5">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-400 text-sm">التقييم</p>
+                        <p class="text-3xl font-bold text-white mt-1">4.8</p>
+                        <p class="text-green-400 text-xs mt-2"><i class="fas fa-star"></i> ممتاز</p>
+                    </div>
+                    <div class="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-chart-line text-green-400 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Recent Activity -->
+            <div class="glass-card rounded-xl p-5 lg:col-span-2">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-white">
+                        <i class="fas fa-clock ml-2 text-green-400"></i> النشاطات الأخيرة
+                    </h3>
+                    <button class="text-green-400 text-sm hover:text-green-300 transition">عرض الكل →</button>
+                </div>
+                <div class="space-y-3">
+                    <div class="flex items-center gap-3 p-3 bg-white/5 rounded-xl">
+                        <div class="w-10 h-10 bg-green-500/20 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-user-plus text-green-400"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-white text-sm">مستخدم جديد انضم إلى المنصة</p>
+                            <p class="text-gray-400 text-xs">منذ 5 دقائق</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 p-3 bg-white/5 rounded-xl">
+                        <div class="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-upload text-blue-400"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-white text-sm">تم رفع محتوى جديد</p>
+                            <p class="text-gray-400 text-xs">منذ ساعة</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 p-3 bg-white/5 rounded-xl">
+                        <div class="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-comment text-purple-400"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-white text-sm">تعليق جديد على منشور</p>
+                            <p class="text-gray-400 text-xs">منذ 3 ساعات</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="glass-card rounded-xl p-5">
+                <h3 class="text-xl font-bold text-white mb-4">
+                    <i class="fas fa-bolt ml-2 text-yellow-400"></i> إجراءات سريعة
+                </h3>
+                <div class="space-y-3">
+                    <button class="w-full flex items-center gap-3 p-3 bg-green-600/20 hover:bg-green-600/30 rounded-xl transition text-white">
+                        <i class="fas fa-plus-circle text-green-400"></i>
+                        <span>إنشاء محتوى جديد</span>
+                    </button>
+                    <button class="w-full flex items-center gap-3 p-3 bg-blue-600/20 hover:bg-blue-600/30 rounded-xl transition text-white">
+                        <i class="fas fa-chart-simple text-blue-400"></i>
+                        <span>عرض التقارير</span>
+                    </button>
+                    <button class="w-full flex items-center gap-3 p-3 bg-purple-600/20 hover:bg-purple-600/30 rounded-xl transition text-white">
+                        <i class="fas fa-cog text-purple-400"></i>
+                        <span>الإعدادات</span>
+                    </button>
+                    <button class="w-full flex items-center gap-3 p-3 bg-orange-600/20 hover:bg-orange-600/30 rounded-xl transition text-white">
+                        <i class="fas fa-envelope text-orange-400"></i>
+                        <span>المراسلات</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-8 text-center text-gray-500 text-sm py-4">
+            <i class="fas fa-copyright ml-1"></i> 2025 SONE - جميع الحقوق محفوظة
+        </footer>
+    </main>
+
+    <div id="toastContainer" class="fixed bottom-5 left-5 right-5 md:left-auto md:right-5 md:w-96 z-50 flex flex-col gap-2"></div>
+
+    <script>
+        const SUPABASE_URL = "https://zpjuhprlcaigmczhqlye.supabase.co";
+        const SUPABASE_ANON_KEY = "sb_publishable_PVQ61DBLGYjzaXy-XFrWpA_k_94iEvK";
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        function showToast(message, type = 'error') {
+            const container = document.getElementById('toastContainer');
+            if (!container) return;
+            const toast = document.createElement('div');
+            toast.className = `glass-card rounded-xl p-4 flex items-start gap-3 shadow-xl transition-all duration-300 border-r-4 ${type === 'error' ? 'border-red-500 bg-red-900/30' : 'border-green-500 bg-green-900/30'}`;
+            const icon = type === 'error' ? '<i class="fas fa-exclamation-circle text-red-400 text-lg"></i>' : '<i class="fas fa-check-circle text-green-400 text-lg"></i>';
+            toast.innerHTML = `
+                <div class="flex-shrink-0">${icon}</div>
+                <div class="flex-1 text-sm text-white">${message}</div>
+                <button class="text-gray-300 hover:text-white transition"><i class="fas fa-times"></i></button>
+            `;
+            container.appendChild(toast);
+            toast.querySelector('button').addEventListener('click', () => toast.remove());
+            setTimeout(() => { if (toast.parentNode) toast.remove(); }, 5000);
+        }
+
+        async function checkSessionAndLoadUser() {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            
+            if (!session) {
+                showToast("الرجاء تسجيل الدخول أولاً", 'error');
+                setTimeout(() => { 
+                    window.location.href = "index.html"; 
+                }, 1500);
+                return null;
+            }
+            
+            // عرض البريد الإلكتروني للمستخدم
+            const userEmailSpan = document.getElementById('userEmail');
+            const welcomeMessage = document.getElementById('welcomeMessage');
+            
+            if (userEmailSpan && session.user.email) {
+                userEmailSpan.textContent = session.user.email;
+            }
+            
+            if (welcomeMessage && session.user.email) {
+                const userName = session.user.email.split('@')[0];
+                welcomeMessage.innerHTML = `مرحباً ${userName} في منصة SONE 👋`;
+            }
+            
+            showToast(`مرحباً! تم تسجيل الدخول بنجاح ✅`, 'success');
+            return session;
+        }
+
+        async function logout() {
+            const { error } = await supabaseClient.auth.signOut();
+            if (error) {
+                showToast("حدث خطأ أثناء تسجيل الخروج", 'error');
+            } else {
+                showToast("تم تسجيل الخروج بنجاح 👋", 'success');
+                setTimeout(() => { 
+                    window.location.href = "index.html"; 
+                }, 1000);
+            }
+        }
+
+        // تسجيل الخروج
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', logout);
+        }
+
+        // التحقق من الجلسة عند تحميل الصفحة
+        checkSessionAndLoadUser();
+
+        // مراقبة تغييرات حالة المصادقة
+        supabaseClient.auth.onAuthStateChange((event, session) => {
+            if (event === 'SIGNED_OUT') {
+                window.location.href = "index.html";
+            }
+        });
+    </script>
+</body>
+</html>

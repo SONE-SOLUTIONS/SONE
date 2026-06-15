@@ -122,19 +122,26 @@
                 return false;
             }
             if (data?.user) {
-                showToast(`مرحباً! تم تسجيل الدخول بنجاح ✅`, 'success');
-                setTimeout(() => { window.location.href = "dashboard.html"; }, 1500);
+                showToast(`مرحباً ${data.user.email}! تم تسجيل الدخول بنجاح ✅`, 'success');
+                setTimeout(() => { 
+                    window.location.href = "dashboard.html"; 
+                }, 1500);
                 return true;
             }
             return false;
         }
         
         async function signInWithGoogle() {
-            const redirectUrl = `${window.location.origin}/dashboard.html`;
+            // احصل على الرابط الأساسي للموقع
+            const baseUrl = window.location.origin + window.location.pathname.replace(/[^/]*$/, '');
+            const redirectUrl = `${baseUrl}dashboard.html`;
+            
             try {
                 const { error } = await supabaseClient.auth.signInWithOAuth({
                     provider: 'google',
-                    options: { redirectTo: redirectUrl }
+                    options: { 
+                        redirectTo: redirectUrl
+                    }
                 });
                 if (error) showToast("فشل الاتصال بـ Google: " + error.message, 'error');
             } catch (err) {
@@ -145,8 +152,10 @@
         async function checkCurrentSession() {
             const { data: { session } } = await supabaseClient.auth.getSession();
             if (session) {
-                showToast(`تم تسجيل الدخول مسبقاً، جاري التوجيه... 🟢`, 'success');
-                setTimeout(() => { window.location.href = "dashboard.html"; }, 1500);
+                showToast(`مرحباً بعودتك! جاري التوجيه... 🟢`, 'success');
+                setTimeout(() => { 
+                    window.location.href = "dashboard.html"; 
+                }, 1500);
             }
         }
         
@@ -181,7 +190,9 @@
         
         supabaseClient.auth.onAuthStateChange((event, session) => {
             if (event === 'SIGNED_IN' && session) {
-                setTimeout(() => { window.location.href = "dashboard.html"; }, 1000);
+                setTimeout(() => { 
+                    window.location.href = "dashboard.html"; 
+                }, 1000);
             }
         });
         

@@ -1,9 +1,8 @@
-<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Agri Maroc Assistant | الذكاء الاصطناعي للفلاحة المغربية</title>
+    <title>Sone-Solutions | الذكاء الاصطناعي للفلاحة المغربية</title>
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -71,17 +70,36 @@
             transition: opacity 0.8s ease;
         }
         
+        .loader-content {
+            text-align: center;
+        }
+        
         .loader-logo {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 120px;
+            height: 120px;
             margin: 0 auto 20px;
-            font-size: 40px;
+            border-radius: 20px;
+            overflow: hidden;
             animation: float 2s ease-in-out infinite;
+            border: 2px solid var(--accent);
+            box-shadow: 0 0 30px rgba(255,215,0,0.2);
+        }
+        
+        .loader-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .loader-text {
+            font-size: 28px;
+            font-weight: 800;
+            margin-top: 10px;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #fff, var(--primary-light), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
         
         @keyframes float {
@@ -93,7 +111,7 @@
             display: flex;
             justify-content: center;
             gap: 8px;
-            margin-top: 20px;
+            margin-top: 15px;
         }
         
         .loader-dot {
@@ -143,17 +161,22 @@
         .logo-icon {
             width: 40px;
             height: 40px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
+            overflow: hidden;
+            border: 1px solid var(--accent);
+            flex-shrink: 0;
+        }
+        
+        .logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         
         .logo-text {
             font-size: 20px;
             font-weight: 800;
+            letter-spacing: 1px;
             background: linear-gradient(135deg, #fff, var(--primary-light), var(--accent));
             -webkit-background-clip: text;
             background-clip: text;
@@ -673,6 +696,13 @@
                 width: 40px;
                 height: 40px;
             }
+            .loader-logo {
+                width: 80px;
+                height: 80px;
+            }
+            .loader-text {
+                font-size: 22px;
+            }
         }
         
         /* أنيميشن السكرول */
@@ -696,17 +726,25 @@
         <!-- شاشة التحميل -->
         <div class="loader" id="loader">
             <div class="loader-content">
-                <div class="loader-logo"><i class="fas fa-leaf"></i></div>
-                <div class="loader-dots"><div class="loader-dot"></div><div class="loader-dot"></div><div class="loader-dot"></div></div>
-                <div class="loader-text">Agri Maroc Assistant</div>
+                <div class="loader-logo">
+                    <img src="https://scontent.frba1-4.fna.fbcdn.net/v/t39.30808-6/681884209_122093720763301010_4741601618872924151_n.jpg?stp=dst-jpg_tt6&cstp=mx1448x1086&ctp=s1448x1086&_nc_cat=105&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeHxluZ2hQ1jX0BWnXknNpa0vNxkRJHUvNK83GREkdS80v2iGDQGg09nRpOJIyBvRZqewR8ANuZxnglu_3jyBLRP&_nc_ohc=5MY4DOQZ3KEQ7kNvwFYjH64&_nc_oc=AdrtCWkds6_rCmi27vAUw_i2tqrK5RREgsOVn-UhSWmJrBplMesSofJ_HaH2GVySs3c&_nc_zt=23&_nc_ht=scontent.frba1-4.fna&_nc_gid=x4zpjI23ZjMYr9arUfGT6Q&_nc_ss=7e2a8&oh=00_Af-K5RI0vsrfWdFx85meEe_0vpC43KLltPAbhOa_rCeQ2A&oe=6A375FA6" alt="Sone-Solutions Logo">
+                </div>
+                <div class="loader-text">SONE-SOLUTIONS</div>
+                <div class="loader-dots">
+                    <div class="loader-dot"></div>
+                    <div class="loader-dot"></div>
+                    <div class="loader-dot"></div>
+                </div>
             </div>
         </div>
         
         <!-- شريط التنقل -->
         <nav class="navbar" id="navbar">
             <div class="logo">
-                <div class="logo-icon"><i class="fas fa-leaf"></i></div>
-                <span class="logo-text">Agri Maroc Assistant</span>
+                <div class="logo-icon">
+                    <img src="https://scontent.frba1-4.fna.fbcdn.net/v/t39.30808-6/681884209_122093720763301010_4741601618872924151_n.jpg?stp=dst-jpg_tt6&cstp=mx1448x1086&ctp=s1448x1086&_nc_cat=105&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeHxluZ2hQ1jX0BWnXknNpa0vNxkRJHUvNK83GREkdS80v2iGDQGg09nRpOJIyBvRZqewR8ANuZxnglu_3jyBLRP&_nc_ohc=5MY4DOQZ3KEQ7kNvwFYjH64&_nc_oc=AdrtCWkds6_rCmi27vAUw_i2tqrK5RREgsOVn-UhSWmJrBplMesSofJ_HaH2GVySs3c&_nc_zt=23&_nc_ht=scontent.frba1-4.fna&_nc_gid=x4zpjI23ZjMYr9arUfGT6Q&_nc_ss=7e2a8&oh=00_Af-K5RI0vsrfWdFx85meEe_0vpC43KLltPAbhOa_rCeQ2A&oe=6A375FA6" alt="Sone-Solutions Logo">
+                </div>
+                <span class="logo-text">SONE-SOLUTIONS</span>
             </div>
             <div class="nav-links">
                 <a href="#home">الرئيسية</a>
@@ -735,21 +773,21 @@
                     <i class="fas fa-microchip"></i> الذكاء الاصطناعي للفلاحة المغربية
                 </div>
                 <h1 class="hero-title reveal">
-                    Agri Maroc <span>Assistant</span>
+                    SONE-SOLUTIONS <span>ASSISTANT</span>
                 </h1>
                 <p class="hero-desc reveal">
                     خبيرك الشخصي في تشخيص أمراض النباتات وتحليل صحة المحاصيل<br>
                     باستخدام أحدث تقنيات الذكاء الاصطناعي
                 </p>
                 <div class="typing-wrapper reveal">
-                    <span class="typing-text" id="typingText"></span>
+                    <span class="typing-text" id="typingText">نصائح ري ذكية للمغرب</span>
                     <span class="cursor"></span>
                 </div>
                 <div class="btn-group reveal">
                     <button class="btn-primary" onclick="scrollToChat()">
                         <i class="fas fa-comment-dots"></i> ابدأ المحادثة
                     </button>
-                    <button class="btn-outline" onclick="sendToBot('ما هي خدمات Agri Maroc Assistant؟')">
+                    <button class="btn-outline" onclick="sendToBot('ما هي خدمات Sone-Solutions؟')">
                         <i class="fas fa-play"></i> جرب المساعد الآن
                     </button>
                 </div>
@@ -760,7 +798,7 @@
         <div class="features" id="features">
             <div class="section-header reveal">
                 <div class="section-tag">✨ الميزات المتقدمة</div>
-                <h2 class="section-title">لماذا <span style="color: var(--accent);">Agri Maroc Assistant</span>؟</h2>
+                <h2 class="section-title">لماذا <span style="color: var(--accent);">SONE-SOLUTIONS</span>؟</h2>
                 <p class="section-subtitle">منصة متكاملة تجمع بين قوة الذكاء الاصطناعي وخبرة الفلاحة المغربية</p>
             </div>
             <div class="features-grid">
@@ -791,7 +829,7 @@
         <div class="chat-section" id="chat">
             <div class="section-header reveal">
                 <div class="section-tag">🤖 الذكاء الاصطناعي</div>
-                <h2 class="section-title">تحدث مع <span style="color: var(--accent);">Agri Maroc Assistant</span></h2>
+                <h2 class="section-title">تحدث مع <span style="color: var(--accent);">SONE-SOLUTIONS</span></h2>
                 <p class="section-subtitle">اطرح أي سؤال واحصل على إجابة فورية ودقيقة بالدارجة المغربية</p>
             </div>
             <div class="chat-container reveal">
@@ -800,7 +838,7 @@
                     <span style="color: var(--primary-light);">متصل | جاهز للرد فوراً</span>
                     <i class="fas fa-robot" style="color: var(--accent); margin-right: auto;"></i>
                 </div>
-                <iframe class="chat-iframe" id="botpressIframe" src="https://cdn.botpress.cloud/webchat/v3.6/shareable.html?configUrl=https://files.bpcontent.cloud/2026/03/15/05/20260315052837-1GIP391V.json" title="Agri Maroc Assistant"></iframe>
+                <iframe class="chat-iframe" id="botpressIframe" src="https://cdn.botpress.cloud/webchat/v3.6/shareable.html?configUrl=https://files.bpcontent.cloud/2026/03/15/05/20260315052837-1GIP391V.json" title="Sone-Solutions Assistant"></iframe>
             </div>
         </div>
         
@@ -835,13 +873,13 @@
                 <a href="#"><i class="fab fa-linkedin-in"></i></a>
             </div>
             <div class="footer-links">
-                <a href="#">عن Agri Maroc Assistant</a>
+                <a href="#">عن Sone-Solutions</a>
                 <a href="#">المساعدة</a>
                 <a href="#">الخصوصية</a>
                 <a href="#">اتصل بنا</a>
             </div>
             <div class="copyright">
-                <p>© 2026 Agri Maroc Assistant - المساعد الزراعي الذكي للمغرب</p>
+                <p>© 2026 SONE-SOLUTIONS - المساعد الزراعي الذكي للمغرب</p>
                 <p style="margin-top: 8px; font-size: 11px;">مدعوم بتقنيات الذكاء الاصطناعي | متخصص في الفلاحة المغربية</p>
             </div>
         </footer>
@@ -862,8 +900,6 @@
         
         // إعدادات الشبكة
         const CELL_SIZE = 28;
-        const COLS = Math.ceil(width / CELL_SIZE);
-        const ROWS = Math.ceil(height / CELL_SIZE);
         
         // مصفوفة لتخزين تأثير المربعات
         let effects = [];
@@ -1051,16 +1087,16 @@
         }, 500);
         
         // ========== شريط تنقل متغير ==========
+        const navbar = document.getElementById('navbar');
+        const scrollTopBtn = document.getElementById('scrollTopBtn');
+        
         window.addEventListener('scroll', () => {
-            const navbar = document.getElementById('navbar');
-            const scrollBtn = document.getElementById('scrollTopBtn');
-            
             if (window.scrollY > 50) {
                 navbar.classList.add('scrolled');
-                scrollBtn.classList.add('visible');
+                scrollTopBtn.classList.add('visible');
             } else {
                 navbar.classList.remove('scrolled');
-                scrollBtn.classList.remove('visible');
+                scrollTopBtn.classList.remove('visible');
             }
         });
         

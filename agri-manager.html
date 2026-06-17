@@ -1,8 +1,9 @@
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>مدبر | Agri Manager - النظام المتكامل لتدبير الضيعات الفلاحية</title>
+    <title>مدبر | Agri Manager - SONE Solutions</title>
     
     <!-- Leaflet CSS & JS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
@@ -10,10 +11,12 @@
     <!-- Leaflet Draw -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+    <!-- html2canvas for report images -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
     
     <style>
         * {
@@ -52,13 +55,16 @@
         .logo-icon {
             width: 48px;
             height: 48px;
-            background: linear-gradient(135deg, #4caf50, #2e7d32);
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
+            overflow: hidden;
             box-shadow: 0 0 15px rgba(76, 175, 80, 0.3);
+            flex-shrink: 0;
+        }
+        
+        .logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         
         .logo-text h1 {
@@ -210,6 +216,14 @@
             transform: none;
         }
         
+        .tool-btn.report-btn {
+            background: linear-gradient(135deg, #1a237e, #0d1445);
+        }
+        
+        .tool-btn.report-btn:hover {
+            box-shadow: 0 4px 12px rgba(26, 35, 126, 0.4);
+        }
+        
         .control-panel {
             background: #1C2A16;
             border-radius: 20px;
@@ -269,7 +283,6 @@
             font-size: 0.8rem;
         }
         
-        /* ===== تحسين مظهر الحقول ===== */
         input, select {
             width: 100%;
             padding: 10px 12px;
@@ -282,7 +295,6 @@
             transition: all 0.3s ease;
         }
         
-        /* عند التركيز على الحقل */
         input:focus, select:focus {
             outline: none;
             border-color: #4caf50;
@@ -290,7 +302,6 @@
             box-shadow: 0 0 8px rgba(76, 175, 80, 0.3);
         }
         
-        /* ===== تحسين مظهر القوائم المنسدلة (select) عند النقر ===== */
         select {
             cursor: pointer;
             appearance: none;
@@ -300,21 +311,18 @@
             background-size: 20px;
         }
         
-        /* تحسين خيارات القائمة المنسدلة */
         select option {
             background-color: #1C2A16;
             color: #FBFCFB;
             padding: 10px;
         }
         
-        /* عند النقر على select - تظهر الخلفية البيضاء للخيارات */
         select:focus option,
         select:hover option {
             background-color: white !important;
             color: #0A1408 !important;
         }
         
-        /* تنسيق خاص للمتصفحات المختلفة */
         select option:hover,
         select option:focus,
         select option:active {
@@ -383,15 +391,6 @@
             cursor: pointer;
             float: left;
             font-size: 0.75rem;
-        }
-        
-        .color-preview {
-            width: 16px;
-            height: 16px;
-            border-radius: 4px;
-            display: inline-block;
-            margin-left: 6px;
-            vertical-align: middle;
         }
         
         .select-by-number {
@@ -506,21 +505,456 @@
             font-size: 10px;
             margin-top: 8px;
         }
+        
+        /* ===== Report Modal - Professional Style ===== */
+        .report-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .report-overlay.active {
+            display: flex;
+        }
+        
+        .report-container {
+            background: #FFFFFF;
+            border-radius: 8px;
+            padding: 35px 40px;
+            max-width: 1100px;
+            width: 100%;
+            max-height: 95vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.9);
+            font-family: 'Cairo', 'Segoe UI', sans-serif;
+        }
+        
+        .report-container.dir-ltr {
+            direction: ltr;
+            text-align: left;
+        }
+        
+        .report-container.dir-rtl {
+            direction: rtl;
+            text-align: right;
+        }
+        
+        .report-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .report-container::-webkit-scrollbar-track {
+            background: #f0f0f0;
+            border-radius: 10px;
+        }
+        
+        .report-container::-webkit-scrollbar-thumb {
+            background: #1a237e;
+            border-radius: 10px;
+        }
+        
+        /* Report Header */
+        .report-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid #1a237e;
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .report-header .company-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .report-header .company-logo {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid #1a237e;
+        }
+        
+        .report-header .company-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .report-header .company-name {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #1a237e;
+            letter-spacing: 1px;
+        }
+        
+        .report-header .company-sub {
+            font-size: 11px;
+            color: #555;
+            font-weight: 500;
+        }
+        
+        .report-header .report-meta {
+            text-align: left;
+            font-size: 12px;
+            color: #444;
+            line-height: 1.8;
+        }
+        
+        .report-header .report-meta .label {
+            color: #777;
+            font-weight: 500;
+        }
+        
+        .report-header .report-meta .value {
+            color: #1a237e;
+            font-weight: 700;
+        }
+        
+        .report-close-btn {
+            background: #dc3545;
+            border: none;
+            color: white;
+            padding: 6px 18px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            width: auto;
+            font-size: 0.75rem;
+            transition: background 0.3s;
+        }
+        
+        .report-close-btn:hover {
+            background: #c82333;
+            transform: none;
+        }
+        
+        /* Report Title */
+        .report-title {
+            text-align: center;
+            padding: 15px 0 25px 0;
+            border-bottom: 2px solid #e0e0e0;
+            margin-bottom: 25px;
+        }
+        
+        .report-title h2 {
+            font-size: 1.8rem;
+            color: #1a237e;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+        
+        .report-title .sub-title {
+            font-size: 13px;
+            color: #666;
+            margin-top: 5px;
+            font-weight: 500;
+        }
+        
+        /* Report Body */
+        .report-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+        
+        .report-map-image {
+            grid-column: 1 / -1;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid #ddd;
+            background: #f8f9fa;
+            position: relative;
+        }
+        
+        .report-map-image img {
+            width: 100%;
+            display: block;
+        }
+        
+        .report-map-image .map-caption {
+            padding: 8px 15px;
+            background: #f8f9fa;
+            border-top: 1px solid #ddd;
+            font-size: 11px;
+            color: #555;
+            text-align: center;
+        }
+        
+        /* Info Cards */
+        .report-info-card {
+            background: #f8f9fa;
+            border-radius: 6px;
+            padding: 18px 20px;
+            border-right: 4px solid #1a237e;
+        }
+        
+        .report-container.dir-ltr .report-info-card {
+            border-right: none;
+            border-left: 4px solid #1a237e;
+        }
+        
+        .report-info-card h4 {
+            color: #1a237e;
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 8px;
+        }
+        
+        .report-info-card .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 0.8rem;
+        }
+        
+        .report-info-card .info-row:last-child {
+            border-bottom: none;
+        }
+        
+        .report-info-card .info-label {
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .report-info-card .info-value {
+            color: #1a237e;
+            font-weight: 700;
+        }
+        
+        .report-info-card .info-value.green {
+            color: #2e7d32;
+        }
+        
+        /* Sectors Table */
+        .report-sectors-list {
+            grid-column: 1 / -1;
+            margin-top: 10px;
+        }
+        
+        .report-sectors-list h4 {
+            color: #1a237e;
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-bottom: 2px solid #1a237e;
+            padding-bottom: 8px;
+        }
+        
+        .report-sectors-list table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+        }
+        
+        .report-sectors-list th {
+            background: #1a237e;
+            color: white;
+            padding: 10px 14px;
+            text-align: right;
+            font-weight: 600;
+        }
+        
+        .report-container.dir-ltr .report-sectors-list th {
+            text-align: left;
+        }
+        
+        .report-sectors-list td {
+            padding: 8px 14px;
+            border-bottom: 1px solid #e0e0e0;
+            color: #333;
+        }
+        
+        .report-sectors-list tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .report-sectors-list .color-dot {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border-radius: 3px;
+            margin-left: 8px;
+            vertical-align: middle;
+            border: 1px solid #ddd;
+        }
+        
+        .report-container.dir-ltr .report-sectors-list .color-dot {
+            margin-left: 0;
+            margin-right: 8px;
+        }
+        
+        /* Report Footer */
+        .report-footer {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+            margin-top: 15px;
+            font-size: 11px;
+            color: #666;
+        }
+        
+        .report-footer .footer-left {
+            text-align: right;
+        }
+        
+        .report-footer .footer-right {
+            text-align: left;
+        }
+        
+        .report-footer .signature {
+            font-weight: 700;
+            color: #1a237e;
+        }
+        
+        /* Report Actions */
+        .report-actions {
+            grid-column: 1 / -1;
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            padding-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .report-actions button {
+            width: auto;
+            padding: 10px 30px;
+            font-size: 0.8rem;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        
+        .report-actions .btn-print {
+            background: linear-gradient(135deg, #1a237e, #0d1445);
+        }
+        
+        .report-actions .btn-print:hover {
+            box-shadow: 0 4px 15px rgba(26, 35, 126, 0.4);
+        }
+        
+        .report-actions .btn-download {
+            background: linear-gradient(135deg, #2e7d32, #1b5e20);
+        }
+        
+        .report-actions .btn-download:hover {
+            box-shadow: 0 4px 15px rgba(46, 125, 50, 0.4);
+        }
+        
+        .report-actions .language-selector {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            background: #f0f0f0;
+            padding: 4px 10px;
+            border-radius: 4px;
+        }
+        
+        .report-actions .language-selector label {
+            color: #333;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin: 0;
+            display: inline;
+        }
+        
+        .report-actions .language-selector select {
+            width: auto;
+            padding: 4px 12px;
+            background: white;
+            color: #333;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-family: 'Cairo', sans-serif;
+        }
+        
+        @media print {
+            .report-overlay {
+                position: static;
+                background: white;
+                padding: 0;
+            }
+            .report-container {
+                box-shadow: none;
+                padding: 20px;
+                max-height: none;
+                border-radius: 0;
+            }
+            .report-actions,
+            .report-close-btn {
+                display: none !important;
+            }
+            .report-overlay {
+                display: block !important;
+            }
+            body {
+                background: white;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .report-body {
+                grid-template-columns: 1fr;
+            }
+            .report-container {
+                padding: 20px;
+            }
+            .report-header {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+            .report-header .report-meta {
+                text-align: right;
+                width: 100%;
+            }
+            .report-footer {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+            .report-footer .footer-left,
+            .report-footer .footer-right {
+                text-align: center;
+            }
+            .report-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
     </style>
 </head>
 <body>
 
     <header class="header">
         <div class="logo">
-            <div class="logo-icon"><i class="fas fa-tractor"></i></div>
+            <div class="logo-icon">
+                <img src="https://scontent.frba1-4.fna.fbcdn.net/v/t39.30808-6/681884209_122093720763301010_4741601618872924151_n.jpg?stp=dst-jpg_tt6&amp;cstp=mx1448x1086&amp;ctp=s1448x1086&amp;_nc_cat=105&amp;ccb=1-7&amp;_nc_sid=6ee11a&amp;_nc_eui2=AeHxluZ2hQ1jX0BWnXknNpa0vNxkRJHUvNK83GREkdS80v2iGDQGg09nRpOJIyBvRZqewR8ANuZxnglu_3jyBLRP&amp;_nc_ohc=5MY4DOQZ3KEQ7kNvwFYjH64&amp;_nc_oc=AdrtCWkds6_rCmi27vAUw_i2tqrK5RREgsOVn-UhSWmJrBplMesSofJ_HaH2GVySs3c&amp;_nc_zt=23&amp;_nc_ht=scontent.frba1-4.fna&amp;_nc_gid=x4zpjI23ZjMYr9arUfGT6Q&amp;_nc_ss=7e2a8&amp;oh=00_Af-K5RI0vsrfWdFx85meEe_0vpC43KLltPAbhOa_rCeQ2A&amp;oe=6A375FA6" alt="مدبر شعار">
+            </div>
             <div class="logo-text">
                 <h1>مدبر | Agri Manager</h1>
-                <p>النظام المتكامل لتدبير الضيعات الفلاحية</p>
+                <p>SONE Solutions - النظام المتكامل لتدبير الضيعات الفلاحية</p>
             </div>
         </div>
         <div class="company-input">
             <i class="fas fa-building" style="color:#4caf50;"></i>
-            <input type="text" id="companyNameInput" placeholder="اسم الشركة" value="شركة الفلاحة المتكاملة">
+            <input type="text" id="companyNameInput" placeholder="اسم الشركة" value="SONE Solutions">
             <button id="setCompanyBtn"><i class="fas fa-check"></i> تعيين</button>
         </div>
         <div class="stats">
@@ -533,21 +967,22 @@
     <div class="container">
         <div class="map-card">
             <div class="map-header">
-                <h3><i class="fas fa-map-marked-alt"></i> خريطة الضيعة - صور الأقمار الصناعية</h3>
+                <h3><i class="fas fa-map-marked-alt"></i> خريطة الضيعة - SONE Solutions</h3>
                 <div class="coord-info" id="coordInfo">لم يتم الاختيار</div>
             </div>
-            <div id="map"></div>
+            <div id="map" style="position: relative;"></div>
             <div class="map-tools">
                 <button class="tool-btn" id="drawFarmBtn"><i class="fas fa-draw-polygon"></i> رسم حدود الضيعة</button>
-                <button class="tool-btn" id="drawSectorBtn" disabled><i class="fas fa-palette"></i> رسم جزء</button>
+                <button class="tool-btn" id="drawSectorBtn" disabled=""><i class="fas fa-palette"></i> رسم جزء</button>
                 <button class="tool-btn" id="clearFarmBtn"><i class="fas fa-trash-alt"></i> مسح الكل</button>
                 <button class="tool-btn" id="fitFarmBtn"><i class="fas fa-expand"></i> تكبير</button>
+                <button class="tool-btn report-btn" id="generateReportBtn"><i class="fas fa-file-alt"></i> تقرير</button>
                 <div class="map-type-selector">
                     <i class="fas fa-satellite"></i>
                     <select id="mapTypeSelect">
-                        <option value="satellite">🛰️ أقمار صناعية</option>
-                        <option value="hybrid">🌍 هجين</option>
-                        <option value="streets">🗺️ شوارع</option>
+                        <option value="satellite">أقمار صناعية</option>
+                        <option value="hybrid">هجين</option>
+                        <option value="streets">شوارع</option>
                     </select>
                 </div>
             </div>
@@ -556,11 +991,11 @@
         <div class="control-panel">
             <div class="area-card">
                 <i class="fas fa-chart-line"></i>
-                <strong>📏 مساحة الضيعة الإجمالية</strong><br>
+                <strong>مساحة الضيعة الإجمالية</strong><br>
                 <span class="area-value" id="totalAreaValue">0</span><br>
                 <small id="totalAreaUnit">م²</small>
                 <div class="satellite-badge">
-                    <i class="fas fa-microchip"></i> بيانات معتمدة | Sentinel-2
+                    <i class="fas fa-microchip"></i> SONE Solutions
                 </div>
             </div>
 
@@ -570,7 +1005,7 @@
                     <span style="color:#888;">لا توجد أجزاء</span>
                 </div>
                 <div style="margin-top: 8px; font-size: 12px;">
-                    📌 الجزء المحدد: <span id="selectedSectorDisplay">لا شيء</span>
+                    الجزء المحدد: <span id="selectedSectorDisplay">لا شيء</span>
                 </div>
             </div>
 
@@ -582,43 +1017,39 @@
             <div class="form-group">
                 <label>لون الجزء</label>
                 <select id="sectorColor">
-                    <option value="#4caf50">🟢 أخضر</option>
-                    <option value="#ff9800">🟠 برتقالي</option>
-                    <option value="#2196f3">🔵 أزرق</option>
-                    <option value="#f44336">🔴 أحمر</option>
-                    <option value="#9c27b0">🟣 بنفسجي</option>
-                    <option value="#00bcd4">🩵 فيروزي</option>
+                    <option value="#4caf50">أخضر</option>
+                    <option value="#ff9800">برتقالي</option>
+                    <option value="#2196f3">أزرق</option>
+                    <option value="#f44336">أحمر</option>
+                    <option value="#9c27b0">بنفسجي</option>
+                    <option value="#00bcd4">فيروزي</option>
                 </select>
             </div>
             <div class="form-group">
                 <label>النشاط الرئيسي</label>
                 <select id="sectorActivity">
-                    <option value="الري">💧 الري</option>
-                    <option value="التسميد">🌱 التسميد</option>
-                    <option value="الحصاد">🌾 الحصاد</option>
-                    <option value="التقليم">✂️ التقليم</option>
-                    <option value="المكافحة">🐞 المكافحة</option>
+                    <option value="الري">الري</option>
+                    <option value="التسميد">التسميد</option>
+                    <option value="الحصاد">الحصاد</option>
+                    <option value="التقليم">التقليم</option>
+                    <option value="المكافحة">المكافحة</option>
                 </select>
             </div>
-            <button id="addSectorBtn" disabled><i class="fas fa-plus-circle"></i> إضافة جزء (ارسمه)</button>
+            <button id="addSectorBtn" disabled=""><i class="fas fa-plus-circle"></i> إضافة جزء (ارسمه)</button>
 
             <h3 class="section-title"><i class="fas fa-layer-group"></i> الأجزاء المسجلة</h3>
-            <div id="sectorsList" class="sectors-list">
-                <div style="text-align:center; color:#888;">🎨 ارسم أجزاء ملونة</div>
-            </div>
+            <div id="sectorsList" class="sectors-list"><div style="text-align:center; color:#888;">ارسم أجزاء ملونة</div></div>
 
             <h3 class="section-title"><i class="fas fa-hard-hat"></i> إدارة العمال</h3>
             <div class="form-group">
                 <div style="display: flex; gap: 8px;">
                     <input type="text" id="newWorkerName" placeholder="اسم العامل" style="flex:2">
-                    <button id="addWorkerBtn" style="width: auto; padding: 8px 15px;">➕</button>
+                    <button id="addWorkerBtn" style="width: auto; padding: 8px 15px;">إضافة</button>
                 </div>
             </div>
             <div class="form-group">
                 <label>اختيار العامل</label>
-                <select id="workerSelect">
-                    <option value="">-- اختر عاملاً --</option>
-                </select>
+                <select id="workerSelect"><option value="">-- اختر عاملاً --</option></select>
             </div>
             <div class="form-group">
                 <label>المدة المستغرقة</label>
@@ -634,15 +1065,135 @@
             <button id="assignTaskBtn"><i class="fas fa-paper-plane"></i> إرسال العامل</button>
 
             <h3 class="section-title"><i class="fas fa-users"></i> العمال النشطون</h3>
-            <div id="workersList" class="workers-list">
-                <div style="color:#888; text-align:center;">👨‍🌾 أضف عامل جديد</div>
+            <div id="workersList" class="workers-list"><div style="color:#888; text-align:center;">أضف عامل جديد</div></div>
+        </div>
+    </div>
+
+    <!-- ===== Report Modal ===== -->
+    <div class="report-overlay" id="reportOverlay">
+        <div class="report-container dir-rtl" id="reportContainer">
+            <!-- Header -->
+            <div class="report-header">
+                <div class="company-section">
+                    <div class="company-logo">
+                        <img src="https://scontent.frba1-4.fna.fbcdn.net/v/t39.30808-6/681884209_122093720763301010_4741601618872924151_n.jpg?stp=dst-jpg_tt6&amp;cstp=mx1448x1086&amp;ctp=s1448x1086&amp;_nc_cat=105&amp;ccb=1-7&amp;_nc_sid=6ee11a&amp;_nc_eui2=AeHxluZ2hQ1jX0BWnXknNpa0vNxkRJHUvNK83GREkdS80v2iGDQGg09nRpOJIyBvRZqewR8ANuZxnglu_3jyBLRP&amp;_nc_ohc=5MY4DOQZ3KEQ7kNvwFYjH64&amp;_nc_oc=AdrtCWkds6_rCmi27vAUw_i2tqrK5RREgsOVn-UhSWmJrBplMesSofJ_HaH2GVySs3c&amp;_nc_zt=23&amp;_nc_ht=scontent.frba1-4.fna&amp;_nc_gid=x4zpjI23ZjMYr9arUfGT6Q&amp;_nc_ss=7e2a8&amp;oh=00_Af-K5RI0vsrfWdFx85meEe_0vpC43KLltPAbhOa_rCeQ2A&amp;oe=6A375FA6" alt="SONE Solutions">
+                    </div>
+                    <div>
+                        <div class="company-name">SONE Solutions</div>
+                        <div class="company-sub" id="reportCompanySub">النظام المتكامل لتدبير الضيعات الفلاحية</div>
+                    </div>
+                </div>
+                <div>
+                    <button class="report-close-btn" id="closeReportBtn">إغلاق</button>
+                </div>
+            </div>
+
+            <!-- Title -->
+            <div class="report-title">
+                <h2 id="reportMainTitle">تقرير الضيعة الفلاحية</h2>
+                <div class="sub-title" id="reportDateValue">تاريخ التقرير: --</div>
+            </div>
+
+            <!-- Body -->
+            <div class="report-body" id="reportBody">
+                <!-- Map Image -->
+                <div class="report-map-image" id="reportMapImage">
+                    <img id="reportMapImg" src="" alt="خريطة الضيعة">
+                    <div class="map-caption" id="reportMapCaption">خريطة الضيعة - SONE Solutions</div>
+                </div>
+
+                <!-- Farm Info -->
+                <div class="report-info-card">
+                    <h4 id="reportInfoTitle1">معلومات الضيعة</h4>
+                    <div class="info-row">
+                        <span class="info-label" id="labelFarmName">اسم الضيعة</span>
+                        <span class="info-value" id="reportFarmName">غير محددة</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label" id="labelTotalArea">المساحة الإجمالية</span>
+                        <span class="info-value green" id="reportTotalArea">0 م²</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label" id="labelReportDate">تاريخ التقرير</span>
+                        <span class="info-value" id="reportDateValue2">-</span>
+                    </div>
+                </div>
+
+                <!-- Coordinates Info -->
+                <div class="report-info-card">
+                    <h4 id="reportInfoTitle2">الإحداثيات الجغرافية</h4>
+                    <div class="info-row">
+                        <span class="info-label" id="labelLat">خط العرض</span>
+                        <span class="info-value" id="reportLat">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label" id="labelLng">خط الطول</span>
+                        <span class="info-value" id="reportLng">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label" id="labelCenter">مركز الضيعة</span>
+                        <span class="info-value" id="reportCenter">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label" id="labelScale">مقياس الرسم</span>
+                        <span class="info-value" id="reportScale">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label" id="labelZoom">مستوى التكبير</span>
+                        <span class="info-value" id="reportZoom">-</span>
+                    </div>
+                </div>
+
+                <!-- Sectors Table -->
+                <div class="report-sectors-list">
+                    <h4 id="reportSectorsTitle">تفاصيل الأجزاء</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th id="thNumber">الرقم</th>
+                                <th id="thName">الاسم</th>
+                                <th id="thActivity">النشاط</th>
+                                <th id="thArea">المساحة</th>
+                                <th id="thColor">اللون</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reportSectorsTable">
+                            <tr><td colspan="5" style="text-align:center; color:#999;" id="noSectorsMsg">لا توجد أجزاء</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Footer -->
+                <div class="report-footer">
+                    <div class="footer-left">
+                        <div class="signature">SONE Solutions</div>
+                        <div id="footerSub">النظام المتكامل لتدبير الضيعات الفلاحية</div>
+                    </div>
+                    <div class="footer-right">
+                        <div id="footerCertified">تقرير معتمد</div>
+                        <div id="reportFooterDate">-</div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="report-actions">
+                    <div class="language-selector">
+                        <label for="reportLangSelect">اللغة / Langue:</label>
+                        <select id="reportLangSelect">
+                            <option value="ar">العربية</option>
+                            <option value="fr">Français</option>
+                        </select>
+                    </div>
+                    <button class="btn-print" id="printReportBtn">طباعة التقرير</button>
+                    <button class="btn-download" id="downloadReportBtn">تحميل التقرير</button>
+                </div>
             </div>
         </div>
     </div>
 
     <footer>
         <div class="copyright">
-            <p>© 2026 مدبر | Agri Manager - نظام متكامل لتدبير الضيعات الفلاحية | بيانات الأقمار الصناعية © Google Earth</p>
+            <p>© 2026 SONE Solutions | مدبر Agri Manager - النظام المتكامل لتدبير الضيعات الفلاحية</p>
             <p style="margin-top: 5px; font-size: 10px;">مختبر متقدم لتحليل البيانات الزراعية - معتمد من Agri Maroc Précis</p>
         </div>
     </footer>
@@ -701,23 +1252,7 @@
             }
         };
         
-        // علامة الشركة
-        let companyMarker = null;
-        function updateCompanyOnMap() {
-            let companyName = document.getElementById('companyNameInput').value;
-            if (companyMarker) map.removeLayer(companyMarker);
-            let center = map.getCenter();
-            let icon = L.divIcon({
-                html: `<div style="background:#4caf50; color:#0A1408; padding:5px 14px; border-radius:30px; font-weight:bold; font-size:12px;"><i class="fas fa-building"></i> ${companyName}</div>`,
-                iconSize: [null, null]
-            });
-            companyMarker = L.marker(center, { icon, interactive: false }).addTo(map);
-            map.on('moveend', () => companyMarker.setLatLng(map.getCenter()));
-        }
-        document.getElementById('setCompanyBtn').onclick = updateCompanyOnMap;
-        setTimeout(updateCompanyOnMap, 500);
-        
-        // ========== دوال حساب المساحة المحسنة ==========
+        // ========== دوال حساب المساحة ==========
         function calculatePolygonArea(latLngs) {
             if (!latLngs || latLngs.length < 3) return 0;
             let area = 0;
@@ -738,6 +1273,71 @@
             return { value: Math.round(area), unit: "م²", display: `${Math.round(area)} متر مربع` };
         }
         
+        function formatAreaFR(area) {
+            if (area >= 10000) {
+                return { value: (area/10000).toFixed(2), unit: "ha", display: `${(area/10000).toFixed(2)} ha (${Math.round(area)} m²)` };
+            }
+            return { value: Math.round(area), unit: "m²", display: `${Math.round(area)} mètres carrés` };
+        }
+        
+        // ========== حساب المسافة ==========
+        function calculateDistance(lat1, lng1, lat2, lng2) {
+            const R = 6371000;
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLng = (lng2 - lng1) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLng/2) * Math.sin(dLng/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return R * c;
+        }
+        
+        function getScaleString() {
+            const bounds = map.getBounds();
+            const center = map.getCenter();
+            const north = bounds.getNorth();
+            const south = bounds.getSouth();
+            const west = bounds.getWest();
+            const east = bounds.getEast();
+            
+            const distHorizontal = calculateDistance(center.lat, west, center.lat, east);
+            const distVertical = calculateDistance(north, center.lng, south, center.lng);
+            const avgDist = (distHorizontal + distVertical) / 2;
+            const mapWidth = document.getElementById('map').clientWidth || 800;
+            const metersPerPixel = avgDist / mapWidth;
+            
+            if (metersPerPixel >= 1000) {
+                return `${(metersPerPixel / 1000).toFixed(2)} كم/بكسل`;
+            } else if (metersPerPixel >= 1) {
+                return `${metersPerPixel.toFixed(2)} م/بكسل`;
+            } else {
+                return `${(metersPerPixel * 100).toFixed(2)} سم/بكسل`;
+            }
+        }
+        
+        function getScaleStringFR() {
+            const bounds = map.getBounds();
+            const center = map.getCenter();
+            const north = bounds.getNorth();
+            const south = bounds.getSouth();
+            const west = bounds.getWest();
+            const east = bounds.getEast();
+            
+            const distHorizontal = calculateDistance(center.lat, west, center.lat, east);
+            const distVertical = calculateDistance(north, center.lng, south, center.lng);
+            const avgDist = (distHorizontal + distVertical) / 2;
+            const mapWidth = document.getElementById('map').clientWidth || 800;
+            const metersPerPixel = avgDist / mapWidth;
+            
+            if (metersPerPixel >= 1000) {
+                return `${(metersPerPixel / 1000).toFixed(2)} km/pixel`;
+            } else if (metersPerPixel >= 1) {
+                return `${metersPerPixel.toFixed(2)} m/pixel`;
+            } else {
+                return `${(metersPerPixel * 100).toFixed(2)} cm/pixel`;
+            }
+        }
+        
         // ========== المتغيرات ==========
         let farmPolygon = null;
         let farmLayerGroup = L.layerGroup().addTo(map);
@@ -750,7 +1350,186 @@
         let drawControl = null;
         let farmArea = 0;
         let selectedSectorForTask = null;
+        let companyName = "SONE Solutions";
+        let currentLanguage = 'ar';
         
+        // ========== ترجمات التقرير ==========
+        const translations = {
+            ar: {
+                companySub: 'النظام المتكامل لتدبير الضيعات الفلاحية',
+                mainTitle: 'تقرير الضيعة الفلاحية',
+                reportDate: 'تاريخ التقرير:',
+                mapCaption: 'خريطة الضيعة - SONE Solutions',
+                infoTitle1: 'معلومات الضيعة',
+                infoTitle2: 'الإحداثيات الجغرافية',
+                sectorsTitle: 'تفاصيل الأجزاء',
+                farmName: 'اسم الضيعة',
+                totalArea: 'المساحة الإجمالية',
+                reportDateLabel: 'تاريخ التقرير',
+                lat: 'خط العرض',
+                lng: 'خط الطول',
+                center: 'مركز الضيعة',
+                scale: 'مقياس الرسم',
+                zoom: 'مستوى التكبير',
+                thNumber: 'الرقم',
+                thName: 'الاسم',
+                thActivity: 'النشاط',
+                thArea: 'المساحة',
+                thColor: 'اللون',
+                noSectors: 'لا توجد أجزاء',
+                footerSub: 'النظام المتكامل لتدبير الضيعات الفلاحية',
+                footerCertified: 'تقرير معتمد',
+                print: 'طباعة التقرير',
+                download: 'تحميل التقرير',
+                language: 'اللغة:',
+                areaUnit: 'م²',
+                hectare: 'هكتار',
+                farmUndefined: 'غير محددة',
+                zoomLevel: 'المستوى'
+            },
+            fr: {
+                companySub: 'Système intégré de gestion des exploitations agricoles',
+                mainTitle: 'Rapport de l\'exploitation agricole',
+                reportDate: 'Date du rapport:',
+                mapCaption: 'Carte de l\'exploitation - SONE Solutions',
+                infoTitle1: 'Informations de l\'exploitation',
+                infoTitle2: 'Coordonnées géographiques',
+                sectorsTitle: 'Détails des parcelles',
+                farmName: 'Nom de l\'exploitation',
+                totalArea: 'Superficie totale',
+                reportDateLabel: 'Date du rapport',
+                lat: 'Latitude',
+                lng: 'Longitude',
+                center: 'Centre de l\'exploitation',
+                scale: 'Échelle',
+                zoom: 'Niveau de zoom',
+                thNumber: 'N°',
+                thName: 'Nom',
+                thActivity: 'Activité',
+                thArea: 'Superficie',
+                thColor: 'Couleur',
+                noSectors: 'Aucune parcelle',
+                footerSub: 'Système intégré de gestion des exploitations agricoles',
+                footerCertified: 'Rapport certifié',
+                print: 'Imprimer le rapport',
+                download: 'Télécharger le rapport',
+                language: 'Langue:',
+                areaUnit: 'm²',
+                hectare: 'ha',
+                farmUndefined: 'Non définie',
+                zoomLevel: 'Niveau'
+            }
+        };
+        
+        function updateReportLanguage(lang) {
+            currentLanguage = lang;
+            const t = translations[lang];
+            const container = document.getElementById('reportContainer');
+            
+            // Update direction
+            if (lang === 'ar') {
+                container.className = 'report-container dir-rtl';
+            } else {
+                container.className = 'report-container dir-ltr';
+            }
+            
+            // Update all text elements
+            document.getElementById('reportCompanySub').textContent = t.companySub;
+            document.getElementById('reportMainTitle').textContent = t.mainTitle;
+            document.getElementById('reportMapCaption').textContent = t.mapCaption;
+            document.getElementById('reportInfoTitle1').textContent = t.infoTitle1;
+            document.getElementById('reportInfoTitle2').textContent = t.infoTitle2;
+            document.getElementById('reportSectorsTitle').textContent = t.sectorsTitle;
+            document.getElementById('labelFarmName').textContent = t.farmName;
+            document.getElementById('labelTotalArea').textContent = t.totalArea;
+            document.getElementById('labelReportDate').textContent = t.reportDateLabel;
+            document.getElementById('labelLat').textContent = t.lat;
+            document.getElementById('labelLng').textContent = t.lng;
+            document.getElementById('labelCenter').textContent = t.center;
+            document.getElementById('labelScale').textContent = t.scale;
+            document.getElementById('labelZoom').textContent = t.zoom;
+            document.getElementById('thNumber').textContent = t.thNumber;
+            document.getElementById('thName').textContent = t.thName;
+            document.getElementById('thActivity').textContent = t.thActivity;
+            document.getElementById('thArea').textContent = t.thArea;
+            document.getElementById('thColor').textContent = t.thColor;
+            document.getElementById('footerSub').textContent = t.footerSub;
+            document.getElementById('footerCertified').textContent = t.footerCertified;
+            document.getElementById('printReportBtn').textContent = t.print;
+            document.getElementById('downloadReportBtn').textContent = t.download;
+            document.querySelector('.language-selector label').textContent = t.language;
+            
+            // Update date label
+            const dateLabel = document.getElementById('reportDateValue');
+            const dateStr = dateLabel.textContent.replace(/^[^:]*:/, '');
+            dateLabel.textContent = `${t.reportDate} ${dateStr}`;
+            
+            // Update farm name if exists
+            const farmName = document.getElementById('reportFarmName').textContent;
+            if (farmName === 'غير محددة' || farmName === 'Non définie') {
+                document.getElementById('reportFarmName').textContent = t.farmUndefined;
+            }
+            
+            // Update area unit
+            const areaValue = document.getElementById('reportTotalArea');
+            if (areaValue.textContent.includes('هكتار') || areaValue.textContent.includes('ha')) {
+                // Recalculate with proper format
+                updateReportData(lang);
+            }
+        }
+        
+        function updateReportData(lang) {
+            const t = translations[lang];
+            const center = map.getCenter();
+            const lat = center.lat.toFixed(6);
+            const lng = center.lng.toFixed(6);
+            const zoom = map.getZoom();
+            
+            // Update farm info
+            document.getElementById('reportFarmName').textContent = companyName;
+            
+            if (lang === 'ar') {
+                document.getElementById('reportTotalArea').textContent = farmArea > 0 ? formatArea(farmArea).display : `0 ${t.areaUnit}`;
+                document.getElementById('reportZoom').textContent = `${t.zoomLevel} ${zoom}`;
+                document.getElementById('reportScale').textContent = getScaleString();
+            } else {
+                document.getElementById('reportTotalArea').textContent = farmArea > 0 ? formatAreaFR(farmArea).display : `0 ${t.areaUnit}`;
+                document.getElementById('reportZoom').textContent = `${t.zoomLevel} ${zoom}`;
+                document.getElementById('reportScale').textContent = getScaleStringFR();
+            }
+            
+            document.getElementById('reportLat').textContent = lat;
+            document.getElementById('reportLng').textContent = lng;
+            document.getElementById('reportCenter').textContent = `${lat}, ${lng}`;
+            
+            // Update sectors table
+            const tableBody = document.getElementById('reportSectorsTable');
+            if (sectors.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#999;">${t.noSectors}</td></tr>`;
+            } else {
+                let html = '';
+                sectors.forEach(s => {
+                    let areaDisplay;
+                    if (lang === 'ar') {
+                        areaDisplay = formatArea(s.area).display;
+                    } else {
+                        areaDisplay = formatAreaFR(s.area).display;
+                    }
+                    html += `
+                        <tr>
+                            <td>${s.number}</td>
+                            <td>${s.name}</td>
+                            <td>${s.activity}</td>
+                            <td>${areaDisplay}</td>
+                            <td><span class="color-dot" style="background:${s.color}"></span></td>
+                        </tr>
+                    `;
+                });
+                tableBody.innerHTML = html;
+            }
+        }
+        
+        // ========== دوال العمال ==========
         function updateWorkersOnMap() {
             workersLayerGroup.clearLayers();
             workers.forEach(worker => {
@@ -759,7 +1538,7 @@
                     if (sector && sector.layer) {
                         let center = sector.layer.getBounds().getCenter();
                         let icon = L.divIcon({
-                            html: `<div style="background:#ff5722; width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid #4caf50;"><i class="fas fa-hard-hat" style="font-size:11px; color:white;"></i></div><div style="background:#1C2A16; color:#4caf50; padding:1px 5px; border-radius:10px; font-size:8px;">${worker.name}</div>`,
+                            html: `<div style="background:#dc3545; width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid #4caf50;"><i class="fas fa-hard-hat" style="font-size:11px; color:white;"></i></div><div style="background:#1C2A16; color:#4caf50; padding:1px 5px; border-radius:10px; font-size:8px;">${worker.name}</div>`,
                             iconSize: [24, 32],
                             popupAnchor: [0, -12]
                         });
@@ -767,7 +1546,7 @@
                             <div style="text-align:center;">
                                 <b>${worker.name}</b><br>
                                 ${worker.currentTask}<br>
-                                ⏱️ ${Math.floor(worker.timeRemaining/60)} دقيقة
+                                ${Math.floor(worker.timeRemaining/60)} دقيقة
                             </div>
                         `);
                     }
@@ -778,21 +1557,21 @@
         function renderWorkersList() {
             let container = document.getElementById('workersList');
             if (workers.length === 0) {
-                container.innerHTML = '<div style="color:#888; text-align:center;">👨‍🌾 أضف عامل جديد</div>';
+                container.innerHTML = '<div style="color:#888; text-align:center;">أضف عامل جديد</div>';
                 return;
             }
             let html = '';
             workers.forEach(w => {
                 if (w.currentTask) {
                     let mins = Math.floor(w.timeRemaining / 60);
-                    html += `<div class="worker-card" style="border-left: none; border-right: 3px solid #ff5722;">
-                                <b><i class="fas fa-user"></i> ${w.name}</b> 🔴 مشغول<br>
-                                🎯 ${w.currentTask}<br>
-                                ⏱️ <span class="timer">${mins} دقيقة</span>
+                    html += `<div class="worker-card" style="border-left: none; border-right: 3px solid #dc3545;">
+                                <b><i class="fas fa-user"></i> ${w.name}</b> مشغول<br>
+                                ${w.currentTask}<br>
+                                <span class="timer">${mins} دقيقة</span>
                             </div>`;
                 } else {
                     html += `<div class="worker-card" style="border-left: none; border-right: 3px solid #4caf50;">
-                                <b><i class="fas fa-user-check"></i> ${w.name}</b> 🟢 متفرغ
+                                <b><i class="fas fa-user-check"></i> ${w.name}</b> متفرغ
                             </div>`;
                 }
             });
@@ -809,7 +1588,7 @@
             worker.sectorId = null;
             worker.sectorNumber = null;
             renderWorkersList();
-            alert(`✅ أنهى العامل ${worker.name} مهمته بنجاح!`);
+            alert(`أنهى العامل ${worker.name} مهمته بنجاح`);
         }
         
         function startWorkerTask(worker, sector, durationSeconds, description) {
@@ -848,14 +1627,14 @@
         }
         
         function assignWorkerToSector() {
-            if (sectors.length === 0) { alert("⚠️ لا توجد أجزاء. ارسم أجزاء أولاً."); return; }
+            if (sectors.length === 0) { alert("لا توجد أجزاء. ارسم أجزاء أولاً."); return; }
             let workerId = parseInt(document.getElementById('workerSelect').value);
             if (!workerId) { alert("اختر عاملاً"); return; }
             let worker = workers.find(w => w.id === workerId);
             if (!worker) { alert("العامل غير موجود"); return; }
             if (worker.currentTask) { alert(`${worker.name} مشغول حالياً`); return; }
             
-            let sectorNum = prompt("🔢 أدخل رقم الجزء:\n" + sectors.map(s => s.number).join(", "), "1");
+            let sectorNum = prompt("أدخل رقم الجزء:\n" + sectors.map(s => s.number).join(", "), "1");
             if (!sectorNum) return;
             let sector = sectors.find(s => s.number === parseInt(sectorNum));
             if (!sector) { alert("الجزء غير موجود"); return; }
@@ -869,13 +1648,13 @@
                 startWorkerTask(worker, sector, seconds, document.getElementById('taskDescription').value);
                 map.fitBounds(sector.layer.getBounds());
                 let origColor = sector.layer.options.color;
-                sector.layer.setStyle({ color: '#ff0000', weight: 5 });
+                sector.layer.setStyle({ color: '#dc3545', weight: 5 });
                 setTimeout(() => sector.layer.setStyle({ color: origColor, weight: 3 }), 1000);
                 document.getElementById('taskDescription').value = '';
             }
         }
         
-        // ========== دوال الرسم المحسنة ==========
+        // ========== دوال الرسم ==========
         function initDrawControl(mode, color) {
             if (drawControl) {
                 map.removeControl(drawControl);
@@ -919,20 +1698,20 @@
                     farmArea = area;
                     farmLayerGroup.addLayer(farmPolygon);
                     
-                    document.getElementById('farmStatus').innerHTML = '✓ محددة';
+                    document.getElementById('farmStatus').innerHTML = 'محددة';
                     document.getElementById('drawSectorBtn').disabled = false;
                     document.getElementById('addSectorBtn').disabled = false;
                     updateTotalAreaDisplay();
-                    alert(`✅ تم رسم حدود الضيعة بنجاح\n📐 المساحة: ${formatArea(area).display}`);
+                    alert(`تم رسم حدود الضيعة بنجاح\nالمساحة: ${formatArea(area).display}`);
                 } 
                 else if (currentDrawingMode === 'sector') {
                     if (!farmPolygon) {
-                        alert("⚠️ يرجى رسم حدود الضيعة أولاً");
+                        alert("يرجى رسم حدود الضيعة أولاً");
                         return;
                     }
                     let name = document.getElementById('newSectorName').value.trim();
                     if (!name) {
-                        alert("⚠️ أدخل اسم الجزء");
+                        alert("أدخل اسم الجزء");
                         return;
                     }
                     let number = sectors.length + 1;
@@ -958,7 +1737,7 @@
                     document.getElementById('sectorCount').innerText = sectors.length;
                     document.getElementById('newSectorName').value = '';
                     
-                    alert(`✅ تم إضافة الجزء رقم ${number}: ${name}\n📐 المساحة: ${formatArea(area).display}`);
+                    alert(`تم إضافة الجزء رقم ${number}: ${name}\nالمساحة: ${formatArea(area).display}`);
                 }
                 
                 if (drawControl) {
@@ -972,21 +1751,21 @@
         function renderSectorsList() {
             let container = document.getElementById('sectorsList');
             if (sectors.length === 0) {
-                container.innerHTML = '<div style="text-align:center; color:#888;">🎨 ارسم أجزاء ملونة</div>';
+                container.innerHTML = '<div style="text-align:center; color:#888;">ارسم أجزاء ملونة</div>';
                 return;
             }
             let html = '';
             sectors.forEach(sec => {
                 let workersCount = workers.filter(w => w.sectorId === sec.id && w.currentTask).length;
-                let badge = workersCount > 0 ? `<span class="badge">👥 ${workersCount}</span>` : '';
+                let badge = workersCount > 0 ? `<span class="badge">${workersCount}</span>` : '';
                 html += `
                     <div class="sector-item" style="border-right-color: ${sec.color}" onclick="selectSectorByNumber(${sec.number})">
                         <div class="sector-name">
                             <span><span class="sector-number">${sec.number}</span> ${sec.name} ${badge}</span>
                             <span class="delete-sector" onclick="event.stopPropagation(); deleteSector(${sec.id})"><i class="fas fa-trash"></i></span>
                         </div>
-                        <div style="font-size:11px;">📌 ${sec.activity}</div>
-                        <div style="font-size:10px;">📐 ${formatArea(sec.area).display}</div>
+                        <div style="font-size:11px;">${sec.activity}</div>
+                        <div style="font-size:10px;">${formatArea(sec.area).display}</div>
                     </div>
                 `;
             });
@@ -994,7 +1773,7 @@
         }
         
         window.deleteSector = function(id) {
-            if (confirm("⚠️ هل أنت متأكد من حذف هذا الجزء؟")) {
+            if (confirm("هل أنت متأكد من حذف هذا الجزء؟")) {
                 let index = sectors.findIndex(s => s.id === id);
                 if (index !== -1) {
                     farmLayerGroup.removeLayer(sectors[index].layer);
@@ -1011,7 +1790,7 @@
                         }
                     });
                     renderWorkersList();
-                    alert("✅ تم حذف الجزء بنجاح");
+                    alert("تم حذف الجزء بنجاح");
                 }
             }
         };
@@ -1036,7 +1815,7 @@
                 document.getElementById('selectedSectorDisplay').innerHTML = `رقم ${sector.number} - ${sector.name}`;
                 map.fitBounds(sector.layer.getBounds());
                 let origColor = sector.layer.options.color;
-                sector.layer.setStyle({ color: '#ff0000', weight: 5 });
+                sector.layer.setStyle({ color: '#dc3545', weight: 5 });
                 setTimeout(() => sector.layer.setStyle({ color: origColor, weight: 3 }), 800);
             }
         };
@@ -1052,9 +1831,86 @@
             }
         }
         
+        // ========== نظام التقارير ==========
+        function generateReport() {
+            const now = new Date();
+            const dateStrAr = now.toLocaleDateString('ar-MA', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            const dateStrFr = now.toLocaleDateString('fr-FR', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            const lang = document.getElementById('reportLangSelect').value;
+            const t = translations[lang];
+            const dateStr = lang === 'ar' ? dateStrAr : dateStrFr;
+            
+            // Update report header
+            document.getElementById('reportDateValue').textContent = `${t.reportDate} ${dateStr}`;
+            document.getElementById('reportDateValue2').textContent = dateStr;
+            document.getElementById('reportFooterDate').textContent = dateStr;
+            
+            // Update data based on language
+            updateReportData(lang);
+            
+            // Capture map as image
+            const mapElement = document.getElementById('map');
+            html2canvas(mapElement, {
+                useCORS: true,
+                backgroundColor: '#0A1408',
+                scale: 1.5
+            }).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                document.getElementById('reportMapImg').src = imgData;
+            });
+            
+            // Show report overlay
+            document.getElementById('reportOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeReport() {
+            document.getElementById('reportOverlay').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+        
+        function printReport() {
+            window.print();
+        }
+        
+        function downloadReport() {
+            const reportElement = document.getElementById('reportContainer');
+            
+            html2canvas(reportElement, {
+                useCORS: true,
+                backgroundColor: '#FFFFFF',
+                scale: 2,
+                width: reportElement.scrollWidth,
+                height: reportElement.scrollHeight
+            }).then(canvas => {
+                const link = document.createElement('a');
+                const lang = document.getElementById('reportLangSelect').value;
+                const suffix = lang === 'ar' ? 'تقرير' : 'Rapport';
+                link.download = `${suffix}_${companyName}_${new Date().toISOString().slice(0,10)}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            }).catch(err => {
+                alert('حدث خطأ أثناء تحميل التقرير: ' + err.message);
+            });
+        }
+        
         // ========== ربط الأحداث ==========
         document.getElementById('drawFarmBtn').onclick = () => {
-            if (farmPolygon && !confirm("⚠️ رسم حدود جديدة سيمسح الأجزاء الحالية. هل تريد المتابعة؟")) return;
+            if (farmPolygon && !confirm("رسم حدود جديدة سيمسح الأجزاء الحالية. هل تريد المتابعة؟")) return;
             
             if (farmPolygon) {
                 farmLayerGroup.clearLayers();
@@ -1075,11 +1931,11 @@
         
         document.getElementById('drawSectorBtn').onclick = () => {
             if (!farmPolygon) { 
-                alert("⚠️ يرجى رسم حدود الضيعة أولاً"); 
+                alert("يرجى رسم حدود الضيعة أولاً"); 
                 return; 
             }
             if (!document.getElementById('newSectorName').value.trim()) { 
-                alert("⚠️ أدخل اسم الجزء"); 
+                alert("أدخل اسم الجزء"); 
                 return; 
             }
             currentDrawingMode = 'sector';
@@ -1087,7 +1943,7 @@
         };
         
         document.getElementById('clearFarmBtn').onclick = () => {
-            if (confirm("⚠️ مسح كل شيء (الحدود، الأجزاء، المهام، العمال)؟")) {
+            if (confirm("مسح كل شيء (الحدود، الأجزاء، المهام، العمال)؟")) {
                 farmLayerGroup.clearLayers();
                 workersLayerGroup.clearLayers();
                 workers.forEach(w => { if(w.intervalId) clearInterval(w.intervalId); w.currentTask = null; });
@@ -1106,7 +1962,7 @@
                 document.getElementById('drawSectorBtn').disabled = true;
                 document.getElementById('addSectorBtn').disabled = true;
                 document.getElementById('selectedSectorDisplay').innerHTML = 'لا شيء';
-                alert("✅ تم مسح جميع البيانات");
+                alert("تم مسح جميع البيانات");
             }
         };
         
@@ -1116,7 +1972,7 @@
             } else if (sectors.length > 0) {
                 map.fitBounds(sectors[0].layer.getBounds());
             } else {
-                alert("⚠️ لم يتم رسم حدود الضيعة أو أجزاء بعد");
+                alert("لم يتم رسم حدود الضيعة أو أجزاء بعد");
             }
         };
         
@@ -1127,13 +1983,41 @@
         };
         document.getElementById('addSectorBtn').onclick = () => {
             if (farmPolygon) document.getElementById('drawSectorBtn').click();
-            else alert("⚠️ حدد حدود الضيعة أولاً");
+            else alert("حدد حدود الضيعة أولاً");
         };
+        
+        document.getElementById('setCompanyBtn').onclick = () => {
+            companyName = document.getElementById('companyNameInput').value || "SONE Solutions";
+            document.querySelector('.logo-text p').textContent = `${companyName} - النظام المتكامل لتدبير الضيعات الفلاحية`;
+            document.querySelector('.company-name').textContent = companyName;
+        };
+        
+        // Report buttons
+        document.getElementById('generateReportBtn').onclick = generateReport;
+        document.getElementById('closeReportBtn').onclick = closeReport;
+        document.getElementById('printReportBtn').onclick = printReport;
+        document.getElementById('downloadReportBtn').onclick = downloadReport;
+        document.getElementById('reportLangSelect').onchange = (e) => {
+            updateReportLanguage(e.target.value);
+            // Update data with new language
+            updateReportData(e.target.value);
+        };
+        
+        // Close report on overlay click
+        document.getElementById('reportOverlay').onclick = (e) => {
+            if (e.target === e.currentTarget) closeReport();
+        };
+        
+        // ESC key to close report
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeReport();
+        });
         
         // ========== عمال افتراضيين ==========
         addWorker("أحمد");
         addWorker("فاطمة");
         addWorker("خالد");
     </script>
+
 </body>
 </html>

@@ -1,13 +1,12 @@
-<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تحليل NDVI | Agri Maroc Précis - مختبر الأبحاث الزراعية</title>
+    <title>تحليل NDVI | SONE Solutions - المختبر الرقمي للزراعة الذكية</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     
     <style>
@@ -45,15 +44,31 @@
         .logo-icon {
             width: 45px;
             height: 45px;
-            background: linear-gradient(135deg, #A8842A, #D4A843);
             border-radius: 50%;
+            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 22px;
+            border: 2px solid #A8842A;
+            flex-shrink: 0;
         }
-        .logo-text h1 { font-size: 20px; font-weight: 800; background: linear-gradient(135deg, #FBFCFB, #A8842A); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .logo-text p { font-size: 9px; color: #C1DCB5; }
+        .logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .logo-text h1 { 
+            font-size: 20px; 
+            font-weight: 800; 
+            background: linear-gradient(135deg, #FBFCFB, #A8842A); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+        }
+        .logo-text p { 
+            font-size: 9px; 
+            color: #C1DCB5; 
+            -webkit-text-fill-color: #C1DCB5;
+        }
         .nav-links { display: flex; gap: 20px; }
         .nav-links a { color: #FBFCFB; text-decoration: none; font-weight: 500; font-size: 14px; transition: color 0.3s; }
         .nav-links a:hover { color: #A8842A; }
@@ -104,7 +119,21 @@
         #map {
             height: 400px;
             width: 100%;
-            background: #0A1408;
+            background: #1a2a1a;
+        }
+        #map .leaflet-control-zoom {
+            border: 2px solid rgba(168,132,66,0.3);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        #map .leaflet-control-zoom a {
+            background: #1C2A16;
+            color: #FBFCFB;
+            border-color: rgba(168,132,66,0.2);
+        }
+        #map .leaflet-control-zoom a:hover {
+            background: #2C3E26;
+            color: #A8842A;
         }
         .map-controls {
             padding: 12px;
@@ -113,6 +142,12 @@
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
+            align-items: center;
+        }
+        .map-controls .btn-primary {
+            width: auto;
+            padding: 6px 14px;
+            font-size: 12px;
         }
 
         .controls-card {
@@ -140,7 +175,7 @@
             font-weight: 600;
             font-size: 13px;
         }
-        .form-group select, .form-group input {
+        .form-group input {
             width: 100%;
             padding: 10px;
             background: rgba(255,255,255,0.05);
@@ -312,6 +347,21 @@
             font-size: 11px;
             margin-top: 10px;
         }
+
+        .logo-icon img {
+            border-radius: 50%;
+        }
+
+        .index-badge {
+            display: inline-block;
+            background: rgba(168,132,66,0.2);
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 13px;
+            color: #A8842A;
+            margin-top: 10px;
+            border: 1px solid rgba(168,132,66,0.3);
+        }
     </style>
 </head>
 <body>
@@ -319,10 +369,12 @@
     <header class="header">
         <div class="header-content">
             <a href="index.html" class="logo">
-                <div class="logo-icon"><i class="fas fa-leaf"></i></div>
+                <div class="logo-icon">
+                    <img src="https://scontent.frba1-4.fna.fbcdn.net/v/t39.30808-6/681884209_122093720763301010_4741601618872924151_n.jpg?stp=dst-jpg_tt6&amp;cstp=mx1448x1086&amp;ctp=s1448x1086&amp;_nc_cat=105&amp;ccb=1-7&amp;_nc_sid=6ee11a&amp;_nc_eui2=AeHxluZ2hQ1jX0BWnXknNpa0vNxkRJHUvNK83GREkdS80v2iGDQGg09nRpOJIyBvRZqewR8ANuZxnglu_3jyBLRP&amp;_nc_ohc=5MY4DOQZ3KEQ7kNvwFYjH64&amp;_nc_oc=AdrtCWkds6_rCmi27vAUw_i2tqrK5RREgsOVn-UhSWmJrBplMesSofJ_HaH2GVySs3c&amp;_nc_zt=23&amp;_nc_ht=scontent.frba1-4.fna&amp;_nc_gid=x4zpjI23ZjMYr9arUfGT6Q&amp;_nc_ss=7e2a8&amp;oh=00_Af-K5RI0vsrfWdFx85meEe_0vpC43KLltPAbhOa_rCeQ2A&amp;oe=6A375FA6" alt="SONE Solutions">
+                </div>
                 <div class="logo-text">
-                    <h1>Agri Maroc Précis</h1>
-                    <p>مختبر الأبحاث الزراعية</p>
+                    <h1>SONE Solutions</h1>
+                    <p>المختبر الرقمي للزراعة الذكية</p>
                 </div>
             </a>
             <div class="mobile-menu" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
@@ -338,9 +390,12 @@
     <section class="hero">
         <a href="index.html" class="back-home"><i class="fas fa-arrow-right"></i> العودة</a>
         <h1><i class="fas fa-flask"></i> التحليل الرقمي لصحة المحاصيل</h1>
-        <p>مختبر الأبحاث الزراعية - تقارير معتمدة بختم رقمي</p>
+        <p>المختبر الرقمي للزراعة الذكية - تقارير معتمدة بختم رقمي</p>
         <div class="satellite-badge">
             <i class="fas fa-microchip"></i> القمر الصناعي: Sentinel-2 | Copernicus Program
+        </div>
+        <div class="index-badge">
+            <i class="fas fa-chart-line"></i> المؤشر المستخدم: NDVI - الغطاء النباتي
         </div>
     </section>
 
@@ -348,7 +403,7 @@
         <div class="map-card">
             <div class="map-header">
                 <h3><i class="fas fa-map-marker-alt"></i> اختر موقع التحليل</h3>
-                <div class="coord-info" id="coordInfo">لم يتم الاختيار</div>
+                <div class="coord-info" id="coordInfo">33.5731°, -7.5898°</div>
             </div>
             <div id="map"></div>
             <div class="map-controls">
@@ -365,19 +420,22 @@
             </div>
 
             <div class="form-group">
-                <label><i class="fas fa-chart-line"></i> نوع المؤشر</label>
-                <select id="layerType">
-                    <option value="NDVI">🌿 NDVI - الغطاء النباتي</option>
-                    <option value="NDWI">💧 NDWI - مؤشر المياه</option>
-                    <option value="EVI">🌱 EVI - المؤشر المحسن</option>
-                </select>
-            </div>
-
-            <div class="form-group">
                 <label><i class="fas fa-calendar"></i> الفترة الزمنية</label>
                 <div class="date-range">
                     <input type="date" id="startDate" value="2024-01-01">
                     <input type="date" id="endDate" value="2024-12-31">
+                </div>
+            </div>
+
+            <div class="form-group" style="background:rgba(168,132,66,0.05); border-radius:8px; padding:12px; border:1px solid rgba(168,132,66,0.2);">
+                <label style="text-align:center; color:#A8842A;">
+                    <i class="fas fa-check-circle"></i> المؤشر المحدد
+                </label>
+                <div style="text-align:center; font-size:16px; font-weight:700; color:#FBFCFB;">
+                    🌿 NDVI - الغطاء النباتي
+                </div>
+                <div style="text-align:center; font-size:11px; color:#C1DCB5; margin-top:5px;">
+                    تم تثبيت المؤشر لضمان دقة التحليل
                 </div>
             </div>
 
@@ -389,7 +447,7 @@
 
     <section class="result-section">
         <div class="result-card">
-            <h3><i class="fas fa-file-alt"></i> نتائج التحليل - مختبر Agri Maroc Précis</h3>
+            <h3><i class="fas fa-file-alt"></i> نتائج التحليل - SONE Solutions</h3>
             <div class="result-image" id="resultImage">
                 <div class="placeholder-result" id="placeholderResult">
                     <i class="fas fa-map-marker-alt"></i>
@@ -432,7 +490,7 @@
 
     <footer style="background:#0A1408; padding:30px 5% 15px; text-align:center; border-top:1px solid rgba(168,132,66,0.2); margin-top:30px;">
         <div class="copyright">
-            <p>© 2026 Agri Maroc Précis - مختبر الأبحاث الزراعية | تحليل رقمي متقدم باستخدام بيانات Copernicus Sentinel-2</p>
+            <p>© 2026 SONE Solutions - المختبر الرقمي للزراعة الذكية | تحليل NDVI باستخدام بيانات Copernicus Sentinel-2</p>
         </div>
     </footer>
 
@@ -448,11 +506,13 @@
 
         function initMap() {
             map = L.map('map').setView([33.5731, -7.5898], 10);
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-                attribution: '&copy; OpenStreetMap',
-                subdomains: 'abcd',
-                maxZoom: 18
+            
+            // طبقة الأقمار الصناعية فقط (Esri Satellite)
+            L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                attribution: '&copy; <a href="https://www.esri.com">Esri</a>',
+                maxZoom: 19
             }).addTo(map);
+            
             map.on('click', function(e) { setLocation(e.latlng.lat, e.latlng.lng); });
             setLocation(33.5731, -7.5898);
         }
@@ -476,7 +536,8 @@
         function goToRabat() { setLocation(34.0209, -6.8416); }
         
         function buildWmsUrl() {
-            const layer = document.getElementById('layerType').value;
+            // تثبيت المؤشر على NDVI بشكل دائم
+            const layer = "NDVI";
             const startDate = document.getElementById('startDate').value;
             const endDate = document.getElementById('endDate').value;
             const delta = 0.045;
@@ -484,7 +545,7 @@
             return `${BASE_URL}/${INSTANCE_ID}?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=${layer}&BBOX=${bbox}&CRS=EPSG:4326&WIDTH=800&HEIGHT=600&FORMAT=image/png&TIME=${startDate}/${endDate}`;
         }
         
-        function generateDigitalAnalysis(lat, lng, layerType) {
+        function generateDigitalAnalysis(lat, lng) {
             let baseValue = 0.5;
             if (Math.abs(lat - 31.6295) < 0.5 && Math.abs(lng + 7.9811) < 0.5) baseValue = 0.72 + (Math.random() * 0.1);
             else if (Math.abs(lat - 33.5731) < 0.5 && Math.abs(lng + 7.5898) < 0.5) baseValue = 0.38 + (Math.random() * 0.12);
@@ -493,8 +554,6 @@
             else if (lat < 30) baseValue = 0.15 + (Math.random() * 0.2);
             else baseValue = 0.55 + (Math.random() * 0.2);
             
-            if (layerType === 'NDWI') baseValue = baseValue * 0.7;
-            if (layerType === 'EVI') baseValue = baseValue * 1.1;
             baseValue = Math.min(0.95, Math.max(0.05, baseValue));
             const std = 0.08 + (Math.random() * 0.07);
             const min = Math.max(0.02, baseValue - std * 1.5);
@@ -518,21 +577,20 @@
             const downloadButtons = document.getElementById('downloadButtons');
             
             loading.style.display = 'block';
-            const layerType = document.getElementById('layerType').value;
             const url = buildWmsUrl();
             currentImageUrl = url;
             
             const now = new Date();
-            const analysis = generateDigitalAnalysis(selectedLat, selectedLng, layerType);
+            const analysis = generateDigitalAnalysis(selectedLat, selectedLng);
             currentAnalysisData = {
-                reportId: `AMP-LAB-${now.getFullYear()}${(now.getMonth()+1).toString().padStart(2,'0')}${now.getDate().toString().padStart(2,'0')}-${now.getHours()}${now.getMinutes()}${now.getSeconds()}`,
-                platform: "Agri Maroc Précis",
-                labName: "مختبر الأبحاث الزراعية المتقدم",
+                reportId: `SNE-LAB-${now.getFullYear()}${(now.getMonth()+1).toString().padStart(2,'0')}${now.getDate().toString().padStart(2,'0')}-${now.getHours()}${now.getMinutes()}${now.getSeconds()}`,
+                platform: "SONE Solutions",
+                labName: "المختبر الرقمي للزراعة الذكية",
                 satellite: "Sentinel-2 (Copernicus Program)",
                 analyst: "Dr. AI Agriculture Intelligence System",
-                supervisor: "اللجنة العلمية للبحوث الزراعية",
+                supervisor: "اللجنة العلمية للبحوث الزراعية - SONE",
                 location: { lat: selectedLat, lng: selectedLng },
-                layer: layerType,
+                layer: "NDVI - الغطاء النباتي",
                 date: now.toLocaleDateString('ar-EG'),
                 time: now.toLocaleTimeString('ar-EG'),
                 timestamp: now.toISOString(),
@@ -571,7 +629,7 @@
 <html dir="rtl" lang="ar">
 <head>
     <meta charset="UTF-8">
-    <title>تقرير تحليل المحاصيل - ${d.reportId}</title>
+    <title>تقرير تحليل NDVI - ${d.reportId}</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap');
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -589,7 +647,6 @@
             box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
             overflow: hidden;
         }
-        /* شريط سري للغاية */
         .confidential-bar {
             background: #1a1a2e;
             color: #f0a500;
@@ -627,9 +684,6 @@
             font-weight: bold;
         }
         .content { padding: 35px; }
-        .watermark {
-            position: relative;
-        }
         .info-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -757,7 +811,7 @@
         <div class="header">
             <h1>🔬 ${d.platform}</h1>
             <p class="subtitle">${d.labName}</p>
-            <div class="badge">تقرير تحليل معتمد | رقم المرجع: ${d.reportId}</div>
+            <div class="badge">تقرير تحليل NDVI معتمد | رقم المرجع: ${d.reportId}</div>
             <div class="lab-stamp">🇪🇺 معتمد من Copernicus Program</div>
         </div>
         <div class="content">
@@ -771,13 +825,13 @@
             </div>
             
             <div class="image-container">
-                <h4 style="margin-bottom: 12px; color:#1a472a;">🛰️ صورة التحليل الفضائية</h4>
+                <h4 style="margin-bottom: 12px; color:#1a472a;">🛰️ صورة تحليل NDVI الفضائية</h4>
                 <img src="${d.imageUrl}" alt="تحليل NDVI - صورة القمر الصناعي">
-                <p style="font-size: 11px; color: #6c757d; margin-top: 10px;">صورة التحليل الرقمي للمنطقة المحددة - ${d.layer} | معالجة: مختبر Agri Maroc Précis</p>
+                <p style="font-size: 11px; color: #6c757d; margin-top: 10px;">صورة تحليل NDVI للمنطقة المحددة | معالجة: SONE Solutions</p>
             </div>
             
             <div>
-                <span class="section-title">📊 النتائج الرقمية للتحليل</span>
+                <span class="section-title">📊 النتائج الرقمية لتحليل NDVI</span>
             </div>
             <div class="stats-grid">
                 <div class="stat-card"><div class="value">${d.stats.avg}</div><div class="label">متوسط NDVI</div></div>
@@ -815,7 +869,7 @@
             <div style="background: #f8f9fc; padding: 18px; border-radius: 12px; margin-top: 25px; font-size: 12px; text-align: center; border: 1px solid #e9ecef;">
                 <p><strong>📝 منهجية التحليل:</strong> تم استخدام بيانات الأقمار الصناعية Sentinel-2 التابعة لبرنامج Copernicus، وتحليل NDVI وفق المعايير العلمية المعتمدة.</p>
                 <p style="margin-top: 8px;"><strong>🛰️ يوصى بإعادة التحليل بعد 15 يوماً لمتابعة التطور</strong></p>
-                <p style="margin-top: 8px;"><strong>🔬 ${d.platform}</strong> - مختبر الأبحاث الزراعية المتقدم</p>
+                <p style="margin-top: 8px;"><strong>🔬 ${d.platform}</strong> - المختبر الرقمي للزراعة الذكية</p>
             </div>
         </div>
         <div class="footer">
@@ -836,7 +890,7 @@
 ║                                                                              ║
 ║                    ${d.platform} - ${d.labName}                         ║
 ║                         التقرير الرقمي المعتمد                              ║
-║                      تحليل صحة المحاصيل بالأقمار الصناعية                   ║
+║                      تحليل NDVI - صحة المحاصيل                              ║
 ║                                                                              ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║ 🔒 وثيقة سرية - للاستخدام الرسمي فقط 🔒                                     ║
@@ -848,6 +902,7 @@
 ║    تاريخ الإصدار     : ${d.date}
 ║    وقت التحليل       : ${d.time}
 ║    القمر الصناعي     : ${d.satellite}
+║    المؤشر المستخدم   : ${d.layer}
 ║    المحلل العلمي     : ${d.analyst}
 ║    المشرف            : ${d.supervisor}
 ║                                                                              ║
@@ -855,9 +910,8 @@
 ║  ─────────────────────────────────────────────────────────────────────────  ║
 ║    خط العرض          : ${d.location.lat.toFixed(6)}°
 ║    خط الطول          : ${d.location.lng.toFixed(6)}°
-║    المؤشر المستخدم   : ${d.layer}
 ║                                                                              ║
-║  📊 النتائج الرقمية                                                          ║
+║  📊 نتائج تحليل NDVI                                                         ║
 ║  ─────────────────────────────────────────────────────────────────────────  ║
 ║    متوسط NDVI        : ${d.stats.avg}
 ║    أعلى قيمة NDVI    : ${d.stats.max}
@@ -874,8 +928,6 @@
 ║    تم استخدام بيانات الأقمار الصناعية Sentinel-2 التابعة لبرنامج Copernicus  ║
 ║    وتحليل NDVI وفق المعايير العلمية المعتمدة في المختبر.                     ║
 ║                                                                              ║
-║  🛰️ يوصى بإعادة التحليل بعد 15 يوماً لمتابعة التطور                           ║
-║                                                                              ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║                                                                              ║
 ║                         التوقيع والاعتماد                                    ║
@@ -883,8 +935,6 @@
 ║    الختم الرقمي      : ${d.reportId}
 ║    تاريخ الاعتماد    : ${d.date}
 ║    الجهة المصدرة     : ${d.platform} - ${d.labName}
-║                                                                              ║
-║    هذا التقرير معتمد رقمياً ولا يحتاج إلى توقيع يدوي                         ║
 ║                                                                              ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║    بيانات الأقمار الصناعية مقدمة من برنامج Copernicus - الاتحاد الأوروبي     ║
@@ -894,7 +944,7 @@
             const blob = new Blob([report], { type: 'text/plain;charset=utf-8' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
-            link.download = `LabReport_${d.reportId}.txt`;
+            link.download = `NDVI_Report_${d.reportId}.txt`;
             link.click();
             URL.revokeObjectURL(link.href);
             showToast("تم تحميل التقرير TXT بنجاح!", "success");
@@ -906,7 +956,7 @@
             const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
-            link.download = `LabReport_${currentAnalysisData.reportId}.html`;
+            link.download = `NDVI_Report_${currentAnalysisData.reportId}.html`;
             link.click();
             URL.revokeObjectURL(link.href);
             showToast("تم تحميل التقرير HTML بنجاح!", "success");
@@ -923,5 +973,6 @@
         function toggleMenu() { document.getElementById('navLinks').classList.toggle('active'); }
         document.addEventListener('DOMContentLoaded', initMap);
     </script>
+
 </body>
 </html>

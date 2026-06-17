@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>طقس المغرب | Agri Maroc Précis - مختبر الأبحاث الزراعية</title>
+    <title>SONE Solutions | نظام الإنذار المناخي الذكي</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -43,15 +43,28 @@
         .logo-icon {
             width: 45px;
             height: 45px;
-            background: linear-gradient(135deg, #A8842A, #D4A843);
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
+            overflow: hidden;
+            flex-shrink: 0;
+            border: 2px solid #A8842A;
         }
-        .logo-text h1 { font-size: 20px; font-weight: 800; background: linear-gradient(135deg, #FBFCFB, #A8842A); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .logo-text p { font-size: 9px; color: #C1DCB5; }
+        .logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .logo-text h1 {
+            font-size: 20px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FBFCFB, #A8842A);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .logo-text p {
+            font-size: 9px;
+            color: #C1DCB5;
+        }
         .nav-links { display: flex; gap: 20px; }
         .nav-links a { color: #FBFCFB; text-decoration: none; font-weight: 500; font-size: 14px; transition: color 0.3s; }
         .nav-links a:hover { color: #A8842A; }
@@ -61,8 +74,28 @@
             padding: 110px 5% 30px;
             text-align: center;
             background: linear-gradient(135deg, #0A1408, #1C2A16);
+            position: relative;
+            overflow: hidden;
         }
-        .hero h1 { font-size: 32px; font-weight: 800; background: linear-gradient(135deg, #FFFFFF, #A8842A); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://scontent.frba1-4.fna.fbcdn.net/v/t39.30808-6/681884209_122093720763301010_4741601618872924151_n.jpg?stp=dst-jpg_tt6&cstp=mx1448x1086&ctp=s1448x1086&_nc_cat=105&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeHxluZ2hQ1jX0BWnXknNpa0vNxkRJHUvNK83GREkdS80v2iGDQGg09nRpOJIyBvRZqewR8ANuZxnglu_3jyBLRP&_nc_ohc=5MY4DOQZ3KEQ7kNvwFYjH64&_nc_oc=AdrtCWkds6_rCmi27vAUw_i2tqrK5RREgsOVn-UhSWmJrBplMesSofJ_HaH2GVySs3c&_nc_zt=23&_nc_ht=scontent.frba1-4.fna&_nc_gid=x4zpjI23ZjMYr9arUfGT6Q&_nc_ss=7e2a8&oh=00_Af-K5RI0vsrfWdFx85meEe_0vpC43KLltPAbhOa_rCeQ2A&oe=6A375FA6') center/cover no-repeat;
+            opacity: 0.12;
+            z-index: 0;
+        }
+        .hero * { position: relative; z-index: 1; }
+        .hero h1 {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FFFFFF, #A8842A);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
         .hero p { color: #C1DCB5; margin-top: 8px; font-size: 15px; }
 
         .container {
@@ -309,10 +342,12 @@
     <header class="header">
         <div class="header-content">
             <a href="#" class="logo">
-                <div class="logo-icon"><i class="fas fa-leaf"></i></div>
+                <div class="logo-icon">
+                    <img src="https://scontent.frba1-4.fna.fbcdn.net/v/t39.30808-6/681884209_122093720763301010_4741601618872924151_n.jpg?stp=dst-jpg_tt6&cstp=mx1448x1086&ctp=s1448x1086&_nc_cat=105&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeHxluZ2hQ1jX0BWnXknNpa0vNxkRJHUvNK83GREkdS80v2iGDQGg09nRpOJIyBvRZqewR8ANuZxnglu_3jyBLRP&_nc_ohc=5MY4DOQZ3KEQ7kNvwFYjH64&_nc_oc=AdrtCWkds6_rCmi27vAUw_i2tqrK5RREgsOVn-UhSWmJrBplMesSofJ_HaH2GVySs3c&_nc_zt=23&_nc_ht=scontent.frba1-4.fna&_nc_gid=x4zpjI23ZjMYr9arUfGT6Q&_nc_ss=7e2a8&oh=00_Af-K5RI0vsrfWdFx85meEe_0vpC43KLltPAbhOa_rCeQ2A&oe=6A375FA6" alt="SONE Solutions">
+                </div>
                 <div class="logo-text">
-                    <h1>Agri Maroc Précis</h1>
-                    <p>مختبر الأبحاث الزراعية</p>
+                    <h1>SONE Solutions</h1>
+                    <p>نظام الإنذار المناخي الذكي</p>
                 </div>
             </a>
             <div class="mobile-menu" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
@@ -373,15 +408,15 @@
 
     <footer style="background:#0A1408; padding:30px 5% 15px; text-align:center; border-top:1px solid rgba(168,132,66,0.2); margin-top:30px;">
         <div class="copyright">
-            <p>© 2026 Agri Maroc Précis - مختبر الأبحاث الزراعية | بيانات الطقس المقدمة من WeatherAPI.com</p>
+            <p>© 2026 SONE Solutions - نظام الإنذار المناخي الذكي | بيانات الطقس المقدمة من WeatherAPI.com</p>
         </div>
     </footer>
 
-    <div class="toast" id="toast"></div>
+    <div class="toast" id="toast" style="background: rgb(76, 175, 80); display: none;"><i class="fas fa-check-circle"></i> نظام الطقس جاهز - أكثر من 200 مدينة</div>
 
     <script>
         // ===========================================
-        // 1. قاعدة بيانات 200 مدينة مغربية كاملة
+        // 1. قاعدة بيانات 200+ مدينة مغربية كاملة
         // ===========================================
         const moroccoCities = {
             // طنجة تطوان الحسيمة (20 مدينة)
@@ -473,7 +508,6 @@
             "النخيلة": [23.4000, -15.5000], "أم العرائس": [23.8000, -15.8000], "الفضيلة": [23.5000, -15.4000]
         };
         
-        // تجاوز 200 مدينة
         console.log("عدد المدن المسجلة:", Object.keys(moroccoCities).length);
         
         const citiesByRegion = {
@@ -686,5 +720,6 @@
             showToast("نظام الطقس جاهز - أكثر من 200 مدينة", "success");
         });
     </script>
+
 </body>
 </html>

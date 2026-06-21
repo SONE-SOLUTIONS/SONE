@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>جاري تسجيل الدخول...</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-900 to-purple-900">
+    <div class="text-center text-white p-8">
+        <div class="text-6xl mb-4">🔄</div>
+        <h1 class="text-2xl font-bold mb-2">جاري تسجيل الدخول...</h1>
+        <p class="text-gray-300">الرجاء الانتظار لحظة</p>
+        <div class="mt-4 flex justify-center">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
+        </div>
+    </div>
+
+    <script>
+        const SUPABASE_URL = "https://zpjuhprlcaigmczhqlye.supabase.co";
+        const SUPABASE_ANON_KEY = "sb_publishable_PVQ61DBLGYjzaXy-XFrWpA_k_94iEvK";
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // الوجهة بعد تسجيل الدخول
+        const REDIRECT_URL = "https://sone-solutions.github.io/SONE/service.html";
+
+        async function handleCallback() {
+            try {
+                // الحصول على الجلسة من Supabase
+                const { data: { session }, error } = await supabase.auth.getSession();
+                
+                if (session) {
+                    // ✅ نجاح تسجيل الدخول
+                    console.log("✅ تم تسجيل الدخول بنجاح:", session.user.email);
+                    window.location.href = REDIRECT_URL;
+                } else {
+                    // ❌ فشل تسجيل الدخول
+                    console.error("❌ لا توجد جلسة نشطة");
+                    window.location.href = "https://sone-solutions.github.io/SONE/login.html?error=auth_failed";
+                }
+            } catch (err) {
+                console.error("❌ خطأ:", err);
+                window.location.href = "https://sone-solutions.github.io/SONE/login.html?error=" + encodeURIComponent(err.message);
+            }
+        }
+
+        // تنفيذ الفحص فوراً
+        handleCallback();
+    </script>
+</body>
+</html>

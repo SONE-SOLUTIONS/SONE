@@ -22,20 +22,16 @@
         const SUPABASE_ANON_KEY = "sb_publishable_PVQ61DBLGYjzaXy-XFrWpA_k_94iEvK";
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // الوجهة بعد تسجيل الدخول
         const REDIRECT_URL = "https://sone-solutions.github.io/SONE/service.html";
 
         async function handleCallback() {
             try {
-                // الحصول على الجلسة من Supabase
                 const { data: { session }, error } = await supabase.auth.getSession();
                 
                 if (session) {
-                    // ✅ نجاح تسجيل الدخول
                     console.log("✅ تم تسجيل الدخول بنجاح:", session.user.email);
                     window.location.href = REDIRECT_URL;
                 } else {
-                    // ❌ فشل تسجيل الدخول
                     console.error("❌ لا توجد جلسة نشطة");
                     window.location.href = "https://sone-solutions.github.io/SONE/login.html?error=auth_failed";
                 }
@@ -45,7 +41,6 @@
             }
         }
 
-        // تنفيذ الفحص فوراً
         handleCallback();
     </script>
 </body>

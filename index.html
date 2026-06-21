@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
     <title>SONE | Agriculture de précision</title>
     <script src="https://cdn.tailwindcss.com/3.4.17">
     </script>
@@ -83,7 +83,7 @@
         }
 
         /* ============================================================ */
-        /*      HERO SLIDER - توسيط + حجم كبير + تدرج                  */
+        /*      HERO SLIDER - متجاوب بالكامل                            */
         /* ============================================================ */
         .hero-slide {
             position: absolute;
@@ -112,14 +112,12 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 2rem;
+            padding: 1.5rem;
             text-align: center;
         }
         @media (min-width: 768px) {
             .hero-slide .slide-overlay {
-                padding: 3.5rem 4rem;
-                justify-content: center;
-                align-items: center;
+                padding: 3rem 4rem;
             }
         }
 
@@ -128,22 +126,27 @@
             background: rgba(76, 175, 80, 0.25);
             backdrop-filter: blur(6px);
             border: 1px solid rgba(76, 175, 80, 0.25);
-            padding: 0.3rem 1rem;
+            padding: 0.25rem 0.8rem;
             border-radius: 40px;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.08em;
             color: #8bc34a;
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.5rem;
             width: fit-content;
             align-self: center;
-            margin-left: auto;
-            margin-right: auto;
+        }
+        @media (min-width: 768px) {
+            .hero-slide .slide-tag {
+                font-size: 0.7rem;
+                padding: 0.3rem 1rem;
+                margin-bottom: 0.75rem;
+            }
         }
 
         .hero-slide .slide-title {
-            font-size: 2.6rem;
+            font-size: 1.8rem;
             font-weight: 900;
             line-height: 1.1;
             text-align: center;
@@ -154,74 +157,118 @@
             background-clip: text;
             -webkit-text-fill-color: transparent;
             display: block;
+            padding: 0 0.5rem;
+        }
+        @media (min-width: 480px) {
+            .hero-slide .slide-title {
+                font-size: 2.2rem;
+            }
         }
         @media (min-width: 640px) {
             .hero-slide .slide-title {
-                font-size: 3.8rem;
+                font-size: 2.8rem;
+            }
+        }
+        @media (min-width: 768px) {
+            .hero-slide .slide-title {
+                font-size: 3.5rem;
             }
         }
         @media (min-width: 1024px) {
             .hero-slide .slide-title {
+                font-size: 4.5rem;
+                max-width: 90%;
+            }
+        }
+        @media (min-width: 1280px) {
+            .hero-slide .slide-title {
                 font-size: 5.5rem;
-                max-width: 95%;
+                max-width: 85%;
             }
         }
 
         .hero-slide .slide-desc {
-            font-size: 1rem;
+            font-size: 0.9rem;
             color: rgba(255, 255, 255, 0.92);
-            max-width: 90%;
-            margin-top: 0.8rem;
+            max-width: 95%;
+            margin-top: 0.5rem;
             text-align: center;
             text-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
-            line-height: 1.6;
+            line-height: 1.5;
             font-weight: 400;
+            padding: 0 0.5rem;
+        }
+        @media (min-width: 480px) {
+            .hero-slide .slide-desc {
+                font-size: 1rem;
+                max-width: 90%;
+            }
         }
         @media (min-width: 640px) {
             .hero-slide .slide-desc {
+                font-size: 1.1rem;
+                max-width: 85%;
+            }
+        }
+        @media (min-width: 768px) {
+            .hero-slide .slide-desc {
                 font-size: 1.2rem;
                 max-width: 80%;
+                margin-top: 0.8rem;
             }
         }
         @media (min-width: 1024px) {
             .hero-slide .slide-desc {
                 font-size: 1.4rem;
-                max-width: 60%;
+                max-width: 65%;
             }
         }
 
         .hero-slide .slide-badge {
             display: inline-flex;
             align-items: center;
-            gap: 0.4rem;
-            background: #4CAF50;
-            padding: 0.3rem 0.9rem;
+            gap: 0.3rem;
+            background: rgba(76, 175, 80, 0.2);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            padding: 0.2rem 0.7rem;
             border-radius: 40px;
-            font-size: 0.7rem;
+            font-size: 0.6rem;
             font-weight: 700;
-            color: #fff;
-            margin-top: 0.75rem;
+            color: #8bc34a;
+            margin-top: 0.5rem;
             letter-spacing: 0.02em;
             width: fit-content;
             align-self: center;
-            margin-left: auto;
-            margin-right: auto;
+        }
+        @media (min-width: 768px) {
+            .hero-slide .slide-badge {
+                font-size: 0.7rem;
+                padding: 0.3rem 0.9rem;
+                margin-top: 0.75rem;
+            }
         }
 
         .hero-dots {
             display: flex;
-            gap: 0.6rem;
+            gap: 0.5rem;
             justify-content: center;
-            margin-top: 1.5rem;
+            margin-top: 1rem;
             position: absolute;
-            bottom: 1.5rem;
+            bottom: 1rem;
             left: 50%;
             transform: translateX(-50%);
             z-index: 20;
         }
+        @media (min-width: 768px) {
+            .hero-dots {
+                gap: 0.6rem;
+                bottom: 1.5rem;
+            }
+        }
         .hero-dots button {
-            width: 0.65rem;
-            height: 0.65rem;
+            width: 0.5rem;
+            height: 0.5rem;
             border-radius: 50%;
             border: none;
             background: rgba(255, 255, 255, 0.35);
@@ -229,135 +276,240 @@
             cursor: pointer;
             padding: 0;
         }
+        @media (min-width: 768px) {
+            .hero-dots button {
+                width: 0.65rem;
+                height: 0.65rem;
+            }
+        }
         .hero-dots button.active {
             background: #4CAF50;
-            width: 1.8rem;
+            width: 1.5rem;
             border-radius: 20px;
             box-shadow: 0 0 20px rgba(76, 175, 80, 0.4);
         }
-        .hero-dots button:hover {
-            background: rgba(76, 175, 80, 0.6);
-            transform: scale(1.15);
-        }
-
-        /* إزالة أزرار التنقل (السهمين) نهائياً */
-        .hero-nav-btn {
-            display: none !important;
+        @media (min-width: 768px) {
+            .hero-dots button.active {
+                width: 1.8rem;
+            }
         }
 
         /* ============================================================ */
-        /*      SERVICE CARDS - عرض كامل للشاشة                        */
+        /*      SERVICE CARDS - متجاوبة بالكامل مع تباعد مناسب          */
         /* ============================================================ */
+        .services-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 0.8rem;
+        }
+        @media (min-width: 480px) {
+            .services-grid {
+                gap: 1.5rem;
+                padding: 0 1rem;
+            }
+        }
+        @media (min-width: 640px) {
+            .services-grid {
+                gap: 1.8rem;
+                padding: 0 1.5rem;
+            }
+        }
+        @media (min-width: 1024px) {
+            .services-grid {
+                gap: 2rem;
+                padding: 0 2.5rem;
+            }
+        }
+
         .service-card-full {
             background: #ffffff;
-            border-radius: 0;
+            border-radius: 1rem;
             overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-            transition: all 0.4s ease;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
             width: 100%;
             margin: 0;
         }
-        @media (min-width: 768px) {
+        @media (min-width: 640px) {
             .service-card-full {
                 flex-direction: row;
                 align-items: stretch;
-                border-radius: 0;
+                border-radius: 1.2rem;
             }
             .service-card-full.reverse {
                 flex-direction: row-reverse;
             }
         }
         .service-card-full:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(76, 175, 80, 0.12);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(76, 175, 80, 0.12);
         }
+
         .service-card-full .img-wrap {
             flex: 0 0 auto;
             width: 100%;
-            height: 280px;
+            height: 180px;
             overflow: hidden;
             background: #f1f5f9;
         }
-        @media (min-width: 768px) {
+        @media (min-width: 480px) {
             .service-card-full .img-wrap {
-                width: 50%;
-                height: auto;
-                min-height: 320px;
-                max-height: 420px;
+                height: 200px;
             }
         }
+        @media (min-width: 640px) {
+            .service-card-full .img-wrap {
+                width: 40%;
+                height: auto;
+                min-height: 220px;
+                max-height: 300px;
+            }
+        }
+        @media (min-width: 1024px) {
+            .service-card-full .img-wrap {
+                width: 45%;
+                min-height: 260px;
+                max-height: 340px;
+            }
+        }
+
         .service-card-full .img-wrap img {
             width: 100%;
             height: 100%;
             object-fit: contain;
             background: #f1f5f9;
-            transition: transform 0.6s ease;
+            transition: transform 0.5s ease;
         }
         .service-card-full:hover .img-wrap img {
-            transform: scale(1.02);
+            transform: scale(1.03);
         }
+
         .service-card-full .text-wrap {
             flex: 1;
-            padding: 2.5rem 2rem;
+            padding: 1.2rem 1rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
         }
-        @media (min-width: 768px) {
+        @media (min-width: 480px) {
             .service-card-full .text-wrap {
-                padding: 3rem 3.5rem;
+                padding: 1.5rem 1.2rem;
             }
         }
+        @media (min-width: 640px) {
+            .service-card-full .text-wrap {
+                padding: 1.8rem 1.8rem;
+            }
+        }
+        @media (min-width: 1024px) {
+            .service-card-full .text-wrap {
+                padding: 2.2rem 2.5rem;
+            }
+        }
+
         .service-card-full h3 {
-            font-size: 1.5rem;
+            font-size: 1.1rem;
             font-weight: 700;
             color: #1a2e1a;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.3rem;
             letter-spacing: -0.02em;
         }
-        @media (min-width: 768px) {
+        @media (min-width: 480px) {
             .service-card-full h3 {
-                font-size: 1.8rem;
+                font-size: 1.2rem;
             }
         }
+        @media (min-width: 640px) {
+            .service-card-full h3 {
+                font-size: 1.3rem;
+            }
+        }
+        @media (min-width: 1024px) {
+            .service-card-full h3 {
+                font-size: 1.5rem;
+                margin-bottom: 0.5rem;
+            }
+        }
+
         .service-card-full .desc {
             color: #4a5a4a;
-            font-size: 1rem;
-            line-height: 1.7;
-            margin-bottom: 0.75rem;
+            font-size: 0.8rem;
+            line-height: 1.5;
+            margin-bottom: 0.4rem;
             font-weight: 500;
         }
+        @media (min-width: 480px) {
+            .service-card-full .desc {
+                font-size: 0.85rem;
+            }
+        }
+        @media (min-width: 640px) {
+            .service-card-full .desc {
+                font-size: 0.9rem;
+            }
+        }
+        @media (min-width: 1024px) {
+            .service-card-full .desc {
+                font-size: 0.95rem;
+                margin-bottom: 0.75rem;
+            }
+        }
+
         .service-card-full .desc-two {
             color: #5a6b5a;
-            font-size: 0.95rem;
-            line-height: 1.7;
-            margin-bottom: 0.75rem;
+            font-size: 0.78rem;
+            line-height: 1.5;
+            margin-bottom: 0.4rem;
         }
+        @media (min-width: 480px) {
+            .service-card-full .desc-two {
+                font-size: 0.82rem;
+            }
+        }
+        @media (min-width: 640px) {
+            .service-card-full .desc-two {
+                font-size: 0.85rem;
+            }
+        }
+        @media (min-width: 1024px) {
+            .service-card-full .desc-two {
+                font-size: 0.92rem;
+                margin-bottom: 0.75rem;
+            }
+        }
+
         .service-card-full .learn-link {
             color: #4CAF50;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.75rem;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 0.3rem;
             transition: color 0.3s, gap 0.3s;
-            margin-top: 0.25rem;
+            margin-top: 0.2rem;
             letter-spacing: 0.01em;
+        }
+        @media (min-width: 640px) {
+            .service-card-full .learn-link {
+                font-size: 0.8rem;
+                margin-top: 0.25rem;
+            }
+        }
+        @media (min-width: 1024px) {
+            .service-card-full .learn-link {
+                font-size: 0.85rem;
+            }
         }
         .service-card-full .learn-link:hover {
             color: #2E7D32;
             gap: 0.6rem;
-        }
-        .service-card-full .learn-link svg {
-            width: 16px;
-            height: 16px;
-            transition: transform 0.3s;
-        }
-        .service-card-full .learn-link:hover svg {
-            transform: translateX(4px);
         }
 
         .more-text {
@@ -369,30 +521,46 @@
         .read-more-btn {
             color: #4CAF50;
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             background: none;
             border: none;
             cursor: pointer;
             padding: 0;
             font-family: inherit;
             transition: color 0.3s;
-            margin-top: 0.25rem;
+            margin-top: 0.15rem;
+        }
+        @media (min-width: 640px) {
+            .read-more-btn {
+                font-size: 0.8rem;
+            }
         }
         .read-more-btn:hover {
             color: #2E7D32;
             text-decoration: underline;
         }
 
+        /* ============================================================ */
+        /*      AUTRES STYLES - متجاوبة                                  */
+        /* ============================================================ */
         .contact-input {
             background: #1C2A16;
             border: 1px solid rgba(76, 175, 80, 0.25);
             color: #fff;
-            padding: 0.9rem 1.2rem;
-            border-radius: 12px;
+            padding: 0.7rem 1rem;
+            border-radius: 10px;
             width: 100%;
             outline: none;
             transition: border 0.3s, box-shadow 0.3s;
             font-family: inherit;
+            font-size: 0.9rem;
+        }
+        @media (min-width: 640px) {
+            .contact-input {
+                padding: 0.9rem 1.2rem;
+                border-radius: 12px;
+                font-size: 1rem;
+            }
         }
         .contact-input:focus {
             border-color: #4CAF50;
@@ -401,16 +569,25 @@
         .contact-input::placeholder {
             color: #6a7a6a;
         }
+
         .contact-select {
             background: #1C2A16;
             border: 1px solid rgba(76, 175, 80, 0.25);
             color: #fff;
-            padding: 0.9rem 1.2rem;
-            border-radius: 12px;
+            padding: 0.7rem 1rem;
+            border-radius: 10px;
             width: 100%;
             outline: none;
             transition: border 0.3s;
             font-family: inherit;
+            font-size: 0.9rem;
+        }
+        @media (min-width: 640px) {
+            .contact-select {
+                padding: 0.9rem 1.2rem;
+                border-radius: 12px;
+                font-size: 1rem;
+            }
         }
         .contact-select:focus {
             border-color: #4CAF50;
@@ -418,18 +595,27 @@
         .contact-select option {
             background: #0A1408;
         }
+
         .btn-submit {
             background: linear-gradient(135deg, #2E7D32, #4CAF50, #66BB6A);
             transition: all 0.3s ease;
             font-weight: 700;
-            padding: 1rem;
-            border-radius: 12px;
+            padding: 0.8rem;
+            border-radius: 10px;
             color: #fff;
             border: none;
             width: 100%;
             cursor: pointer;
             font-family: inherit;
             letter-spacing: 0.02em;
+            font-size: 0.95rem;
+        }
+        @media (min-width: 640px) {
+            .btn-submit {
+                padding: 1rem;
+                border-radius: 12px;
+                font-size: 1rem;
+            }
         }
         .btn-submit:hover {
             transform: scale(1.02);
@@ -440,15 +626,21 @@
             color: #8a9a8a;
             transition: color 0.3s;
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 500;
+        }
+        @media (min-width: 640px) {
+            .footer-link {
+                font-size: 0.9rem;
+            }
         }
         .footer-link:hover {
             color: #4CAF50;
         }
+
         .social-icon {
-            width: 2.2rem;
-            height: 2.2rem;
+            width: 2rem;
+            height: 2rem;
             border-radius: 50%;
             background: rgba(76, 175, 80, 0.12);
             display: flex;
@@ -458,6 +650,12 @@
             transition: all 0.3s ease;
             text-decoration: none;
         }
+        @media (min-width: 640px) {
+            .social-icon {
+                width: 2.2rem;
+                height: 2.2rem;
+            }
+        }
         .social-icon:hover {
             background: #4CAF50;
             color: #fff;
@@ -466,15 +664,15 @@
 
         #scroll-top {
             position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            width: 3.2rem;
-            height: 3.2rem;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            width: 2.8rem;
+            height: 2.8rem;
             border-radius: 50%;
             background: #4CAF50;
             color: #fff;
             border: none;
-            box-shadow: 0 8px 30px rgba(76, 175, 80, 0.3);
+            box-shadow: 0 6px 25px rgba(76, 175, 80, 0.3);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -483,6 +681,14 @@
             z-index: 50;
             opacity: 0;
             pointer-events: none;
+        }
+        @media (min-width: 640px) {
+            #scroll-top {
+                width: 3.2rem;
+                height: 3.2rem;
+                bottom: 2rem;
+                right: 2rem;
+            }
         }
         #scroll-top.visible {
             opacity: 1;
@@ -495,21 +701,29 @@
 
         #newsletter-btn {
             position: fixed;
-            bottom: 2rem;
-            left: 2rem;
-            width: 3.6rem;
-            height: 3.6rem;
+            bottom: 1.5rem;
+            left: 1.5rem;
+            width: 3.2rem;
+            height: 3.2rem;
             border-radius: 50%;
             background: #4CAF50;
             color: #fff;
             border: none;
-            box-shadow: 0 8px 30px rgba(76, 175, 80, 0.3);
+            box-shadow: 0 6px 25px rgba(76, 175, 80, 0.3);
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: all 0.3s ease;
             z-index: 50;
+        }
+        @media (min-width: 640px) {
+            #newsletter-btn {
+                width: 3.6rem;
+                height: 3.6rem;
+                bottom: 2rem;
+                left: 2rem;
+            }
         }
         #newsletter-btn:hover {
             background: #2E7D32;
@@ -543,6 +757,7 @@
             font-weight: 500;
             transition: color 0.3s;
             font-family: inherit;
+            font-size: 0.95rem;
         }
         .mobile-menu a:hover {
             color: #4CAF50;
@@ -580,23 +795,6 @@
             display: block;
         }
 
-        @media (max-width: 768px) {
-            .service-card-full .img-wrap {
-                height: 220px;
-            }
-            .service-card-full .text-wrap {
-                padding: 1.8rem 1.5rem;
-            }
-            .service-card-full h3 {
-                font-size: 1.3rem;
-            }
-        }
-        @media (max-width: 480px) {
-            .service-card-full .img-wrap {
-                height: 180px;
-            }
-        }
-
         #sdg-slide {
             transition: opacity 0.5s ease-in-out;
         }
@@ -607,8 +805,8 @@
             opacity: 1;
         }
         .sdg-image {
-            width: 180px;
-            height: 180px;
+            width: 120px;
+            height: 120px;
             object-fit: contain;
             border-radius: 16px;
             background: #ffffff;
@@ -616,14 +814,20 @@
             padding: 8px;
             transition: transform 0.3s ease;
         }
-        .sdg-image:hover {
-            transform: scale(1.04);
-        }
-        @media (max-width: 640px) {
+        @media (min-width: 480px) {
             .sdg-image {
                 width: 140px;
                 height: 140px;
             }
+        }
+        @media (min-width: 640px) {
+            .sdg-image {
+                width: 180px;
+                height: 180px;
+            }
+        }
+        .sdg-image:hover {
+            transform: scale(1.04);
         }
 
         .prose p {
@@ -639,34 +843,50 @@
             font-weight: 800;
             letter-spacing: -0.02em;
             color: #0a1a0a;
+            font-size: 1.8rem;
         }
-        .section-sub {
-            font-weight: 500;
-            color: #4a6a4a;
-        }
-
-        @keyframes pulse-dot {
-            0%,
-            100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.3);
+        @media (min-width: 480px) {
+            .section-title {
+                font-size: 2.2rem;
             }
         }
-        .pulse-dot {
-            animation: pulse-dot 2s ease-in-out infinite;
+        @media (min-width: 640px) {
+            .section-title {
+                font-size: 2.5rem;
+            }
+        }
+        @media (min-width: 1024px) {
+            .section-title {
+                font-size: 3rem;
+            }
         }
 
-        /* تحسين عرض الشعار بشكل دائري كامل مع حجم متوسط */
         .logo-wrapper {
-            width: 4.5rem;
-            height: 4.5rem;
+            width: 3.5rem;
+            height: 3.5rem;
             border-radius: 50%;
             overflow: hidden;
             flex-shrink: 0;
             border: 2px solid rgba(76, 175, 80, 0.3);
             box-shadow: 0 0 20px rgba(76, 175, 80, 0.15);
+        }
+        @media (min-width: 480px) {
+            .logo-wrapper {
+                width: 4rem;
+                height: 4rem;
+            }
+        }
+        @media (min-width: 640px) {
+            .logo-wrapper {
+                width: 4.5rem;
+                height: 4.5rem;
+            }
+        }
+        @media (min-width: 1024px) {
+            .logo-wrapper {
+                width: 5rem;
+                height: 5rem;
+            }
         }
         .logo-wrapper img {
             width: 100%;
@@ -674,24 +894,17 @@
             object-fit: cover;
             display: block;
         }
-        @media (min-width: 768px) {
-            .logo-wrapper {
-                width: 5rem;
-                height: 5rem;
-            }
-        }
 
-        /* زر الخدمات الاحترافي - يظهر فقط في الهيدر */
         .services-btn {
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
-            padding: 0.6rem 1.4rem;
+            gap: 0.4rem;
+            padding: 0.4rem 1rem;
             border-radius: 50px;
             background: linear-gradient(135deg, #2E7D32, #4CAF50, #66BB6A);
             color: #fff;
             font-weight: 700;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             border: none;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -699,16 +912,34 @@
             box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
             letter-spacing: 0.02em;
         }
+        @media (min-width: 480px) {
+            .services-btn {
+                font-size: 0.8rem;
+                padding: 0.5rem 1.2rem;
+                gap: 0.5rem;
+            }
+        }
+        @media (min-width: 640px) {
+            .services-btn {
+                font-size: 0.85rem;
+                padding: 0.6rem 1.4rem;
+            }
+        }
         .services-btn:hover {
             transform: scale(1.05);
             box-shadow: 0 8px 30px rgba(76, 175, 80, 0.5);
         }
         .services-btn svg {
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
+        }
+        @media (min-width: 640px) {
+            .services-btn svg {
+                width: 18px;
+                height: 18px;
+            }
         }
 
-        /* إزالة الزر العائم من أسفل الصفحة */
         .floating-services-btn {
             display: none !important;
         }
@@ -716,11 +947,11 @@
 </head>
 <body>
 
-    <!-- ===================== HEADER (حجم متوسط) ===================== -->
-    <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-3"
+    <!-- ===================== HEADER ===================== -->
+    <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-2 md:py-3"
     style="background: rgba(10,20,8,0.92); backdrop-filter: blur(12px);">
-    <div class="max-w-full mx-auto px-4 flex items-center justify-between">
-        <a href="#" class="flex items-center gap-3 no-underline">
+    <div class="w-full px-3 md:px-6 flex items-center justify-between">
+        <a href="#" class="flex items-center gap-2 md:gap-3 no-underline">
             <div class="logo-wrapper relative">
                 <div class="absolute inset-0 bg-green-500/20 blur-xl rounded-full -z-0"></div>
                 <img id="logo-img"
@@ -728,29 +959,28 @@
                 alt="SONE Logo" class="relative z-10" />
             </div>
             <div>
-                <span class="font-extrabold text-2xl text-white tracking-wider">S O N E</span>
-                <p class="text-[11px] text-green-400 tracking-[0.15em] font-medium" data-i18n="header_tagline">SMART SOLUTIONS · GREEN FUTURE</p>
+                <span class="font-extrabold text-lg md:text-2xl text-white tracking-wider">S O N E</span>
+                <p class="text-[9px] md:text-[11px] text-green-400 tracking-[0.15em] font-medium" data-i18n="header_tagline">SMART SOLUTIONS · GREEN FUTURE</p>
             </div>
         </a>
-        <nav class="hidden md:flex items-center gap-6">
+        <nav class="hidden md:flex items-center gap-4 lg:gap-6">
             <a href="#home" class="text-white hover:text-green-400 transition text-sm font-semibold" data-i18n="nav_home">Accueil</a>
             <a href="#services" class="text-white hover:text-green-400 transition text-sm font-semibold" data-i18n="nav_services">Services</a>
             <a href="#about" class="text-white hover:text-green-400 transition text-sm font-semibold" data-i18n="nav_about">À propos</a>
             <a href="#contact" class="text-white hover:text-green-400 transition text-sm font-semibold" data-i18n="nav_contact">Contact</a>
-            <!-- زر الخدمات في الشريط - يظهر فقط في أعلى الصفحة -->
             <a href="https://sone-solutions.github.io/SONE/service.html" target="_blank" class="services-btn">
                 <i data-lucide="sparkles" class="w-4 h-4"></i>
                 <span data-i18n="nav_services_btn">Nos Services</span>
             </a>
         </nav>
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2 md:gap-3">
             <div class="hidden md:flex gap-1.5 text-xs">
-                <button class="lang-btn px-3 py-1.5 rounded-lg bg-green-600 text-white font-bold text-[11px] transition hover:bg-green-700" data-lang="fr">FR</button>
-                <button class="lang-btn px-3 py-1.5 rounded-lg bg-white/10 text-white hover:bg-white/20 transition text-[11px]" data-lang="en">EN</button>
-                <button class="lang-btn px-3 py-1.5 rounded-lg bg-white/10 text-white hover:bg-white/20 transition text-[11px]" data-lang="ar">AR</button>
+                <button class="lang-btn px-2 py-1 md:px-3 md:py-1.5 rounded-lg bg-green-600 text-white font-bold text-[10px] md:text-[11px] transition hover:bg-green-700" data-lang="fr">FR</button>
+                <button class="lang-btn px-2 py-1 md:px-3 md:py-1.5 rounded-lg bg-white/10 text-white hover:bg-white/20 transition text-[10px] md:text-[11px]" data-lang="en">EN</button>
+                <button class="lang-btn px-2 py-1 md:px-3 md:py-1.5 rounded-lg bg-white/10 text-white hover:bg-white/20 transition text-[10px] md:text-[11px]" data-lang="ar">AR</button>
             </div>
-            <button id="menu-toggle" class="md:hidden text-white p-2 hover:bg-white/10 rounded-lg transition">
-                <i data-lucide="menu" class="w-6 h-6"></i>
+            <button id="menu-toggle" class="md:hidden text-white p-1.5 hover:bg-white/10 rounded-lg transition">
+                <i data-lucide="menu" class="w-5 h-5"></i>
             </button>
         </div>
     </div>
@@ -783,7 +1013,7 @@
 <!-- ============================================================ -->
 <!-- ===================== HERO PLEIN ÉCRAN ===================== -->
 <!-- ============================================================ -->
-<section id="home" class="relative min-h-screen flex items-center pt-20 pb-0 overflow-hidden"
+<section id="home" class="relative min-h-screen flex items-center pt-16 md:pt-20 pb-0 overflow-hidden"
 style="background: #0A1408;">
 
     <!-- Vagues de fond subtiles -->
@@ -794,9 +1024,9 @@ style="background: #0A1408;">
     </svg>
 
     <!-- Glow central -->
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-green-500/8 rounded-full blur-[150px] pointer-events-none"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] md:w-[700px] md:h-[700px] bg-green-500/8 rounded-full blur-[150px] pointer-events-none"></div>
 
-    <div class="relative z-10 w-full h-[calc(100vh-80px)] md:h-[calc(100vh-90px)]">
+    <div class="relative z-10 w-full h-[calc(100vh-70px)] md:h-[calc(100vh-80px)]">
 
         <!-- SLIDER PLEIN ÉCRAN -->
         <div class="relative w-full h-full overflow-hidden">
@@ -804,97 +1034,77 @@ style="background: #0A1408;">
             <!-- Slides -->
             <div id="hero-slider" class="relative w-full h-full">
 
-                <!-- Slide 1 : Drone / NDVI -->
+                <!-- Slide 1 -->
                 <div class="hero-slide active" data-index="0">
                     <img src="https://www.dronexperts.com/wp-content/uploads/2025/01/Pix4D-fields-on-laptot-in-field-1024x683.png"
                     alt="Analyse NDVI par drone" loading="lazy" />
                     <div class="slide-overlay">
-                        <span class="slide-tag" data-i18n="s1_badge">استشعار عن بعد</span>
-                        <h2 class="slide-title" data-i18n="hero_slide1_title">عين سوني ترقب حقلك</h2>
-                        <p class="slide-desc" data-i18n="hero_slide1_desc">كاشف دقيق للتوتر المائي والنقص الغذائي قبل أن تراه عيناك. قرر بذكاء قبل فوات الأوان.</p>
-                        <span class="slide-badge">
-                            <i data-lucide="leaf" class="w-4 h-4"></i>
-                            <span data-i18n="hero_slide1_badge">قرارات أسرع</span>
-                        </span>
+                        <span class="slide-tag">🌱</span>
+                        <h2 class="slide-title" data-i18n="hero_slide1_title">Votre ferme mérite mieux que l'intuition — découvrez l'agriculture de précision.</h2>
+                        <p class="slide-desc" data-i18n="hero_slide1_desc">مزرعتك تستحق أكثر من الحدس — اكتشف الزراعة الدقيقة.</p>
+                        <span class="slide-badge" data-i18n="hero_slide1_badge">Agriculture de précision</span>
                     </div>
                 </div>
 
-                <!-- Slide 2 : Digital / IA -->
+                <!-- Slide 2 -->
                 <div class="hero-slide" data-index="1">
                     <img src="https://www.adventiel.fr/wp-content/uploads/2025/12/numerique-et-agriculture-en-2026-600x400.webp"
                     alt="Agriculture numérique et IA" loading="lazy" />
                     <div class="slide-overlay">
-                        <span class="slide-tag" data-i18n="s3_badge">خبير رقمي</span>
-                        <h2 class="slide-title" data-i18n="hero_slide2_title">خبير زراعي في جيبك</h2>
-                        <p class="slide-desc" data-i18n="hero_slide2_desc">شخص أمراضك وعلاجك في ثواني، بدقة 95%. مع SONE، كل فلاح له خبير خاص به.</p>
-                        <span class="slide-badge">
-                            <i data-lucide="cpu" class="w-4 h-4"></i>
-                            <span data-i18n="hero_slide2_badge">دقة 95%</span>
-                        </span>
+                        <span class="slide-tag">📡</span>
+                        <h2 class="slide-title" data-i18n="hero_slide2_title">Chaque parcelle a une histoire. Nos capteurs vous aident à la lire.</h2>
+                        <p class="slide-desc" data-i18n="hero_slide2_desc">كل قطعة أرض لها قصة. أجهزتنا تساعدك على قراءتها.</p>
+                        <span class="slide-badge" data-i18n="hero_slide2_badge">Capteurs intelligents</span>
                     </div>
                 </div>
 
-                <!-- Slide 3 : Météo -->
+                <!-- Slide 3 -->
                 <div class="hero-slide" data-index="2">
                     <img src="https://lachampagneviticole.fr/wp-content/uploads/2023/05/photo-ouverture-dossier-e1683880458350.jpeg"
                     alt="Météo précise" loading="lazy" />
                     <div class="slide-overlay">
-                        <span class="slide-tag" data-i18n="s5_badge">طقس دقيق</span>
-                        <h2 class="slide-title" data-i18n="hero_slide3_title">توقع... قبل أن تتغير الأحوال</h2>
-                        <p class="slide-desc" data-i18n="hero_slide3_desc">معطيات الطقس في حقلك تحديداً. خطط للري والحصاد بدون مفاجآت مناخية.</p>
-                        <span class="slide-badge">
-                            <i data-lucide="cloud-rain" class="w-4 h-4"></i>
-                            <span data-i18n="hero_slide3_badge">تحديث لحظي</span>
-                        </span>
+                        <span class="slide-tag">💧</span>
+                        <h2 class="slide-title" data-i18n="hero_slide3_title">Moins d'eau, plus de rendement. La technologie au service de la terre.</h2>
+                        <p class="slide-desc" data-i18n="hero_slide3_desc">ماء أقل، محصول أوفر. التكنولوجيا في خدمة الأرض.</p>
+                        <span class="slide-badge" data-i18n="hero_slide3_badge">Gestion de l'eau</span>
                     </div>
                 </div>
 
-                <!-- Slide 4 : Prix du marché -->
+                <!-- Slide 4 -->
                 <div class="hero-slide" data-index="3">
                     <img src="https://tracextech.com/wp-content/uploads/2023/05/farm-sustainability-metrics.jpg"
                     alt="Indicateurs de durabilité" loading="lazy" />
                     <div class="slide-overlay">
-                        <span class="slide-tag" data-i18n="s6_badge">سوق فوري</span>
-                        <h2 class="slide-title" data-i18n="hero_slide4_title">أرباحك تبدأ بمعرفة السوق</h2>
-                        <p class="slide-desc" data-i18n="hero_slide4_desc">ترقب أسعار الخضر والفواكه في المغرب، وبع منتوجك في أعلى قمة سعرية.</p>
-                        <span class="slide-badge">
-                            <i data-lucide="trending-up" class="w-4 h-4"></i>
-                            <span data-i18n="hero_slide4_badge">ذكاء تجاري</span>
-                        </span>
+                        <span class="slide-tag">🛰️</span>
+                        <h2 class="slide-title" data-i18n="hero_slide4_title">Surveillez vos cultures depuis votre téléphone, où que vous soyez.</h2>
+                        <p class="slide-desc" data-i18n="hero_slide4_desc">راقب محاصيلك من هاتفك، أينما كنت.</p>
+                        <span class="slide-badge" data-i18n="hero_slide4_badge">Surveillance mobile</span>
                     </div>
                 </div>
 
-                <!-- Slide 5 : Agri Manager -->
+                <!-- Slide 5 -->
                 <div class="hero-slide" data-index="4">
                     <img src="https://d1mvnp4tc7jmzn.cloudfront.net/370krsnvmy"
                     alt="Agri Manager" loading="lazy" />
                     <div class="slide-overlay">
-                        <span class="slide-tag" data-i18n="s2_badge">قيادة ذكية</span>
-                        <h2 class="slide-title" data-i18n="hero_slide5_title">SONE MANAGER: قيادة ضيعتك عن بعد</h2>
-                        <p class="slide-desc" data-i18n="hero_slide5_desc">جدولة، تتبع، وتنظيم. كل شيء في لوحة تحكم واحدة لزيادة الإنتاجية وتوفير الوقت.</p>
-                        <span class="slide-badge">
-                            <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
-                            <span data-i18n="hero_slide5_badge">إدارة مركزية</span>
-                        </span>
+                        <span class="slide-tag">🤖</span>
+                        <h2 class="slide-title" data-i18n="hero_slide5_title">L'IA qui protège vos cultures avant même l'apparition des symptômes.</h2>
+                        <p class="slide-desc" data-i18n="hero_slide5_desc">الذكاء الاصطناعي يحمي محاصيلك قبل ظهور أي أعراض.</p>
+                        <span class="slide-badge" data-i18n="hero_slide5_badge">IA protectrice</span>
                     </div>
                 </div>
 
-                <!-- Slide 6 : CarboEdge / Décarbonation (NOUVEAU) -->
+                <!-- Slide 6 -->
                 <div class="hero-slide" data-index="5">
                     <img src="https://turkystan.kz/uploads/cache/1200x630/resized-images/2025/02/1739267038.webp"
                     alt="CarboEdge" loading="lazy" />
                     <div class="slide-overlay">
-                        <span class="slide-tag" data-i18n="carbo_badge">زراعة خضراء</span>
-                        <h2 class="slide-title" data-i18n="hero_slide6_title">ازرع لمستقبل أولادك</h2>
-                        <p class="slide-desc" data-i18n="hero_slide6_desc">قلل انبعاثاتك الكربونية وكن رائداً في الفلاحة المستدامة مع SONE. الأرض تستحق الأفضل.</p>
-                        <span class="slide-badge">
-                            <i data-lucide="cloud" class="w-4 h-4"></i>
-                            <span data-i18n="hero_slide6_badge">نحو صفر كربون</span>
-                        </span>
+                        <span class="slide-tag">🌿</span>
+                        <h2 class="slide-title" data-i18n="hero_slide6_title">Rejoignez les agriculteurs qui ont choisi l'avenir vert avec SONE.</h2>
+                        <p class="slide-desc" data-i18n="hero_slide6_desc">انضم إلى المزارعين الذين اختاروا المستقبل الأخضر مع SONE.</p>
+                        <span class="slide-badge" data-i18n="hero_slide6_badge">Avenir vert</span>
                     </div>
                 </div>
-
-                <!-- تم إزالة أزرار التنقل (السهمين) -->
 
             </div>
 
@@ -911,8 +1121,8 @@ style="background: #0A1408;">
         </div>
 
         <!-- Petit texte d'appel sous le slider (superposé) -->
-        <div class="absolute bottom-6 left-0 right-0 z-10 text-center pointer-events-none">
-            <p class="text-green-400/60 text-[10px] md:text-xs font-medium tracking-widest uppercase" data-i18n="hero_cta">
+        <div class="absolute bottom-4 md:bottom-6 left-0 right-0 z-10 text-center pointer-events-none">
+            <p class="text-green-400/60 text-[8px] md:text-xs font-medium tracking-widest uppercase" data-i18n="hero_cta">
                 Découvrez nos solutions · Glissez pour explorer
             </p>
         </div>
@@ -921,16 +1131,16 @@ style="background: #0A1408;">
 </section>
 
 <!-- ===================== ABOUT ===================== -->
-<section id="about" class="py-24 bg-[#F9FAFB]">
-    <div class="max-w-6xl mx-auto px-4">
-        <h2 class="section-title text-3xl md:text-4xl text-gray-900 text-center mb-4" data-i18n="about_title">Qui sommes-nous ?</h2>
-        <p class="text-center text-gray-600 max-w-2xl mx-auto mb-12 text-lg leading-relaxed" data-i18n="about_sub">Une vision claire : faire de l'agriculture un levier de développement durable et de compétitivité.</p>
-        <div class="grid md:grid-cols-2 gap-12 items-center">
+<section id="about" class="py-12 md:py-24 bg-[#F9FAFB]">
+    <div class="max-w-6xl mx-auto px-3 md:px-4">
+        <h2 class="section-title text-center mb-3 md:mb-4" data-i18n="about_title">Qui sommes-nous ?</h2>
+        <p class="text-center text-gray-600 max-w-2xl mx-auto mb-8 md:mb-12 text-base md:text-lg leading-relaxed px-2" data-i18n="about_sub">Une vision claire : faire de l'agriculture un levier de développement durable et de compétitivité.</p>
+        <div class="grid md:grid-cols-2 gap-6 md:gap-12 items-center">
             <div>
                 <img src="https://www.unite.ai/wp-content/uploads/2026/03/ChatGPT-Image-Mar-6-2026-03_41_38-PM-942x600.png"
-                alt="Agriculture" class="w-full h-72 object-cover rounded-2xl shadow-xl" />
+                alt="Agriculture" class="w-full h-52 md:h-72 object-cover rounded-xl md:rounded-2xl shadow-xl" />
             </div>
-            <div class="space-y-5 text-gray-700 text-justify leading-relaxed prose">
+            <div class="space-y-3 md:space-y-5 text-gray-700 text-justify leading-relaxed prose px-1">
                 <p data-i18n="about_p1"><strong>“Autonomiser les agriculteurs en les aidant à prendre des décisions éclairées”</strong> est notre mission. <strong>“Des solutions intelligentes pour un avenir vert”</strong> est notre devise.</p>
                 <p data-i18n="about_p2">SONE est un pont entre les agriculteurs, les coopératives, les entreprises agroalimentaires, les pouvoirs publics et les startups de l'AgriTech. Nous proposons une plateforme numérique intégrée qui optimise l'utilisation des ressources, accroît la rentabilité et renforce la compétitivité de l'ensemble de la chaîne de valeur agricole.</p>
                 <p data-i18n="about_p3">Nous contribuons activement à des programmes de renforcement de l'écosystème AgriTech en Afrique, en accompagnant les startups et en stimulant l'innovation à travers des partenariats stratégiques.</p>
@@ -939,22 +1149,22 @@ style="background: #0A1408;">
     </div>
 </section>
 
-<!-- ===================== SERVICES (بطاقات عريضة تملأ الشاشة) ===================== -->
-<section id="services" class="py-16 bg-white">
-    <div class="w-full px-0">
-        <h2 class="section-title text-3xl md:text-4xl text-gray-900 text-center mb-3 px-4" data-i18n="services_title">Nos produits et solutions</h2>
-        <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto text-lg leading-relaxed px-4" data-i18n="services_sub">Surveillez, analysez et optimisez vos cultures grâce à une gamme de services connectés, conçus pour une agriculture de précision.</p>
+<!-- ===================== SERVICES ===================== -->
+<section id="services" class="py-8 md:py-16 bg-white">
+    <div class="w-full">
+        <h2 class="section-title text-center mb-2 md:mb-3 px-3" data-i18n="services_title">Nos produits et solutions</h2>
+        <p class="text-center text-gray-600 mb-6 md:mb-10 max-w-2xl mx-auto text-sm md:text-lg leading-relaxed px-3" data-i18n="services_sub">Surveillez, analysez et optimisez vos cultures grâce à une gamme de services connectés, conçus pour une agriculture de précision.</p>
 
-        <div class="space-y-0">
+        <div class="services-grid">
             <!-- Service 1: NDVI -->
             <div class="service-card-full">
                 <div class="img-wrap">
                     <img src="https://scontent.frba1-3.fna.fbcdn.net/v/t39.30808-6/725803845_122114968107125609_6159598785194244514_n.jpg?stp=dst-jpg_tt6&cstp=mx1717x916&ctp=s1717x916&_nc_cat=104&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeGrgeBR4JxkatT9ReNdQtbegOQLiyQvYeGA5AuLJC9h4S0v1SLa3ElIPLmGdM-h0hybQSJaFefS7-L9vxnFIyfG&_nc_ohc=pq2TEsC-RxoQ7kNvwGLn5vV&_nc_oc=Ado36oLXag3ohdBwSk3E7mcCb1_ztxAby35b8aZ8BrYNF8a7Zn6TbK8gdgSF-1pfCz8&_nc_zt=23&_nc_ht=scontent.frba1-3.fna&_nc_gid=wQT1EK5D1WtGKT_6-dvkfQ&_nc_ss=7e2a8&oh=00_Af9zCpKcXlp0lV1J2ix7R6knn_dzYbRC1_xkV3obU6DWvA&oe=6A3B8483" alt="Analyse NDVI" />
                 </div>
                 <div class="text-wrap">
-                    <div class="flex items-center gap-3 mb-1">
+                    <div class="flex items-center gap-2 md:gap-3 mb-1">
                         <h3 data-i18n="s1_title">Analyse NDVI</h3>
-                        <span class="px-3 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-700" data-i18n="s1_badge">Haute précision</span>
+                        <span class="px-2 py-0.5 md:px-3 md:py-0.5 rounded-full text-[10px] md:text-xs font-semibold bg-green-100 text-green-700" data-i18n="s1_badge">Haute précision</span>
                     </div>
                     <p class="desc" data-i18n="s1_desc">Surveillance de la santé des cultures par satellite</p>
                     <p class="desc-two" data-i18n="s1_text">L'indice NDVI offre une vision fine de la vigueur végétative. Détectez les zones de stress hydrique ou nutritionnel avant qu'elles ne soient visibles à l'œil nu, et intervenez de manière ciblée pour optimiser vos rendements.</p>
@@ -968,9 +1178,9 @@ style="background: #0A1408;">
                     <img src="https://scontent.frba1-4.fna.fbcdn.net/v/t39.30808-6/727178788_122114983551125609_4790374274590839097_n.jpg?stp=dst-jpg_tt6&cstp=mx1536x1024&ctp=s1536x1024&_nc_cat=108&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeF24qEvI4XAW1sIxkr7VnaQM1dHbRsFk8wzV0dtGwWTzFYkePOm1grhqVo28A2hY-wSstdlF5GMZasgDh3EEbA5&_nc_ohc=H8lHtptSwbcQ7kNvwE_QOwc&_nc_oc=AdpsJkDX2yHMStBgKOEsNSQM2nYo_xDtKawEzpJuEiwfSyEV13ZNSzUm_rRcrkycaNA&_nc_zt=23&_nc_ht=scontent.frba1-4.fna&_nc_gid=5OT9u3uGInQqwT2lGWFmBg&_nc_ss=7e2a8&oh=00_Af-aX-qMIR7UwAdESIqeYQ6wfDAectpQtH7w3oqn1fSd1Q&oe=6A3BBC33" alt="Agri Manager" />
                 </div>
                 <div class="text-wrap">
-                    <div class="flex items-center gap-3 mb-1">
+                    <div class="flex items-center gap-2 md:gap-3 mb-1">
                         <h3 data-i18n="s2_title">Agri Manager</h3>
-                        <span class="px-3 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-700" data-i18n="s2_badge">Système intégré</span>
+                        <span class="px-2 py-0.5 md:px-3 md:py-0.5 rounded-full text-[10px] md:text-xs font-semibold bg-green-100 text-green-700" data-i18n="s2_badge">Système intégré</span>
                     </div>
                     <p class="desc" data-i18n="s2_desc">Gestion centralisée des exploitations agricoles</p>
                     <p class="desc-two" data-i18n="s2_text">Agri Manager centralise toutes vos données : parcelles, équipements, récoltes, stocks et main-d'œuvre. Planifiez, suivez et analysez vos performances en temps réel pour une gestion plus agile et plus rentable.</p>
@@ -984,9 +1194,9 @@ style="background: #0A1408;">
                     <img src="https://scontent.frba1-4.fna.fbcdn.net/v/t39.30808-6/723132339_122114968707125609_7282057069653223304_n.jpg?stp=dst-jpg_tt6&cstp=mx1672x941&ctp=s1672x941&_nc_cat=108&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeFB_EMKFnGvhp3DIyQFp1HfOthqZOlmCWQ62Gpk6WYJZPlZCkZw8uDW92Du2OCz9igOk_Gh8jMB7x2OWSb7DcMU&_nc_ohc=z5WKhJ1EvUIQ7kNvwH-kHAZ&_nc_oc=AdrupuHtlzDDS1AmnJB_3JAmWC4MGqAqQ-udQJE_pxVKhcj1AoPiOqgY6H3xP5pnuqQ&_nc_zt=23&_nc_ht=scontent.frba1-4.fna&_nc_gid=TwD7X_hLPjFAjGsIpEn24A&_nc_ss=7e2a8&oh=00_Af-MRx-aUKVUoNhDCE59hz-K4v0_zGpxEca_HDxEBmxwFA&oe=6A3B7746" alt="SONE Assistant AI" />
                 </div>
                 <div class="text-wrap">
-                    <div class="flex items-center gap-3 mb-1">
+                    <div class="flex items-center gap-2 md:gap-3 mb-1">
                         <h3 data-i18n="s3_title">SONE-SOLUTIONS ASSISTANT</h3>
-                        <span class="px-3 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-700" data-i18n="s3_badge">IA Avancée</span>
+                        <span class="px-2 py-0.5 md:px-3 md:py-0.5 rounded-full text-[10px] md:text-xs font-semibold bg-green-100 text-green-700" data-i18n="s3_badge">IA Avancée</span>
                     </div>
                     <p class="desc" data-i18n="s3_desc">Expert virtuel pour le diagnostic des maladies et la santé des cultures</p>
                     <div class="desc-two">
@@ -994,7 +1204,7 @@ style="background: #0A1408;">
                         <span class="more-text" data-i18n="s3_full"> Cette plateforme hybride allie harmonieusement l'intelligence artificielle à l'expertise agronomique marocaine pour fournir un diagnostic précis des symptômes et des recommandations thérapeutiques efficaces. Elle propose également des conseils d'irrigation personnalisés adaptés à chaque culture selon le climat marocain. Au-delà des plantes, l'assistant s'étend à la santé animale, diagnostiquant et traitant les pathologies bovines, ovines et caprines, tout en offrant des plans de fertilisation intégrés spécifiant les types d'engrais et les calendriers d'application personnalisés pour des résultats optimaux.</span>
                         <button class="read-more-btn" data-i18n-readmore="read_more">... lire la suite</button>
                     </div>
-                    <a href="#" class="learn-link mt-2" data-i18n="learn_more">En savoir plus →</a>
+                    <a href="#" class="learn-link mt-1 md:mt-2" data-i18n="learn_more">En savoir plus →</a>
                 </div>
             </div>
 
@@ -1004,9 +1214,9 @@ style="background: #0A1408;">
                     <img src="https://scontent.frba1-1.fna.fbcdn.net/v/t39.30808-6/727158487_122114966937125609_54003770966784310_n.jpg?stp=dst-jpg_tt6&cstp=mx1536x1024&ctp=s1536x1024&_nc_cat=110&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeGpVPUfPfsjDJNLaLSNk9DCxIriH_OFF6LEiuIf84UXoq0Vts7sIVWg4zcgMnqEum264_GEQi-i41mGzehyuX0C&_nc_ohc=6C4VEfpHFG0Q7kNvwF8S1YO&_nc_oc=AdrP_git4klV6jdFc-GMS1fXh2DvLGH5WOAyVdNl-c-sPvdBmD93gmR3cj11nadTeaU&_nc_zt=23&_nc_ht=scontent.frba1-1.fna&_nc_gid=6-nIvvv9uQss_Y39VXqbzA&_nc_ss=7e2a8&oh=00_Af8zV3R_py7YNi14Nzrb244koMVELmV-_BnDC8v-bNtggQ&oe=6A3B8D9D" alt="Carte des maladies" style="object-fit: contain; background: #f1f5f9;" />
                 </div>
                 <div class="text-wrap">
-                    <div class="flex items-center gap-3 mb-1">
+                    <div class="flex items-center gap-2 md:gap-3 mb-1">
                         <h3 data-i18n="s4_title">Carte des maladies</h3>
-                        <span class="px-3 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-700" data-i18n="s4_badge">Alerte précoce</span>
+                        <span class="px-2 py-0.5 md:px-3 md:py-0.5 rounded-full text-[10px] md:text-xs font-semibold bg-green-100 text-green-700" data-i18n="s4_badge">Alerte précoce</span>
                     </div>
                     <p class="desc" data-i18n="s4_desc">Cartographie dynamique des risques phytosanitaires</p>
                     <p class="desc-two" data-i18n="s4_text">Notre outil croise les données satellitaires et les conditions météorologiques pour anticiper les foyers d'infection. Recevez des alertes ciblées et protégez vos cultures avant l'apparition des symptômes.</p>
@@ -1020,9 +1230,9 @@ style="background: #0A1408;">
                     <img src="https://scontent.frba1-3.fna.fbcdn.net/v/t39.30808-6/727136802_122114982927125609_3278921915192791999_n.jpg?stp=dst-jpg_tt6&cstp=mx1536x1024&ctp=s1536x1024&_nc_cat=103&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeHHktHEd41F8rAu-5o5oVAFT1k546P1fTFPWTnjo_V9MSKttDw64wx6uQCoAackGHOvwUti-FRF2scKXbXhTGm2&_nc_ohc=_8Vw1KtMPXUQ7kNvwEobmpx&_nc_oc=AdqrOTFQgRIxjzyApUzfcOZ3uVmTmXJ-AU3Xa2Kc8hoADi3zsEZ0ZXuklkT5eCU8zaI&_nc_zt=23&_nc_ht=scontent.frba1-3.fna&_nc_gid=nejwyMnd9y199UWVEDKHXQ&_nc_ss=7e2a8&oh=00_Af-OlxFpG59Us2tJ2QoOp6C5u8DByVkx7eTSfNsUbkkW2A&oe=6A3BD941" alt="Météo précise" />
                 </div>
                 <div class="text-wrap">
-                    <div class="flex items-center gap-3 mb-1">
+                    <div class="flex items-center gap-2 md:gap-3 mb-1">
                         <h3 data-i18n="s5_title">Météo précise</h3>
-                        <span class="px-3 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-700" data-i18n="s5_badge">Données en direct</span>
+                        <span class="px-2 py-0.5 md:px-3 md:py-0.5 rounded-full text-[10px] md:text-xs font-semibold bg-green-100 text-green-700" data-i18n="s5_badge">Données en direct</span>
                     </div>
                     <p class="desc" data-i18n="s5_desc">Prévisions hyperlocales pour vos parcelles</p>
                     <p class="desc-two" data-i18n="s5_text">Température, précipitations, humidité, vitesse du vent… toutes les variables essentielles, actualisées en continu, pour planifier vos interventions au moment le plus opportun.</p>
@@ -1036,22 +1246,22 @@ style="background: #0A1408;">
                     <img src="https://scontent.frba1-2.fna.fbcdn.net/v/t39.30808-6/727189751_122114983755125609_4521193519203623719_n.jpg?stp=dst-jpg_tt6&cstp=mx1536x1024&ctp=s1536x1024&_nc_cat=111&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeHZ_cyOIAMtt7GeA99ZnAaJ4H-lHk8U5_vgf6UeTxTn-1XzgsZ4GeZmfluf4qO04pPtO_YdEMPrtEbFr6Cp-Q5V&_nc_ohc=OzHQcHc6J3QQ7kNvwGq2aeo&_nc_oc=AdraCQ3GakWFYkPXSDdqV0A7IAPfHiTNuJVw8DPEuhKDlw2pSXFR7pKEywj4iTAqVAg&_nc_zt=23&_nc_ht=scontent.frba1-2.fna&_nc_gid=PspFO2jycp6Ht7_ENK2MAw&_nc_ss=7e2a8&oh=00_Af8RMiSfbhhSUeaMX4T3Qu9kfQeWok6lY2ck_xfU6-r76w&oe=6A3BD1E7" alt="Prix du marché" />
                 </div>
                 <div class="text-wrap">
-                    <div class="flex items-center gap-3 mb-1">
+                    <div class="flex items-center gap-2 md:gap-3 mb-1">
                         <h3 data-i18n="s6_title">Prix du marché</h3>
-                        <span class="px-3 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-700" data-i18n="s6_badge">Actualisé quotidiennement</span>
+                        <span class="px-2 py-0.5 md:px-3 md:py-0.5 rounded-full text-[10px] md:text-xs font-semibold bg-green-100 text-green-700" data-i18n="s6_badge">Actualisé quotidiennement</span>
                     </div>
                     <p class="desc" data-i18n="s6_desc">Indicateurs de prix des fruits et légumes au Maroc</p>
-                    <div class="text-gray-600 text-sm leading-relaxed space-y-2">
+                    <div class="text-gray-600 text-sm leading-relaxed space-y-1 md:space-y-2">
                         <div>
-                            <p class="font-semibold text-green-700" data-i18n="s6_veggies">Légumes</p>
+                            <p class="font-semibold text-green-700 text-sm md:text-base" data-i18n="s6_veggies">Légumes</p>
                             <p class="desc-two" data-i18n="s6_veggies_text">Suivez l'évolution des prix sur les marchés de gros et de détail pour affiner votre stratégie commerciale.</p>
                         </div>
                         <div>
-                            <p class="font-semibold text-green-700" data-i18n="s6_fruits">Fruits</p>
+                            <p class="font-semibold text-green-700 text-sm md:text-base" data-i18n="s6_fruits">Fruits</p>
                             <p class="desc-two" data-i18n="s6_fruits_text">Accédez aux cotations des fruits de saison et optimisez vos marges grâce à une veille marché fiable.</p>
                         </div>
                     </div>
-                    <a href="#" class="learn-link mt-2" data-i18n="learn_more">En savoir plus →</a>
+                    <a href="#" class="learn-link mt-1 md:mt-2" data-i18n="learn_more">En savoir plus →</a>
                 </div>
             </div>
 
@@ -1061,9 +1271,9 @@ style="background: #0A1408;">
                     <img src="https://scontent.frba1-2.fna.fbcdn.net/v/t39.30808-6/727465705_122114984313125609_1871332142658218376_n.jpg?stp=dst-jpg_tt6&cstp=mx1535x1024&ctp=s1535x1024&_nc_cat=107&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeGGQkn1_75BzNMuxcItNkSfeR8gqPjoEL15HyCo-OgQvU71-2BQPPmSZfphJo_StjqL9YXB6Phe4UsA5SZZzokT&_nc_ohc=eT3in7gZ_o4Q7kNvwFBHveU&_nc_oc=AdpNKtE7cCxen_BjISMWA8jJ6n2nMJUV2mPU0C8BQ7A9zBjgrm79U-4kzDu978sV00A&_nc_zt=23&_nc_ht=scontent.frba1-2.fna&_nc_gid=7kRDhvBldkelNr-lQ0d6Hg&_nc_ss=7e2a8&oh=00_Af8r1_HecL9zKaVyDcxASv6f4dx8GstSQIsz205-2g68Fw&oe=6A3BDB9B" alt="Intrants et équipements agricoles" />
                 </div>
                 <div class="text-wrap">
-                    <div class="flex items-center gap-3 mb-1">
+                    <div class="flex items-center gap-2 md:gap-3 mb-1">
                         <h3 data-i18n="s7_title">Intrants &amp; Équipements</h3>
-                        <span class="px-3 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-700" data-i18n="s7_badge">Guide complet</span>
+                        <span class="px-2 py-0.5 md:px-3 md:py-0.5 rounded-full text-[10px] md:text-xs font-semibold bg-green-100 text-green-700" data-i18n="s7_badge">Guide complet</span>
                     </div>
                     <p class="desc" data-i18n="s7_desc">Optimisez vos achats et l'utilisation de vos ressources</p>
                     <div class="desc-two">
@@ -1071,7 +1281,7 @@ style="background: #0A1408;">
                         <span class="more-text" data-i18n="s7_full"> Il comprend une base de données à jour des pesticides homologués au Maroc, couvrant les dosages, les modes d'application et les délais de rémanence, ainsi qu'un guide complet des engrais organiques et minéraux avec des conseils de fertilisation raisonnée. Le guide aide également à sélectionner les meilleurs équipements, des tracteurs et outils de précision aux systèmes d'irrigation, et permet de vérifier la compatibilité des engrais pour éviter les réactions chimiques nocives, tout en calculant avec précision les quantités de pesticides pour une utilisation sûre et efficace.</span>
                         <button class="read-more-btn" data-i18n-readmore="read_more">... lire la suite</button>
                     </div>
-                    <a href="#" class="learn-link mt-2" data-i18n="learn_more">En savoir plus →</a>
+                    <a href="#" class="learn-link mt-1 md:mt-2" data-i18n="learn_more">En savoir plus →</a>
                 </div>
             </div>
 
@@ -1081,9 +1291,9 @@ style="background: #0A1408;">
                     <img src="https://scontent.frba1-1.fna.fbcdn.net/v/t39.30808-6/727440933_122114984541125609_6690135204066954914_n.jpg?stp=dst-jpg_tt6&cstp=mx1536x1024&ctp=s1536x1024&_nc_cat=106&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeEfzCP_wRZqGJsUNy1xc6MTpHu-2mRLiIyke77aZEuIjORy2xdi9O_Hru7RagsJgk6D1XI-bo12-BsPcWLUBpy2&_nc_ohc=slaKDfe5Z5MQ7kNvwHN9cY1&_nc_oc=Adpw_KVFB40vTNoxI7aFPjN1hppP3vFA2_AZag9Mun9KV93ku64Z6dfXe5G5IBpc8gY&_nc_zt=23&_nc_ht=scontent.frba1-1.fna&_nc_gid=ydF9Pk3JJITJ4FX5GStONQ&_nc_ss=7e2a8&oh=00_Af8yCrlI99EmdBbZVPTQo-hqNQIo03Lbnu0MA76LXWWjPA&oe=6A3BD67E" alt="Emplois et stages agricoles" />
                 </div>
                 <div class="text-wrap">
-                    <div class="flex items-center gap-3 mb-1">
+                    <div class="flex items-center gap-2 md:gap-3 mb-1">
                         <h3 data-i18n="s8_title">Emplois &amp; Stages Agricoles</h3>
-                        <span class="px-3 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-700" data-i18n="s8_badge">Recrutement</span>
+                        <span class="px-2 py-0.5 md:px-3 md:py-0.5 rounded-full text-[10px] md:text-xs font-semibold bg-green-100 text-green-700" data-i18n="s8_badge">Recrutement</span>
                     </div>
                     <p class="desc" data-i18n="s8_desc">Mettez en relation talents et entreprises du secteur</p>
                     <div class="desc-two">
@@ -1091,7 +1301,7 @@ style="background: #0A1408;">
                         <span class="more-text" data-i18n="s8_full"> Elle présente les offres d'emploi disponibles dans les différentes professions agricoles au Maroc. Elle permet aux chercheurs d'emploi de créer des profils et de déposer leurs CV pour accroître leur visibilité auprès des recruteurs, tout en offrant un espace dédié aux entreprises pour publier leurs besoins et trouver les candidats adaptés. La plateforme comprend également une section pour les stages et l'alternance destinée aux étudiants et jeunes diplômés, ainsi qu'un système de notifications intelligentes envoyant des recommandations personnalisées basées sur le profil de chaque utilisateur.</span>
                         <button class="read-more-btn" data-i18n-readmore="read_more">... lire la suite</button>
                     </div>
-                    <a href="#" class="learn-link mt-2" data-i18n="learn_more">En savoir plus →</a>
+                    <a href="#" class="learn-link mt-1 md:mt-2" data-i18n="learn_more">En savoir plus →</a>
                 </div>
             </div>
 
@@ -1101,9 +1311,9 @@ style="background: #0A1408;">
                     <img src="https://scontent.frba1-4.fna.fbcdn.net/v/t39.30808-6/727258143_122114984841125609_7266403462512692750_n.jpg?stp=dst-jpg_tt6&cstp=mx1536x1024&ctp=s1536x1024&_nc_cat=105&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFzTTgn6A1xU57EMQ31Uxujv1u9InpMzP2_W70iekzM_V8NBnxQ1br3v5DTxE_-j9XnCAluXerZd_WhDwxOGhFA&_nc_ohc=jeAyN8nCUo4Q7kNvwE-gUs3&_nc_oc=AdrCRnrNHPvDEH-_2qyLv2uYwnFiozDpobTDuu32u9DGJqEQWv8x6KwTBr0uho8UdTk&_nc_zt=23&_nc_ht=scontent.frba1-4.fna&_nc_gid=AJNK-tiHEqPbUJmU6-IsTQ&_nc_ss=7e2a8&oh=00_Af-k_U_jOAXSpcRzFToxyfLCCy3rCcTVtvfsux9mbpzqGA&oe=6A3BE755" alt="Apprendre, Découvrir & Cultiver le savoir" />
                 </div>
                 <div class="text-wrap">
-                    <div class="flex items-center gap-3 mb-1">
+                    <div class="flex items-center gap-2 md:gap-3 mb-1">
                         <h3 data-i18n="s9_title">Apprendre &amp; Cultiver le savoir</h3>
-                        <span class="px-3 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-700" data-i18n="s9_badge">Formation</span>
+                        <span class="px-2 py-0.5 md:px-3 md:py-0.5 rounded-full text-[10px] md:text-xs font-semibold bg-green-100 text-green-700" data-i18n="s9_badge">Formation</span>
                     </div>
                     <p class="desc" data-i18n="s9_desc">Plateforme de formation et de ressources agricoles</p>
                     <div class="desc-two">
@@ -1111,7 +1321,7 @@ style="background: #0A1408;">
                         <span class="more-text" data-i18n="s9_full"> Elle propose également des documents techniques, livres blancs et ressources téléchargeables couvrant divers aspects du secteur. Elle dispose d'une bibliothèque spécialisée riche en références scientifiques en sciences agricoles, d'une vaste base de données de plantes consultable par nom, famille ou usage, et prend en charge le téléchargement haute qualité d'images, de schémas et de fiches prêtes à l'emploi, ce qui en fait une destination complète pour l'apprentissage autonome et le développement professionnel.</span>
                         <button class="read-more-btn" data-i18n-readmore="read_more">... lire la suite</button>
                     </div>
-                    <a href="#" class="learn-link mt-2" data-i18n="learn_more">En savoir plus →</a>
+                    <a href="#" class="learn-link mt-1 md:mt-2" data-i18n="learn_more">En savoir plus →</a>
                 </div>
             </div>
 
@@ -1121,9 +1331,9 @@ style="background: #0A1408;">
                     <img src="https://scontent.frba1-2.fna.fbcdn.net/v/t39.30808-6/726525530_122114986185125609_409666537470633481_n.jpg?stp=dst-jpg_tt6&cstp=mx1535x1024&ctp=s1535x1024&_nc_cat=111&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFzehijKXIqGfn8G6vE2s0r91LOoiXE6rP3Us6iJcTqs5JzPtQa0K8s0Yh5hwi2e_etIbYl67QIecXWlhwhjg5s&_nc_ohc=WKNEC335uLIQ7kNvwFrqNlL&_nc_oc=AdqJ9ebG0Mi9Q_2BJlM8LS3KEfomIyUFEbxtw-wbm2G2YHr02SLd2N3yXv3JeeejOrM&_nc_zt=23&_nc_ht=scontent.frba1-2.fna&_nc_gid=Co63Lt8bCANaGxurpgWKwg&_nc_ss=7e2a8&oh=00_Af-8az4q2z0T7ljbOkjdPtuUjx4WKAh0B7NTXftSdhQuBQ&oe=6A3BDC7F" alt="Consultation technicien agricole" />
                 </div>
                 <div class="text-wrap">
-                    <div class="flex items-center gap-3 mb-1">
+                    <div class="flex items-center gap-2 md:gap-3 mb-1">
                         <h3 data-i18n="s10_title">Consultation Technicien Agricole</h3>
-                        <span class="px-3 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-700" data-i18n="s10_badge">Conseil</span>
+                        <span class="px-2 py-0.5 md:px-3 md:py-0.5 rounded-full text-[10px] md:text-xs font-semibold bg-green-100 text-green-700" data-i18n="s10_badge">Conseil</span>
                     </div>
                     <p class="desc" data-i18n="s10_desc">Un expert à votre écoute pour des solutions sur mesure</p>
                     <div class="desc-two">
@@ -1131,7 +1341,7 @@ style="background: #0A1408;">
                         <span class="more-text" data-i18n="s10_full"> Commençant par un diagnostic précis et rapide des maladies, insectes, virus ou carences nutritionnelles, suivi de recommandations pratiques et de plans d'intervention conçus selon le type de culture et les conditions de l'exploitation. La consultation couvre des conseils complets en conception de systèmes d'irrigation, programmes de fertilisation et gestion des sols, avec la possibilité d'organiser des visites sur place pour une évaluation pratique et un soutien opérationnel, ainsi qu'un suivi personnalisé via un conseiller dédié pour garantir des résultats durables et des améliorations à long terme.</span>
                         <button class="read-more-btn" data-i18n-readmore="read_more">... lire la suite</button>
                     </div>
-                    <a href="#" class="learn-link mt-2" data-i18n="learn_more">En savoir plus →</a>
+                    <a href="#" class="learn-link mt-1 md:mt-2" data-i18n="learn_more">En savoir plus →</a>
                 </div>
             </div>
 
@@ -1141,9 +1351,9 @@ style="background: #0A1408;">
                     <img src="https://scontent.frba1-2.fna.fbcdn.net/v/t39.30808-6/726405179_122114985555125609_6678626723131277810_n.jpg?stp=dst-jpg_tt6&cstp=mx1535x1024&ctp=s1535x1024&_nc_cat=107&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFmWmOULeZMHV-dumTiKAcmoYQcnnHkDoChhByeceQOgGE0sLs3DILHMmv9hQdn-1fuPm3Zk_bwep-UdEsqhYvi&_nc_ohc=GtxSot1rzLMQ7kNvwHTWEX5&_nc_oc=Adpo4ukPpHlK_yfR9UsPtwwjTWmYBAcqvy444qUSWsTHMc6xfJHMv7sX6AU7eTbLHpA&_nc_zt=23&_nc_ht=scontent.frba1-2.fna&_nc_gid=dyY36WMM4KEI34HrmNiG-A&_nc_ss=7e2a8&oh=00_Af9PIWaiPcGhNPwDRKiO4rDKRTxRkvbE1stlanCZeSEpRg&oe=6A3BDB74" alt="Chat de Groupe Agricole" />
                 </div>
                 <div class="text-wrap">
-                    <div class="flex items-center gap-3 mb-1">
+                    <div class="flex items-center gap-2 md:gap-3 mb-1">
                         <h3 data-i18n="s11_title">Chat de Groupe Agricole</h3>
-                        <span class="px-3 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-700" data-i18n="s11_badge">Communauté</span>
+                        <span class="px-2 py-0.5 md:px-3 md:py-0.5 rounded-full text-[10px] md:text-xs font-semibold bg-green-100 text-green-700" data-i18n="s11_badge">Communauté</span>
                     </div>
                     <p class="desc" data-i18n="s11_desc">Échangez, collaborez et progressez ensemble</p>
                     <div class="desc-two">
@@ -1151,7 +1361,7 @@ style="background: #0A1408;">
                         <span class="more-text" data-i18n="s11_full"> Il permet des discussions directes pour poser des questions et partager des expériences, tout en rassemblant une communauté diversifiée d'étudiants, d'agriculteurs, d'experts et de passionnés. La plateforme regorge de conseils pratiques sur les techniques agricoles modernes, la gestion des cultures et les méthodes de prévention des maladies, favorisant une culture du partage des connaissances à travers des histoires de réussite, des défis et des apprentissages mutuels, avec des notifications intelligentes pour que chacun reste informé des dernières discussions et sujets.</span>
                         <button class="read-more-btn" data-i18n-readmore="read_more">... lire la suite</button>
                     </div>
-                    <a href="#" class="learn-link mt-2" data-i18n="learn_more">En savoir plus →</a>
+                    <a href="#" class="learn-link mt-1 md:mt-2" data-i18n="learn_more">En savoir plus →</a>
                 </div>
             </div>
 
@@ -1161,9 +1371,9 @@ style="background: #0A1408;">
                     <img src="https://scontent.frba1-3.fna.fbcdn.net/v/t39.30808-6/727287673_122114986839125609_6429971815159527789_n.jpg?stp=dst-jpg_tt6&cstp=mx1535x1024&ctp=s1535x1024&_nc_cat=103&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeEDE8z-1TfMMK-V3VDRKZdtm0fYcKroebibR9hwquh5uA6DpCxLR0EywiPju_2Wfnd_WW_4NKyVPsq-XB7i50g-&_nc_ohc=nn8CJtio82YQ7kNvwHBX14x&_nc_oc=Adr3rfakjan9EcP3PbRgXkbI4_DnjgCkHAjLkmPfq-hE8eOdjNECtf-qYIw1-bfEOX8&_nc_zt=23&_nc_ht=scontent.frba1-3.fna&_nc_gid=Su5mH9VkasCN-VPSY3BZlQ&_nc_ss=7e2a8&oh=00_Af8tFHjCvLw7rTEDB99YiJKxcJe71STxMtQWyleY2IWwoQ&oe=6A3BC364" alt="Élevage et santé animale" />
                 </div>
                 <div class="text-wrap">
-                    <div class="flex items-center gap-3 mb-1">
+                    <div class="flex items-center gap-2 md:gap-3 mb-1">
                         <h3 data-i18n="s12_title">Élevage &amp; Santé Animale</h3>
-                        <span class="px-3 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-700" data-i18n="s12_badge">Bétail</span>
+                        <span class="px-2 py-0.5 md:px-3 md:py-0.5 rounded-full text-[10px] md:text-xs font-semibold bg-green-100 text-green-700" data-i18n="s12_badge">Bétail</span>
                     </div>
                     <p class="desc" data-i18n="s12_desc">Gestion intégrée de la santé et de la productivité des troupeaux</p>
                     <div class="desc-two">
@@ -1171,7 +1381,7 @@ style="background: #0A1408;">
                         <span class="more-text" data-i18n="s12_full"> Grâce à des mécanismes avancés de détection des maladies, de protocoles de traitement précis et de suivi sanitaire continu, ainsi que des plans nutritionnels équilibrés adaptés à chaque type de bétail. La plateforme comprend un suivi détaillé des indicateurs de production tels que la croissance, la reproduction, la production laitière et l'évolution du poids, tout en offrant un catalogue à jour des médicaments et vaccins recommandés, et la possibilité de demander des visites sur site d'experts vétérinaires pour un soutien consultatif et thérapeutique sur place.</span>
                         <button class="read-more-btn" data-i18n-readmore="read_more">... lire la suite</button>
                     </div>
-                    <a href="#" class="learn-link mt-2" data-i18n="learn_more">En savoir plus →</a>
+                    <a href="#" class="learn-link mt-1 md:mt-2" data-i18n="learn_more">En savoir plus →</a>
                 </div>
             </div>
 
@@ -1181,9 +1391,9 @@ style="background: #0A1408;">
                     <img src="https://scontent.frba1-4.fna.fbcdn.net/v/t39.30808-6/727363993_122114986935125609_4956776230175998758_n.jpg?stp=dst-jpg_tt6&cstp=mx1535x1024&ctp=s1535x1024&_nc_cat=101&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeHWcf5EI5IkEDBvsjIhNpwUJvUw-EkhNfsm9TD4SSE1-w6viJxaeiKjXwQtdeDM8SSMqyKbOFNLArT4HP9BYn_W&_nc_ohc=bGoZZwz8otMQ7kNvwEddEck&_nc_oc=AdrKl1bcbKeMwY3L5hjYrvxxq5is6vL-XgGidmB37kGN7bJK-3HzQXNyQl_ZrbYeoDE&_nc_zt=23&_nc_ht=scontent.frba1-4.fna&_nc_gid=r0kmVdHwDogABo36risxQg&_nc_ss=7e2a8&oh=00_Af93pwEn05YYt8oHMNPN33XgdN8XLkjFOS6dcUAgASPQQg&oe=6A3BC564" alt="Marché Agricole" />
                 </div>
                 <div class="text-wrap">
-                    <div class="flex items-center gap-3 mb-1">
+                    <div class="flex items-center gap-2 md:gap-3 mb-1">
                         <h3 data-i18n="s13_title">Le Marché Agricole</h3>
-                        <span class="px-3 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-700" data-i18n="s13_badge">Acheter / Vendre</span>
+                        <span class="px-2 py-0.5 md:px-3 md:py-0.5 rounded-full text-[10px] md:text-xs font-semibold bg-green-100 text-green-700" data-i18n="s13_badge">Acheter / Vendre</span>
                     </div>
                     <p class="desc" data-i18n="s13_desc">La place de marché de référence pour les professionnels du secteur</p>
                     <div class="desc-two">
@@ -1191,7 +1401,7 @@ style="background: #0A1408;">
                         <span class="more-text" data-i18n="s13_full"> Il propose des produits agricoles tels que semences, engrais, pesticides et aliments pour bétail, ainsi que des machines lourdes comme les tracteurs, les outils de précision et les systèmes d'irrigation modernes. Le marché s'étend au commerce du bétail et de la volaille, et à la fourniture de services agricoles incluant le labour, la récolte, le conseil et le transport, le tout en garantissant des transactions sécurisées et fluides grâce à un environnement numérique fiable qui favorise la confiance entre les parties et soutient l'économie agricole locale.</span>
                         <button class="read-more-btn" data-i18n-readmore="read_more">... lire la suite</button>
                     </div>
-                    <a href="#" class="learn-link mt-2" data-i18n="learn_more">En savoir plus →</a>
+                    <a href="#" class="learn-link mt-1 md:mt-2" data-i18n="learn_more">En savoir plus →</a>
                 </div>
             </div>
 
@@ -1200,23 +1410,23 @@ style="background: #0A1408;">
 </section>
 
 <!-- ===================== SDGs ===================== -->
-<section id="sdgs" class="py-24 bg-white">
-    <div class="max-w-4xl mx-auto px-4">
-        <h2 class="section-title text-2xl md:text-3xl text-gray-900 text-center mb-12" data-i18n="sdg_title">Comment SONE soutient-elle les Objectifs de Développement Durable ?</h2>
-        <div class="relative bg-[#F9FAFB] rounded-2xl shadow-lg p-8 md:p-12 min-h-[280px]">
+<section id="sdgs" class="py-12 md:py-24 bg-white">
+    <div class="max-w-4xl mx-auto px-3 md:px-4">
+        <h2 class="section-title text-center mb-6 md:mb-12" data-i18n="sdg_title">Comment SONE soutient-elle les Objectifs de Développement Durable ?</h2>
+        <div class="relative bg-[#F9FAFB] rounded-xl md:rounded-2xl shadow-lg p-6 md:p-12 min-h-[240px] md:min-h-[280px]">
             <div id="sdg-slide" class="flex flex-col items-center text-center transition-opacity duration-500 ease-in-out">
-                <img id="sdg-image" class="sdg-image mb-4" src="" alt="ODD" />
-                <h3 class="text-xl font-bold text-green-700 mb-3" id="sdg-name">Faim Zéro</h3>
-                <p class="text-gray-600 max-w-lg leading-relaxed text-base" id="sdg-desc">
+                <img id="sdg-image" class="sdg-image mb-3 md:mb-4" src="" alt="ODD" />
+                <h3 class="text-lg md:text-xl font-bold text-green-700 mb-2 md:mb-3" id="sdg-name">Faim Zéro</h3>
+                <p class="text-gray-600 max-w-lg leading-relaxed text-sm md:text-base px-2" id="sdg-desc">
                     Amélioration de la productivité agricole et réduction des pertes grâce à des conseils personnalisés.
                 </p>
             </div>
-            <div class="flex justify-center gap-3 mt-8">
-                <button id="sdg-prev" class="w-10 h-10 rounded-full bg-green-100 hover:bg-green-200 flex items-center justify-center transition">
-                    <i data-lucide="chevron-left" class="w-5 h-5 text-green-700"></i>
+            <div class="flex justify-center gap-3 mt-6 md:mt-8">
+                <button id="sdg-prev" class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-green-100 hover:bg-green-200 flex items-center justify-center transition">
+                    <i data-lucide="chevron-left" class="w-4 h-4 md:w-5 md:h-5 text-green-700"></i>
                 </button>
-                <button id="sdg-next" class="w-10 h-10 rounded-full bg-green-100 hover:bg-green-200 flex items-center justify-center transition">
-                    <i data-lucide="chevron-right" class="w-5 h-5 text-green-700"></i>
+                <button id="sdg-next" class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-green-100 hover:bg-green-200 flex items-center justify-center transition">
+                    <i data-lucide="chevron-right" class="w-4 h-4 md:w-5 md:h-5 text-green-700"></i>
                 </button>
             </div>
         </div>
@@ -1224,41 +1434,41 @@ style="background: #0A1408;">
 </section>
 
 <!-- ===================== SPONSORS ===================== -->
-<section id="sponsors" class="py-24 bg-[#F3F4F6]">
-    <div class="max-w-6xl mx-auto px-4">
-        <h2 class="section-title text-3xl md:text-4xl text-gray-900 text-center mb-12" data-i18n="sponsors_title">Nos sponsors et partenaires</h2>
-        <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition p-8 md:p-12 text-center">
+<section id="sponsors" class="py-12 md:py-24 bg-[#F3F4F6]">
+    <div class="max-w-6xl mx-auto px-3 md:px-4">
+        <h2 class="section-title text-center mb-6 md:mb-12" data-i18n="sponsors_title">Nos sponsors et partenaires</h2>
+        <div class="bg-white rounded-xl md:rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition p-6 md:p-12 text-center">
             <img src="https://scontent.frba1-1.fna.fbcdn.net/v/t39.30808-6/726495162_122114988141125609_4814318146197665152_n.jpg?stp=dst-jpg_tt6&cstp=mx1254x1254&ctp=s1254x1254&_nc_cat=102&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeH-0pknWVlIJLQtUdT-Lf48ASX1Mgy-1RUBJfUyDL7VFXVuUMVBtGaaUr7Ab9SZt4wDmK1NkZtoOAtAWTSrhFUX&_nc_ohc=Q2tT7Am-VWwQ7kNvwEKAbXX&_nc_oc=AdpN4kLjyDyVEYdWcljv3QNiIXNTBZpfstSteBHKWpv2dsiWjJ0_fM6Ke8IWy1zYWjk&_nc_zt=23&_nc_ht=scontent.frba1-1.fna&_nc_gid=flCCLvQ-4EkT7izE8wP8WA&_nc_ss=7e2a8&oh=00_Af_PedzKi93XsoHlwQxsfTLnFQOzc6gXNoMPvzDL7m6FAA&oe=6A3BFB56"
             alt="Partenaires"
-            class="w-40 h-40 rounded-full object-cover mx-auto border-4 border-green-200 shadow-md" />
-            <div class="mt-6 flex flex-wrap justify-center gap-3 text-lg font-bold text-gray-800">
+            class="w-24 h-24 md:w-40 md:h-40 rounded-full object-cover mx-auto border-4 border-green-200 shadow-md" />
+            <div class="mt-4 md:mt-6 flex flex-wrap justify-center gap-2 md:gap-3 text-base md:text-lg font-bold text-gray-800">
                 <span>ITA Techniciens Agricole BIR MEZOU</span>
             </div>
-            <p class="text-gray-500 text-sm mt-3" data-i18n="sponsors_desc">Des partenaires engagés pour une agriculture durable et innovante.</p>
+            <p class="text-gray-500 text-xs md:text-sm mt-2 md:mt-3" data-i18n="sponsors_desc">Des partenaires engagés pour une agriculture durable et innovante.</p>
         </div>
     </div>
 </section>
 
 <!-- ===================== CONTACT ===================== -->
-<section id="contact" class="py-24" style="background: #0A1408;">
-    <div class="max-w-4xl mx-auto px-4">
-        <h2 class="text-3xl md:text-4xl font-extrabold text-white text-center mb-3" data-i18n="contact_title">Contactez-nous</h2>
-        <p class="text-gray-400 text-center mb-10 max-w-xl mx-auto text-lg leading-relaxed" data-i18n="contact_sub">Une question sur nos solutions, un projet en tête ? Écrivez-nous, nous vous répondrons dans les plus brefs délais.</p>
-        <form id="contact-form" class="grid sm:grid-cols-2 gap-5">
+<section id="contact" class="py-12 md:py-24" style="background: #0A1408;">
+    <div class="max-w-4xl mx-auto px-3 md:px-4">
+        <h2 class="text-2xl md:text-4xl font-extrabold text-white text-center mb-2 md:mb-3" data-i18n="contact_title">Contactez-nous</h2>
+        <p class="text-gray-400 text-center mb-6 md:mb-10 max-w-xl mx-auto text-sm md:text-lg leading-relaxed px-2" data-i18n="contact_sub">Une question sur nos solutions, un projet en tête ? Écrivez-nous, nous vous répondrons dans les plus brefs délais.</p>
+        <form id="contact-form" class="grid sm:grid-cols-2 gap-3 md:gap-5">
             <div>
-                <label class="text-gray-300 text-sm font-semibold mb-1.5 block" data-i18n="contact_name">Nom complet</label>
+                <label class="text-gray-300 text-xs md:text-sm font-semibold mb-1 block" data-i18n="contact_name">Nom complet</label>
                 <input type="text" required class="contact-input" data-i18n-placeholder="contact_name_ph" placeholder="Votre nom" />
             </div>
             <div>
-                <label class="text-gray-300 text-sm font-semibold mb-1.5 block" data-i18n="contact_phone">Téléphone</label>
+                <label class="text-gray-300 text-xs md:text-sm font-semibold mb-1 block" data-i18n="contact_phone">Téléphone</label>
                 <input type="tel" class="contact-input" data-i18n-placeholder="contact_phone_ph" placeholder="+212 6XX XXX XXX" />
             </div>
             <div class="sm:col-span-2">
-                <label class="text-gray-300 text-sm font-semibold mb-1.5 block" data-i18n="contact_email">E-mail</label>
+                <label class="text-gray-300 text-xs md:text-sm font-semibold mb-1 block" data-i18n="contact_email">E-mail</label>
                 <input type="email" required class="contact-input" data-i18n-placeholder="contact_email_ph" placeholder="votre@email.com" />
             </div>
             <div class="sm:col-span-2">
-                <label class="text-gray-300 text-sm font-semibold mb-1.5 block" data-i18n="contact_subject">Sujet</label>
+                <label class="text-gray-300 text-xs md:text-sm font-semibold mb-1 block" data-i18n="contact_subject">Sujet</label>
                 <select required class="contact-select" data-i18n-options="contact_subject_options">
                     <option value="" data-i18n="contact_subject_default">-- Choisir un sujet --</option>
                     <option data-i18n="s1_title">Agri Manager</option>
@@ -1278,7 +1488,7 @@ style="background: #0A1408;">
                 </select>
             </div>
             <div class="sm:col-span-2">
-                <label class="text-gray-300 text-sm font-semibold mb-1.5 block" data-i18n="contact_message">Message</label>
+                <label class="text-gray-300 text-xs md:text-sm font-semibold mb-1 block" data-i18n="contact_message">Message</label>
                 <textarea rows="4" required class="contact-input resize-none" data-i18n-placeholder="contact_message_ph" placeholder="Votre message..."></textarea>
             </div>
             <div class="sm:col-span-2">
@@ -1286,29 +1496,29 @@ style="background: #0A1408;">
             </div>
             <p id="form-success" class="sm:col-span-2 text-green-400 text-center font-semibold hidden" data-i18n="contact_success">✓ Message envoyé avec succès !</p>
         </form>
-        <p class="text-gray-500 text-xs text-center mt-4" data-i18n="contact_footer">Champs obligatoires · Vous souhaitez nous rejoindre ? <a href="#" class="text-green-400 hover:text-green-300 underline" data-i18n="contact_apply">Postulez ici !</a></p>
+        <p class="text-gray-500 text-[10px] md:text-xs text-center mt-3 md:mt-4" data-i18n="contact_footer">Champs obligatoires · Vous souhaitez nous rejoindre ? <a href="#" class="text-green-400 hover:text-green-300 underline" data-i18n="contact_apply">Postulez ici !</a></p>
     </div>
 </section>
 
 <!-- ===================== FOOTER ===================== -->
-<footer class="py-12 border-t-2 border-green-700 bg-white">
-    <div class="max-w-6xl mx-auto px-4 grid sm:grid-cols-2 lg:grid-cols-4 gap-10">
+<footer class="py-8 md:py-12 border-t-2 border-green-700 bg-white">
+    <div class="max-w-6xl mx-auto px-3 md:px-4 grid sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-10">
         <div>
-            <div class="flex items-center gap-2.5 mb-3">
-                <div class="w-9 h-9 rounded-full bg-gradient-to-br from-green-500 to-lime-400 flex items-center justify-center font-bold text-white text-sm">S</div>
-                <span class="font-extrabold text-lg text-gray-800 tracking-wide">SONE</span>
+            <div class="flex items-center gap-2 md:gap-2.5 mb-2 md:mb-3">
+                <div class="w-7 h-7 md:w-9 md:h-9 rounded-full bg-gradient-to-br from-green-500 to-lime-400 flex items-center justify-center font-bold text-white text-xs md:text-sm">S</div>
+                <span class="font-extrabold text-base md:text-lg text-gray-800 tracking-wide">SONE</span>
             </div>
-            <p class="text-sm text-gray-500 mb-4" data-i18n="footer_tagline">SMART SOLUTIONS · GREEN FUTURE</p>
-            <div class="flex gap-2.5">
-                <a href="#" class="social-icon"><i data-lucide="facebook" class="w-4 h-4"></i></a>
-                <a href="#" class="social-icon"><i data-lucide="instagram" class="w-4 h-4"></i></a>
-                <a href="#" class="social-icon"><i data-lucide="linkedin" class="w-4 h-4"></i></a>
-                <a href="#" class="social-icon"><i data-lucide="twitter" class="w-4 h-4"></i></a>
+            <p class="text-xs md:text-sm text-gray-500 mb-3 md:mb-4" data-i18n="footer_tagline">SMART SOLUTIONS · GREEN FUTURE</p>
+            <div class="flex gap-2 md:gap-2.5">
+                <a href="#" class="social-icon"><i data-lucide="facebook" class="w-3 h-3 md:w-4 md:h-4"></i></a>
+                <a href="#" class="social-icon"><i data-lucide="instagram" class="w-3 h-3 md:w-4 md:h-4"></i></a>
+                <a href="#" class="social-icon"><i data-lucide="linkedin" class="w-3 h-3 md:w-4 md:h-4"></i></a>
+                <a href="#" class="social-icon"><i data-lucide="twitter" class="w-3 h-3 md:w-4 md:h-4"></i></a>
             </div>
         </div>
         <div>
-            <h4 class="font-bold text-gray-800 mb-4 text-sm uppercase tracking-wide" data-i18n="footer_quick">Liens rapides</h4>
-            <ul class="space-y-2">
+            <h4 class="font-bold text-gray-800 mb-3 md:mb-4 text-xs md:text-sm uppercase tracking-wide" data-i18n="footer_quick">Liens rapides</h4>
+            <ul class="space-y-1.5 md:space-y-2">
                 <li><a href="#home" class="footer-link" data-i18n="nav_home">Accueil</a></li>
                 <li><a href="#services" class="footer-link" data-i18n="nav_services">Services</a></li>
                 <li><a href="#about" class="footer-link" data-i18n="nav_about">À propos</a></li>
@@ -1316,8 +1526,8 @@ style="background: #0A1408;">
             </ul>
         </div>
         <div>
-            <h4 class="font-bold text-gray-800 mb-4 text-sm uppercase tracking-wide" data-i18n="footer_services">Nos services</h4>
-            <ul class="space-y-2">
+            <h4 class="font-bold text-gray-800 mb-3 md:mb-4 text-xs md:text-sm uppercase tracking-wide" data-i18n="footer_services">Nos services</h4>
+            <ul class="space-y-1.5 md:space-y-2">
                 <li><a href="#" class="footer-link" data-i18n="s2_title">Agri Manager</a></li>
                 <li><a href="#" class="footer-link" data-i18n="s1_title">Analyse NDVI</a></li>
                 <li><a href="#" class="footer-link" data-i18n="s5_title">Météo précise</a></li>
@@ -1333,16 +1543,16 @@ style="background: #0A1408;">
             </ul>
         </div>
         <div>
-            <h4 class="font-bold text-gray-800 mb-4 text-sm uppercase tracking-wide" data-i18n="footer_contact">Contact</h4>
-            <ul class="space-y-2.5 text-sm text-gray-500">
-                <li class="flex items-center gap-2.5"><i data-lucide="mail" class="w-4 h-4 text-green-600"></i> contact@sone.ma</li>
-                <li class="flex items-center gap-2.5"><i data-lucide="phone" class="w-4 h-4 text-green-600"></i> +212 600 000 000</li>
-                <li class="flex items-center gap-2.5"><i data-lucide="map-pin" class="w-4 h-4 text-green-600"></i> Maroc</li>
+            <h4 class="font-bold text-gray-800 mb-3 md:mb-4 text-xs md:text-sm uppercase tracking-wide" data-i18n="footer_contact">Contact</h4>
+            <ul class="space-y-2 md:space-y-2.5 text-xs md:text-sm text-gray-500">
+                <li class="flex items-center gap-2 md:gap-2.5"><i data-lucide="mail" class="w-3 h-3 md:w-4 md:h-4 text-green-600"></i> contact@sone.ma</li>
+                <li class="flex items-center gap-2 md:gap-2.5"><i data-lucide="phone" class="w-3 h-3 md:w-4 md:h-4 text-green-600"></i> +212 600 000 000</li>
+                <li class="flex items-center gap-2 md:gap-2.5"><i data-lucide="map-pin" class="w-3 h-3 md:w-4 md:h-4 text-green-600"></i> Maroc</li>
             </ul>
         </div>
     </div>
-    <div class="max-w-6xl mx-auto px-4 mt-10 pt-6 border-t border-gray-200">
-        <p class="text-sm text-gray-400 text-center">
+    <div class="max-w-6xl mx-auto px-3 md:px-4 mt-6 md:mt-10 pt-4 md:pt-6 border-t border-gray-200">
+        <p class="text-[10px] md:text-sm text-gray-400 text-center">
             © 2026 SONE — <span data-i18n="footer_rights">Tous droits réservés</span> &nbsp;|&nbsp; <a href="#" class="text-gray-400 hover:text-green-600 transition" data-i18n="footer_terms">Conditions d'utilisation</a>
         </p>
     </div>
@@ -1350,12 +1560,12 @@ style="background: #0A1408;">
 
 <!-- ===================== SCROLL TO TOP ===================== -->
 <button id="scroll-top" title="Retour en haut">
-    <i data-lucide="chevron-up" class="w-6 h-6"></i>
+    <i data-lucide="chevron-up" class="w-4 h-4 md:w-6 md:h-6"></i>
 </button>
 
 <!-- ===================== NEWSLETTER BUTTON ===================== -->
 <button id="newsletter-btn" title="Newsletter">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="md:w-6 md:h-6">
         <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
         <polyline points="22,6 12,13 2,6" />
     </svg>
@@ -1375,31 +1585,25 @@ style="background: #0A1408;">
             nav_about: "À propos",
             nav_contact: "Contact",
             menu_title: "Menu",
-            hero_badge: "La révolution agricole 4.0",
-            hero_title1: "SONE — Agriculture de précision",
-            hero_title2: "avec données en temps réel",
-            hero_desc: "Une plateforme intégrée qui combine imagerie satellite, météo hyperlocale, cartographie des risques phytosanitaires et veille des marchés, pour une prise de décision éclairée.",
             hero_cta: "Découvrez nos solutions · Glissez pour explorer",
-            hero_slide1_title: "L'œil de SONE veille sur vos champs",
-            hero_slide1_desc: "Détectez les stress hydrique et nutritionnel avant qu'ils ne soient visibles. Décidez intelligemment avant qu'il ne soit trop tard.",
-            hero_slide1_badge: "Décisions rapides",
-            hero_slide2_title: "Un expert agricole dans votre poche",
-            hero_slide2_desc: "Diagnostiquez maladies et traitements en quelques secondes, avec 95% de précision. Avec SONE, chaque agriculteur a son propre expert.",
-            hero_slide2_badge: "Précision 95%",
-            hero_slide3_title: "Anticipez... avant que le temps ne change",
-            hero_slide3_desc: "Données météo spécifiques à votre champ. Planifiez irrigation et récolte sans surprises climatiques.",
-            hero_slide3_badge: "Mise à jour instantanée",
-            hero_slide4_title: "Vos profits commencent par la connaissance du marché",
-            hero_slide4_desc: "Suivez les prix des fruits et légumes au Maroc, et vendez vos produits au meilleur prix.",
-            hero_slide4_badge: "Intelligence commerciale",
-            hero_slide5_title: "SONE MANAGER: pilotez votre exploitation à distance",
-            hero_slide5_desc: "Planification, suivi et organisation. Tout dans un seul tableau de bord pour augmenter la productivité et gagner du temps.",
-            hero_slide5_badge: "Gestion centralisée",
-            hero_slide6_title: "Cultivez pour l'avenir de vos enfants",
-            hero_slide6_desc: "Réduisez votre empreinte carbone et soyez un pionnier de l'agriculture durable avec SONE. La terre mérite le meilleur.",
-            hero_slide6_badge: "Vers zéro carbone",
-            carbo_badge: "Agriculture verte",
-            carbo_desc: "CarboEdge calcule les émissions de GES et simule des stratégies de décarbonation pour une agriculture plus durable.",
+            hero_slide1_title: "Votre ferme mérite mieux que l'intuition — découvrez l'agriculture de précision.",
+            hero_slide1_desc: "Votre ferme mérite mieux que l'intuition — découvrez l'agriculture de précision.",
+            hero_slide1_badge: "Agriculture de précision",
+            hero_slide2_title: "Chaque parcelle a une histoire. Nos capteurs vous aident à la lire.",
+            hero_slide2_desc: "Chaque parcelle a une histoire. Nos capteurs vous aident à la lire.",
+            hero_slide2_badge: "Capteurs intelligents",
+            hero_slide3_title: "Moins d'eau, plus de rendement. La technologie au service de la terre.",
+            hero_slide3_desc: "Moins d'eau, plus de rendement. La technologie au service de la terre.",
+            hero_slide3_badge: "Gestion de l'eau",
+            hero_slide4_title: "Surveillez vos cultures depuis votre téléphone, où que vous soyez.",
+            hero_slide4_desc: "Surveillez vos cultures depuis votre téléphone, où que vous soyez.",
+            hero_slide4_badge: "Surveillance mobile",
+            hero_slide5_title: "L'IA qui protège vos cultures avant même l'apparition des symptômes.",
+            hero_slide5_desc: "L'IA qui protège vos cultures avant même l'apparition des symptômes.",
+            hero_slide5_badge: "IA protectrice",
+            hero_slide6_title: "Rejoignez les agriculteurs qui ont choisi l'avenir vert avec SONE.",
+            hero_slide6_desc: "Rejoignez les agriculteurs qui ont choisi l'avenir vert avec SONE.",
+            hero_slide6_badge: "Avenir vert",
             about_title: "Qui sommes-nous ?",
             about_sub: "Une vision claire : faire de l'agriculture un levier de développement durable et de compétitivité.",
             about_p1: "« Autonomiser les agriculteurs en les aidant à prendre des décisions éclairées » est notre mission. « Des solutions intelligentes pour un avenir vert » est notre devise.",
@@ -1411,15 +1615,15 @@ style="background: #0A1408;">
             read_more: "lire la suite",
             read_less: "réduire",
             s1_title: "Analyse NDVI",
-            s1_badge: "Télédétection",
+            s1_badge: "Haute précision",
             s1_desc: "Surveillance de la santé des cultures par satellite",
             s1_text: "L'indice NDVI offre une vision fine de la vigueur végétative. Détectez les zones de stress hydrique ou nutritionnel avant qu'elles ne soient visibles à l'œil nu, et intervenez de manière ciblée pour optimiser vos rendements.",
             s2_title: "Agri Manager",
-            s2_badge: "Gestion intelligente",
+            s2_badge: "Système intégré",
             s2_desc: "Gestion centralisée des exploitations agricoles",
             s2_text: "Agri Manager centralise toutes vos données : parcelles, équipements, récoltes, stocks et main-d'œuvre. Planifiez, suivez et analysez vos performances en temps réel pour une gestion plus agile et plus rentable.",
             s3_title: "SONE-SOLUTIONS ASSISTANT",
-            s3_badge: "Expert numérique",
+            s3_badge: "IA Avancée",
             s3_desc: "Expert virtuel pour le diagnostic des maladies et la santé des cultures",
             s3_short: "L'ASSISTANT SONE-SOLUTIONS est un expert virtuel avancé pour le diagnostic des maladies et la santé des cultures, s'appuyant sur les dernières technologies d'IA avec une précision de 95 %.",
             s3_full: " Cette plateforme hybride allie harmonieusement l'intelligence artificielle à l'expertise agronomique marocaine pour fournir un diagnostic précis des symptômes et des recommandations thérapeutiques efficaces. Elle propose également des conseils d'irrigation personnalisés adaptés à chaque culture selon le climat marocain. Au-delà des plantes, l'assistant s'étend à la santé animale, diagnostiquant et traitant les pathologies bovines, ovines et caprines, tout en offrant des plans de fertilisation intégrés spécifiant les types d'engrais et les calendriers d'application personnalisés pour des résultats optimaux.",
@@ -1428,11 +1632,11 @@ style="background: #0A1408;">
             s4_desc: "Cartographie dynamique des risques phytosanitaires",
             s4_text: "Notre outil croise les données satellitaires et les conditions météorologiques pour anticiper les foyers d'infection. Recevez des alertes ciblées et protégez vos cultures avant l'apparition des symptômes.",
             s5_title: "Météo précise",
-            s5_badge: "Météo précise",
+            s5_badge: "Données en direct",
             s5_desc: "Prévisions hyperlocales pour vos parcelles",
             s5_text: "Température, précipitations, humidité, vitesse du vent… toutes les variables essentielles, actualisées en continu, pour planifier vos interventions au moment le plus opportun.",
             s6_title: "Prix du marché",
-            s6_badge: "Marché en direct",
+            s6_badge: "Actualisé quotidiennement",
             s6_desc: "Indicateurs de prix des fruits et légumes au Maroc",
             s6_veggies: "Légumes",
             s6_veggies_text: "Suivez l'évolution des prix sur les marchés de gros et de détail pour affiner votre stratégie commerciale.",
@@ -1508,31 +1712,25 @@ style="background: #0A1408;">
             nav_about: "About",
             nav_contact: "Contact",
             menu_title: "Menu",
-            hero_badge: "The 4.0 agricultural revolution",
-            hero_title1: "SONE — Precision Agriculture",
-            hero_title2: "with real-time data",
-            hero_desc: "An integrated platform combining satellite imagery, hyperlocal weather, phytosanitary risk mapping, and market intelligence for informed decision-making.",
             hero_cta: "Discover our solutions · Swipe to explore",
-            hero_slide1_title: "SONE's eye watches over your fields",
-            hero_slide1_desc: "Detect water and nutrient stress before they become visible. Decide smartly before it's too late.",
-            hero_slide1_badge: "Faster decisions",
-            hero_slide2_title: "An agricultural expert in your pocket",
-            hero_slide2_desc: "Diagnose diseases and treatments in seconds with 95% accuracy. With SONE, every farmer has their own expert.",
-            hero_slide2_badge: "95% accuracy",
-            hero_slide3_title: "Anticipate... before the weather changes",
-            hero_slide3_desc: "Weather data specific to your field. Plan irrigation and harvest without climate surprises.",
-            hero_slide3_badge: "Instant updates",
-            hero_slide4_title: "Your profits start with market knowledge",
-            hero_slide4_desc: "Track fruit and vegetable prices in Morocco and sell your products at the best price.",
-            hero_slide4_badge: "Business intelligence",
-            hero_slide5_title: "SONE MANAGER: drive your farm remotely",
-            hero_slide5_desc: "Scheduling, tracking, and organization. Everything in one dashboard to increase productivity and save time.",
-            hero_slide5_badge: "Centralized management",
-            hero_slide6_title: "Cultivate for your children's future",
-            hero_slide6_desc: "Reduce your carbon footprint and be a pioneer in sustainable agriculture with SONE. The earth deserves the best.",
-            hero_slide6_badge: "Towards zero carbon",
-            carbo_badge: "Green agriculture",
-            carbo_desc: "CarboEdge calculates GHG emissions and simulates decarbonization strategies for more sustainable agriculture.",
+            hero_slide1_title: "Your farm deserves better than intuition — discover precision agriculture.",
+            hero_slide1_desc: "Your farm deserves better than intuition — discover precision agriculture.",
+            hero_slide1_badge: "Precision agriculture",
+            hero_slide2_title: "Every plot has a story. Our sensors help you read it.",
+            hero_slide2_desc: "Every plot has a story. Our sensors help you read it.",
+            hero_slide2_badge: "Smart sensors",
+            hero_slide3_title: "Less water, more yield. Technology serving the earth.",
+            hero_slide3_desc: "Less water, more yield. Technology serving the earth.",
+            hero_slide3_badge: "Water management",
+            hero_slide4_title: "Monitor your crops from your phone, wherever you are.",
+            hero_slide4_desc: "Monitor your crops from your phone, wherever you are.",
+            hero_slide4_badge: "Mobile monitoring",
+            hero_slide5_title: "AI that protects your crops before symptoms even appear.",
+            hero_slide5_desc: "AI that protects your crops before symptoms even appear.",
+            hero_slide5_badge: "Protective AI",
+            hero_slide6_title: "Join the farmers who have chosen the green future with SONE.",
+            hero_slide6_desc: "Join the farmers who have chosen the green future with SONE.",
+            hero_slide6_badge: "Green future",
             about_title: "Who are we?",
             about_sub: "A clear vision: making agriculture a lever for sustainable development and competitiveness.",
             about_p1: "“Empowering farmers by helping them make informed decisions” is our mission. “Smart solutions for a green future” is our motto.",
@@ -1544,15 +1742,15 @@ style="background: #0A1408;">
             read_more: "read more",
             read_less: "read less",
             s1_title: "NDVI Analysis",
-            s1_badge: "Remote sensing",
+            s1_badge: "High precision",
             s1_desc: "Satellite-based crop health monitoring",
             s1_text: "The NDVI index provides a fine view of vegetative vigor. Detect water or nutrient stress zones before they become visible to the naked eye, and intervene in a targeted manner to optimize yields.",
             s2_title: "Agri Manager",
-            s2_badge: "Smart management",
+            s2_badge: "Integrated system",
             s2_desc: "Centralized farm management",
             s2_text: "Agri Manager centralizes all your data: fields, equipment, harvests, inventory, and labor. Plan, track, and analyze your performance in real time for more agile and profitable management.",
             s3_title: "SONE-SOLUTIONS ASSISTANT",
-            s3_badge: "Digital expert",
+            s3_badge: "Advanced AI",
             s3_desc: "Virtual expert for disease diagnosis and crop health",
             s3_short: "SONE-SOLUTIONS ASSISTANT is an advanced virtual expert for diagnosing crop diseases and health, leveraging the latest AI technologies with up to 95% accuracy.",
             s3_full: " This hybrid platform seamlessly blends artificial intelligence with Moroccan agronomic expertise to deliver precise symptom diagnosis and effective treatment recommendations. It also offers tailored irrigation schedules adapted to each crop according to Morocco's climate. Beyond plants, the assistant extends to animal health, diagnosing and treating pathologies in cattle, sheep, and goats, while providing integrated fertilization plans that specify fertilizer types and customized application schedules to achieve optimal results.",
@@ -1561,11 +1759,11 @@ style="background: #0A1408;">
             s4_desc: "Dynamic phytosanitary risk mapping",
             s4_text: "Our tool cross-references satellite data and weather conditions to anticipate infection outbreaks. Receive targeted alerts and protect your crops before symptoms appear.",
             s5_title: "Accurate Weather",
-            s5_badge: "Precise weather",
+            s5_badge: "Live data",
             s5_desc: "Hyperlocal forecasts for your fields",
             s5_text: "Temperature, rainfall, humidity, wind speed… all essential variables, updated continuously, to plan your interventions at the right time.",
             s6_title: "Market Prices",
-            s6_badge: "Live market",
+            s6_badge: "Updated daily",
             s6_desc: "Price indicators for fruits and vegetables in Morocco",
             s6_veggies: "Vegetables",
             s6_veggies_text: "Track price trends on wholesale and retail markets to refine your sales strategy.",
@@ -1641,31 +1839,25 @@ style="background: #0A1408;">
             nav_about: "من نحن",
             nav_contact: "اتصل بنا",
             menu_title: "القائمة",
-            hero_badge: "الثورة الزراعية 4.0",
-            hero_title1: "SONE — الزراعة الدقيقة",
-            hero_title2: "مع بيانات في الوقت الفعلي",
-            hero_desc: "منصة متكاملة تجمع بين صور الأقمار الصناعية والطقس المحلي الفائق ورسم خرائط المخاطر الصحية وأسواق المال، لاتخاذ قرارات مستنيرة.",
             hero_cta: "اكتشف حلولنا · اسحب لاستكشاف",
-            hero_slide1_title: "عين سوني ترقب حقلك",
-            hero_slide1_desc: "كاشف دقيق للتوتر المائي والنقص الغذائي قبل أن تراه عيناك. قرر بذكاء قبل فوات الأوان.",
-            hero_slide1_badge: "قرارات أسرع",
-            hero_slide2_title: "خبير زراعي في جيبك",
-            hero_slide2_desc: "شخص أمراضك وعلاجك في ثواني، بدقة 95%. مع SONE، كل فلاح له خبير خاص به.",
-            hero_slide2_badge: "دقة 95%",
-            hero_slide3_title: "توقع... قبل أن تتغير الأحوال",
-            hero_slide3_desc: "معطيات الطقس في حقلك تحديداً. خطط للري والحصاد بدون مفاجآت مناخية.",
-            hero_slide3_badge: "تحديث لحظي",
-            hero_slide4_title: "أرباحك تبدأ بمعرفة السوق",
-            hero_slide4_desc: "ترقب أسعار الخضر والفواكه في المغرب، وبع منتوجك في أعلى قمة سعرية.",
-            hero_slide4_badge: "ذكاء تجاري",
-            hero_slide5_title: "SONE MANAGER: قيادة ضيعتك عن بعد",
-            hero_slide5_desc: "جدولة، تتبع، وتنظيم. كل شيء في لوحة تحكم واحدة لزيادة الإنتاجية وتوفير الوقت.",
-            hero_slide5_badge: "إدارة مركزية",
-            hero_slide6_title: "ازرع لمستقبل أولادك",
-            hero_slide6_desc: "قلل انبعاثاتك الكربونية وكن رائداً في الفلاحة المستدامة مع SONE. الأرض تستحق الأفضل.",
-            hero_slide6_badge: "نحو صفر كربون",
-            carbo_badge: "زراعة خضراء",
-            carbo_desc: "يحسب CarboEdge انبعاثات غازات الاحتباس الحراري ويحاكي استراتيجيات إزالة الكربون لزراعة أكثر استدامة.",
+            hero_slide1_title: "مزرعتك تستحق أكثر من الحدس — اكتشف الزراعة الدقيقة.",
+            hero_slide1_desc: "مزرعتك تستحق أكثر من الحدس — اكتشف الزراعة الدقيقة.",
+            hero_slide1_badge: "الزراعة الدقيقة",
+            hero_slide2_title: "كل قطعة أرض لها قصة. أجهزتنا تساعدك على قراءتها.",
+            hero_slide2_desc: "كل قطعة أرض لها قصة. أجهزتنا تساعدك على قراءتها.",
+            hero_slide2_badge: "أجهزة استشعار ذكية",
+            hero_slide3_title: "ماء أقل، محصول أوفر. التكنولوجيا في خدمة الأرض.",
+            hero_slide3_desc: "ماء أقل، محصول أوفر. التكنولوجيا في خدمة الأرض.",
+            hero_slide3_badge: "إدارة المياه",
+            hero_slide4_title: "راقب محاصيلك من هاتفك، أينما كنت.",
+            hero_slide4_desc: "راقب محاصيلك من هاتفك، أينما كنت.",
+            hero_slide4_badge: "مراقبة متنقلة",
+            hero_slide5_title: "الذكاء الاصطناعي يحمي محاصيلك قبل ظهور أي أعراض.",
+            hero_slide5_desc: "الذكاء الاصطناعي يحمي محاصيلك قبل ظهور أي أعراض.",
+            hero_slide5_badge: "ذكاء اصطناعي واقي",
+            hero_slide6_title: "انضم إلى المزارعين الذين اختاروا المستقبل الأخضر مع SONE.",
+            hero_slide6_desc: "انضم إلى المزارعين الذين اختاروا المستقبل الأخضر مع SONE.",
+            hero_slide6_badge: "مستقبل أخضر",
             about_title: "من نحن؟",
             about_sub: "رؤية واضحة: جعل الزراعة رافعة للتنمية المستدامة والقدرة التنافسية.",
             about_p1: "« تمكين المزارعين من خلال مساعدتهم على اتخاذ قرارات مستنيرة » هي مهمتنا. « حلول ذكية لمستقبل أخضر » هو شعارنا.",
@@ -1677,15 +1869,15 @@ style="background: #0A1408;">
             read_more: "اقرأ المزيد",
             read_less: "عرض أقل",
             s1_title: "تحليل NDVI",
-            s1_badge: "استشعار عن بعد",
+            s1_badge: "دقة عالية",
             s1_desc: "مراقبة صحة المحاصيل عبر الأقمار الصناعية",
             s1_text: "يوفر مؤشر NDVI رؤية دقيقة للحيوية الخضرية. اكتشف مناطق الإجهاد المائي أو الغذائي قبل أن تصبح مرئية للعين المجردة، وتدخل بطريقة مستهدفة لتحسين الغلة.",
             s2_title: "مدير المزرعة",
-            s2_badge: "قيادة ذكية",
+            s2_badge: "نظام متكامل",
             s2_desc: "إدارة مركزية للمزارع",
             s2_text: "يقوم مدير المزرعة بمركزة جميع بياناتك: الحقول والمعدات والحصاد والمخزون والعمالة. خطط وتتبع وحلل أدائك في الوقت الفعلي لإدارة أكثر مرونة وربحية.",
             s3_title: "مساعد حلول SONE",
-            s3_badge: "خبير رقمي",
+            s3_badge: "ذكاء اصطناعي متقدم",
             s3_desc: "خبير افتراضي لتشخيص الأمراض وصحة المحاصيل",
             s3_short: "مساعد حلول SONE هو خبير افتراضي متقدم لتشخيص الأمراض وصحة المحاصيل، يعتمد على أحدث تقنيات الذكاء الاصطناعي بدقة تصل إلى 95%.",
             s3_full: " تعمل المنصة الهجينة على دمج الذكاء الاصطناعي مع الخبرة الزراعية المغربية لتقديم تشخيص دقيق للأعراض مع توصيات علاجية فعالة، إلى جانب نصائح ري مخصصة تتلاءم مع كل محصول وفقاً للمناخ المغربي. ولا يقتصر دور المساعد على النباتات فحسب، بل يمتد ليشمل صحة الحيوان من خلال تشخيص وعلاج أمراض الأبقار والأغنام والماعز، مع تقديم خطط تسميد متكاملة تحدد أنواع الأسمدة وجداول التطبيق المناسبة لتحقيق أفضل النتائج.",
@@ -1694,11 +1886,11 @@ style="background: #0A1408;">
             s4_desc: "رسم خرائط ديناميكي للمخاطر الصحية النباتية",
             s4_text: "تقوم أداتنا بدمج بيانات الأقمار الصناعية والظروف الجوية لتوقع بؤر العدوى. تلقي تنبيهات مستهدفة وحمي محاصيلك قبل ظهور الأعراض.",
             s5_title: "طقس دقيق",
-            s5_badge: "طقس دقيق",
+            s5_badge: "بيانات مباشرة",
             s5_desc: "توقعات محلية فائقة لحقولك",
             s5_text: "درجة الحرارة، هطول الأمطار، الرطوبة، سرعة الرياح… جميع المتغيرات الأساسية، محدثة باستمرار، لتخطيط تدخلاتك في الوقت المناسب.",
             s6_title: "أسعار السوق",
-            s6_badge: "سوق فوري",
+            s6_badge: "تحديث يومي",
             s6_desc: "مؤشرات أسعار الفواكه والخضروات في المغرب",
             s6_veggies: "خضروات",
             s6_veggies_text: "تتبع اتجاهات الأسعار في أسواق الجملة والتجزئة لتحسين استراتيجية البيع الخاصة بك.",

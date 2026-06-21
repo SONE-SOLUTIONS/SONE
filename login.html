@@ -97,8 +97,8 @@
         const SUPABASE_ANON_KEY = "sb_publishable_PVQ61DBLGYjzaXy-XFrWpA_k_94iEvK";
         const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         
-        // 🔹 عنوان إعادة التوجيه بعد تسجيل الدخول (صفحة الخدمات)
-        const REDIRECT_URL = "https://some-solutions.github.io/SONE/service.html";
+        // ✅ الرابط الصحيح (متطابق مع Google Console)
+        const REDIRECT_URL = "https://sone-solutions.github.io/SONE/service.html";
         
         function showToast(message, type = 'error') {
             const container = document.getElementById('toastContainer');
@@ -128,7 +128,6 @@
             }
             if (data?.user) {
                 showToast(`مرحباً ${data.user.email}! تم تسجيل الدخول بنجاح ✅`, 'success');
-                // ✅ توجيه إلى صفحة الخدمات
                 setTimeout(() => {
                     window.location.href = REDIRECT_URL;
                 }, 1500);
@@ -139,7 +138,6 @@
         
         // 🔹 تسجيل الدخول بـ Google
         async function signInWithGoogle() {
-            // ✅ استخدام عنوان إعادة التوجيه الصحيح (صفحة الخدمات)
             const redirectUrl = REDIRECT_URL;
             try {
                 const { error } = await supabaseClient.auth.signInWithOAuth({
@@ -168,7 +166,6 @@
         async function checkCurrentSession() {
             const { data: { session } } = await supabaseClient.auth.getSession();
             if (session) {
-                // ✅ إذا كان مسجلاً مسبقاً، توجه مباشرة إلى صفحة الخدمات
                 window.location.href = REDIRECT_URL;
             }
         }

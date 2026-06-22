@@ -14,7 +14,6 @@
     <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js">
     </script>
     <style>
-        /* ... جميع الأنماط الموجودة تبقى كما هي ... */
         * {
             margin: 0;
             padding: 0;
@@ -87,9 +86,6 @@
             animation: wave3 13s ease-in-out infinite;
         }
 
-        /* ============================================================ */
-        /*      HERO SLIDER - متجاوب بالكامل                            */
-        /* ============================================================ */
         .hero-slide {
             position: absolute;
             inset: 0;
@@ -123,30 +119,6 @@
         @media (min-width: 768px) {
             .hero-slide .slide-overlay {
                 padding: 3rem 4rem;
-            }
-        }
-
-        .hero-slide .slide-tag {
-            display: inline-block;
-            background: rgba(76, 175, 80, 0.25);
-            backdrop-filter: blur(6px);
-            border: 1px solid rgba(76, 175, 80, 0.25);
-            padding: 0.25rem 0.8rem;
-            border-radius: 40px;
-            font-size: 0.65rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: #8bc34a;
-            margin-bottom: 0.5rem;
-            width: fit-content;
-            align-self: center;
-        }
-        @media (min-width: 768px) {
-            .hero-slide .slide-tag {
-                font-size: 0.7rem;
-                padding: 0.3rem 1rem;
-                margin-bottom: 0.75rem;
             }
         }
 
@@ -189,68 +161,6 @@
             .hero-slide .slide-title {
                 font-size: 5.5rem;
                 max-width: 85%;
-            }
-        }
-
-        .hero-slide .slide-desc {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.92);
-            max-width: 95%;
-            margin-top: 0.5rem;
-            text-align: center;
-            text-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
-            line-height: 1.5;
-            font-weight: 400;
-            padding: 0 0.5rem;
-        }
-        @media (min-width: 480px) {
-            .hero-slide .slide-desc {
-                font-size: 1rem;
-                max-width: 90%;
-            }
-        }
-        @media (min-width: 640px) {
-            .hero-slide .slide-desc {
-                font-size: 1.1rem;
-                max-width: 85%;
-            }
-        }
-        @media (min-width: 768px) {
-            .hero-slide .slide-desc {
-                font-size: 1.2rem;
-                max-width: 80%;
-                margin-top: 0.8rem;
-            }
-        }
-        @media (min-width: 1024px) {
-            .hero-slide .slide-desc {
-                font-size: 1.4rem;
-                max-width: 65%;
-            }
-        }
-
-        .hero-slide .slide-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
-            background: rgba(76, 175, 80, 0.2);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(76, 175, 80, 0.3);
-            padding: 0.2rem 0.7rem;
-            border-radius: 40px;
-            font-size: 0.6rem;
-            font-weight: 700;
-            color: #8bc34a;
-            margin-top: 0.5rem;
-            letter-spacing: 0.02em;
-            width: fit-content;
-            align-self: center;
-        }
-        @media (min-width: 768px) {
-            .hero-slide .slide-badge {
-                font-size: 0.7rem;
-                padding: 0.3rem 0.9rem;
-                margin-top: 0.75rem;
             }
         }
 
@@ -299,9 +209,6 @@
             }
         }
 
-        /* ============================================================ */
-        /*      SERVICE CARDS - متجاوبة بالكامل مع تباعد مناسب          */
-        /* ============================================================ */
         .services-grid {
             display: flex;
             flex-direction: column;
@@ -545,9 +452,6 @@
             text-decoration: underline;
         }
 
-        /* ============================================================ */
-        /*      AUTRES STYLES - متجاوبة                                  */
-        /* ============================================================ */
         .contact-input {
             background: #1C2A16;
             border: 1px solid rgba(76, 175, 80, 0.25);
@@ -973,7 +877,7 @@
             <a href="#services" class="text-white hover:text-green-400 transition text-sm font-semibold" data-i18n="nav_services">Services</a>
             <a href="#about" class="text-white hover:text-green-400 transition text-sm font-semibold" data-i18n="nav_about">À propos</a>
             <a href="#contact" class="text-white hover:text-green-400 transition text-sm font-semibold" data-i18n="nav_contact">Contact</a>
-            <a href="https://sone-solutions.github.io/SONE/service.html" target="_blank" class="services-btn">
+            <a href="https://sone-solutions.github.io/SONE/login.html" target="_blank" class="services-btn">
                 <i data-lucide="sparkles" class="w-4 h-4"></i>
                 <span data-i18n="nav_services_btn">Nos Services</span>
             </a>
@@ -1004,7 +908,7 @@
     <a href="#services" data-i18n="nav_services">Services</a>
     <a href="#about" data-i18n="nav_about">À propos</a>
     <a href="#contact" data-i18n="nav_contact">Contact</a>
-    <a href="https://sone-solutions.github.io/SONE/service.html" target="_blank" class="text-green-400 hover:text-green-300 font-bold py-2 flex items-center gap-2" data-i18n="nav_services_btn">
+    <a href="https://sone-solutions.github.io/SONE/login.html" target="_blank" class="text-green-400 hover:text-green-300 font-bold py-2 flex items-center gap-2" data-i18n="nav_services_btn">
         <i data-lucide="sparkles" class="w-4 h-4"></i>
         Nos Services
     </a>
@@ -1044,10 +948,7 @@ style="background: #0A1408;">
                     <img src="https://www.dronexperts.com/wp-content/uploads/2025/01/Pix4D-fields-on-laptot-in-field-1024x683.png"
                     alt="Analyse NDVI par drone" loading="lazy" />
                     <div class="slide-overlay">
-                        <span class="slide-tag">🌱</span>
                         <h2 class="slide-title" data-i18n="hero_slide1_title">Votre ferme mérite mieux que l'intuition — découvrez l'agriculture de précision.</h2>
-                        <p class="slide-desc" data-i18n="hero_slide1_desc">مزرعتك تستحق أكثر من الحدس — اكتشف الزراعة الدقيقة.</p>
-                        <span class="slide-badge" data-i18n="hero_slide1_badge">Agriculture de précision</span>
                     </div>
                 </div>
 
@@ -1056,10 +957,7 @@ style="background: #0A1408;">
                     <img src="https://www.adventiel.fr/wp-content/uploads/2025/12/numerique-et-agriculture-en-2026-600x400.webp"
                     alt="Agriculture numérique et IA" loading="lazy" />
                     <div class="slide-overlay">
-                        <span class="slide-tag">📡</span>
                         <h2 class="slide-title" data-i18n="hero_slide2_title">Chaque parcelle a une histoire. Nos capteurs vous aident à la lire.</h2>
-                        <p class="slide-desc" data-i18n="hero_slide2_desc">كل قطعة أرض لها قصة. أجهزتنا تساعدك على قراءتها.</p>
-                        <span class="slide-badge" data-i18n="hero_slide2_badge">Capteurs intelligents</span>
                     </div>
                 </div>
 
@@ -1068,10 +966,7 @@ style="background: #0A1408;">
                     <img src="https://lachampagneviticole.fr/wp-content/uploads/2023/05/photo-ouverture-dossier-e1683880458350.jpeg"
                     alt="Météo précise" loading="lazy" />
                     <div class="slide-overlay">
-                        <span class="slide-tag">💧</span>
                         <h2 class="slide-title" data-i18n="hero_slide3_title">Moins d'eau, plus de rendement. La technologie au service de la terre.</h2>
-                        <p class="slide-desc" data-i18n="hero_slide3_desc">ماء أقل، محصول أوفر. التكنولوجيا في خدمة الأرض.</p>
-                        <span class="slide-badge" data-i18n="hero_slide3_badge">Gestion de l'eau</span>
                     </div>
                 </div>
 
@@ -1080,10 +975,7 @@ style="background: #0A1408;">
                     <img src="https://tracextech.com/wp-content/uploads/2023/05/farm-sustainability-metrics.jpg"
                     alt="Indicateurs de durabilité" loading="lazy" />
                     <div class="slide-overlay">
-                        <span class="slide-tag">🛰️</span>
                         <h2 class="slide-title" data-i18n="hero_slide4_title">Surveillez vos cultures depuis votre téléphone, où que vous soyez.</h2>
-                        <p class="slide-desc" data-i18n="hero_slide4_desc">راقب محاصيلك من هاتفك، أينما كنت.</p>
-                        <span class="slide-badge" data-i18n="hero_slide4_badge">Surveillance mobile</span>
                     </div>
                 </div>
 
@@ -1092,10 +984,7 @@ style="background: #0A1408;">
                     <img src="https://d1mvnp4tc7jmzn.cloudfront.net/370krsnvmy"
                     alt="Agri Manager" loading="lazy" />
                     <div class="slide-overlay">
-                        <span class="slide-tag">🤖</span>
                         <h2 class="slide-title" data-i18n="hero_slide5_title">L'IA qui protège vos cultures avant même l'apparition des symptômes.</h2>
-                        <p class="slide-desc" data-i18n="hero_slide5_desc">الذكاء الاصطناعي يحمي محاصيلك قبل ظهور أي أعراض.</p>
-                        <span class="slide-badge" data-i18n="hero_slide5_badge">IA protectrice</span>
                     </div>
                 </div>
 
@@ -1104,10 +993,7 @@ style="background: #0A1408;">
                     <img src="https://turkystan.kz/uploads/cache/1200x630/resized-images/2025/02/1739267038.webp"
                     alt="CarboEdge" loading="lazy" />
                     <div class="slide-overlay">
-                        <span class="slide-tag">🌿</span>
                         <h2 class="slide-title" data-i18n="hero_slide6_title">Rejoignez les agriculteurs qui ont choisi l'avenir vert avec SONE.</h2>
-                        <p class="slide-desc" data-i18n="hero_slide6_desc">انضم إلى المزارعين الذين اختاروا المستقبل الأخضر مع SONE.</p>
-                        <span class="slide-badge" data-i18n="hero_slide6_badge">Avenir vert</span>
                     </div>
                 </div>
 
@@ -1146,7 +1032,7 @@ style="background: #0A1408;">
                 alt="Agriculture" class="w-full h-52 md:h-72 object-cover rounded-xl md:rounded-2xl shadow-xl" />
             </div>
             <div class="space-y-3 md:space-y-5 text-gray-700 text-justify leading-relaxed prose px-1">
-                <p data-i18n="about_p1"><strong>“Autonomiser les agriculteurs en les aidant à prendre des décisions éclairées”</strong> est notre mission. <strong>“Des solutions intelligentes pour un avenir vert”</strong> est notre devise.</p>
+                <p data-i18n="about_p1"><strong>"Autonomiser les agriculteurs en les aidant à prendre des décisions éclairées"</strong> est notre mission. <strong>"Des solutions intelligentes pour un avenir vert"</strong> est notre devise.</p>
                 <p data-i18n="about_p2">SONE est un pont entre les agriculteurs, les coopératives, les entreprises agroalimentaires, les pouvoirs publics et les startups de l'AgriTech. Nous proposons une plateforme numérique intégrée qui optimise l'utilisation des ressources, accroît la rentabilité et renforce la compétitivité de l'ensemble de la chaîne de valeur agricole.</p>
                 <p data-i18n="about_p3">Nous contribuons activement à des programmes de renforcement de l'écosystème AgriTech en Afrique, en accompagnant les startups et en stimulant l'innovation à travers des partenariats stratégiques.</p>
             </div>
@@ -1592,23 +1478,11 @@ style="background: #0A1408;">
             menu_title: "Menu",
             hero_cta: "Découvrez nos solutions · Glissez pour explorer",
             hero_slide1_title: "Votre ferme mérite mieux que l'intuition — découvrez l'agriculture de précision.",
-            hero_slide1_desc: "Votre ferme mérite mieux que l'intuition — découvrez l'agriculture de précision.",
-            hero_slide1_badge: "Agriculture de précision",
             hero_slide2_title: "Chaque parcelle a une histoire. Nos capteurs vous aident à la lire.",
-            hero_slide2_desc: "Chaque parcelle a une histoire. Nos capteurs vous aident à la lire.",
-            hero_slide2_badge: "Capteurs intelligents",
             hero_slide3_title: "Moins d'eau, plus de rendement. La technologie au service de la terre.",
-            hero_slide3_desc: "Moins d'eau, plus de rendement. La technologie au service de la terre.",
-            hero_slide3_badge: "Gestion de l'eau",
             hero_slide4_title: "Surveillez vos cultures depuis votre téléphone, où que vous soyez.",
-            hero_slide4_desc: "Surveillez vos cultures depuis votre téléphone, où que vous soyez.",
-            hero_slide4_badge: "Surveillance mobile",
             hero_slide5_title: "L'IA qui protège vos cultures avant même l'apparition des symptômes.",
-            hero_slide5_desc: "L'IA qui protège vos cultures avant même l'apparition des symptômes.",
-            hero_slide5_badge: "IA protectrice",
             hero_slide6_title: "Rejoignez les agriculteurs qui ont choisi l'avenir vert avec SONE.",
-            hero_slide6_desc: "Rejoignez les agriculteurs qui ont choisi l'avenir vert avec SONE.",
-            hero_slide6_badge: "Avenir vert",
             about_title: "Qui sommes-nous ?",
             about_sub: "Une vision claire : faire de l'agriculture un levier de développement durable et de compétitivité.",
             about_p1: "« Autonomiser les agriculteurs en les aidant à prendre des décisions éclairées » est notre mission. « Des solutions intelligentes pour un avenir vert » est notre devise.",
@@ -1719,23 +1593,11 @@ style="background: #0A1408;">
             menu_title: "Menu",
             hero_cta: "Discover our solutions · Swipe to explore",
             hero_slide1_title: "Your farm deserves better than intuition — discover precision agriculture.",
-            hero_slide1_desc: "Your farm deserves better than intuition — discover precision agriculture.",
-            hero_slide1_badge: "Precision agriculture",
             hero_slide2_title: "Every plot has a story. Our sensors help you read it.",
-            hero_slide2_desc: "Every plot has a story. Our sensors help you read it.",
-            hero_slide2_badge: "Smart sensors",
             hero_slide3_title: "Less water, more yield. Technology serving the earth.",
-            hero_slide3_desc: "Less water, more yield. Technology serving the earth.",
-            hero_slide3_badge: "Water management",
             hero_slide4_title: "Monitor your crops from your phone, wherever you are.",
-            hero_slide4_desc: "Monitor your crops from your phone, wherever you are.",
-            hero_slide4_badge: "Mobile monitoring",
             hero_slide5_title: "AI that protects your crops before symptoms even appear.",
-            hero_slide5_desc: "AI that protects your crops before symptoms even appear.",
-            hero_slide5_badge: "Protective AI",
             hero_slide6_title: "Join the farmers who have chosen the green future with SONE.",
-            hero_slide6_desc: "Join the farmers who have chosen the green future with SONE.",
-            hero_slide6_badge: "Green future",
             about_title: "Who are we?",
             about_sub: "A clear vision: making agriculture a lever for sustainable development and competitiveness.",
             about_p1: "“Empowering farmers by helping them make informed decisions” is our mission. “Smart solutions for a green future” is our motto.",
@@ -1846,23 +1708,11 @@ style="background: #0A1408;">
             menu_title: "القائمة",
             hero_cta: "اكتشف حلولنا · اسحب لاستكشاف",
             hero_slide1_title: "مزرعتك تستحق أكثر من الحدس — اكتشف الزراعة الدقيقة.",
-            hero_slide1_desc: "مزرعتك تستحق أكثر من الحدس — اكتشف الزراعة الدقيقة.",
-            hero_slide1_badge: "الزراعة الدقيقة",
             hero_slide2_title: "كل قطعة أرض لها قصة. أجهزتنا تساعدك على قراءتها.",
-            hero_slide2_desc: "كل قطعة أرض لها قصة. أجهزتنا تساعدك على قراءتها.",
-            hero_slide2_badge: "أجهزة استشعار ذكية",
             hero_slide3_title: "ماء أقل، محصول أوفر. التكنولوجيا في خدمة الأرض.",
-            hero_slide3_desc: "ماء أقل، محصول أوفر. التكنولوجيا في خدمة الأرض.",
-            hero_slide3_badge: "إدارة المياه",
             hero_slide4_title: "راقب محاصيلك من هاتفك، أينما كنت.",
-            hero_slide4_desc: "راقب محاصيلك من هاتفك، أينما كنت.",
-            hero_slide4_badge: "مراقبة متنقلة",
             hero_slide5_title: "الذكاء الاصطناعي يحمي محاصيلك قبل ظهور أي أعراض.",
-            hero_slide5_desc: "الذكاء الاصطناعي يحمي محاصيلك قبل ظهور أي أعراض.",
-            hero_slide5_badge: "ذكاء اصطناعي واقي",
             hero_slide6_title: "انضم إلى المزارعين الذين اختاروا المستقبل الأخضر مع SONE.",
-            hero_slide6_desc: "انضم إلى المزارعين الذين اختاروا المستقبل الأخضر مع SONE.",
-            hero_slide6_badge: "مستقبل أخضر",
             about_title: "من نحن؟",
             about_sub: "رؤية واضحة: جعل الزراعة رافعة للتنمية المستدامة والقدرة التنافسية.",
             about_p1: "« تمكين المزارعين من خلال مساعدتهم على اتخاذ قرارات مستنيرة » هي مهمتنا. « حلول ذكية لمستقبل أخضر » هو شعارنا.",
@@ -2113,8 +1963,6 @@ style="background: #0A1408;">
     // ============================================================
     const slides = document.querySelectorAll('.hero-slide');
     const dots = document.querySelectorAll('.hero-dots button');
-    const prevBtn = document.getElementById('hero-prev');
-    const nextBtn = document.getElementById('hero-next');
     let currentSlide = 0;
     let slideInterval;
 
@@ -2138,20 +1986,15 @@ style="background: #0A1408;">
         }, 6000);
     }
 
-    // الأزرار (السهمين) تم إزالتها من HTML، لذا لا حاجة لربطها
-
-    // التنقل بالنقاط
     dots.forEach((dot, i) => {
         dot.addEventListener('click', () => goToSlide(i));
     });
 
-    // التنقل بلوحة المفاتيح (أسهم اليسار/اليمين)
     document.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowLeft') goToSlide(currentSlide - 1);
         if (e.key === 'ArrowRight') goToSlide(currentSlide + 1);
     });
 
-    // دعم اللمس
     let touchStartX = 0;
     let touchEndX = 0;
     const sliderContainer = document.getElementById('hero-slider');

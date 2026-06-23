@@ -1,27 +1,36 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>تسجيل الدخول - منصة الأعمال</title>
+    <title>Sign In - SONE</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         body {
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            font-family: 'Tajawal', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0A1408 0%, #1A2A14 50%, #0F1E0C 100%);
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
         }
         .glass-card {
-            backdrop-filter: blur(12px);
-            background: rgba(255, 255, 255, 0.07);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(16px);
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(168, 132, 66, 0.25);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+        }
+        .glass-card:hover {
+            border-color: rgba(168, 132, 66, 0.4);
+            box-shadow: 0 30px 60px rgba(168, 132, 66, 0.1);
         }
         .btn-google:hover {
-            transform: scale(1.01);
+            transform: scale(1.02);
             background: #ffffff;
             color: #1f2937;
+        }
+        .btn-login:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(168, 132, 66, 0.3);
         }
         .error-toast {
             animation: fadeInUp 0.3s ease forwards;
@@ -30,61 +39,113 @@
             from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        .logo-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid rgba(168, 132, 66, 0.4);
+            box-shadow: 0 0 30px rgba(168, 132, 66, 0.2);
+            transition: all 0.3s;
+        }
+        .logo-img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 50px rgba(168, 132, 66, 0.4);
+        }
+        .gold-text {
+            background: linear-gradient(135deg, #A8842A, #D4A843, #C49B3A);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .input-field {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(168, 132, 66, 0.2);
+            transition: all 0.3s;
+            color: #fff;
+        }
+        .input-field:focus {
+            border-color: #A8842A;
+            box-shadow: 0 0 0 3px rgba(168, 132, 66, 0.15);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        .input-field::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+        .btn-login {
+            background: linear-gradient(135deg, #A8842A, #C49B3A);
+            color: #000;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+        .btn-login:hover {
+            background: linear-gradient(135deg, #C49B3A, #D4A843);
+            color: #000;
+        }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen p-4">
 
     <div class="w-full max-w-md">
-        <div class="glass-card rounded-2xl overflow-hidden shadow-2xl">
+        <div class="glass-card rounded-3xl overflow-hidden shadow-2xl transition-all duration-500">
+            <!-- Header with Logo -->
             <div class="px-6 pt-8 pb-6 text-center border-b border-white/10">
-                <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-600/20 rounded-2xl mb-3">
-                    <i class="fas fa-lock text-3xl text-blue-400"></i>
+                <div class="flex flex-col items-center">
+                    <!-- Logo -->
+                    <img src="https://scontent.frba1-4.fna.fbcdn.net/v/t39.30808-6/681884209_122093720763301010_4741601618872924151_n.jpg?stp=dst-jpg_tt6&cstp=mx1448x1086&ctp=s1448x1086&_nc_cat=105&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeHxluZ2hQ1jX0BWnXknNpa0vNxkRJHUvNK83GREkdS80v2iGDQGg09nRpOJIyBvRZqewR8ANuZxnglu_3jyBLRP&_nc_ohc=9r2RteZWbQ0Q7kNvwHWwKA8&_nc_oc=AdojtAecjs5SQTGQz_vjLo4Wh6aoO70oew0NwL5JzESrNs9ZnooWSHxGilkU8inj8oY&_nc_zt=23&_nc_ht=scontent.frba1-4.fna&_nc_gid=8_zLhe5o4Z5vPSzY0tOMbQ&_nc_ss=7e2a8&oh=00_Af_Hia-_ebmuBNhwwPzob_74-4oE6AjO8RnlafM2Jxkz8Q&oe=6A3FB926" 
+                         alt="SONE Logo" 
+                         class="logo-img mb-3">
+                    
+                    <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#A8842A]/20 to-[#D4A843]/10 rounded-2xl mb-2">
+                        <i class="fas fa-lock text-3xl text-[#A8842A]"></i>
+                    </div>
+                    <h1 class="text-2xl font-bold text-white tracking-tight">Welcome Back</h1>
+                    <p class="text-gray-400 text-sm mt-1">Sign in to access your <span class="gold-text font-bold">SONE</span> account</p>
                 </div>
-                <h1 class="text-2xl font-bold text-white tracking-tight">مرحباً بعودتك</h1>
-                <p class="text-gray-300 text-sm mt-1">سجل الدخول للوصول إلى حسابك</p>
             </div>
             
             <div class="p-6 space-y-5">
                 <form id="loginForm" class="space-y-4">
                     <div>
-                        <label class="block text-gray-200 text-sm font-medium mb-1.5">
-                            <i class="fas fa-envelope ml-1 text-gray-400"></i> البريد الإلكتروني
+                        <label class="block text-gray-300 text-sm font-medium mb-1.5">
+                            <i class="fas fa-envelope ml-1 text-[#A8842A]"></i> Email Address
                         </label>
                         <input type="email" id="email" required 
-                               class="w-full px-4 py-3 bg-gray-800/70 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition"
+                               class="w-full px-4 py-3 bg-gray-800/50 border border-gray-700/50 rounded-xl text-white placeholder-gray-400 focus:border-[#A8842A] focus:outline-none focus:ring-2 focus:ring-[#A8842A]/30 transition input-field"
                                placeholder="example@domain.com">
                     </div>
                     <div>
-                        <label class="block text-gray-200 text-sm font-medium mb-1.5">
-                            <i class="fas fa-key ml-1 text-gray-400"></i> كلمة المرور
+                        <label class="block text-gray-300 text-sm font-medium mb-1.5">
+                            <i class="fas fa-key ml-1 text-[#A8842A]"></i> Password
                         </label>
                         <input type="password" id="password" required 
-                               class="w-full px-4 py-3 bg-gray-800/70 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition"
+                               class="w-full px-4 py-3 bg-gray-800/50 border border-gray-700/50 rounded-xl text-white placeholder-gray-400 focus:border-[#A8842A] focus:outline-none focus:ring-2 focus:ring-[#A8842A]/30 transition input-field"
                                placeholder="••••••••">
                     </div>
                     <button type="submit" id="signInBtn" 
-                            class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl transition duration-200 flex items-center justify-center gap-2 shadow-lg">
-                        <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
+                            class="w-full btn-login text-white font-bold py-3 rounded-xl transition duration-200 flex items-center justify-center gap-2 shadow-lg">
+                        <i class="fas fa-sign-in-alt"></i> Sign In
                     </button>
                 </form>
                 
                 <div class="relative my-4">
                     <div class="absolute inset-0 flex items-center">
-                        <div class="w-full border-t border-gray-600/50"></div>
+                        <div class="w-full border-t border-gray-700/50"></div>
                     </div>
                     <div class="relative flex justify-center text-xs">
-                        <span class="px-3 bg-gray-900/60 text-gray-300 rounded-full backdrop-blur-sm">أو</span>
+                        <span class="px-3 bg-gray-900/60 text-gray-400 rounded-full backdrop-blur-sm">or</span>
                     </div>
                 </div>
                 
                 <button id="googleSignInBtn" 
                         class="w-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white hover:text-gray-900 text-white font-semibold py-3 rounded-xl transition duration-200 flex items-center justify-center gap-3 btn-google">
                     <i class="fab fa-google text-xl"></i> 
-                    <span>تسجيل الدخول باستخدام Google</span>
+                    <span>Sign in with Google</span>
                 </button>
                 
-                <div class="text-center text-xs text-gray-400 pt-2">
-                    <i class="fas fa-shield-alt ml-1"></i> بيئة آمنة ومشفرة
+                <div class="text-center text-xs text-gray-500 pt-2 flex items-center justify-center gap-2">
+                    <i class="fas fa-shield-alt text-[#A8842A]"></i>
+                    <span>Secure &amp; Encrypted</span>
                 </div>
             </div>
         </div>
@@ -97,7 +158,7 @@
         const SUPABASE_ANON_KEY = "sb_publishable_PVQ61DBLGYjzaXy-XFrWpA_k_94iEvK";
         const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         
-        // ✅ عنوان إعادة التوجيه بعد تسجيل الدخول (مباشرة إلى service.html)
+        // ✅ Redirect URL after login (directly to service.html)
         const REDIRECT_URL = "https://sone-solutions.github.io/SONE/service.html";
         
         function showToast(message, type = 'error') {
@@ -119,16 +180,16 @@
             setTimeout(() => { if (toast.parentNode) toast.remove(); }, 5000);
         }
         
-        // 🔹 تسجيل الدخول بالبريد وكلمة المرور
+        // 🔹 Sign in with Email & Password
         async function signInWithEmail(email, password) {
             const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
             if (error) {
-                showToast(error.message || "فشل تسجيل الدخول", 'error');
+                showToast(error.message || "Login failed", 'error');
                 return false;
             }
             if (data?.user) {
-                showToast(`مرحباً ${data.user.email}! تم تسجيل الدخول بنجاح ✅`, 'success');
-                // ✅ توجيه مباشر إلى service.html
+                showToast(`Welcome ${data.user.email}! Login successful ✅`, 'success');
+                // ✅ Redirect to service.html
                 setTimeout(() => {
                     window.location.href = REDIRECT_URL;
                 }, 1500);
@@ -137,9 +198,9 @@
             return false;
         }
         
-        // 🔹 تسجيل الدخول بـ Google
+        // 🔹 Sign in with Google
         async function signInWithGoogle() {
-            // ✅ استخدام عنوان إعادة التوجيه مباشرة إلى service.html
+            // ✅ Use redirect URL directly to service.html
             const redirectUrl = REDIRECT_URL;
             try {
                 const { error } = await supabaseClient.auth.signInWithOAuth({
@@ -154,21 +215,21 @@
                 });
                 if (error) {
                     if (error.message.includes("redirect_uri_mismatch")) {
-                        showToast("خطأ: تأكد من إضافة عنوان إعادة التوجيه في Google Cloud Console", 'error');
+                        showToast("Error: Please add the redirect URL in Google Cloud Console", 'error');
                     } else {
-                        showToast("فشل الاتصال بـ Google: " + error.message, 'error');
+                        showToast("Google sign-in failed: " + error.message, 'error');
                     }
                 }
             } catch (err) {
-                showToast("حدث خطأ غير متوقع", 'error');
+                showToast("An unexpected error occurred", 'error');
             }
         }
         
-        // 🔹 التحقق من الجلسة الحالية
+        // 🔹 Check current session
         async function checkCurrentSession() {
             const { data: { session } } = await supabaseClient.auth.getSession();
             if (session) {
-                // ✅ إذا كان مسجلاً مسبقاً، توجه مباشرة إلى service.html
+                // ✅ If already signed in, redirect to service.html
                 window.location.href = REDIRECT_URL;
             }
         }
@@ -181,13 +242,13 @@
                 logoutDiv.className = 'mt-2 text-center pb-1';
                 logoutDiv.innerHTML = `
                     <button id="logoutAction" class="text-xs bg-red-500/20 hover:bg-red-500/40 text-red-200 px-4 py-1.5 rounded-full transition flex items-center gap-1 mx-auto">
-                        <i class="fas fa-sign-out-alt"></i> تسجيل الخروج (${userEmail})
+                        <i class="fas fa-sign-out-alt"></i> Sign Out (${userEmail})
                     </button>
                 `;
                 cardHeader.parentNode.insertBefore(logoutDiv, cardHeader.nextSibling);
                 document.getElementById('logoutAction').addEventListener('click', async () => {
                     await supabaseClient.auth.signOut();
-                    showToast("تم تسجيل الخروج بنجاح", 'success');
+                    showToast("Signed out successfully", 'success');
                     setTimeout(() => window.location.reload(), 1000);
                 });
             }
@@ -198,12 +259,12 @@
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
             if (!email || !password) {
-                showToast("الرجاء إدخال البريد الإلكتروني وكلمة المرور", 'error');
+                showToast("Please enter your email and password", 'error');
                 return;
             }
             const btn = document.getElementById('signInBtn');
             const originalText = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الدخول...';
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
             btn.disabled = true;
             await signInWithEmail(email, password);
             btn.innerHTML = originalText;
@@ -213,11 +274,11 @@
         document.getElementById('googleSignInBtn').addEventListener('click', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('googleSignInBtn');
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> توجيه إلى Google...';
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Redirecting to Google...';
             btn.disabled = true;
             await signInWithGoogle();
             setTimeout(() => {
-                btn.innerHTML = '<i class="fab fa-google text-xl"></i> <span>تسجيل الدخول باستخدام Google</span>';
+                btn.innerHTML = '<i class="fab fa-google text-xl"></i> <span>Sign in with Google</span>';
                 btn.disabled = false;
             }, 2000);
         });
@@ -226,7 +287,7 @@
         
         supabaseClient.auth.onAuthStateChange((event, session) => {
             if (event === 'SIGNED_IN' && session) {
-                showToast(`تم تسجيل الدخول بنجاح! جاري التوجيه...`, 'success');
+                showToast(`Login successful! Redirecting...`, 'success');
                 setTimeout(() => {
                     window.location.href = REDIRECT_URL;
                 }, 1500);
@@ -234,8 +295,8 @@
             }
         });
         
-        console.log("✅ Supabase متصل بنجاح");
-        console.log("🔐 عنوان إعادة التوجيه:", REDIRECT_URL);
+        console.log("✅ Supabase connected successfully");
+        console.log("🔐 Redirect URL:", REDIRECT_URL);
     </script>
 </body>
 </html>

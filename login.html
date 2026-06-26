@@ -1,195 +1,450 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="fr" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Sign In - SONE</title>
+    <title>Se connecter - SONE</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
-            background: linear-gradient(135deg, #0A1408 0%, #1A2A14 50%, #0F1E0C 100%);
             font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
             min-height: 100vh;
+            overflow: hidden;
+            background: #0A1408;
         }
+
+        /* ===== HERO SLIDER ===== */
+        .hero-slider {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .hero-slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+            transform: scale(1.05);
+        }
+        .hero-slide.active {
+            opacity: 1;
+            transform: scale(1);
+            z-index: 2;
+        }
+        .hero-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .hero-slide .overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(10, 20, 8, 0.75) 0%, rgba(10, 20, 8, 0.55) 40%, rgba(10, 20, 8, 0.85) 100%);
+        }
+
+        /* ===== SLIDER DOTS ===== */
+        .slider-dots {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 5;
+            display: flex;
+            gap: 0.6rem;
+        }
+        .slider-dots button {
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, 0.25);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            padding: 0;
+        }
+        .slider-dots button.active {
+            background: #D4A843;
+            width: 1.8rem;
+            border-radius: 20px;
+            box-shadow: 0 0 25px rgba(212, 168, 67, 0.4);
+        }
+
+        /* ===== GLASS CARD ===== */
         .glass-card {
-            backdrop-filter: blur(16px);
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(168, 132, 66, 0.25);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(20px);
+            background: rgba(10, 20, 8, 0.75);
+            border: 1px solid rgba(212, 168, 67, 0.2);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+            position: relative;
+            z-index: 10;
         }
         .glass-card:hover {
-            border-color: rgba(168, 132, 66, 0.4);
-            box-shadow: 0 30px 60px rgba(168, 132, 66, 0.1);
+            border-color: rgba(212, 168, 67, 0.35);
+            box-shadow: 0 40px 100px rgba(212, 168, 67, 0.08);
         }
-        .btn-google:hover {
-            transform: scale(1.02);
-            background: #ffffff;
-            color: #1f2937;
-        }
-        .btn-login:hover {
-            transform: scale(1.02);
-            box-shadow: 0 10px 30px rgba(168, 132, 66, 0.3);
-        }
-        .error-toast {
-            animation: fadeInUp 0.3s ease forwards;
-        }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+
+        /* ===== LOGO ===== */
         .logo-img {
-            width: 80px;
-            height: 80px;
+            width: 85px;
+            height: 85px;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid rgba(168, 132, 66, 0.4);
-            box-shadow: 0 0 30px rgba(168, 132, 66, 0.2);
-            transition: all 0.3s;
+            border: 3px solid rgba(212, 168, 67, 0.3);
+            box-shadow: 0 0 40px rgba(212, 168, 67, 0.15);
+            transition: all 0.4s ease;
         }
         .logo-img:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 50px rgba(168, 132, 66, 0.4);
+            transform: scale(1.06) rotate(-2deg);
+            box-shadow: 0 0 60px rgba(212, 168, 67, 0.3);
         }
+
+        /* ===== GOLD TEXT ===== */
         .gold-text {
             background: linear-gradient(135deg, #A8842A, #D4A843, #C49B3A);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
+
+        /* ===== INPUT FIELDS ===== */
         .input-field {
             background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(168, 132, 66, 0.2);
-            transition: all 0.3s;
+            border: 1px solid rgba(212, 168, 67, 0.15);
+            transition: all 0.3s ease;
             color: #fff;
+            font-size: 0.95rem;
         }
         .input-field:focus {
-            border-color: #A8842A;
-            box-shadow: 0 0 0 3px rgba(168, 132, 66, 0.15);
+            border-color: #D4A843;
+            box-shadow: 0 0 0 4px rgba(212, 168, 67, 0.12);
             background: rgba(255, 255, 255, 0.08);
         }
         .input-field::placeholder {
             color: rgba(255, 255, 255, 0.3);
         }
+
+        /* ===== BUTTONS ===== */
         .btn-login {
-            background: linear-gradient(135deg, #A8842A, #C49B3A);
-            color: #000;
+            background: linear-gradient(135deg, #A8842A, #D4A843, #C49B3A);
+            color: #0A1408;
             font-weight: 700;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
+            letter-spacing: 0.02em;
         }
         .btn-login:hover {
-            background: linear-gradient(135deg, #C49B3A, #D4A843);
-            color: #000;
+            transform: scale(1.02);
+            box-shadow: 0 12px 40px rgba(212, 168, 67, 0.35);
+            color: #0A1408;
+        }
+        .btn-google {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            transition: all 0.3s ease;
+        }
+        .btn-google:hover {
+            transform: scale(1.02);
+            background: #ffffff;
+            color: #1a1a1a;
+            border-color: #ffffff;
+        }
+
+        /* ===== TOAST ===== */
+        .error-toast {
+            animation: slideUp 0.4s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* ===== DECORATIVE GLOW ===== */
+        .glow-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            pointer-events: none;
+            z-index: 1;
+        }
+        .glow-orb-1 {
+            width: 400px;
+            height: 400px;
+            background: rgba(212, 168, 67, 0.06);
+            top: -10%;
+            right: -10%;
+        }
+        .glow-orb-2 {
+            width: 300px;
+            height: 300px;
+            background: rgba(76, 175, 80, 0.05);
+            bottom: -5%;
+            left: -5%;
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0A1408; }
+        ::-webkit-scrollbar-thumb { background: #D4A843; border-radius: 10px; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 480px) {
+            .logo-img { width: 65px; height: 65px; }
+            .glass-card { padding: 0; }
+        }
+        @media (min-width: 768px) {
+            .glass-card { min-width: 420px; }
         }
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen p-4">
+<body>
 
-    <div class="w-full max-w-md">
-        <div class="glass-card rounded-3xl overflow-hidden shadow-2xl transition-all duration-500">
-            <!-- Header with Logo -->
-            <div class="px-6 pt-8 pb-6 text-center border-b border-white/10">
-                <div class="flex flex-col items-center">
-                    <!-- Logo -->
-                    <img src="https://scontent.frba1-4.fna.fbcdn.net/v/t39.30808-6/681884209_122093720763301010_4741601618872924151_n.jpg?stp=dst-jpg_tt6&cstp=mx1448x1086&ctp=s1448x1086&_nc_cat=105&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeHxluZ2hQ1jX0BWnXknNpa0vNxkRJHUvNK83GREkdS80v2iGDQGg09nRpOJIyBvRZqewR8ANuZxnglu_3jyBLRP&_nc_ohc=9r2RteZWbQ0Q7kNvwHWwKA8&_nc_oc=AdojtAecjs5SQTGQz_vjLo4Wh6aoO70oew0NwL5JzESrNs9ZnooWSHxGilkU8inj8oY&_nc_zt=23&_nc_ht=scontent.frba1-4.fna&_nc_gid=8_zLhe5o4Z5vPSzY0tOMbQ&_nc_ss=7e2a8&oh=00_Af_Hia-_ebmuBNhwwPzob_74-4oE6AjO8RnlafM2Jxkz8Q&oe=6A3FB926" 
-                         alt="SONE Logo" 
-                         class="logo-img mb-3">
-                    
-                    <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#A8842A]/20 to-[#D4A843]/10 rounded-2xl mb-2">
-                        <i class="fas fa-lock text-3xl text-[#A8842A]"></i>
-                    </div>
-                    <h1 class="text-2xl font-bold text-white tracking-tight">Welcome Back</h1>
-                    <p class="text-gray-400 text-sm mt-1">Sign in to access your <span class="gold-text font-bold">SONE</span> account</p>
-                </div>
-            </div>
-            
-            <div class="p-6 space-y-5">
-                <form id="loginForm" class="space-y-4">
-                    <div>
-                        <label class="block text-gray-300 text-sm font-medium mb-1.5">
-                            <i class="fas fa-envelope ml-1 text-[#A8842A]"></i> Email Address
-                        </label>
-                        <input type="email" id="email" required 
-                               class="w-full px-4 py-3 bg-gray-800/50 border border-gray-700/50 rounded-xl text-white placeholder-gray-400 focus:border-[#A8842A] focus:outline-none focus:ring-2 focus:ring-[#A8842A]/30 transition input-field"
-                               placeholder="example@domain.com">
-                    </div>
-                    <div>
-                        <label class="block text-gray-300 text-sm font-medium mb-1.5">
-                            <i class="fas fa-key ml-1 text-[#A8842A]"></i> Password
-                        </label>
-                        <input type="password" id="password" required 
-                               class="w-full px-4 py-3 bg-gray-800/50 border border-gray-700/50 rounded-xl text-white placeholder-gray-400 focus:border-[#A8842A] focus:outline-none focus:ring-2 focus:ring-[#A8842A]/30 transition input-field"
-                               placeholder="••••••••">
-                    </div>
-                    <button type="submit" id="signInBtn" 
-                            class="w-full btn-login text-white font-bold py-3 rounded-xl transition duration-200 flex items-center justify-center gap-2 shadow-lg">
-                        <i class="fas fa-sign-in-alt"></i> Sign In
-                    </button>
-                </form>
-                
-                <div class="relative my-4">
-                    <div class="absolute inset-0 flex items-center">
-                        <div class="w-full border-t border-gray-700/50"></div>
-                    </div>
-                    <div class="relative flex justify-center text-xs">
-                        <span class="px-3 bg-gray-900/60 text-gray-400 rounded-full backdrop-blur-sm">or</span>
-                    </div>
-                </div>
-                
-                <button id="googleSignInBtn" 
-                        class="w-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white hover:text-gray-900 text-white font-semibold py-3 rounded-xl transition duration-200 flex items-center justify-center gap-3 btn-google">
-                    <i class="fab fa-google text-xl"></i> 
-                    <span>Sign in with Google</span>
-                </button>
-                
-                <div class="text-center text-xs text-gray-500 pt-2 flex items-center justify-center gap-2">
-                    <i class="fas fa-shield-alt text-[#A8842A]"></i>
-                    <span>Secure &amp; Encrypted</span>
-                </div>
-            </div>
+    <!-- ===== DECORATIVE GLOW ===== -->
+    <div class="glow-orb glow-orb-1"></div>
+    <div class="glow-orb glow-orb-2"></div>
+
+    <!-- ===== HERO SLIDER (FULL BACKGROUND) ===== -->
+    <div class="hero-slider" id="heroSlider">
+        <!-- Slide 1 -->
+        <div class="hero-slide active" data-index="0">
+            <img src="Rejoignez les agriculteurs qui ont choisi l'avenir vert avec SONE..webp" alt="SONE Agriculture" loading="lazy">
+            <div class="overlay"></div>
         </div>
-        
-        <div id="toastContainer" class="fixed bottom-5 left-5 right-5 md:left-auto md:right-5 md:w-96 z-50 flex flex-col gap-2"></div>
+        <!-- Slide 2 -->
+        <div class="hero-slide" data-index="1">
+            <img src="Surveillez vos cultures depuis votre téléphone, où que vous soyez..webp" alt="Surveillez vos cultures" loading="lazy">
+            <div class="overlay"></div>
+        </div>
+        <!-- Slide 3 -->
+        <div class="hero-slide" data-index="2">
+            <img src="Moins d'eau, plus de rendement. La technologie au service de la terre..jpeg" alt="Moins d'eau, plus de rendement" loading="lazy">
+            <div class="overlay"></div>
+        </div>
+        <!-- Slide 4 -->
+        <div class="hero-slide" data-index="3">
+            <img src="Votre ferme mérite mieux que l'intuition — découvrez l'agriculture de précision..png" alt="Agriculture de précision" loading="lazy">
+            <div class="overlay"></div>
+        </div>
+        <!-- Slide 5 -->
+        <div class="hero-slide" data-index="4">
+            <img src="L'IA qui protège vos cultures avant même l'apparition des symptômes..jpg" alt="IA protection cultures" loading="lazy">
+            <div class="overlay"></div>
+        </div>
+        <!-- Slide 6 -->
+        <div class="hero-slide" data-index="5">
+            <img src="Chaque parcelle a une histoire. Nos capteurs vous aident à la lire..webp" alt="Chaque parcelle a une histoire" loading="lazy">
+            <div class="overlay"></div>
+        </div>
     </div>
 
+    <!-- ===== SLIDER DOTS ===== -->
+    <div class="slider-dots" id="sliderDots">
+        <button class="active" data-slide="0" aria-label="Slide 1"></button>
+        <button data-slide="1" aria-label="Slide 2"></button>
+        <button data-slide="2" aria-label="Slide 3"></button>
+        <button data-slide="3" aria-label="Slide 4"></button>
+        <button data-slide="4" aria-label="Slide 5"></button>
+        <button data-slide="5" aria-label="Slide 6"></button>
+    </div>
+
+    <!-- ===== LOGIN CARD ===== -->
+    <div class="relative z-10 flex items-center justify-center min-h-screen p-4">
+        <div class="w-full max-w-md">
+
+            <div class="glass-card rounded-3xl overflow-hidden shadow-2xl transition-all duration-500">
+
+                <!-- Header with Logo -->
+                <div class="px-6 pt-8 pb-6 text-center border-b border-white/10">
+                    <div class="flex flex-col items-center">
+                        <!-- Logo -->
+                        <img src="SONELOGE.jpg" alt="SONE Logo" class="logo-img mb-3">
+
+                        <div class="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-[#A8842A]/20 to-[#D4A843]/10 rounded-2xl mb-2">
+                            <i class="fas fa-lock text-2xl text-[#D4A843]"></i>
+                        </div>
+                        <h1 class="text-2xl font-bold text-white tracking-tight">Bienvenue</h1>
+                        <p class="text-gray-400 text-sm mt-1">
+                            Connectez-vous à votre compte <span class="gold-text font-bold">SONE</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Form -->
+                <div class="p-6 space-y-5">
+                    <form id="loginForm" class="space-y-4">
+                        <div>
+                            <label class="block text-gray-300 text-sm font-medium mb-1.5">
+                                <i class="fas fa-envelope mr-1.5 text-[#D4A843]"></i> Adresse e-mail
+                            </label>
+                            <input type="email" id="email" required
+                                   class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-400 focus:border-[#D4A843] focus:outline-none focus:ring-2 focus:ring-[#D4A843]/20 transition input-field"
+                                   placeholder="exemple@email.com">
+                        </div>
+                        <div>
+                            <label class="block text-gray-300 text-sm font-medium mb-1.5">
+                                <i class="fas fa-key mr-1.5 text-[#D4A843]"></i> Mot de passe
+                            </label>
+                            <input type="password" id="password" required
+                                   class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-400 focus:border-[#D4A843] focus:outline-none focus:ring-2 focus:ring-[#D4A843]/20 transition input-field"
+                                   placeholder="••••••••">
+                        </div>
+                        <button type="submit" id="signInBtn"
+                                class="w-full btn-login text-white font-bold py-3.5 rounded-xl transition duration-200 flex items-center justify-center gap-2.5 shadow-lg text-base">
+                            <i class="fas fa-sign-in-alt"></i> Se connecter
+                        </button>
+                    </form>
+
+                    <!-- Divider -->
+                    <div class="relative my-4">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-white/10"></div>
+                        </div>
+                        <div class="relative flex justify-center text-xs">
+                            <span class="px-3 bg-[#0A1408]/80 text-gray-400 rounded-full backdrop-blur-sm">ou</span>
+                        </div>
+                    </div>
+
+                    <!-- Google Button -->
+                    <button id="googleSignInBtn"
+                            class="w-full btn-google text-white font-semibold py-3.5 rounded-xl transition duration-200 flex items-center justify-center gap-3 text-base">
+                        <i class="fab fa-google text-xl"></i>
+                        <span>Se connecter avec Google</span>
+                    </button>
+
+                    <!-- Secure badge -->
+                    <div class="text-center text-xs text-gray-500 pt-2 flex items-center justify-center gap-2">
+                        <i class="fas fa-shield-alt text-[#D4A843]"></i>
+                        <span>Connexion sécurisée et chiffrée</span>
+                    </div>
+
+                    <!-- Lien vers l'accueil -->
+                    <div class="text-center pt-1">
+                        <a href="index.html" class="text-xs text-gray-400 hover:text-[#D4A843] transition flex items-center justify-center gap-1.5">
+                            <i class="fas fa-arrow-left"></i> Retour à l'accueil
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Toast Container -->
+            <div id="toastContainer" class="fixed bottom-5 left-5 right-5 md:left-auto md:right-5 md:w-96 z-50 flex flex-col gap-2 pointer-events-none">
+                <!-- Toasts will be injected here -->
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ===== SCRIPTS ===== -->
     <script>
+        // ============================================================
+        //   HERO SLIDER
+        // ============================================================
+        const slides = document.querySelectorAll('.hero-slide');
+        const dots = document.querySelectorAll('.slider-dots button');
+        let currentSlide = 0;
+        let slideInterval;
+
+        function goToSlide(index) {
+            if (index < 0) index = slides.length - 1;
+            if (index >= slides.length) index = 0;
+            slides.forEach((s, i) => {
+                s.classList.toggle('active', i === index);
+            });
+            dots.forEach((d, i) => {
+                d.classList.toggle('active', i === index);
+            });
+            currentSlide = index;
+            resetAutoPlay();
+        }
+
+        function resetAutoPlay() {
+            clearInterval(slideInterval);
+            slideInterval = setInterval(() => {
+                goToSlide(currentSlide + 1);
+            }, 5500);
+        }
+
+        dots.forEach((dot, i) => {
+            dot.addEventListener('click', () => goToSlide(i));
+        });
+
+        // Touch support for slider
+        let touchStartX = 0;
+        let touchEndX = 0;
+        const sliderContainer = document.getElementById('heroSlider');
+        sliderContainer.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+        sliderContainer.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            const diff = touchStartX - touchEndX;
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) goToSlide(currentSlide + 1);
+                else goToSlide(currentSlide - 1);
+            }
+        }, { passive: true });
+
+        // Keyboard support
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') goToSlide(currentSlide - 1);
+            if (e.key === 'ArrowRight') goToSlide(currentSlide + 1);
+        });
+
+        resetAutoPlay();
+
+        // ============================================================
+        //   SUPABASE AUTH
+        // ============================================================
         const SUPABASE_URL = "https://zpjuhprlcaigmczhqlye.supabase.co";
         const SUPABASE_ANON_KEY = "sb_publishable_PVQ61DBLGYjzaXy-XFrWpA_k_94iEvK";
         const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        
-        // ✅ Redirect URL after login (directly to service.html)
+
         const REDIRECT_URL = "https://sone-solutions.github.io/SONE/service.html";
-        
+
+        // ============================================================
+        //   TOAST SYSTEM
+        // ============================================================
         function showToast(message, type = 'error') {
             const container = document.getElementById('toastContainer');
             if (!container) return;
-            
+
             const toast = document.createElement('div');
-            toast.className = `glass-card rounded-xl p-4 flex items-start gap-3 shadow-xl error-toast transition-all duration-300 border-r-4 ${type === 'error' ? 'border-red-500 bg-red-900/30' : 'border-green-500 bg-green-900/30'}`;
-            const icon = type === 'error' ? '<i class="fas fa-exclamation-circle text-red-400 text-lg"></i>' : '<i class="fas fa-check-circle text-green-400 text-lg"></i>';
+            toast.className = `glass-card rounded-xl p-4 flex items-start gap-3 shadow-xl error-toast border-l-4 pointer-events-auto transition-all duration-300 ${
+                type === 'error' ? 'border-red-500 bg-red-900/40' : 'border-green-500 bg-green-900/40'
+            }`;
+            const icon = type === 'error'
+                ? '<i class="fas fa-exclamation-circle text-red-400 text-lg"></i>'
+                : '<i class="fas fa-check-circle text-green-400 text-lg"></i>';
             toast.innerHTML = `
                 <div class="flex-shrink-0">${icon}</div>
                 <div class="flex-1 text-sm text-white">${message}</div>
-                <button class="text-gray-300 hover:text-white transition"><i class="fas fa-times"></i></button>
+                <button class="text-gray-300 hover:text-white transition ml-2"><i class="fas fa-times"></i></button>
             `;
             container.appendChild(toast);
-            
+
             const closeBtn = toast.querySelector('button');
             closeBtn.addEventListener('click', () => toast.remove());
             setTimeout(() => { if (toast.parentNode) toast.remove(); }, 5000);
         }
-        
-        // 🔹 Sign in with Email & Password
+
+        // ============================================================
+        //   AUTH FUNCTIONS
+        // ============================================================
         async function signInWithEmail(email, password) {
             const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
             if (error) {
-                showToast(error.message || "Login failed", 'error');
+                showToast(error.message || "Échec de la connexion", 'error');
                 return false;
             }
             if (data?.user) {
-                showToast(`Welcome ${data.user.email}! Login successful ✅`, 'success');
-                // ✅ Redirect to service.html
+                showToast(`Bienvenue ${data.user.email}! Connexion réussie ✅`, 'success');
                 setTimeout(() => {
                     window.location.href = REDIRECT_URL;
                 }, 1500);
@@ -197,16 +452,13 @@
             }
             return false;
         }
-        
-        // 🔹 Sign in with Google
+
         async function signInWithGoogle() {
-            // ✅ Use redirect URL directly to service.html
-            const redirectUrl = REDIRECT_URL;
             try {
                 const { error } = await supabaseClient.auth.signInWithOAuth({
                     provider: 'google',
-                    options: { 
-                        redirectTo: redirectUrl,
+                    options: {
+                        redirectTo: REDIRECT_URL,
                         queryParams: {
                             access_type: 'offline',
                             prompt: 'consent',
@@ -215,88 +467,74 @@
                 });
                 if (error) {
                     if (error.message.includes("redirect_uri_mismatch")) {
-                        showToast("Error: Please add the redirect URL in Google Cloud Console", 'error');
+                        showToast("Erreur: Veuillez ajouter l'URL de redirection dans Google Cloud Console", 'error');
                     } else {
-                        showToast("Google sign-in failed: " + error.message, 'error');
+                        showToast("Échec de la connexion Google: " + error.message, 'error');
                     }
                 }
             } catch (err) {
-                showToast("An unexpected error occurred", 'error');
+                showToast("Une erreur inattendue s'est produite", 'error');
             }
         }
-        
-        // 🔹 Check current session
+
         async function checkCurrentSession() {
             const { data: { session } } = await supabaseClient.auth.getSession();
             if (session) {
-                // ✅ If already signed in, redirect to service.html
                 window.location.href = REDIRECT_URL;
             }
         }
-        
-        function addLogoutOption(userEmail) {
-            const cardHeader = document.querySelector('.glass-card .border-b');
-            if (cardHeader && !document.getElementById('customLogoutBtn')) {
-                const logoutDiv = document.createElement('div');
-                logoutDiv.id = 'customLogoutBtn';
-                logoutDiv.className = 'mt-2 text-center pb-1';
-                logoutDiv.innerHTML = `
-                    <button id="logoutAction" class="text-xs bg-red-500/20 hover:bg-red-500/40 text-red-200 px-4 py-1.5 rounded-full transition flex items-center gap-1 mx-auto">
-                        <i class="fas fa-sign-out-alt"></i> Sign Out (${userEmail})
-                    </button>
-                `;
-                cardHeader.parentNode.insertBefore(logoutDiv, cardHeader.nextSibling);
-                document.getElementById('logoutAction').addEventListener('click', async () => {
-                    await supabaseClient.auth.signOut();
-                    showToast("Signed out successfully", 'success');
-                    setTimeout(() => window.location.reload(), 1000);
-                });
-            }
-        }
-        
+
+        // ============================================================
+        //   EVENT LISTENERS
+        // ============================================================
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
             if (!email || !password) {
-                showToast("Please enter your email and password", 'error');
+                showToast("Veuillez saisir votre e-mail et mot de passe", 'error');
                 return;
             }
             const btn = document.getElementById('signInBtn');
             const originalText = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connexion...';
             btn.disabled = true;
             await signInWithEmail(email, password);
             btn.innerHTML = originalText;
             btn.disabled = false;
         });
-        
+
         document.getElementById('googleSignInBtn').addEventListener('click', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('googleSignInBtn');
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Redirecting to Google...';
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Redirection vers Google...';
             btn.disabled = true;
             await signInWithGoogle();
             setTimeout(() => {
-                btn.innerHTML = '<i class="fab fa-google text-xl"></i> <span>Sign in with Google</span>';
+                btn.innerHTML = '<i class="fab fa-google text-xl"></i> <span>Se connecter avec Google</span>';
                 btn.disabled = false;
-            }, 2000);
+            }, 3000);
         });
-        
-        checkCurrentSession();
-        
+
+        // ============================================================
+        //   AUTH STATE CHANGE
+        // ============================================================
         supabaseClient.auth.onAuthStateChange((event, session) => {
             if (event === 'SIGNED_IN' && session) {
-                showToast(`Login successful! Redirecting...`, 'success');
+                showToast(`Connexion réussie! Redirection...`, 'success');
                 setTimeout(() => {
                     window.location.href = REDIRECT_URL;
                 }, 1500);
-                if (!document.getElementById('customLogoutBtn')) addLogoutOption(session.user.email);
             }
         });
-        
-        console.log("✅ Supabase connected successfully");
-        console.log("🔐 Redirect URL:", REDIRECT_URL);
+
+        // ============================================================
+        //   INIT
+        // ============================================================
+        checkCurrentSession();
+        console.log("✅ Supabase connecté avec succès");
+        console.log("🔐 URL de redirection:", REDIRECT_URL);
     </script>
+
 </body>
 </html>

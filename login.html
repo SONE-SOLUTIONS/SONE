@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        /* ===== RESET & BASE ===== */
         * {
             margin: 0;
             padding: 0;
@@ -47,7 +46,7 @@
         .hero-slide .overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, rgba(10, 20, 8, 0.75) 0%, rgba(10, 20, 8, 0.55) 40%, rgba(10, 20, 8, 0.85) 100%);
+            background: linear-gradient(135deg, rgba(10, 20, 8, 0.80) 0%, rgba(10, 20, 8, 0.55) 40%, rgba(10, 20, 8, 0.85) 100%);
         }
 
         /* ===== SLIDER DOTS ===== */
@@ -106,7 +105,6 @@
             box-shadow: 0 0 60px rgba(212, 168, 67, 0.3);
         }
 
-        /* ===== GOLD TEXT ===== */
         .gold-text {
             background: linear-gradient(135deg, #A8842A, #D4A843, #C49B3A);
             -webkit-background-clip: text;
@@ -114,7 +112,6 @@
             background-clip: text;
         }
 
-        /* ===== INPUT FIELDS ===== */
         .input-field {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(212, 168, 67, 0.15);
@@ -131,7 +128,6 @@
             color: rgba(255, 255, 255, 0.3);
         }
 
-        /* ===== BUTTONS ===== */
         .btn-login {
             background: linear-gradient(135deg, #A8842A, #D4A843, #C49B3A);
             color: #0A1408;
@@ -156,7 +152,6 @@
             border-color: #ffffff;
         }
 
-        /* ===== TOAST ===== */
         .error-toast {
             animation: slideUp 0.4s cubic-bezier(0.23, 1, 0.32, 1) forwards;
         }
@@ -165,7 +160,6 @@
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        /* ===== DECORATIVE GLOW ===== */
         .glow-orb {
             position: fixed;
             border-radius: 50%;
@@ -188,12 +182,10 @@
             left: -5%;
         }
 
-        /* ===== SCROLLBAR ===== */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0A1408; }
         ::-webkit-scrollbar-thumb { background: #D4A843; border-radius: 10px; }
 
-        /* ===== RESPONSIVE ===== */
         @media (max-width: 480px) {
             .logo-img { width: 65px; height: 65px; }
             .glass-card { padding: 0; }
@@ -202,11 +194,10 @@
             .glass-card { min-width: 420px; }
         }
 
-        /* ===== LOADING OVERLAY ===== */
         .loading-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(10, 20, 8, 0.85);
+            background: rgba(10, 20, 8, 0.90);
             backdrop-filter: blur(10px);
             z-index: 100;
             display: none;
@@ -235,48 +226,76 @@
             font-size: 1rem;
             letter-spacing: 0.05em;
         }
+
+        /* ===== DÉCONNEXION AUTO ===== */
+        .logout-banner {
+            position: fixed;
+            top: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 50;
+            background: rgba(255, 50, 50, 0.15);
+            border: 1px solid rgba(255, 50, 50, 0.3);
+            backdrop-filter: blur(12px);
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            color: #ff6b6b;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: none;
+            align-items: center;
+            gap: 0.6rem;
+            animation: slideDown 0.4s ease forwards;
+        }
+        .logout-banner.show {
+            display: flex;
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
     </style>
 </head>
 <body>
 
+    <!-- ===== LOGOUT BANNER ===== -->
+    <div class="logout-banner" id="logoutBanner">
+        <i class="fas fa-shield-alt"></i>
+        <span>Session précédente terminée - Veuillez vous reconnecter</span>
+    </div>
+
     <!-- ===== LOADING OVERLAY ===== -->
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loading-spinner"></div>
-        <p class="loading-text">Connexion en cours...</p>
+        <p class="loading-text" id="loadingText">Connexion en cours...</p>
     </div>
 
     <!-- ===== DECORATIVE GLOW ===== -->
     <div class="glow-orb glow-orb-1"></div>
     <div class="glow-orb glow-orb-2"></div>
 
-    <!-- ===== HERO SLIDER (FULL BACKGROUND) ===== -->
+    <!-- ===== HERO SLIDER ===== -->
     <div class="hero-slider" id="heroSlider">
-        <!-- Slide 1 -->
         <div class="hero-slide active" data-index="0">
             <img src="Rejoignez les agriculteurs qui ont choisi l'avenir vert avec SONE..webp" alt="SONE Agriculture" loading="lazy">
             <div class="overlay"></div>
         </div>
-        <!-- Slide 2 -->
         <div class="hero-slide" data-index="1">
             <img src="Surveillez vos cultures depuis votre téléphone, où que vous soyez..webp" alt="Surveillez vos cultures" loading="lazy">
             <div class="overlay"></div>
         </div>
-        <!-- Slide 3 -->
         <div class="hero-slide" data-index="2">
             <img src="Moins d'eau, plus de rendement. La technologie au service de la terre..jpeg" alt="Moins d'eau, plus de rendement" loading="lazy">
             <div class="overlay"></div>
         </div>
-        <!-- Slide 4 -->
         <div class="hero-slide" data-index="3">
             <img src="Votre ferme mérite mieux que l'intuition — découvrez l'agriculture de précision..png" alt="Agriculture de précision" loading="lazy">
             <div class="overlay"></div>
         </div>
-        <!-- Slide 5 -->
         <div class="hero-slide" data-index="4">
             <img src="L'IA qui protège vos cultures avant même l'apparition des symptômes..jpg" alt="IA protection cultures" loading="lazy">
             <div class="overlay"></div>
         </div>
-        <!-- Slide 6 -->
         <div class="hero-slide" data-index="5">
             <img src="Chaque parcelle a une histoire. Nos capteurs vous aident à la lire..webp" alt="Chaque parcelle a une histoire" loading="lazy">
             <div class="overlay"></div>
@@ -285,12 +304,12 @@
 
     <!-- ===== SLIDER DOTS ===== -->
     <div class="slider-dots" id="sliderDots">
-        <button class="active" data-slide="0" aria-label="Slide 1"></button>
-        <button data-slide="1" aria-label="Slide 2"></button>
-        <button data-slide="2" aria-label="Slide 3"></button>
-        <button data-slide="3" aria-label="Slide 4"></button>
-        <button data-slide="4" aria-label="Slide 5"></button>
-        <button data-slide="5" aria-label="Slide 6"></button>
+        <button class="active" data-slide="0"></button>
+        <button data-slide="1"></button>
+        <button data-slide="2"></button>
+        <button data-slide="3"></button>
+        <button data-slide="4"></button>
+        <button data-slide="5"></button>
     </div>
 
     <!-- ===== LOGIN CARD ===== -->
@@ -299,12 +318,9 @@
 
             <div class="glass-card rounded-3xl overflow-hidden shadow-2xl transition-all duration-500">
 
-                <!-- Header with Logo -->
                 <div class="px-6 pt-8 pb-6 text-center border-b border-white/10">
                     <div class="flex flex-col items-center">
-                        <!-- Logo -->
                         <img src="SONELOGE.jpg" alt="SONE Logo" class="logo-img mb-3">
-
                         <div class="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-[#A8842A]/20 to-[#D4A843]/10 rounded-2xl mb-2">
                             <i class="fas fa-lock text-2xl text-[#D4A843]"></i>
                         </div>
@@ -315,7 +331,6 @@
                     </div>
                 </div>
 
-                <!-- Form -->
                 <div class="p-6 space-y-5">
                     <form id="loginForm" class="space-y-4">
                         <div>
@@ -340,7 +355,6 @@
                         </button>
                     </form>
 
-                    <!-- Divider -->
                     <div class="relative my-4">
                         <div class="absolute inset-0 flex items-center">
                             <div class="w-full border-t border-white/10"></div>
@@ -350,20 +364,17 @@
                         </div>
                     </div>
 
-                    <!-- Google Button -->
                     <button id="googleSignInBtn"
                             class="w-full btn-google text-white font-semibold py-3.5 rounded-xl transition duration-200 flex items-center justify-center gap-3 text-base">
                         <i class="fab fa-google text-xl"></i>
                         <span>Se connecter avec Google</span>
                     </button>
 
-                    <!-- Secure badge -->
                     <div class="text-center text-xs text-gray-500 pt-2 flex items-center justify-center gap-2">
                         <i class="fas fa-shield-alt text-[#D4A843]"></i>
                         <span>Connexion sécurisée et chiffrée</span>
                     </div>
 
-                    <!-- Lien vers l'accueil -->
                     <div class="text-center pt-1">
                         <a href="index.html" class="text-xs text-gray-400 hover:text-[#D4A843] transition flex items-center justify-center gap-1.5">
                             <i class="fas fa-arrow-left"></i> Retour à l'accueil
@@ -373,10 +384,7 @@
 
             </div>
 
-            <!-- Toast Container -->
-            <div id="toastContainer" class="fixed bottom-5 left-5 right-5 md:left-auto md:right-5 md:w-96 z-50 flex flex-col gap-2 pointer-events-none">
-                <!-- Toasts will be injected here -->
-            </div>
+            <div id="toastContainer" class="fixed bottom-5 left-5 right-5 md:left-auto md:right-5 md:w-96 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
         </div>
     </div>
@@ -415,7 +423,6 @@
             dot.addEventListener('click', () => goToSlide(i));
         });
 
-        // Touch support for slider
         let touchStartX = 0;
         let touchEndX = 0;
         const sliderContainer = document.getElementById('heroSlider');
@@ -431,7 +438,6 @@
             }
         }, { passive: true });
 
-        // Keyboard support
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowLeft') goToSlide(currentSlide - 1);
             if (e.key === 'ArrowRight') goToSlide(currentSlide + 1);
@@ -444,18 +450,24 @@
         // ============================================================
         const SUPABASE_URL = "https://zpjuhprlcaigmczhqlye.supabase.co";
         const SUPABASE_ANON_KEY = "sb_publishable_PVQ61DBLGYjzaXy-XFrWpA_k_94iEvK";
-        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+            auth: {
+                autoRefreshToken: false, // ✅ Désactiver le rafraîchissement auto
+                persistSession: true,
+                detectSessionInUrl: true
+            }
+        });
 
         const REDIRECT_URL = "https://sone-solutions.github.io/SONE/service.html";
         const HOME_URL = "https://sone-solutions.github.io/SONE/index.html";
         const LOGIN_URL = "https://sone-solutions.github.io/SONE/login.html";
 
         // ============================================================
-        //   LOADING OVERLAY
+        //   LOADING
         // ============================================================
         function showLoading(message = 'Connexion en cours...') {
             const overlay = document.getElementById('loadingOverlay');
-            overlay.querySelector('.loading-text').textContent = message;
+            document.getElementById('loadingText').textContent = message;
             overlay.classList.add('active');
         }
 
@@ -464,13 +476,12 @@
         }
 
         // ============================================================
-        //   TOAST SYSTEM
+        //   TOAST
         // ============================================================
         function showToast(message, type = 'error') {
             const container = document.getElementById('toastContainer');
             if (!container) return;
 
-            // Remove existing toasts of same type to avoid spam
             const existing = container.querySelectorAll('.glass-card');
             existing.forEach(el => el.remove());
 
@@ -490,56 +501,136 @@
 
             const closeBtn = toast.querySelector('button');
             closeBtn.addEventListener('click', () => toast.remove());
-            setTimeout(() => { if (toast.parentNode) toast.remove(); }, 5000);
+            setTimeout(() => { if (toast.parentNode) toast.remove(); }, 6000);
         }
 
         // ============================================================
-        //   🔐 SECURE REDIRECT - VÉRIFICATION DE SESSION
+        //   🔐 CLEAR SESSION - DÉCONNEXION FORCÉE
         // ============================================================
-        async function secureRedirectToService() {
-            showLoading('Vérification de la session...');
-            
+        async function clearSession() {
             try {
-                // ✅ Vérifier la session actuelle
-                const { data: { session }, error } = await supabaseClient.auth.getSession();
+                // ✅ Sign out de Supabase
+                await supabaseClient.auth.signOut();
+                console.log("✅ Session supprimée");
                 
-                if (error) {
-                    console.error("❌ Erreur de session:", error);
-                    hideLoading();
-                    showToast("Erreur de vérification de session", 'error');
-                    return false;
-                }
-
-                if (session && session.user) {
-                    // ✅ Session valide → Rediriger vers service.html
-                    console.log("✅ Session valide, redirection vers service.html");
-                    showToast(`Bienvenue ${session.user.email}!`, 'success');
-                    setTimeout(() => {
-                        window.location.href = REDIRECT_URL;
-                    }, 800);
-                    return true;
-                } else {
-                    // ❌ Pas de session → Reste sur login.html
-                    console.log("❌ Aucune session active, reste sur login.html");
-                    hideLoading();
-                    showToast("Veuillez vous connecter pour accéder aux services", 'error');
-                    return false;
-                }
+                // ✅ Nettoyer le localStorage
+                localStorage.removeItem('supabase.auth.token');
+                
+                // ✅ Afficher le banner
+                const banner = document.getElementById('logoutBanner');
+                banner.classList.add('show');
+                setTimeout(() => banner.classList.remove('show'), 5000);
+                
+                return true;
             } catch (err) {
-                console.error("❌ Erreur lors de la vérification:", err);
-                hideLoading();
-                showToast("Erreur technique, veuillez réessayer", 'error');
+                console.warn("⚠️ Erreur lors de la déconnexion:", err);
                 return false;
             }
         }
 
         // ============================================================
-        //   AUTH FUNCTIONS
+        //   🔐 SIGN IN WITH GOOGLE
+        // ============================================================
+        async function signInWithGoogle() {
+            try {
+                showLoading('Redirection vers Google...');
+                
+                // ✅ TOUJOURS forcer la déconnexion avant une nouvelle tentative
+                await clearSession();
+                
+                const { error } = await supabaseClient.auth.signInWithOAuth({
+                    provider: 'google',
+                    options: {
+                        redirectTo: LOGIN_URL,
+                        queryParams: {
+                            access_type: 'offline',
+                            prompt: 'select_account', // ✅ Force le choix du compte
+                        }
+                    }
+                });
+                
+                if (error) {
+                    hideLoading();
+                    showToast("Échec de la connexion Google: " + error.message, 'error');
+                    return false;
+                }
+                
+                return true;
+                
+            } catch (err) {
+                hideLoading();
+                showToast("Une erreur inattendue s'est produite", 'error');
+                return false;
+            }
+        }
+
+        // ============================================================
+        //   🔐 HANDLE GOOGLE CALLBACK
+        // ============================================================
+        async function handleGoogleCallback() {
+            const params = new URLSearchParams(window.location.search);
+            const code = params.get('code');
+            const error = params.get('error');
+            
+            if (error) {
+                // ❌ L'utilisateur a annulé
+                hideLoading();
+                showToast("Connexion Google annulée", 'error');
+                window.history.replaceState({}, document.title, window.location.pathname);
+                // ✅ S'assurer que la session est bien effacée
+                await clearSession();
+                return false;
+            }
+            
+            if (code) {
+                showLoading('Finalisation de la connexion...');
+                
+                try {
+                    // ✅ Échanger le code contre une session
+                    const { data: { session }, error: sessionError } = await supabaseClient.auth.getSession();
+                    
+                    if (sessionError || !session) {
+                        hideLoading();
+                        showToast("Échec de la récupération de session", 'error');
+                        await clearSession();
+                        window.history.replaceState({}, document.title, window.location.pathname);
+                        return false;
+                    }
+                    
+                    if (session && session.user) {
+                        // ✅ Session valide → Redirection sécurisée
+                        showToast(`Bienvenue ${session.user.email}!`, 'success');
+                        setTimeout(() => {
+                            window.location.href = REDIRECT_URL;
+                        }, 1000);
+                        return true;
+                    }
+                    
+                    hideLoading();
+                    return false;
+                    
+                } catch (err) {
+                    hideLoading();
+                    showToast("Erreur lors de la finalisation", 'error');
+                    await clearSession();
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                    return false;
+                }
+            }
+            
+            return false;
+        }
+
+        // ============================================================
+        //   🔐 SIGN IN WITH EMAIL
         // ============================================================
         async function signInWithEmail(email, password) {
             showLoading('Connexion en cours...');
             
             try {
+                // ✅ Nettoyer la session avant la connexion
+                await clearSession();
+                
                 const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
                 
                 if (error) {
@@ -549,8 +640,7 @@
                 }
                 
                 if (data?.user) {
-                    // ✅ Connexion réussie → Redirection sécurisée
-                    showToast(`Bienvenue ${data.user.email}! Connexion réussie ✅`, 'success');
+                    showToast(`Bienvenue ${data.user.email}!`, 'success');
                     setTimeout(() => {
                         window.location.href = REDIRECT_URL;
                     }, 1000);
@@ -567,136 +657,49 @@
         }
 
         // ============================================================
-        //   🔐 SIGN IN WITH GOOGLE - AVEC VÉRIFICATION
+        //   🔐 INIT - VÉRIFICATION ET NETTOYAGE
         // ============================================================
-        async function signInWithGoogle() {
-            try {
-                showLoading('Redirection vers Google...');
-                
-                // ✅ Démarrer la connexion Google
-                const { error } = await supabaseClient.auth.signInWithOAuth({
-                    provider: 'google',
-                    options: {
-                        redirectTo: LOGIN_URL, // ✅ REDIRIGER VERS login.html PAS service.html
-                        queryParams: {
-                            access_type: 'offline',
-                            prompt: 'select_account', // ✅ Force le choix du compte
-                        }
-                    }
-                });
-                
-                if (error) {
-                    hideLoading();
-                    if (error.message.includes("redirect_uri_mismatch")) {
-                        showToast("Erreur: Veuillez ajouter l'URL de redirection dans Google Cloud Console", 'error');
-                    } else {
-                        showToast("Échec de la connexion Google: " + error.message, 'error');
-                    }
-                    return false;
-                }
-                
-                // ✅ Si tout va bien, Google gère la redirection
-                // Le navigateur va quitter la page, donc pas besoin de cacher le loading
-                return true;
-                
-            } catch (err) {
-                hideLoading();
-                showToast("Une erreur inattendue s'est produite", 'error');
-                return false;
-            }
-        }
-
-        // ============================================================
-        //   🔐 GESTION DU RETOUR DE GOOGLE (CALLBACK)
-        // ============================================================
-        async function handleGoogleCallback() {
-            // Vérifier si on est en retour de Google (paramètres dans l'URL)
-            const params = new URLSearchParams(window.location.search);
-            const code = params.get('code');
-            const error = params.get('error');
-            
-            if (error) {
-                // ❌ L'utilisateur a annulé ou il y a une erreur
-                showToast("Connexion Google annulée ou échouée", 'error');
-                // Nettoyer l'URL
-                window.history.replaceState({}, document.title, window.location.pathname);
-                hideLoading();
-                return false;
-            }
-            
-            if (code) {
-                // ✅ Tentative de récupération de session après retour Google
-                showLoading('Finalisation de la connexion...');
-                
-                try {
-                    const { data: { session }, error: sessionError } = await supabaseClient.auth.getSession();
-                    
-                    if (sessionError || !session) {
-                        hideLoading();
-                        showToast("Échec de la récupération de session", 'error');
-                        window.history.replaceState({}, document.title, window.location.pathname);
-                        return false;
-                    }
-                    
-                    if (session && session.user) {
-                        // ✅ Session valide → Redirection vers service.html
-                        showToast(`Bienvenue ${session.user.email}! Connexion réussie ✅`, 'success');
-                        setTimeout(() => {
-                            window.location.href = REDIRECT_URL;
-                        }, 1000);
-                        return true;
-                    }
-                    
-                    hideLoading();
-                    return false;
-                    
-                } catch (err) {
-                    hideLoading();
-                    showToast("Erreur lors de la finalisation", 'error');
-                    window.history.replaceState({}, document.title, window.location.pathname);
-                    return false;
-                }
-            }
-            
-            return false;
-        }
-
-        // ============================================================
-        //   CHECK CURRENT SESSION AU CHARGEMENT
-        // ============================================================
-        async function checkCurrentSession() {
-            // ✅ Vérifier si on revient de Google
+        async function init() {
+            // ✅ 1. Vérifier si on revient de Google
             const handled = await handleGoogleCallback();
             if (handled) return;
             
-            // ✅ Vérifier la session normale
+            // ✅ 2. Nettoyer l'URL des paramètres
+            if (window.location.search) {
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+            
+            // ✅ 3. 🔥 FORCER LA DÉCONNEXION - C'EST LA CLÉ !
+            //    On supprime toute session existante pour éviter la connexion automatique
             const { data: { session } } = await supabaseClient.auth.getSession();
-            if (session && session.user) {
-                // ✅ Si déjà connecté, rediriger vers service.html
-                console.log("✅ Session existante, redirection vers service.html");
-                window.location.href = REDIRECT_URL;
+            
+            if (session) {
+                console.log("⚠️ Session existante détectée, suppression forcée...");
+                await clearSession();
+                // Afficher un message à l'utilisateur
+                showToast("Session précédente terminée. Veuillez vous reconnecter.", 'error');
             }
+            
+            // ✅ 4. Écouter les changements d'état d'authentification
+            supabaseClient.auth.onAuthStateChange((event, session) => {
+                console.log("🔐 Auth event:", event);
+                
+                if (event === 'SIGNED_IN' && session) {
+                    // ✅ Connexion détectée → Redirection
+                    showToast(`Connexion réussie!`, 'success');
+                    setTimeout(() => {
+                        window.location.href = REDIRECT_URL;
+                    }, 1000);
+                }
+                
+                if (event === 'SIGNED_OUT') {
+                    console.log("👋 Déconnexion effectuée");
+                }
+            });
+            
+            console.log("✅ Supabase connecté avec succès");
+            console.log("🔐 URL de redirection Google:", LOGIN_URL);
         }
-
-        // ============================================================
-        //   🔐 AUTH STATE CHANGE - ÉCOUTEUR SÉCURISÉ
-        // ============================================================
-        supabaseClient.auth.onAuthStateChange((event, session) => {
-            console.log("🔐 Auth event:", event, session?.user?.email);
-            
-            if (event === 'SIGNED_IN' && session) {
-                // ✅ Connexion détectée → Redirection sécurisée
-                showToast(`Connexion réussie! Redirection...`, 'success');
-                setTimeout(() => {
-                    window.location.href = REDIRECT_URL;
-                }, 1000);
-            }
-            
-            if (event === 'SIGNED_OUT') {
-                console.log("👋 Déconnexion détectée");
-                showToast("Vous êtes déconnecté", 'error');
-            }
-        });
 
         // ============================================================
         //   EVENT LISTENERS
@@ -730,8 +733,6 @@
             
             await signInWithGoogle();
             
-            // Le navigateur va être redirigé vers Google
-            // On réactive le bouton après un délai au cas où
             setTimeout(() => {
                 btn.innerHTML = '<i class="fab fa-google text-xl"></i> <span>Se connecter avec Google</span>';
                 btn.disabled = false;
@@ -739,12 +740,9 @@
         });
 
         // ============================================================
-        //   INIT
+        //   START
         // ============================================================
-        checkCurrentSession();
-        console.log("✅ Supabase connecté avec succès");
-        console.log("🔐 URL de redirection Google:", LOGIN_URL);
-        console.log("🔐 URL de redirection finale:", REDIRECT_URL);
+        init();
     </script>
 
 </body>

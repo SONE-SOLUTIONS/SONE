@@ -1,973 +1,534 @@
 <html lang="ar">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>قاعدة بيانات النباتات</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>قاعدة بيانات النباتات</title>
 
-<style>
+    <style>
+        /* === الأنماط الأساسية === */
+        body {
+            font-family: Tahoma, Arial, sans-serif;
+            direction: rtl;
+            text-align: center;
+            background: #f7f9f7;
+            margin: 0;
+            padding: 40px;
+            color: #2c3e2f;
+        }
 
-body{
-    font-family: Tahoma, Arial, sans-serif;
-    direction: rtl;
-    text-align:center;
-    background:#f7f9f7;
-    margin:0;
-    padding:40px;
-    color:#2c3e2f;
-}
+        .container {
+            max-width: 1200px;
+            margin: auto;
+        }
 
-.container{
-    max-width:1200px;
-    margin:auto;
-}
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: white;
+            padding: 15px 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+            border: 1px solid #e3e8e3;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
 
-/* ===== تنسيق رأس الصفحة (الشعار + الاسم) ===== */
-.header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: white;
-    padding: 15px 30px;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-    margin-bottom: 30px;
-    border: 1px solid #e3e8e3;
-}
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
 
-.logo-section {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
+        .logo-section img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 2px solid #2f6b4f;
+        }
 
-.logo-section img {
-    width: 60px;
-    height: 60px;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 2px solid #2f6b4f;
-}
+        .logo-section .site-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1f4d36;
+            letter-spacing: 1px;
+        }
 
-.logo-section .site-name {
-    font-size: 24px;
-    font-weight: 700;
-    color: #1f4d36;
-    letter-spacing: 1px;
-}
+        .logo-section .site-name span {
+            color: #2f6b4f;
+        }
 
-.logo-section .site-name span {
-    color: #2f6b4f;
-}
+        .lang-switcher {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
 
-/* ===== باقي التنسيقات كما هي ===== */
+        .lang-btn {
+            background: transparent;
+            border: 2px solid #d0d7d0;
+            border-radius: 30px;
+            padding: 6px 14px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
 
-h1{
-    font-size:28px;
-    font-weight:600;
-    margin-bottom:25px;
-    color:#1f4d36;
-}
+        .lang-btn:hover {
+            background: #e8f0e8;
+            border-color: #2f6b4f;
+        }
 
-.search-box{
-    margin-bottom:30px;
-}
+        .lang-btn.active {
+            border-color: #2f6b4f;
+            background: #dce8dc;
+        }
 
-input{
-    width:320px;
-    padding:12px;
-    border:1px solid #d0d7d0;
-    border-radius:6px;
-    font-size:15px;
-    outline:none;
-}
+        .lang-btn img {
+            width: 24px;
+            height: 16px;
+            border-radius: 3px;
+            object-fit: cover;
+        }
 
-button{
-    padding:12px 20px;
-    border:none;
-    background:#2f6b4f;
-    color:white;
-    cursor:pointer;
-    border-radius:6px;
-    font-size:14px;
-    transition:0.3s;
-}
+        h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: #1f4d36;
+            transition: 0.3s;
+        }
 
-button:hover{
-    background:#24553e;
-}
+        .search-box {
+            margin-bottom: 30px;
+        }
 
-#results{
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    gap:20px;
-}
+        input {
+            width: 320px;
+            padding: 12px;
+            border: 1px solid #d0d7d0;
+            border-radius: 6px;
+            font-size: 15px;
+            outline: none;
+        }
 
-.card{
-    width:340px;
-    background:white;
-    border:1px solid #e3e8e3;
-    padding:20px;
-    border-radius:10px;
-    box-shadow:0 2px 8px rgba(0,0,0,0.06);
-}
+        button {
+            padding: 12px 20px;
+            border: none;
+            background: #2f6b4f;
+            color: white;
+            cursor: pointer;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: 0.3s;
+        }
 
-.card img{
-    width:220px;
-    height:220px;
-    object-fit:cover;
-    border-radius:6px;
-    margin-bottom:15px;
-}
+        button:hover {
+            background: #24553e;
+        }
 
-.card h3{
-    margin:10px 0;
-    font-size:20px;
-}
+        #results {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
 
-.card p{
-    color:#666;
-    font-size:14px;
-}
+        .card {
+            width: 340px;
+            background: white;
+            border: 1px solid #e3e8e3;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            position: relative;
+        }
 
-.details{
-    text-align:right;
-    margin-top:15px;
-    border-top:1px solid #eee;
-    padding-top:10px;
-    font-size:14px;
-    line-height:1.8;
-}
+        .card img {
+            width: 220px;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
 
-.action-buttons{
-    margin-top:15px;
-}
+        .card h3 {
+            margin: 10px 0 5px;
+            font-size: 20px;
+        }
+        .card .scientific {
+            font-style: italic;
+            color: #555;
+            font-size: 15px;
+            margin-top: 0;
+        }
 
-.action-buttons button{
-    margin:4px;
-}
+        .card p {
+            color: #666;
+            font-size: 14px;
+        }
 
-/* ===== تنسيق للشاشات الصغيرة ===== */
-@media (max-width: 600px) {
-    .header {
-        flex-direction: column;
-        gap: 10px;
-        padding: 15px;
-    }
-    
-    .logo-section .site-name {
-        font-size: 20px;
-    }
-    
-    .logo-section img {
-        width: 50px;
-        height: 50px;
-    }
-}
+        .details {
+            text-align: right;
+            margin-top: 15px;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+        .details .description {
+            font-size: 13px;
+            color: #444;
+            background: #f4f6f4;
+            padding: 8px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }
+        .details .care-section {
+            margin-top: 6px;
+            border-bottom: 1px dashed #ddd;
+            padding-bottom: 5px;
+        }
+        .details .care-section strong {
+            color: #2f6b4f;
+        }
 
-</style>
+        .action-buttons {
+            margin-top: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .action-buttons button {
+            margin: 2px;
+        }
+
+        .download-btn {
+            background: #4a6fa5;
+        }
+        .download-btn:hover {
+            background: #3a5a8a;
+        }
+
+        @media (max-width: 600px) {
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+                padding: 15px;
+            }
+            .logo-section .site-name {
+                font-size: 20px;
+            }
+            .logo-section img {
+                width: 50px;
+                height: 50px;
+            }
+            .lang-switcher {
+                justify-content: center;
+            }
+            .lang-btn {
+                font-size: 16px;
+                padding: 4px 12px;
+            }
+        }
+    </style>
 </head>
 <body>
 
-<div class="container">
+    <div class="container">
 
-<!-- ===== رأس الصفحة: الشعار + اسم الموقع ===== -->
-<div class="header">
-    <!-- جهة اليمين (لغة عربية) -->
-    <div class="logo-section">
-        <img src="https://scontent.frba1-4.fna.fbcdn.net/v/t39.30808-6/681884209_122093720763301010_4741601618872924151_n.jpg?stp=dst-jpg_tt6&amp;cstp=mx1448x1086&amp;ctp=s1448x1086&amp;_nc_cat=105&amp;ccb=1-7&amp;_nc_sid=6ee11a&amp;_nc_eui2=AeHxluZ2hQ1jX0BWnXknNpa0vNxkRJHUvNK83GREkdS80v2iGDQGg09nRpOJIyBvRZqewR8ANuZxnglu_3jyBLRP&amp;_nc_ohc=5MY4DOQZ3KEQ7kNvwFYjH64&amp;_nc_oc=AdrtCWkds6_rCmi27vAUw_i2tqrK5RREgsOVn-UhSWmJrBplMesSofJ_HaH2GVySs3c&amp;_nc_zt=23&amp;_nc_ht=scontent.frba1-4.fna&amp;_nc_gid=x4zpjI23ZjMYr9arUfGT6Q&amp;_nc_ss=7e2a8&amp;oh=00_Af-K5RI0vsrfWdFx85meEe_0vpC43KLltPAbhOa_rCeQ2A&amp;oe=6A375FA6" alt="شعار SONE AGRI DATA">
-        <div class="site-name">SONE <span>AGRI DATA</span></div>
+        <div class="header">
+            <div class="logo-section">
+                <img src="https://sone-solutions.github.io/SONE/SONELOGE.jpg" alt="شعار SONE AGRI DATA">
+                <div class="site-name">SONE <span>AGRI DATA</span></div>
+            </div>
+            <div class="lang-switcher">
+                <button class="lang-btn active" data-lang="ar" onclick="setLanguage('ar')"><span>🇲🇦</span> عربي</button>
+                <button class="lang-btn" data-lang="fr" onclick="setLanguage('fr')"><span>🇫🇷</span> Français</button>
+                <button class="lang-btn" data-lang="en" onclick="setLanguage('en')"><span>🇬🇧</span> English</button>
+            </div>
+        </div>
+
+        <h1 id="page-title">قاعدة بيانات النباتات</h1>
+
+        <div class="search-box">
+            <input id="search" placeholder="أدخل اسم النبات">
+            <button id="search-btn" onclick="searchPlant()">بحث</button>
+        </div>
+
+        <div id="results"></div>
+
     </div>
-    
-    <!-- جهة اليسار (فارغة حالياً، يمكن إضافة أي عنصر هنا) -->
-    <div></div>
-</div>
-<!-- ===== انتهى رأس الصفحة ===== -->
 
-<h1>قاعدة بيانات النباتات</h1>
-
-<div class="search-box">
-    <input id="search" placeholder="أدخل اسم النبات">
-    <button onclick="searchPlant()">بحث</button>
-</div>
-
-<div id="results">
-        <div class="card">
-
-            <h3>European Silver Fir</h3>
-
-            <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/1_abies_alba/thumbnail/1536px-Abies_alba_SkalitC3A9.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260617%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260617T172815Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=28ec5ee51a30779032dda0f59c8e23368015b0f9244cb582dffaaec77d74d09d">
-
-            <p>Abies alba</p>
-
-            <div class="action-buttons">
-                <button onclick="getDetails(1)">
-                   عرض المعلومات
-                </button>
-
-                <button onclick="getCare(1)">
-                   دليل العناية
-                </button>
-            </div>
-
-            <div class="details" id="details-1">
-            </div>
-
-        </div>
-        
-        <div class="card">
-
-            <h3>Pyramidalis Silver Fir</h3>
-
-            <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/2_abies_alba_pyramidalis/thumbnail/49255769768_df55596553_b.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260617%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260617T172815Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=1dc0e2458a66991d74cf25057afdbc20740d52267ef8207d12f2e2b6d24fa24a">
-
-            <p>Abies alba 'Pyramidalis'</p>
-
-            <div class="action-buttons">
-                <button onclick="getDetails(2)">
-                   عرض المعلومات
-                </button>
-
-                <button onclick="getCare(2)">
-                   دليل العناية
-                </button>
-            </div>
-
-            <div class="details" id="details-2">
-            </div>
-
-        </div>
-        
-        <div class="card">
-
-            <h3>White Fir</h3>
-
-            <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/3_abies_concolor/thumbnail/52292935430_f4f3b22614_b.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260617%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260617T172815Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=a02006d1c5300da34efc5f848c6fe47887297a91d75b8b7269aace9e8ca0f57b">
-
-            <p>Abies concolor</p>
-
-            <div class="action-buttons">
-                <button onclick="getDetails(3)">
-                   عرض المعلومات
-                </button>
-
-                <button onclick="getCare(3)">
-                   دليل العناية
-                </button>
-            </div>
-
-            <div class="details" id="details-3">
-            </div>
-
-        </div>
-        
-        <div class="card">
-
-            <h3>Candicans White Fir</h3>
-
-            <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/4_abies_concolor_candicans/thumbnail/49283844888_332c9e46f2_b.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260617%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260617T172815Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=0cf41e2fd6875377459a003025b5c06bc0cb2d4aef0efa5a99c73a8504b46acc">
-
-            <p>Abies concolor 'Candicans'</p>
-
-            <div class="action-buttons">
-                <button onclick="getDetails(4)">
-                   عرض المعلومات
-                </button>
-
-                <button onclick="getCare(4)">
-                   دليل العناية
-                </button>
-            </div>
-
-            <div class="details" id="details-4">
-            </div>
-
-        </div>
-        
-        <div class="card">
-
-            <h3>Fraser Fir</h3>
-
-            <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/5_abies_fraseri/thumbnail/36843539702_e80fc436e0_b.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260617%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260617T172815Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=81d28b0246d92bb189f096224d740255884769bbc60235a655416704eac86aa5">
-
-            <p>Abies fraseri</p>
-
-            <div class="action-buttons">
-                <button onclick="getDetails(5)">
-                   عرض المعلومات
-                </button>
-
-                <button onclick="getCare(5)">
-                   دليل العناية
-                </button>
-            </div>
-
-            <div class="details" id="details-5">
-            </div>
-
-        </div>
-        
-        <div class="card">
-
-            <h3>Golden Korean Fir</h3>
-
-            <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/6_abies_koreana_aurea/thumbnail/49235570926_99ec10781d_b.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260617%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260617T172815Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=c268285273e0e01cd06f7e4caaff27e30a507ea2ac3e199634159fd77d9130f2">
-
-            <p>Abies koreana 'Aurea'</p>
-
-            <div class="action-buttons">
-                <button onclick="getDetails(6)">
-                   عرض المعلومات
-                </button>
-
-                <button onclick="getCare(6)">
-                   دليل العناية
-                </button>
-            </div>
-
-            <div class="details" id="details-6">
-            </div>
-
-        </div>
-        
-        <div class="card">
-
-            <h3>Alpine Fir</h3>
-
-            <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/7_abies_lasiocarpa/thumbnail/51002756843_74fae3c2fa_b.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260617%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260617T172815Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=31a0cfb6209d48aaf6c511ab9a49d26dad61e9ec89b595f0b8a281da50025d0a">
-
-            <p>Abies lasiocarpa</p>
-
-            <div class="action-buttons">
-                <button onclick="getDetails(7)">
-                   عرض المعلومات
-                </button>
-
-                <button onclick="getCare(7)">
-                   دليل العناية
-                </button>
-            </div>
-
-            <div class="details" id="details-7">
-            </div>
-
-        </div>
-        
-        <div class="card">
-
-            <h3>Blue Spanish Fir</h3>
-
-            <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/8_abies_pinsapo_glauca/thumbnail/21657514018_c0d9fed9f4_b.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260617%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260617T172815Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=c2b45f323288a13a97392dcf348b77247a5c2c24707a163fbcfc70ce168bcdf6">
-
-            <p>Abies pinsapo 'Glauca'</p>
-
-            <div class="action-buttons">
-                <button onclick="getDetails(8)">
-                   عرض المعلومات
-                </button>
-
-                <button onclick="getCare(8)">
-                   دليل العناية
-                </button>
-            </div>
-
-            <div class="details" id="details-8">
-            </div>
-
-        </div>
-        
-        <div class="card">
-
-            <h3>Noble Fir</h3>
-
-            <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/9_abies_procera/thumbnail/49107504112_6bd7effb8b_b.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260617%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260617T172815Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=8e67621668ea1cf04fd03734a0a28056513281d388ec8d70c958ca3766c6211f">
-
-            <p>Abies procera</p>
-
-            <div class="action-buttons">
-                <button onclick="getDetails(9)">
-                   عرض المعلومات
-                </button>
-
-                <button onclick="getCare(9)">
-                   دليل العناية
-                </button>
-            </div>
-
-            <div class="details" id="details-9">
-            </div>
-
-        </div>
-        
-        <div class="card">
-
-            <h3>Johin Japanese Maple</h3>
-
-            <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/10_acer_johin/thumbnail/pexels-photo-2183508.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260617%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260617T172815Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=5e990808d6633b95aa19be04a9fa0ea13eaa09d9b4607ced26483d2f2d9b8f9e">
-
-            <p>Acer 'Johin'</p>
-
-            <div class="action-buttons">
-                <button onclick="getDetails(10)">
-                   عرض المعلومات
-                </button>
-
-                <button onclick="getCare(10)">
-                   دليل العناية
-                </button>
-            </div>
-
-            <div class="details" id="details-10">
-            </div>
-
-        </div>
-        
-        <div class="card">
-
-            <h3>Snakebark Maple</h3>
-
-            <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/11_acer_davidii/thumbnail/6868591754_f4ac5b0510_b.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260617%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260617T172815Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=d7b39af884196732599379e142a5dbdfc905dfcf56a0fa7904bc41c987157dbf">
-
-            <p>Acer davidii</p>
-
-            <div class="action-buttons">
-                <button onclick="getDetails(11)">
-                   عرض المعلومات
-                </button>
-
-                <button onclick="getCare(11)">
-                   دليل العناية
-                </button>
-            </div>
-
-            <div class="details" id="details-11">
-            </div>
-
-        </div>
-        
-        <div class="card">
-
-            <h3>Amur Maple</h3>
-
-            <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/12_acer_ginnala/thumbnail/10476032513_76ca899bc4_b.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260617%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260617T172815Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=373a152f945e3d1c9e8e4565459a66428745429f6479500fb613c24207b4c7b1">
-
-            <p>Acer ginnala</p>
-
-            <div class="action-buttons">
-                <button onclick="getDetails(12)">
-                   عرض المعلومات
-                </button>
-
-                <button onclick="getCare(12)">
-                   دليل العناية
-                </button>
-            </div>
-
-            <div class="details" id="details-12">
-            </div>
-
-        </div>
-        
-        <div class="card">
-
-            <h3>Flame Amur Maple</h3>
-
-            <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/13_acer_ginnala_flame/thumbnail/pexels-photo-1649190.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260617%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260617T172815Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=236a0578b8751e64ec57da8d6d23e7e2ab9e216983f1f832798d9ab73fac1136">
-
-            <p>Acer ginnala 'Flame'</p>
-
-            <div class="action-buttons">
-                <button onclick="getDetails(13)">
-                   عرض المعلومات
-                </button>
-
-                <button onclick="getCare(13)">
-                   دليل العناية
-                </button>
-            </div>
-
-            <div class="details" id="details-13">
-            </div>
-
-        </div>
-        
-        <div class="card">
-
-            <h3>Red Rhapsody Amur Maple</h3>
-
-            <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/14_acer_ginnala_mondy/thumbnail/pexels-photo-1789879.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260617%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260617T172815Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=fc83c79acd58ce6008a148469595a086473669d2216f86bbeed2b8820ea3bb1c">
-
-            <p>Acer ginnala 'Mondy'</p>
-
-            <div class="action-buttons">
-                <button onclick="getDetails(14)">
-                   عرض المعلومات
-                </button>
-
-                <button onclick="getCare(14)">
-                   دليل العناية
-                </button>
-            </div>
-
-            <div class="details" id="details-14">
-            </div>
-
-        </div>
-        
-        <div class="card">
-
-            <h3>Ruby Slippers Amur Maple</h3>
-
-            <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/15_acer_ginnala_ruby_slippers/thumbnail/pexels-photo-1640820.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260617%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260617T172815Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=1a1f4b2035472d9cf6ed33ddef038b0a654ebf790bd3948c6c80181fb28a6520">
-
-            <p>Acer ginnala 'Ruby Slippers'</p>
-
-            <div class="action-buttons">
-                <button onclick="getDetails(15)">
-                   عرض المعلومات
-                </button>
-
-                <button onclick="getCare(15)">
-                   دليل العناية
-                </button>
-            </div>
-
-            <div class="details" id="details-15">
-            </div>
-
-        </div>
-        
-        <div class="card">
-
-            <h3>Paperbark Maple</h3>
-
-            <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/16_acer_griseum/thumbnail/5158906371_ed08a86876_b.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260617%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260617T172815Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=10cfa90aaa07fd354960e64314b5f913cca5ebcdf65413b6c398a131f0738ee5">
-
-            <p>Acer griseum</p>
-
-            <div class="action-buttons">
-                <button onclick="getDetails(16)">
-                   عرض المعلومات
-                </button>
-
-                <button onclick="getCare(16)">
-                   دليل العناية
-                </button>
-            </div>
-
-            <div class="details" id="details-16">
-            </div>
-
-        </div>
-        
-        <div class="card">
-
-            <h3>Fullmoon Maple</h3>
-
-            <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/17_acer_japonicum/thumbnail/7175475239_52543c51b3_b.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260617%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260617T172815Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=0685f85ebef39470f9e4670c48a9f829b44e78c271ede537418758293ee29197">
-
-            <p>Acer japonicum</p>
-
-            <div class="action-buttons">
-                <button onclick="getDetails(17)">
-                   عرض المعلومات
-                </button>
-
-                <button onclick="getCare(17)">
-                   دليل العناية
-                </button>
-            </div>
-
-            <div class="details" id="details-17">
-            </div>
-
-        </div>
-        
-        <div class="card">
-
-            <h3>Cutleaf Fullmoon Maple</h3>
-
-            <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/18_acer_japonicum_aconitifolium/thumbnail/23528789198_c419363323_b.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260617%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260617T172815Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=8ea3291ab798564017e6367e7662790884908f11b978aaa4611ab0bfdea04051">
-
-            <p>Acer japonicum 'Aconitifolium'</p>
-
-            <div class="action-buttons">
-                <button onclick="getDetails(18)">
-                   عرض المعلومات
-                </button>
-
-                <button onclick="getCare(18)">
-                   دليل العناية
-                </button>
-            </div>
-
-            <div class="details" id="details-18">
-            </div>
-
-        </div>
-        
-        <div class="card">
-
-            <h3>Attaryi Fullmoon Maple*</h3>
-
-            <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/19_acer_japonicum_attaryi/thumbnail/pexels-photo-669323.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260617%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260617T172816Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86399&amp;X-Amz-Signature=60dee7bf9af2f7de1932dca6a13f064576f468203b031bdd4350a6cebd3daa49">
-
-            <p>Acer japonicum 'Attaryi'</p>
-
-            <div class="action-buttons">
-                <button onclick="getDetails(19)">
-                   عرض المعلومات
-                </button>
-
-                <button onclick="getCare(19)">
-                   دليل العناية
-                </button>
-            </div>
-
-            <div class="details" id="details-19">
-            </div>
-
-        </div>
-        
-        <div class="card">
-
-            <h3>Golden Fullmoon Maple</h3>
-
-            <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/20_acer_japonicum_aureum/thumbnail/2560px-Acer_shirasawanum_27Aureum27.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260617%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260617T172816Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=300a23244044576dad6f63683b6fb9f7e8a36dbdafd671135b5f8b8165a4e1c0">
-
-            <p>Acer japonicum 'Aureum'</p>
-
-            <div class="action-buttons">
-                <button onclick="getDetails(20)">
-                   عرض المعلومات
-                </button>
-
-                <button onclick="getCare(20)">
-                   دليل العناية
-                </button>
-            </div>
-
-            <div class="details" id="details-20">
-            </div>
-
-        </div>
-        
-        <div class="card">
-
-            <h3>Emmett's Pumpkin Fullmoon Maple</h3>
-
-            <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/21_acer_japonicum_emmetts_pumpkin/thumbnail/Acer_shirasawanum_28golden_fullmoon_maple29_2_284633285838129.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260617%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260617T172816Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=f862886f04a8e3eab3d9b340adc2935f33d342aec3d4453450ed155d5dc425a6">
-
-            <p>Acer japonicum 'Emmett's Pumpkin'</p>
-
-            <div class="action-buttons">
-                <button onclick="getDetails(21)">
-                   عرض المعلومات
-                </button>
-
-                <button onclick="getCare(21)">
-                   دليل العناية
-                </button>
-            </div>
-
-            <div class="details" id="details-21">
-            </div>
-
-        </div>
-        
-        <div class="card">
-
-            <h3>Green Cascade Maple</h3>
-
-            <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/22_acer_japonicum_green_cascade/thumbnail/4847225395_2509ee2bfe_b.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260617%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260617T172816Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=b51876e810eafc7adebbf0c682c6421ca8f21e3c6ef5d099680d792545cd3765">
-
-            <p>Acer japonicum 'Green Cascade'</p>
-
-            <div class="action-buttons">
-                <button onclick="getDetails(22)">
-                   عرض المعلومات
-                </button>
-
-                <button onclick="getCare(22)">
-                   دليل العناية
-                </button>
-            </div>
-
-            <div class="details" id="details-22">
-            </div>
-
-        </div>
-        
-        <div class="card">
-
-            <h3>Big Leaf Maple</h3>
-
-            <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/23_acer_macrophyllum/thumbnail/52135137216_8a124b5188_b.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260617%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260617T172816Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=2014e1dc8294711efe3c484e7279cc23b3afd7922e6779626ff7297f4d1d04b5">
-
-            <p>Acer macrophyllum</p>
-
-            <div class="action-buttons">
-                <button onclick="getDetails(23)">
-                   عرض المعلومات
-                </button>
-
-                <button onclick="getCare(23)">
-                   دليل العناية
-                </button>
-            </div>
-
-            <div class="details" id="details-23">
-            </div>
-
-        </div>
-        
-        <div class="card">
-
-            <h3>Mocha Rose Big Leaf Maple</h3>
-
-            <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/24_acer_macrophyllum_mocha_rose/thumbnail/4715169892_220a9d39f6_b.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260617%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260617T172816Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=87b9a9b3d8cf03064ad25ff3e1a3439222607d8e670fee111b001a0a51094293">
-
-            <p>Acer macrophyllum 'Mocha Rose'</p>
-
-            <div class="action-buttons">
-                <button onclick="getDetails(24)">
-                   عرض المعلومات
-                </button>
-
-                <button onclick="getCare(24)">
-                   دليل العناية
-                </button>
-            </div>
-
-            <div class="details" id="details-24">
-            </div>
-
-        </div>
-        
-        <div class="card">
-
-            <h3>Flamingo Boxelder</h3>
-
-            <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/25_acer_negundo_flamingo/thumbnail/5867345385_a9dff5bee7_b.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260617%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260617T172816Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=d55c9194c19b264c33d9ba263e8fba481578fcdb6ed210ac7623b9d3ec148070">
-
-            <p>Acer negundo 'Flamingo'</p>
-
-            <div class="action-buttons">
-                <button onclick="getDetails(25)">
-                   عرض المعلومات
-                </button>
-
-                <button onclick="getCare(25)">
-                   دليل العناية
-                </button>
-            </div>
-
-            <div class="details" id="details-25">
-            </div>
-
-        </div>
-        
-        <div class="card">
-
-            <h3>Kelly's Gold Boxelder</h3>
-
-            <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/26_acer_negundo_kellys_gold/thumbnail/28819730054_e2a2b797c9_b.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260617%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260617T172816Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=95e381fed5dd076e60aa32efe298a7cb80d096091b471679f8cf31882984093b">
-
-            <p>Acer negundo 'Kelly's Gold'</p>
-
-            <div class="action-buttons">
-                <button onclick="getDetails(26)">
-                   عرض المعلومات
-                </button>
-
-                <button onclick="getCare(26)">
-                   دليل العناية
-                </button>
-            </div>
-
-            <div class="details" id="details-26">
-            </div>
-
-        </div>
-        
-        <div class="card">
-
-            <h3>Aka Shigitatsu Sawa Japanese Maple</h3>
-
-            <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/28_acer_palmatum_aka_shigitatsu_sawa/thumbnail/Acer_palmatum_Aka_shigitatsu_sawa_2zz.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260617%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260617T172816Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=2e003ee1c702b3a5ef806588053231af34897b8b15b176bffc751dd4f8fa19af">
-
-            <p>Acer palmatum 'Aka Shigitatsu Sawa'</p>
-
-            <div class="action-buttons">
-                <button onclick="getDetails(28)">
-                   عرض المعلومات
-                </button>
-
-                <button onclick="getCare(28)">
-                   دليل العناية
-                </button>
-            </div>
-
-            <div class="details" id="details-28">
-            </div>
-
-        </div>
-        
-        <div class="card">
-
-            <h3>Alpenweiss Variegated Dwarf Japanese Maple*</h3>
-
-            
-
-            <p>Acer palmatum 'Alpenweiss'</p>
-
-            <div class="action-buttons">
-                <button onclick="getDetails(29)">
-                   عرض المعلومات
-                </button>
-
-                <button onclick="getCare(29)">
-                   دليل العناية
-                </button>
-            </div>
-
-            <div class="details" id="details-29">
-            </div>
-
-        </div>
-        
-        <div class="card">
-
-            <h3>Ao Shime No Uchi Japanese Maple</h3>
-
-            <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/30_acer_palmatum_ao_shime_no_uchi/thumbnail/Acer_palmatum_Ao_shime_no_uchi_3zz.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260617%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260617T172816Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=c55ae6e81361f973952671ab73565fb78a508fb26ef70206ede89849c1d49283">
-
-            <p>Acer palmatum 'Ao Shime No Uchi'</p>
-
-            <div class="action-buttons">
-                <button onclick="getDetails(30)">
-                   عرض المعلومات
-                </button>
-
-                <button onclick="getCare(30)">
-                   دليل العناية
-                </button>
-            </div>
-
-            <div class="details" id="details-30">
-            </div>
-
-        </div>
-        
-        <div class="card">
-
-            <h3>Aoyagi Japanese Maple*</h3>
-
-            <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/31_acer_palmatum_aoyagi/thumbnail/acer_palmatum_japanese_maples_trees_red_red_leaves_blue_sky_blue_white-1126158.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260617%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260617T172816Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=6ec411bf095658968ee70ba0320b232f856e4aa67b19c8d412486ef332ef8752">
-
-            <p>Acer palmatum 'Aoyagi'</p>
-
-            <div class="action-buttons">
-                <button onclick="getDetails(31)">
-                   عرض المعلومات
-                </button>
-
-                <button onclick="getCare(31)">
-                   دليل العناية
-                </button>
-            </div>
-
-            <div class="details" id="details-31">
-            </div>
-
-        </div>
-        </div>
-
-</div>
-
-<script>
-
-const API_KEY = "sk-b7ef6a32c1a15fc8b18247";
-
-async function searchPlant(){
-
-    const query = document.getElementById("search").value;
-
-    const url =
-    `https://perenual.com/api/v2/species-list?key=${API_KEY}&q=${query}`;
-
-    const response = await fetch(url);
-    const data = await response.json();
-
-    const results = document.getElementById("results");
-    results.innerHTML = "";
-
-    data.data.forEach(plant=>{
-
-        results.innerHTML += `
-        <div class="card">
-
-            <h3>${plant.common_name || "غير متوفر"}</h3>
-
-            ${
-              plant.default_image
-              ? `<img src="${plant.default_image.thumbnail}">`
-              : ""
+    <script>
+        // ===== بيانات الترجمة (موسعة) =====
+        const translations = {
+            ar: {
+                title: "قاعدة بيانات النباتات",
+                searchPlaceholder: "أدخل اسم النبات",
+                searchBtn: "بحث",
+                commonName: "الاسم الشائع",
+                scientificName: "الاسم العلمي",
+                detailsBtn: "عرض المعلومات",
+                careBtn: "دليل العناية",
+                downloadBtn: "تحميل الصورة",
+                watering: "الري",
+                cycle: "الدورة",
+                sunlight: "الإضاءة",
+                hardiness: "منطقة القساوة",
+                growthRate: "معدل النمو",
+                careLevel: "مستوى العناية",
+                cones: "مخاريط",
+                leaf: "أوراق",
+                description: "الوصف",
+                careLoaded: "● دليل العناية:",
+                noData: "لا توجد بيانات"
+            },
+            fr: {
+                title: "Base de données des plantes",
+                searchPlaceholder: "Entrez le nom de la plante",
+                searchBtn: "Rechercher",
+                commonName: "Nom commun",
+                scientificName: "Nom scientifique",
+                detailsBtn: "Afficher les détails",
+                careBtn: "Guide d'entretien",
+                downloadBtn: "Télécharger l'image",
+                watering: "Arrosage",
+                cycle: "Cycle",
+                sunlight: "Lumière",
+                hardiness: "Zone de rusticité",
+                growthRate: "Taux de croissance",
+                careLevel: "Niveau d'entretien",
+                cones: "Cônes",
+                leaf: "Feuilles",
+                description: "Description",
+                careLoaded: "● Guide d'entretien :",
+                noData: "Pas de données"
+            },
+            en: {
+                title: "Plant Database",
+                searchPlaceholder: "Enter plant name",
+                searchBtn: "Search",
+                commonName: "Common name",
+                scientificName: "Scientific name",
+                detailsBtn: "Show details",
+                careBtn: "Care guide",
+                downloadBtn: "Download image",
+                watering: "Watering",
+                cycle: "Cycle",
+                sunlight: "Sunlight",
+                hardiness: "Hardiness zone",
+                growthRate: "Growth rate",
+                careLevel: "Care level",
+                cones: "Cones",
+                leaf: "Leaves",
+                description: "Description",
+                careLoaded: "● Care guide:",
+                noData: "No data"
             }
+        };
 
-            <p>${plant.scientific_name[0]}</p>
+        let currentLang = 'ar';
+        let currentPlants = [];
 
-            <div class="action-buttons">
-                <button onclick="getDetails(${plant.id})">
-                   عرض المعلومات
-                </button>
+        // ===== تغيير اللغة =====
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === lang);
+            });
+            const t = translations[lang];
+            document.getElementById('page-title').textContent = t.title;
+            document.getElementById('search').placeholder = t.searchPlaceholder;
+            document.getElementById('search-btn').textContent = t.searchBtn;
+            document.body.dir = (lang === 'ar') ? 'rtl' : 'ltr';
+            document.body.style.textAlign = 'center';
 
-                <button onclick="getCare(${plant.id})">
-                   دليل العناية
-                </button>
-            </div>
+            if (currentPlants.length > 0) {
+                renderPlants(currentPlants);
+            }
+        }
 
-            <div class="details" id="details-${plant.id}">
-            </div>
+        // ===== عرض البطاقات =====
+        function renderPlants(plants) {
+            const results = document.getElementById('results');
+            results.innerHTML = '';
+            currentPlants = plants;
+            const t = translations[currentLang];
 
-        </div>
-        `;
-    });
+            plants.forEach(plant => {
+                let imgHtml = '';
+                if (plant.default_image && plant.default_image.thumbnail) {
+                    imgHtml = `<img src="${plant.default_image.thumbnail}" alt="${plant.common_name || ''}">`;
+                } else {
+                    imgHtml = `<div style="width:220px;height:220px;background:#eee;border-radius:6px;margin-bottom:15px;display:flex;align-items:center;justify-content:center;color:#aaa;">${t.commonName}</div>`;
+                }
 
-}
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <h3>${plant.common_name || t.commonName}</h3>
+                    <div class="scientific">${plant.scientific_name ? plant.scientific_name[0] : ''}</div>
+                    ${imgHtml}
+                    <div class="action-buttons">
+                        <button onclick="getDetails(${plant.id})">${t.detailsBtn}</button>
+                        <button onclick="getCare(${plant.id})">${t.careBtn}</button>
+                        <button class="download-btn" onclick="downloadImage('${plant.default_image ? plant.default_image.thumbnail : ''}', '${plant.common_name || 'plant'}')">${t.downloadBtn}</button>
+                    </div>
+                    <div class="details" id="details-${plant.id}"></div>
+                `;
+                results.appendChild(card);
+            });
+        }
 
+        // ===== البحث =====
+        async function searchPlant() {
+            const query = document.getElementById('search').value.trim();
+            if (!query) return;
+            const API_KEY = "sk-b7ef6a32c1a15fc8b18247";
+            const url = `https://perenual.com/api/v2/species-list?key=${API_KEY}&q=${encodeURIComponent(query)}`;
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                if (data.data && data.data.length > 0) {
+                    renderPlants(data.data);
+                } else {
+                    document.getElementById('results').innerHTML = `<p style="width:100%;color:#888;padding:40px;">🔍 ${translations[currentLang].noData}</p>`;
+                    currentPlants = [];
+                }
+            } catch (e) {
+                alert('خطأ في البحث');
+            }
+        }
 
+        // ===== عرض التفاصيل (موسعة) =====
+        async function getDetails(id) {
+            const API_KEY = "sk-b7ef6a32c1a15fc8b18247";
+            const url = `https://perenual.com/api/v2/species/details/${id}?key=${API_KEY}`;
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+                const t = translations[currentLang];
+                const detailsDiv = document.getElementById(`details-${id}`);
 
-async function getDetails(id){
+                // بناء النص المعروض
+                let html = '';
 
-    const url =
-    `https://perenual.com/api/v2/species/details/${id}?key=${API_KEY}`;
+                // الوصف
+                if (data.description) {
+                    html += `<div class="description">📝 <strong>${t.description}:</strong> ${data.description}</div>`;
+                }
 
-    const res = await fetch(url);
-    const data = await res.json();
+                // الخصائص الأساسية
+                const fields = [
+                    { key: 'cycle', label: t.cycle },
+                    { key: 'watering', label: t.watering },
+                    { key: 'sunlight', label: t.sunlight },
+                    { key: 'hardiness', label: t.hardiness },
+                    { key: 'growth_rate', label: t.growthRate },
+                    { key: 'care_level', label: t.careLevel }
+                ];
+                fields.forEach(f => {
+                    if (data[f.key]) {
+                        html += `<p><strong>${f.label}:</strong> ${data[f.key]}</p>`;
+                    }
+                });
 
-    document.getElementById(`details-${id}`).innerHTML = `
-       <p>نظام الري: ${data.watering || "-"}</p>
-       <p>دورة النمو: ${data.cycle || "-"}</p>
-       <p>متطلبات الإضاءة: ${data.sunlight || "-"}</p>
-    `;
-}
+                // المخاريط والأوراق (قيم منطقية)
+                if (data.cones !== undefined) {
+                    html += `<p><strong>${t.cones}:</strong> ${data.cones ? '✅' : '❌'}</p>`;
+                }
+                if (data.leaf !== undefined) {
+                    html += `<p><strong>${t.leaf}:</strong> ${data.leaf ? '✅' : '❌'}</p>`;
+                }
 
+                detailsDiv.innerHTML = html || `<p>${t.noData}</p>`;
+            } catch (e) {
+                alert('خطأ في جلب التفاصيل');
+            }
+        }
 
+        // ===== دليل العناية (مع أقسام منفصلة) =====
+        async function getCare(id) {
+            const API_KEY = "sk-b7ef6a32c1a15fc8b18247";
+            const url = `https://perenual.com/api/species-care-guide-list?key=${API_KEY}&species_id=${id}`;
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+                const t = translations[currentLang];
+                const detailsDiv = document.getElementById(`details-${id}`);
 
-async function getCare(id){
+                let html = `<div style="margin-top:10px;border-top:2px solid #2f6b4f;padding-top:8px;"><strong>${t.careLoaded}</strong></div>`;
 
-    const url =
-    `https://perenual.com/api/species-care-guide-list?key=${API_KEY}&species_id=${id}`;
+                if (data.data && data.data.length > 0) {
+                    // عرض كل قسم من دليل العناية
+                    data.data.forEach(section => {
+                        if (section.section && section.description) {
+                            html += `<div class="care-section"><strong>${section.section}:</strong> ${section.description}</div>`;
+                        }
+                    });
+                } else {
+                    html += `<p>${t.noData}</p>`;
+                }
 
-    const res = await fetch(url);
-    const data = await res.json();
+                // نضيف المحتوى الجديد إلى نهاية التفاصيل (بدلاً من استبدالها)
+                detailsDiv.innerHTML += html;
+            } catch (e) {
+                alert('خطأ في جلب العناية');
+            }
+        }
 
-    document.getElementById(`details-${id}`).innerHTML += `
-       <p>تم تحميل بيانات العناية بالنبات.</p>
-    `;
-}
+        // ===== تحميل الصورة =====
+        function downloadImage(url, filename) {
+            if (!url || url === 'undefined' || url === '') {
+                alert('لا توجد صورة للتحميل');
+                return;
+            }
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) throw new Error('فشل تحميل الصورة');
+                    return response.blob();
+                })
+                .then(blob => {
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = `${filename || 'plant'}.jpg`;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(link.href);
+                })
+                .catch(() => {
+                    window.open(url, '_blank');
+                });
+        }
 
-</script>
+        // ===== تحميل أولي عند بدء الصفحة =====
+        window.onload = function() {
+            setLanguage('ar');
+            // جلب قائمة افتراضية (مثلاً "fir" لتظهر شجرة التنوب الأوروبية)
+            fetch(`https://perenual.com/api/v2/species-list?key=sk-b7ef6a32c1a15fc8b18247&q=fir&page=1`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.data && data.data.length > 0) {
+                        renderPlants(data.data);
+                    } else {
+                        document.getElementById('results').innerHTML = `<p style="width:100%;color:#888;padding:40px;">🔍 ابحث عن نبات</p>`;
+                    }
+                })
+                .catch(() => {
+                    document.getElementById('results').innerHTML = `<p style="width:100%;color:#888;padding:40px;">🔍 ابحث عن نبات</p>`;
+                });
+        };
+    </script>
 
-</body></html>
+</body>
+</html>

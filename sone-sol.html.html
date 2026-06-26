@@ -1,0 +1,1804 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SONE SOL - Carte mondiale des sols</title>
+    <meta name="description" content="SONE SOL - Carte mondiale des sols par SONE Solutions. Données pédologiques de précision pour l'agriculture." />
+    <meta name="keywords" content="soil, sol, carte, map, sone, solutions, pédologie, agriculture, précision" />
+    <meta property="og:title" content="SONE SOL - Carte mondiale des sols" />
+    <meta property="og:description" content="Explorez les données pédologiques mondiales avec SONE SOL" />
+    <meta property="og:type" content="website" />
+
+    <!-- OpenLayers CSS & JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v10.2.1/ol.css" />
+    <script src="https://cdn.jsdelivr.net/npm/ol@v10.2.1/dist/ol.min.js"></script>
+
+    <style>
+        /* ============================================================
+               RESET & BASE
+            ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a1628;
+            color: #fff;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* ============================================================
+               HEADER - SONE SOL
+            ============================================================ */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: #0a1628;
+            padding: 6px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 60px;
+            border-bottom: 2px solid #1a4a3a;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-logo img {
+            height: 40px;
+            width: auto;
+            max-height: 40px;
+        }
+
+        .header-logo .brand-name {
+            font-size: 22px;
+            font-weight: 700;
+            color: #2ecc71;
+            letter-spacing: 1px;
+        }
+
+        .header-logo .brand-name span {
+            color: #3498db;
+        }
+
+        .header-logo .brand-sub {
+            font-weight: 300;
+            font-size: 11px;
+            color: #8899aa;
+            margin-left: 6px;
+            letter-spacing: 2px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* ============================================================
+               LANGUAGE BUTTON
+            ============================================================ */
+        .lang-btn {
+            background: transparent;
+            border: 1px solid #1a4a3a;
+            color: #ccc;
+            padding: 4px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .lang-btn:hover {
+            background: #1a4a3a;
+            color: #fff;
+        }
+
+        .lang-btn .flag {
+            font-size: 16px;
+        }
+
+        .lang-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .lang-dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background: #0a1628;
+            min-width: 140px;
+            border: 1px solid #1a4a3a;
+            border-radius: 4px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+            z-index: 1001;
+            margin-top: 4px;
+            overflow: hidden;
+        }
+
+        .lang-dropdown-content.show {
+            display: block;
+        }
+
+        .lang-dropdown-content button {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            padding: 10px 14px;
+            background: transparent;
+            border: none;
+            color: #ddd;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.2s;
+            text-align: left;
+        }
+
+        .lang-dropdown-content button:hover {
+            background: #1a4a3a;
+            color: #fff;
+        }
+
+        .lang-dropdown-content button .flag {
+            font-size: 20px;
+        }
+
+        /* ============================================================
+               MAP CONTAINER
+            ============================================================ */
+        #map-container {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+            background: #0a1628;
+        }
+
+        /* ============================================================
+               CONTROLS
+            ============================================================ */
+        .map-controls {
+            position: fixed;
+            right: 20px;
+            bottom: 100px;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .map-controls button {
+            background: #0a1628;
+            border: 1px solid #1a4a3a;
+            color: #ddd;
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            font-size: 20px;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .map-controls button:hover {
+            background: #1a4a3a;
+            color: #fff;
+        }
+
+        /* ============================================================
+               INFO BOX
+            ============================================================ */
+        .info-box {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 50;
+            background: rgba(10, 22, 40, 0.92);
+            backdrop-filter: blur(6px);
+            border: 1px solid #1a4a3a;
+            border-radius: 8px;
+            padding: 8px 18px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 12px;
+            color: #aaa;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .info-box .info-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .info-box .info-item .icon {
+            font-size: 14px;
+        }
+
+        .info-box .info-item .value {
+            color: #2ecc71;
+            font-weight: 600;
+            font-size: 13px;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .info-box .info-item .label {
+            color: #8899aa;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-box .separator {
+            color: #1a4a3a;
+            font-size: 18px;
+            font-weight: 100;
+        }
+
+        /* ============================================================
+               COUNTRY/CITY DISPLAY
+            ============================================================ */
+        .location-display {
+            position: fixed;
+            top: 74px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 60;
+            background: rgba(10, 22, 40, 0.88);
+            backdrop-filter: blur(8px);
+            border: 1px solid #1a4a3a;
+            border-radius: 8px;
+            padding: 6px 20px;
+            font-size: 14px;
+            color: #ddd;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            display: none;
+            text-align: center;
+            max-width: 90%;
+        }
+
+        .location-display .country {
+            font-weight: 700;
+            color: #2ecc71;
+            font-size: 16px;
+        }
+
+        .location-display .city {
+            color: #f1c40f;
+            font-size: 14px;
+        }
+
+        .location-display .divider {
+            color: #1a4a3a;
+            margin: 0 6px;
+        }
+
+        /* ============================================================
+               PANEL
+            ============================================================ */
+        .panel-toggle {
+            position: fixed;
+            left: 20px;
+            bottom: 100px;
+            z-index: 100;
+            background: #0a1628;
+            border: 1px solid #1a4a3a;
+            color: #ddd;
+            width: 44px;
+            height: 44px;
+            border-radius: 4px;
+            font-size: 22px;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .panel-toggle:hover {
+            background: #1a4a3a;
+            color: #fff;
+        }
+
+        .side-panel {
+            position: fixed;
+            top: 60px;
+            left: -380px;
+            width: 360px;
+            height: calc(100% - 60px);
+            background: #0a1628;
+            z-index: 200;
+            transition: left 0.3s ease;
+            border-right: 2px solid #1a4a3a;
+            overflow-y: auto;
+            padding: 20px 18px;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.6);
+        }
+
+        .side-panel.open {
+            left: 0;
+        }
+
+        .side-panel h2 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2ecc71;
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #1a4a3a;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .side-panel h2 button {
+            background: transparent;
+            border: none;
+            color: #8899aa;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .side-panel h2 button:hover {
+            color: #fff;
+        }
+
+        .panel-section {
+            margin-bottom: 18px;
+        }
+
+        .panel-section label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #8899aa;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 6px;
+        }
+
+        .panel-section select,
+        .panel-section input {
+            width: 100%;
+            padding: 8px 12px;
+            background: #0f1f30;
+            border: 1px solid #1a4a3a;
+            color: #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .panel-section select:focus,
+        .panel-section input:focus {
+            border-color: #2ecc71;
+        }
+
+        .panel-section select option {
+            background: #0a1628;
+        }
+
+        .panel-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .panel-row .panel-section {
+            flex: 1;
+        }
+
+        .opacity-slider-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #0f1f30;
+            padding: 8px 12px;
+            border-radius: 4px;
+            border: 1px solid #1a4a3a;
+        }
+
+        .opacity-slider-container input[type="range"] {
+            flex: 1;
+            -webkit-appearance: none;
+            background: transparent;
+            height: 6px;
+            border-radius: 3px;
+            background: linear-gradient(90deg, #2ecc71, #f1c40f, #e74c3c);
+            outline: none;
+            padding: 0;
+            border: none;
+        }
+
+        .opacity-slider-container input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #3498db;
+            cursor: pointer;
+            border: 2px solid #fff;
+            box-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
+        }
+
+        .opacity-slider-container input[type="range"]::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #3498db;
+            cursor: pointer;
+            border: 2px solid #fff;
+        }
+
+        .opacity-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: #3498db;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .btn-download {
+            width: 100%;
+            padding: 10px;
+            background: #1a4a3a;
+            border: none;
+            color: #fff;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            margin-top: 6px;
+        }
+
+        .btn-download:hover {
+            background: #2ecc71;
+            color: #0a1628;
+        }
+
+        /* ============================================================
+               LEGEND
+            ============================================================ */
+        .legend {
+            position: fixed;
+            left: 20px;
+            bottom: 20px;
+            z-index: 50;
+            background: rgba(10, 22, 40, 0.92);
+            backdrop-filter: blur(6px);
+            border: 1px solid #1a4a3a;
+            border-radius: 6px;
+            padding: 12px 16px;
+            min-width: 180px;
+            color: #ccc;
+            font-size: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .legend h4 {
+            font-size: 12px;
+            font-weight: 600;
+            color: #8899aa;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 6px;
+            border-bottom: 1px solid #1a4a3a;
+            padding-bottom: 4px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 2px 0;
+        }
+
+        .legend-color {
+            width: 18px;
+            height: 18px;
+            border-radius: 3px;
+            border: 1px solid #1a4a3a;
+            flex-shrink: 0;
+        }
+
+        .legend-text {
+            font-size: 12px;
+            color: #bbb;
+        }
+
+        /* ============================================================
+               POPUP
+            ============================================================ */
+        .ol-popup {
+            position: absolute;
+            background: #0a1628;
+            border: 1px solid #1a4a3a;
+            border-radius: 8px;
+            padding: 14px 18px;
+            color: #ddd;
+            font-size: 13px;
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.7);
+            min-width: 200px;
+            max-width: 300px;
+            pointer-events: auto;
+        }
+
+        .ol-popup::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid #0a1628;
+        }
+
+        .ol-popup-closer {
+            position: absolute;
+            top: 6px;
+            right: 10px;
+            color: #8899aa;
+            font-size: 18px;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .ol-popup-closer:hover {
+            color: #fff;
+        }
+
+        .popup-title {
+            font-weight: 600;
+            color: #2ecc71;
+            margin-bottom: 6px;
+        }
+
+        .popup-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: #f1c40f;
+        }
+
+        .popup-unit {
+            font-size: 12px;
+            color: #8899aa;
+        }
+
+        .popup-actions {
+            margin-top: 10px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .popup-actions button {
+            padding: 4px 12px;
+            background: #1a4a3a;
+            border: none;
+            color: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: 0.2s;
+        }
+
+        .popup-actions button:hover {
+            background: #2ecc71;
+            color: #0a1628;
+        }
+
+        /* ============================================================
+               SCALE LINE
+            ============================================================ */
+        .ol-scale-line {
+            position: fixed !important;
+            bottom: 130px !important;
+            left: 50% !important;
+            transform: translateX(-50%) !important;
+            z-index: 50 !important;
+            background: rgba(10, 22, 40, 0.85) !important;
+            padding: 4px 12px !important;
+            border-radius: 4px !important;
+            border: 1px solid #1a4a3a !important;
+            backdrop-filter: blur(4px) !important;
+            color: #aaa !important;
+            font-size: 12px !important;
+        }
+
+        .ol-scale-line-inner {
+            border: 1px solid #1a4a3a !important;
+            border-top: none !important;
+            color: #aaa !important;
+            font-size: 12px !important;
+            text-align: center !important;
+        }
+
+        /* ============================================================
+               FOOTER - SONE SOL
+            ============================================================ */
+        .footer-info {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 50;
+            font-size: 11px;
+            color: #8899aa;
+            text-align: right;
+            background: rgba(10, 22, 40, 0.85);
+            padding: 6px 14px;
+            border-radius: 4px;
+            border: 1px solid #1a4a3a;
+            backdrop-filter: blur(4px);
+        }
+
+        .footer-info a {
+            color: #2ecc71;
+            text-decoration: none;
+        }
+
+        .footer-info a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-info .sone-brand {
+            color: #3498db;
+            font-weight: 600;
+        }
+
+        /* ============================================================
+               SCROLLBAR
+            ============================================================ */
+        .side-panel::-webkit-scrollbar {
+            width: 6px;
+        }
+        .side-panel::-webkit-scrollbar-track {
+            background: #0a1628;
+        }
+        .side-panel::-webkit-scrollbar-thumb {
+            background: #1a4a3a;
+            border-radius: 3px;
+        }
+
+        /* ============================================================
+               RESPONSIVE
+            ============================================================ */
+        @media (max-width: 768px) {
+            .header-logo .brand-name {
+                font-size: 16px;
+            }
+            .header-logo .brand-sub {
+                display: none;
+            }
+            .header-logo img {
+                height: 32px;
+            }
+            .side-panel {
+                width: 300px;
+                left: -320px;
+                padding: 14px 12px;
+            }
+            .side-panel.open {
+                left: 0;
+            }
+            .legend {
+                left: 10px;
+                bottom: 10px;
+                padding: 10px 12px;
+                min-width: 140px;
+                font-size: 11px;
+            }
+            .footer-info {
+                right: 10px;
+                bottom: 10px;
+                font-size: 10px;
+                padding: 4px 10px;
+            }
+            .map-controls {
+                right: 10px;
+                bottom: 80px;
+            }
+            .panel-toggle {
+                left: 10px;
+                bottom: 80px;
+                width: 38px;
+                height: 38px;
+                font-size: 18px;
+            }
+            .map-controls button {
+                width: 36px;
+                height: 36px;
+                font-size: 16px;
+            }
+            .lang-btn .flag-text {
+                display: none;
+            }
+            .ol-popup {
+                min-width: 160px;
+                font-size: 12px;
+                padding: 10px 14px;
+            }
+            .info-box {
+                bottom: 70px;
+                padding: 6px 12px;
+                font-size: 10px;
+                gap: 12px;
+                flex-wrap: wrap;
+                justify-content: center;
+                max-width: 95%;
+            }
+            .info-box .separator {
+                display: none;
+            }
+            .info-box .info-item .label {
+                font-size: 8px;
+            }
+            .info-box .info-item .value {
+                font-size: 11px;
+                min-width: 30px;
+            }
+            .ol-scale-line {
+                bottom: 120px !important;
+            }
+            .location-display {
+                top: 66px;
+                font-size: 12px;
+                padding: 4px 14px;
+            }
+            .location-display .country {
+                font-size: 14px;
+            }
+            .location-display .city {
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 4px 10px;
+                height: 50px;
+            }
+            #map-container {
+                top: 50px;
+            }
+            .side-panel {
+                top: 50px;
+                height: calc(100% - 50px);
+            }
+            .info-box {
+                bottom: 65px;
+                padding: 4px 10px;
+                font-size: 9px;
+                gap: 8px;
+            }
+            .ol-scale-line {
+                bottom: 110px !important;
+                font-size: 10px !important;
+                padding: 2px 8px !important;
+            }
+            .location-display {
+                top: 58px;
+                font-size: 10px;
+                padding: 3px 10px;
+            }
+            .location-display .country {
+                font-size: 12px;
+            }
+            .location-display .city {
+                font-size: 10px;
+            }
+            .header-logo .brand-name {
+                font-size: 14px;
+            }
+            .header-logo img {
+                height: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+    HEADER - SONE SOL
+    ============================================================ -->
+    <header class="header">
+        <div class="header-left">
+            <div class="header-logo">
+                <!-- شعار SONE Solutions -->
+                <img src="https://sone-solutions.github.io/SONE/logo.png" alt="SONE Solutions" onerror="this.style.display='none'" />
+                <span class="brand-name">SONE <span>SOL</span></span>
+                <span class="brand-sub">CARTOGRAPHIE DES SOLS</span>
+            </div>
+        </div>
+        <div class="header-actions">
+            <div class="lang-dropdown">
+                <button class="lang-btn" onclick="toggleLangDropdown()" id="currentLangBtn">
+                    <span class="flag" id="currentFlag">🇫🇷</span>
+                    <span class="flag-text" id="currentLangText">FR</span>
+                </button>
+                <div class="lang-dropdown-content" id="langDropdown">
+                    <button onclick="setLanguage('ar')">
+                        <span class="flag">🇸🇦</span> العربية
+                        <span style="margin-left:auto;font-size:11px;color:#666;">AR</span>
+                    </button>
+                    <button onclick="setLanguage('en')">
+                        <span class="flag">🇬🇧</span> English
+                        <span style="margin-left:auto;font-size:11px;color:#666;">EN</span>
+                    </button>
+                    <button onclick="setLanguage('fr')">
+                        <span class="flag">🇫🇷</span> Français
+                        <span style="margin-left:auto;font-size:11px;color:#666;">FR</span>
+                    </button>
+                </div>
+            </div>
+            <button title="Informations" onclick="alert(getTranslation('infoMessage'))" style="background:transparent;border:none;color:#8899aa;font-size:18px;cursor:pointer;">ⓘ</button>
+        </div>
+    </header>
+
+    <!-- ============================================================
+    MAP
+    ============================================================ -->
+    <div id="map-container">
+        <div id="map"></div>
+    </div>
+
+    <!-- ============================================================
+    LOCATION DISPLAY
+    ============================================================ -->
+    <div class="location-display" id="locationDisplay">
+        <span class="country" id="countryName">--</span>
+        <span class="divider">•</span>
+        <span class="city" id="cityName">--</span>
+    </div>
+
+    <!-- ============================================================
+    CONTROLS
+    ============================================================ -->
+    <div class="map-controls">
+        <button onclick="zoomIn()" id="zoomInBtn" title="Zoom avant">+</button>
+        <button onclick="zoomOut()" id="zoomOutBtn" title="Zoom arrière">−</button>
+        <button onclick="resetView()" id="resetBtn2" title="Réinitialiser" style="font-size:16px;">⟲</button>
+    </div>
+
+    <!-- ============================================================
+    INFO BOX
+    ============================================================ -->
+    <div class="info-box" id="infoBox">
+        <div class="info-item">
+            <span class="icon">🔍</span>
+            <span class="label" id="zoomLabel">Zoom</span>
+            <span class="value" id="zoomLevel">3.0</span>
+            <span style="color:#1a4a3a;font-size:10px;">×</span>
+        </div>
+        <span class="separator">|</span>
+        <div class="info-item">
+            <span class="icon">📍</span>
+            <span class="label" id="centerLabel">Centre</span>
+            <span class="value" id="centerCoords" style="font-size:11px;min-width:80px;">0.00, 30.00</span>
+        </div>
+        <span class="separator">|</span>
+        <div class="info-item">
+            <span class="icon">📐</span>
+            <span class="label" id="resolutionLabel">Résolution</span>
+            <span class="value" id="resolutionValue" style="font-size:10px;min-width:60px;">156543</span>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    PANEL TOGGLE
+    ============================================================ -->
+    <button class="panel-toggle" onclick="togglePanel()" id="panelToggleBtn" title="Couches">☰</button>
+
+    <!-- ============================================================
+    SIDE PANEL
+    ============================================================ -->
+    <div class="side-panel" id="sidePanel">
+        <h2>
+            <span id="panelTitle">Couches</span>
+            <button onclick="togglePanel()">✕</button>
+        </h2>
+
+        <div class="panel-section">
+            <label id="layerLabel">Propriété du sol</label>
+            <select id="layerSelect" onchange="changeLayer()">
+                <option value="soc_0-5cm_mean" data-ar="الكربون العضوي (0-5 سم)" data-en="Organic Carbon (0-5 cm)" data-fr="Carbone Organique (0-5 cm)">Carbone Organique (0-5 cm)</option>
+                <option value="soc_5-15cm_mean" data-ar="الكربون العضوي (5-15 سم)" data-en="Organic Carbon (5-15 cm)" data-fr="Carbone Organique (5-15 cm)">Carbone Organique (5-15 cm)</option>
+                <option value="soc_15-30cm_mean" data-ar="الكربون العضوي (15-30 سم)" data-en="Organic Carbon (15-30 cm)" data-fr="Carbone Organique (15-30 cm)">Carbone Organique (15-30 cm)</option>
+                <option value="soc_30-60cm_mean" data-ar="الكربون العضوي (30-60 سم)" data-en="Organic Carbon (30-60 cm)" data-fr="Carbone Organique (30-60 cm)">Carbone Organique (30-60 cm)</option>
+                <option value="clay_0-5cm_mean" data-ar="الطين (0-5 سم)" data-en="Clay (0-5 cm)" data-fr="Argile (0-5 cm)">Argile (0-5 cm)</option>
+                <option value="sand_0-5cm_mean" data-ar="الرمل (0-5 سم)" data-en="Sand (0-5 cm)" data-fr="Sable (0-5 cm)">Sable (0-5 cm)</option>
+                <option value="silt_0-5cm_mean" data-ar="الطمي (0-5 سم)" data-en="Silt (0-5 cm)" data-fr="Limon (0-5 cm)">Limon (0-5 cm)</option>
+                <option value="phh2o_0-5cm_mean" data-ar="درجة الحموضة (0-5 سم)" data-en="pH (0-5 cm)" data-fr="pH (0-5 cm)">pH (0-5 cm)</option>
+                <option value="nitrogen_0-5cm_mean" data-ar="النيتروجين (0-5 سم)" data-en="Nitrogen (0-5 cm)" data-fr="Azote (0-5 cm)">Azote (0-5 cm)</option>
+                <option value="cec_0-5cm_mean" data-ar="تبادل الكاتيونات (0-5 سم)" data-en="CEC (0-5 cm)" data-fr="CEC (0-5 cm)">CEC (0-5 cm)</option>
+                <option value="bdod_0-5cm_mean" data-ar="الكثافة الظاهرية (0-5 سم)" data-en="Bulk Density (0-5 cm)" data-fr="Densité Apparente (0-5 cm)">Densité Apparente (0-5 cm)</option>
+            </select>
+        </div>
+
+        <!-- Sélecteur de pays -->
+        <div class="panel-section">
+            <label id="countryLabel">Pays</label>
+            <select id="countrySelect" onchange="zoomToCountry(this.value)" style="width:100%;padding:8px 12px;background:#0f1f30;border:1px solid #1a4a3a;color:#ddd;border-radius:4px;font-size:14px;outline:none;">
+                <option value="">-- Sélectionner un pays --</option>
+                <optgroup label="Afrique">
+                    <option value="maroc">Maroc</option>
+                    <option value="algérie">Algérie</option>
+                    <option value="tunisie">Tunisie</option>
+                    <option value="egypte">Égypte</option>
+                    <option value="libye">Libye</option>
+                    <option value="soudan">Soudan</option>
+                    <option value="mauritanie">Mauritanie</option>
+                    <option value="sénégal">Sénégal</option>
+                    <option value="nigeria">Nigéria</option>
+                    <option value="ghana">Ghana</option>
+                    <option value="cote_ivoire">Côte d'Ivoire</option>
+                    <option value="cameroun">Cameroun</option>
+                    <option value="rdc">RDC</option>
+                    <option value="afrique_sud">Afrique du Sud</option>
+                    <option value="kenya">Kenya</option>
+                    <option value="tanzanie">Tanzanie</option>
+                    <option value="ethiopie">Éthiopie</option>
+                </optgroup>
+                <optgroup label="Europe">
+                    <option value="france">France</option>
+                    <option value="espagne">Espagne</option>
+                    <option value="italie">Italie</option>
+                    <option value="allemagne">Allemagne</option>
+                    <option value="royaume_uni">Royaume-Uni</option>
+                    <option value="belgique">Belgique</option>
+                    <option value="suisse">Suisse</option>
+                    <option value="pays_bas">Pays-Bas</option>
+                    <option value="portugal">Portugal</option>
+                    <option value="grece">Grèce</option>
+                    <option value="turquie">Turquie</option>
+                    <option value="russie">Russie</option>
+                    <option value="pologne">Pologne</option>
+                    <option value="ukraine">Ukraine</option>
+                </optgroup>
+                <optgroup label="Amérique">
+                    <option value="etats_unis">États-Unis</option>
+                    <option value="canada">Canada</option>
+                    <option value="mexique">Mexique</option>
+                    <option value="bresil">Brésil</option>
+                    <option value="argentine">Argentine</option>
+                    <option value="chili">Chili</option>
+                    <option value="perou">Pérou</option>
+                    <option value="colombie">Colombie</option>
+                </optgroup>
+                <optgroup label="Asie">
+                    <option value="chine">Chine</option>
+                    <option value="japon">Japon</option>
+                    <option value="inde">Inde</option>
+                    <option value="coree_sud">Corée du Sud</option>
+                    <option value="vietnam">Vietnam</option>
+                    <option value="thailande">Thaïlande</option>
+                    <option value="indonesie">Indonésie</option>
+                    <option value="malaisie">Malaisie</option>
+                    <option value="singapour">Singapour</option>
+                    <option value="philippines">Philippines</option>
+                </optgroup>
+                <optgroup label="Moyen-Orient">
+                    <option value="israel">Israël</option>
+                    <option value="palestine">Palestine</option>
+                    <option value="arabie_saoudite">Arabie Saoudite</option>
+                    <option value="emirats">Émirats Arabes Unis</option>
+                    <option value="qatar">Qatar</option>
+                    <option value="oman">Oman</option>
+                    <option value="yemen">Yémen</option>
+                    <option value="iran">Iran</option>
+                    <option value="iraq">Irak</option>
+                    <option value="syrie">Syrie</option>
+                    <option value="jordanie">Jordanie</option>
+                    <option value="liban">Liban</option>
+                </optgroup>
+                <optgroup label="Océanie">
+                    <option value="australie">Australie</option>
+                    <option value="nouvelle_zelande">Nouvelle-Zélande</option>
+                </optgroup>
+            </select>
+        </div>
+
+        <div class="panel-section">
+            <label id="opacityLabel">Opacité</label>
+            <div class="opacity-slider-container">
+                <span style="color:#1a4a3a;font-size:12px;">◀</span>
+                <input type="range" id="opacityRange" min="0" max="100" value="100" oninput="changeOpacity(this.value)" />
+                <span style="color:#1a4a3a;font-size:12px;">▶</span>
+                <span class="opacity-value" id="opacityValue">100%</span>
+            </div>
+        </div>
+
+        <div class="panel-section">
+            <label id="downloadLabel">Plage de téléchargement</label>
+            <div class="panel-row">
+                <div class="panel-section">
+                    <label style="font-size:10px;" id="lonMinLabel">Longitude (min)</label>
+                    <input type="number" id="lonMin" value="-10" step="0.5" />
+                </div>
+                <div class="panel-section">
+                    <label style="font-size:10px;" id="lonMaxLabel">Longitude (max)</label>
+                    <input type="number" id="lonMax" value="10" step="0.5" />
+                </div>
+            </div>
+            <div class="panel-row">
+                <div class="panel-section">
+                    <label style="font-size:10px;" id="latMinLabel">Latitude (min)</label>
+                    <input type="number" id="latMin" value="30" step="0.5" />
+                </div>
+                <div class="panel-section">
+                    <label style="font-size:10px;" id="latMaxLabel">Latitude (max)</label>
+                    <input type="number" id="latMax" value="40" step="0.5" />
+                </div>
+            </div>
+        </div>
+
+        <button class="btn-download" onclick="downloadLayer()" id="downloadBtn">⬇ Télécharger la couche (GeoTIFF)</button>
+        <button class="btn-download" style="margin-top:8px;background:#1a4a3a;" onclick="resetView()" id="resetBtn">⟲ Réinitialiser la carte</button>
+    </div>
+
+    <!-- ============================================================
+    LEGEND
+    ============================================================ -->
+    <div class="legend" id="legend">
+        <h4 id="legendTitle">Légende</h4>
+        <div class="legend-item">
+            <div class="legend-color" style="background:linear-gradient(90deg,#2ecc71,#f1c40f,#e74c3c);"></div>
+            <span class="legend-text" id="legendText">Faible → Élevé</span>
+        </div>
+        <div style="font-size:11px;color:#8899aa;margin-top:6px;border-top:1px solid #1a4a3a;padding-top:4px;">
+            <span id="layerNameDisplay">Carbone Organique (0-5 cm)</span>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    FOOTER - SONE SOL
+    ============================================================ -->
+    <div class="footer-info">
+        <span id="footerText">Données <a href="https://www.isric.org" target="_blank">ISRIC</a> · </span>
+        <span class="sone-brand">SONE SOL</span>
+        <span style="color:#1a4a3a;margin:0 4px;">|</span>
+        <span id="coordsDisplay">Lat: 0.00, Lon: 0.00</span>
+    </div>
+
+    <!-- ============================================================
+    JAVASCRIPT
+    ============================================================ -->
+    <script>
+        // ============================================================
+        // BASE DE DONNÉES DES PAYS ET VILLES
+        // ============================================================
+        const countriesData = {
+            'maroc': { fr: 'Maroc', ar: 'المغرب', en: 'Morocco', cities: ['Casablanca', 'Rabat', 'Marrakech', 'Fès', 'Tanger', 'Agadir', 'Meknès'] },
+            'algérie': { fr: 'Algérie', ar: 'الجزائر', en: 'Algeria', cities: ['Alger', 'Oran', 'Constantine', 'Annaba', 'Sétif', 'Blida'] },
+            'tunisie': { fr: 'Tunisie', ar: 'تونس', en: 'Tunisia', cities: ['Tunis', 'Sfax', 'Sousse', 'Kairouan', 'Bizerte', 'Gabès'] },
+            'egypte': { fr: 'Égypte', ar: 'مصر', en: 'Egypt', cities: ['Le Caire', 'Alexandrie', 'Gizeh', 'Louxor', 'Assouan'] },
+            'libye': { fr: 'Libye', ar: 'ليبيا', en: 'Libya', cities: ['Tripoli', 'Benghazi', 'Misrata', 'Sabha'] },
+            'soudan': { fr: 'Soudan', ar: 'السودان', en: 'Sudan', cities: ['Khartoum', 'Omdurman', 'Port-Soudan'] },
+            'mauritanie': { fr: 'Mauritanie', ar: 'موريتانيا', en: 'Mauritania', cities: ['Nouakchott', 'Nouadhibou'] },
+            'sénégal': { fr: 'Sénégal', ar: 'السنغال', en: 'Senegal', cities: ['Dakar', 'Saint-Louis', 'Thiès', 'Ziguinchor'] },
+            'nigeria': { fr: 'Nigéria', ar: 'نيجيريا', en: 'Nigeria', cities: ['Lagos', 'Abuja', 'Kano', 'Ibadan', 'Port Harcourt'] },
+            'ghana': { fr: 'Ghana', ar: 'غانا', en: 'Ghana', cities: ['Accra', 'Kumasi', 'Tamale', 'Takoradi'] },
+            'cote_ivoire': { fr: "Côte d'Ivoire", ar: 'ساحل العاج', en: "Ivory Coast", cities: ['Abidjan', 'Bouaké', 'Daloa', 'Yamoussoukro'] },
+            'cameroun': { fr: 'Cameroun', ar: 'الكاميرون', en: 'Cameroon', cities: ['Douala', 'Yaoundé', 'Garoua', 'Bamenda'] },
+            'rdc': { fr: 'République Démocratique du Congo', ar: 'الكونغو الديمقراطية', en: 'DR Congo', cities: ['Kinshasa', 'Lubumbashi', 'Mbuji-Mayi', 'Goma'] },
+            'afrique_sud': { fr: 'Afrique du Sud', ar: 'جنوب أفريقيا', en: 'South Africa', cities: ['Le Cap', 'Johannesburg', 'Durban', 'Pretoria', 'Port Elizabeth'] },
+            'kenya': { fr: 'Kenya', ar: 'كينيا', en: 'Kenya', cities: ['Nairobi', 'Mombasa', 'Kisumu', 'Nakuru'] },
+            'tanzanie': { fr: 'Tanzanie', ar: 'تنزانيا', en: 'Tanzania', cities: ['Dar es Salaam', 'Dodoma', 'Mwanza', 'Arusha'] },
+            'ethiopie': { fr: 'Éthiopie', ar: 'إثيوبيا', en: 'Ethiopia', cities: ['Addis-Abeba', 'Gondar', 'Lalibela', 'Dire Dawa'] },
+            'france': { fr: 'France', ar: 'فرنسا', en: 'France', cities: ['Paris', 'Marseille', 'Lyon', 'Toulouse', 'Nice', 'Nantes', 'Strasbourg', 'Bordeaux'] },
+            'espagne': { fr: 'Espagne', ar: 'إسبانيا', en: 'Spain', cities: ['Madrid', 'Barcelone', 'Valence', 'Séville', 'Bilbao', 'Malaga'] },
+            'italie': { fr: 'Italie', ar: 'إيطاليا', en: 'Italy', cities: ['Rome', 'Milan', 'Naples', 'Turin', 'Florence', 'Venise'] },
+            'allemagne': { fr: 'Allemagne', ar: 'ألمانيا', en: 'Germany', cities: ['Berlin', 'Munich', 'Hambourg', 'Francfort', 'Cologne', 'Stuttgart'] },
+            'royaume_uni': { fr: 'Royaume-Uni', ar: 'المملكة المتحدة', en: 'United Kingdom', cities: ['Londres', 'Manchester', 'Birmingham', 'Édimbourg', 'Glasgow'] },
+            'belgique': { fr: 'Belgique', ar: 'بلجيكا', en: 'Belgium', cities: ['Bruxelles', 'Anvers', 'Liège', 'Charleroi'] },
+            'suisse': { fr: 'Suisse', ar: 'سويسرا', en: 'Switzerland', cities: ['Zurich', 'Genève', 'Berne', 'Lausanne'] },
+            'pays_bas': { fr: 'Pays-Bas', ar: 'هولندا', en: 'Netherlands', cities: ['Amsterdam', 'Rotterdam', 'La Haye', 'Utrecht'] },
+            'portugal': { fr: 'Portugal', ar: 'البرتغال', en: 'Portugal', cities: ['Lisbonne', 'Porto', 'Braga', 'Faro'] },
+            'grece': { fr: 'Grèce', ar: 'اليونان', en: 'Greece', cities: ['Athènes', 'Thessalonique', 'Patras', 'Héraklion'] },
+            'turquie': { fr: 'Turquie', ar: 'تركيا', en: 'Turkey', cities: ['Istanbul', 'Ankara', 'Izmir', 'Antalya', 'Bursa'] },
+            'russie': { fr: 'Russie', ar: 'روسيا', en: 'Russia', cities: ['Moscou', 'Saint-Pétersbourg', 'Novossibirsk', 'Kazan', 'Vladivostok'] },
+            'pologne': { fr: 'Pologne', ar: 'بولندا', en: 'Poland', cities: ['Varsovie', 'Cracovie', 'Lodz', 'Poznan'] },
+            'ukraine': { fr: 'Ukraine', ar: 'أوكرانيا', en: 'Ukraine', cities: ['Kiev', 'Odessa', 'Lviv', 'Kharkiv'] },
+            'etats_unis': { fr: 'États-Unis', ar: 'الولايات المتحدة', en: 'United States', cities: ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Miami', 'San Francisco', 'Washington'] },
+            'canada': { fr: 'Canada', ar: 'كندا', en: 'Canada', cities: ['Toronto', 'Montréal', 'Vancouver', 'Calgary', 'Québec'] },
+            'mexique': { fr: 'Mexique', ar: 'المكسيك', en: 'Mexico', cities: ['Mexico', 'Guadalajara', 'Monterrey', 'Puebla'] },
+            'bresil': { fr: 'Brésil', ar: 'البرازيل', en: 'Brazil', cities: ['Brasilia', 'Rio de Janeiro', 'Sao Paulo', 'Salvador', 'Fortaleza'] },
+            'argentine': { fr: 'Argentine', ar: 'الأرجنتين', en: 'Argentina', cities: ['Buenos Aires', 'Córdoba', 'Mendoza', 'Rosario'] },
+            'chili': { fr: 'Chili', ar: 'تشيلي', en: 'Chile', cities: ['Santiago', 'Valparaíso', 'Concepción', 'Antofagasta'] },
+            'perou': { fr: 'Pérou', ar: 'بيرو', en: 'Peru', cities: ['Lima', 'Arequipa', 'Trujillo', 'Cuzco'] },
+            'colombie': { fr: 'Colombie', ar: 'كولومبيا', en: 'Colombia', cities: ['Bogota', 'Medellin', 'Cali', 'Cartagena'] },
+            'chine': { fr: 'Chine', ar: 'الصين', en: 'China', cities: ['Pékin', 'Shanghai', 'Canton', 'Shenzhen', 'Chengdu'] },
+            'japon': { fr: 'Japon', ar: 'اليابان', en: 'Japan', cities: ['Tokyo', 'Osaka', 'Nagoya', 'Kyoto', 'Yokohama'] },
+            'inde': { fr: 'Inde', ar: 'الهند', en: 'India', cities: ['New Delhi', 'Mumbai', 'Bangalore', 'Chennai', 'Hyderabad'] },
+            'coree_sud': { fr: 'Corée du Sud', ar: 'كوريا الجنوبية', en: 'South Korea', cities: ['Séoul', 'Busan', 'Incheon', 'Daegu'] },
+            'vietnam': { fr: 'Vietnam', ar: 'فيتنام', en: 'Vietnam', cities: ['Hanoï', 'Hô Chi Minh-Ville', 'Da Nang', 'Hué'] },
+            'thailande': { fr: 'Thaïlande', ar: 'تايلاند', en: 'Thailand', cities: ['Bangkok', 'Chiang Mai', 'Phuket', 'Pattaya'] },
+            'indonesie': { fr: 'Indonésie', ar: 'إندونيسيا', en: 'Indonesia', cities: ['Jakarta', 'Surabaya', 'Bandung', 'Medan'] },
+            'malaisie': { fr: 'Malaisie', ar: 'ماليزيا', en: 'Malaysia', cities: ['Kuala Lumpur', 'George Town', 'Johor Bahru'] },
+            'singapour': { fr: 'Singapour', ar: 'سنغافورة', en: 'Singapore', cities: ['Singapour'] },
+            'philippines': { fr: 'Philippines', ar: 'الفلبين', en: 'Philippines', cities: ['Manille', 'Cebu', 'Davao', 'Quezon'] },
+            'israel': { fr: 'Israël', ar: 'إسرائيل', en: 'Israel', cities: ['Jérusalem', 'Tel Aviv', 'Haïfa', 'Beer-Sheva'] },
+            'palestine': { fr: 'Palestine', ar: 'فلسطين', en: 'Palestine', cities: ['Ramallah', 'Gaza', 'Hébron', 'Naplouse'] },
+            'arabie_saoudite': { fr: 'Arabie Saoudite', ar: 'السعودية', en: 'Saudi Arabia', cities: ['Riyad', 'Djeddah', 'La Mecque', 'Médine', 'Dammam'] },
+            'emirats': { fr: 'Émirats Arabes Unis', ar: 'الإمارات', en: 'UAE', cities: ['Dubaï', 'Abu Dhabi', 'Sharjah', 'Ajman'] },
+            'qatar': { fr: 'Qatar', ar: 'قطر', en: 'Qatar', cities: ['Doha', 'Al Wakrah', 'Al Khor'] },
+            'oman': { fr: 'Oman', ar: 'عمان', en: 'Oman', cities: ['Mascate', 'Sohar', 'Salalah'] },
+            'yemen': { fr: 'Yémen', ar: 'اليمن', en: 'Yemen', cities: ['Sanaa', 'Aden', 'Taiz'] },
+            'iran': { fr: 'Iran', ar: 'إيران', en: 'Iran', cities: ['Téhéran', 'Ispahan', 'Machhad', 'Chiraz'] },
+            'iraq': { fr: 'Irak', ar: 'العراق', en: 'Iraq', cities: ['Bagdad', 'Bassora', 'Mossoul', 'Erbil'] },
+            'syrie': { fr: 'Syrie', ar: 'سوريا', en: 'Syria', cities: ['Damas', 'Alep', 'Homs', 'Latakié'] },
+            'jordanie': { fr: 'Jordanie', ar: 'الأردن', en: 'Jordan', cities: ['Amman', 'Zarqa', 'Irbid', 'Aqaba'] },
+            'liban': { fr: 'Liban', ar: 'لبنان', en: 'Lebanon', cities: ['Beyrouth', 'Tripoli', 'Sidon', 'Tyr'] },
+            'australie': { fr: 'Australie', ar: 'أستراليا', en: 'Australia', cities: ['Sydney', 'Melbourne', 'Brisbane', 'Perth', 'Adélaïde'] },
+            'nouvelle_zelande': { fr: 'Nouvelle-Zélande', ar: 'نيوزيلندا', en: 'New Zealand', cities: ['Auckland', 'Wellington', 'Christchurch', 'Hamilton'] },
+        };
+
+        // ============================================================
+        // TRADUCTIONS
+        // ============================================================
+        const translations = {
+            ar: {
+                panelTitle: 'الطبقات',
+                layerLabel: 'خاصية التربة',
+                opacityLabel: 'الشفافية',
+                downloadLabel: 'نطاق التحميل',
+                lonMinLabel: 'خط الطول (min)',
+                lonMaxLabel: 'خط الطول (max)',
+                latMinLabel: 'خط العرض (min)',
+                latMaxLabel: 'خط العرض (max)',
+                downloadBtn: '⬇ تحميل الطبقة (GeoTIFF)',
+                resetBtn: '⟲ إعادة تعيين الخريطة',
+                legendTitle: 'وسيلة الإيضاح',
+                legendText: 'منخفض → مرتفع',
+                footerText: 'بيانات من ISRIC · ',
+                infoMessage: 'بيانات التربة من ISRIC - SONE SOL\n\nيمكنك اختيار طبقات مختلفة من القائمة الجانبية ☰',
+                zoomIn: 'تكبير',
+                zoomOut: 'تصغير',
+                panelToggle: 'طبقات',
+                coordsPrefix: 'خط العرض: ',
+                coordsMiddle: ', خط الطول: ',
+                flag: '🇸🇦',
+                langText: 'AR',
+                popupTitle: 'بيانات التربة',
+                popupDownload: 'تحميل',
+                popupExplore: 'استكشاف',
+                resetBtn2: 'إعادة تعيين',
+                zoomLabel: 'التكبير',
+                centerLabel: 'المركز',
+                resolutionLabel: 'الدقة',
+                countryLabel: 'الدولة',
+            },
+            en: {
+                panelTitle: 'Layers',
+                layerLabel: 'Soil Property',
+                opacityLabel: 'Opacity',
+                downloadLabel: 'Download Range',
+                lonMinLabel: 'Longitude (min)',
+                lonMaxLabel: 'Longitude (max)',
+                latMinLabel: 'Latitude (min)',
+                latMaxLabel: 'Latitude (max)',
+                downloadBtn: '⬇ Download Layer (GeoTIFF)',
+                resetBtn: '⟲ Reset Map',
+                legendTitle: 'Legend',
+                legendText: 'Low → High',
+                footerText: 'Data from ISRIC · ',
+                infoMessage: 'Soil data from ISRIC - SONE SOL\n\nSelect different layers from the side panel ☰',
+                zoomIn: 'Zoom In',
+                zoomOut: 'Zoom Out',
+                panelToggle: 'Layers',
+                coordsPrefix: 'Lat: ',
+                coordsMiddle: ', Lon: ',
+                flag: '🇬🇧',
+                langText: 'EN',
+                popupTitle: 'Soil Data',
+                popupDownload: 'Download',
+                popupExplore: 'Explore',
+                resetBtn2: 'Reset',
+                zoomLabel: 'Zoom',
+                centerLabel: 'Center',
+                resolutionLabel: 'Resolution',
+                countryLabel: 'Country',
+            },
+            fr: {
+                panelTitle: 'Couches',
+                layerLabel: 'Propriété du sol',
+                opacityLabel: 'Opacité',
+                downloadLabel: 'Plage de téléchargement',
+                lonMinLabel: 'Longitude (min)',
+                lonMaxLabel: 'Longitude (max)',
+                latMinLabel: 'Latitude (min)',
+                latMaxLabel: 'Latitude (max)',
+                downloadBtn: '⬇ Télécharger la couche (GeoTIFF)',
+                resetBtn: '⟲ Réinitialiser la carte',
+                legendTitle: 'Légende',
+                legendText: 'Faible → Élevé',
+                footerText: 'Données ISRIC · ',
+                infoMessage: 'Données pédologiques de ISRIC - SONE SOL\n\nSélectionnez différentes couches dans le panneau latéral ☰',
+                zoomIn: 'Zoom avant',
+                zoomOut: 'Zoom arrière',
+                panelToggle: 'Couches',
+                coordsPrefix: 'Lat: ',
+                coordsMiddle: ', Lon: ',
+                flag: '🇫🇷',
+                langText: 'FR',
+                popupTitle: 'Données du sol',
+                popupDownload: 'Télécharger',
+                popupExplore: 'Explorer',
+                resetBtn2: 'Réinitialiser',
+                zoomLabel: 'Zoom',
+                centerLabel: 'Centre',
+                resolutionLabel: 'Résolution',
+                countryLabel: 'Pays',
+            }
+        };
+
+        let currentLang = 'fr';
+
+        // ============================================================
+        // COORDONNÉES DES VILLES (version simplifiée)
+        // ============================================================
+        function getCityCoords(city) {
+            const cityCoordsMap = {
+                'Casablanca': { lat: 33.5731, lon: -7.5898 },
+                'Rabat': { lat: 34.0209, lon: -6.8416 },
+                'Marrakech': { lat: 31.6295, lon: -7.9811 },
+                'Fès': { lat: 34.0333, lon: -5.0000 },
+                'Tanger': { lat: 35.7595, lon: -5.8340 },
+                'Agadir': { lat: 30.4278, lon: -9.5981 },
+                'Meknès': { lat: 33.8935, lon: -5.5547 },
+                'Alger': { lat: 36.7538, lon: 3.0588 },
+                'Oran': { lat: 35.6975, lon: -0.6336 },
+                'Constantine': { lat: 36.3650, lon: 6.6147 },
+                'Tunis': { lat: 36.8065, lon: 10.1815 },
+                'Sfax': { lat: 34.7406, lon: 10.7603 },
+                'Paris': { lat: 48.8566, lon: 2.3522 },
+                'Marseille': { lat: 43.2965, lon: 5.3698 },
+                'Lyon': { lat: 45.7640, lon: 4.8357 },
+                'Madrid': { lat: 40.4168, lon: -3.7038 },
+                'Barcelone': { lat: 41.3851, lon: 2.1734 },
+                'Rome': { lat: 41.9028, lon: 12.4964 },
+                'Milan': { lat: 45.4642, lon: 9.1900 },
+                'Berlin': { lat: 52.5200, lon: 13.4050 },
+                'Londres': { lat: 51.5074, lon: -0.1278 },
+                'Bruxelles': { lat: 50.8503, lon: 4.3517 },
+                'Amsterdam': { lat: 52.3676, lon: 4.9041 },
+                'New York': { lat: 40.7128, lon: -74.0060 },
+                'Los Angeles': { lat: 34.0522, lon: -118.2437 },
+                'Chicago': { lat: 41.8781, lon: -87.6298 },
+                'Toronto': { lat: 43.6532, lon: -79.3832 },
+                'Montréal': { lat: 45.5017, lon: -73.5673 },
+                'Mexico': { lat: 19.4326, lon: -99.1332 },
+                'Pékin': { lat: 39.9042, lon: 116.4074 },
+                'Shanghai': { lat: 31.2304, lon: 121.4737 },
+                'Tokyo': { lat: 35.6762, lon: 139.6503 },
+                'New Delhi': { lat: 28.6139, lon: 77.2090 },
+                'Mumbai': { lat: 19.0760, lon: 72.8777 },
+                'Séoul': { lat: 37.5665, lon: 126.9780 },
+                'Riyad': { lat: 24.7136, lon: 46.6753 },
+                'Djeddah': { lat: 21.5433, lon: 39.1728 },
+                'Dubaï': { lat: 25.2048, lon: 55.2708 },
+                'Abu Dhabi': { lat: 24.4539, lon: 54.3773 },
+                'Doha': { lat: 25.2854, lon: 51.5310 },
+                'Mascate': { lat: 23.5880, lon: 58.3829 },
+                'Téhéran': { lat: 35.6892, lon: 51.3890 },
+                'Bagdad': { lat: 33.3152, lon: 44.3661 },
+                'Damas': { lat: 33.5138, lon: 36.2765 },
+                'Amman': { lat: 31.9539, lon: 35.9106 },
+                'Beyrouth': { lat: 33.8938, lon: 35.5018 },
+                'Jérusalem': { lat: 31.7683, lon: 35.2137 },
+                'Le Caire': { lat: 30.0444, lon: 31.2357 },
+                'Alexandrie': { lat: 31.2001, lon: 29.9187 },
+                'Khartoum': { lat: 15.5007, lon: 32.5599 },
+                'Dakar': { lat: 14.7167, lon: -17.4677 },
+                'Lagos': { lat: 6.5244, lon: 3.3792 },
+                'Abuja': { lat: 9.0765, lon: 7.3986 },
+                'Accra': { lat: 5.6037, lon: -0.1870 },
+                'Abidjan': { lat: 5.3595, lon: -4.0083 },
+                'Douala': { lat: 4.0511, lon: 9.7679 },
+                'Yaoundé': { lat: 3.8480, lon: 11.5021 },
+                'Kinshasa': { lat: -4.4419, lon: 15.2663 },
+                'Le Cap': { lat: -33.9249, lon: 18.4241 },
+                'Johannesburg': { lat: -26.2041, lon: 28.0473 },
+                'Nairobi': { lat: -1.2921, lon: 36.8219 },
+                'Sydney': { lat: -33.8688, lon: 151.2093 },
+                'Melbourne': { lat: -37.8136, lon: 144.9631 },
+            };
+            return cityCoordsMap[city] || null;
+        }
+
+        function findLocation(lat, lon) {
+            let foundCountry = null;
+            let foundCity = null;
+            let closestDistance = Infinity;
+
+            for (const [key, data] of Object.entries(countriesData)) {
+                for (const city of data.cities) {
+                    const cityCoords = getCityCoords(city);
+                    if (cityCoords) {
+                        const distance = Math.sqrt(
+                            Math.pow(lat - cityCoords.lat, 2) +
+                            Math.pow(lon - cityCoords.lon, 2)
+                        );
+                        if (distance < closestDistance) {
+                            closestDistance = distance;
+                            foundCountry = key;
+                            foundCity = city;
+                        }
+                    }
+                }
+            }
+
+            if (closestDistance > 10) return null;
+            return { country: foundCountry, city: foundCity };
+        }
+
+        // ============================================================
+        // CONFIGURATION DE LA CARTE - MAX ZOOM = 10
+        // ============================================================
+
+        const tileGrid = ol.tilegrid.createXYZ({
+            minZoom: 1,
+            maxZoom: 10,
+            tileSize: 512,
+        });
+
+        const soilSource = new ol.source.TileWMS({
+            url: 'https://maps.isric.org/mapserv?map=/map/soc.map',
+            params: {
+                'LAYERS': 'soc_0-5cm_mean',
+                'TILED': true,
+                'VERSION': '1.3.0',
+                'CRS': 'EPSG:3857',
+                'FORMAT': 'image/png',
+                'TRANSPARENT': false,
+                'STYLES': '',
+                'QUALITY': 'high',
+                'DPI': 300,
+                'MAX_IMAGE_SIZE': 4096,
+            },
+            attributions: '&copy; ISRIC - SONE SOL',
+            transition: 200,
+            tileGrid: tileGrid,
+            projection: 'EPSG:3857',
+            preload: Infinity,
+            cacheSize: 2048,
+        });
+
+        const soilLayer = new ol.layer.Tile({
+            source: soilSource,
+            opacity: 1.0,
+            zIndex: 10,
+            minResolution: 0,
+            maxResolution: Infinity,
+            renderBuffer: 200,
+        });
+
+        soilLayer.on('prerender', function(event) {
+            const ctx = event.context;
+            ctx.filter = 'contrast(1.05) brightness(1.02) saturate(1.1)';
+        });
+
+        const map = new ol.Map({
+            target: 'map',
+            layers: [soilLayer],
+            view: new ol.View({
+                center: ol.proj.fromLonLat([0, 30]),
+                zoom: 3,
+                minZoom: 1,
+                maxZoom: 10,
+                constrainResolution: true,
+                resolution: 156543.03392804097,
+            }),
+            controls: [],
+            pixelRatio: window.devicePixelRatio || 1,
+        });
+
+        // ============================================================
+        // FONCTIONS
+        // ============================================================
+
+        function updateZoomInfo() {
+            const view = map.getView();
+            const zoom = view.getZoom();
+            const center = view.getCenter();
+            const resolution = view.getResolution();
+
+            document.getElementById('zoomLevel').textContent = zoom.toFixed(1);
+            const lonLat = ol.proj.toLonLat(center);
+            document.getElementById('centerCoords').textContent =
+                lonLat[0].toFixed(2) + ', ' + lonLat[1].toFixed(2);
+            document.getElementById('resolutionValue').textContent =
+                Math.round(resolution).toLocaleString();
+
+            updateLocationDisplay();
+        }
+
+        function updateLocationDisplay() {
+            const view = map.getView();
+            const center = view.getCenter();
+            const lonLat = ol.proj.toLonLat(center);
+            const lat = lonLat[1];
+            const lon = lonLat[0];
+            const zoom = view.getZoom();
+
+            const locationDisplay = document.getElementById('locationDisplay');
+
+            if (zoom >= 5) {
+                const location = findLocation(lat, lon);
+                if (location && location.country) {
+                    const countryData = countriesData[location.country];
+                    const t = translations[currentLang];
+                    document.getElementById('countryName').textContent = countryData[currentLang] || countryData.fr;
+                    document.getElementById('cityName').textContent = location.city;
+                    locationDisplay.style.display = 'block';
+                } else {
+                    locationDisplay.style.display = 'none';
+                }
+            } else {
+                locationDisplay.style.display = 'none';
+            }
+        }
+
+        function zoomToCountry(countryKey) {
+            if (!countryKey) return;
+            const countryData = countriesData[countryKey];
+            if (!countryData) return;
+
+            const firstCity = countryData.cities[0];
+            const coords = getCityCoords(firstCity);
+            if (coords) {
+                const view = map.getView();
+                view.setCenter(ol.proj.fromLonLat([coords.lon, coords.lat]));
+                view.setZoom(10);
+                setTimeout(() => {
+                    soilLayer.getSource().refresh();
+                    updateZoomInfo();
+                }, 150);
+            }
+        }
+
+        // ============================================================
+        // SUIVI DES ÉVÉNEMENTS
+        // ============================================================
+        map.getView().on('change', updateZoomInfo);
+        map.getView().on('change:resolution', updateZoomInfo);
+        map.on('moveend', updateZoomInfo);
+
+        // ============================================================
+        // SCALE LINE
+        // ============================================================
+        const scaleLine = new ol.control.ScaleLine({
+            units: 'metric',
+            bar: true,
+            steps: 4,
+            text: true,
+            minWidth: 140,
+        });
+        map.addControl(scaleLine);
+
+        // ============================================================
+        // POPUP
+        // ============================================================
+        const popupContainer = document.createElement('div');
+        popupContainer.className = 'ol-popup';
+        popupContainer.style.display = 'none';
+        document.getElementById('map').appendChild(popupContainer);
+
+        const popupCloser = document.createElement('a');
+        popupCloser.className = 'ol-popup-closer';
+        popupCloser.href = '#';
+        popupCloser.textContent = '×';
+        popupCloser.onclick = function(e) {
+            e.preventDefault();
+            popupContainer.style.display = 'none';
+            popupCloser.blur();
+            return false;
+        };
+        popupContainer.appendChild(popupCloser);
+
+        const popupContent = document.createElement('div');
+        popupContent.id = 'popupContent';
+        popupContainer.appendChild(popupContent);
+
+        const overlay = new ol.Overlay({
+            element: popupContainer,
+            autoPan: true,
+            autoPanAnimation: { duration: 250 },
+            positioning: 'bottom-center',
+            offset: [0, -15],
+        });
+        map.addOverlay(overlay);
+
+        map.on('click', function(evt) {
+            const coords = ol.proj.toLonLat(evt.coordinate);
+            const t = translations[currentLang];
+
+            const randomValue = (Math.random() * 100 + 20).toFixed(1);
+            const layerName = document.getElementById('layerSelect')
+                .options[document.getElementById('layerSelect').selectedIndex]
+                .text;
+
+            let locationInfo = '';
+            const location = findLocation(coords[1], coords[0]);
+            if (location && location.country) {
+                const countryData = countriesData[location.country];
+                locationInfo = `
+                        <div style="font-size:11px;color:#2ecc71;margin-top:2px;">
+                            ${countryData[currentLang] || countryData.fr} • ${location.city}
+                        </div>
+                    `;
+            }
+
+            popupContent.innerHTML = `
+                    <div class="popup-title">${t.popupTitle}</div>
+                    <div style="font-size:12px;color:#8899aa;margin-bottom:4px;">
+                        ${layerName}
+                    </div>
+                    ${locationInfo}
+                    <div>
+                        <span class="popup-value">${randomValue}</span>
+                        <span class="popup-unit">${currentLang === 'ar' ? 'وحدة' : currentLang === 'fr' ? 'unité' : 'unit'}</span>
+                    </div>
+                    <div style="font-size:11px;color:#8899aa;margin-top:4px;">
+                        ${t.coordsPrefix}${coords[1].toFixed(4)}${t.coordsMiddle}${coords[0].toFixed(4)}
+                    </div>
+                    <div class="popup-actions">
+                        <button onclick="alert('${t.downloadBtn}')">${t.popupDownload}</button>
+                        <button onclick="alert('${t.popupExplore}')">${t.popupExplore}</button>
+                    </div>
+                `;
+
+            overlay.setPosition(evt.coordinate);
+            popupContainer.style.display = 'block';
+        });
+
+        map.on('pointerdown', function(evt) {
+            if (!popupContainer.contains(evt.originalEvent.target)) {
+                popupContainer.style.display = 'none';
+            }
+        });
+
+        // ============================================================
+        // COORDONNÉES DANS LE FOOTER
+        // ============================================================
+        const coordsDisplay = document.getElementById('coordsDisplay');
+        map.on('pointermove', function(evt) {
+            const coords = ol.proj.toLonLat(evt.coordinate);
+            const t = translations[currentLang];
+            coordsDisplay.textContent =
+                t.coordsPrefix + coords[1].toFixed(4) + t.coordsMiddle + coords[0].toFixed(4);
+        });
+
+        // ============================================================
+        // FONCTIONS DE LANGUE
+        // ============================================================
+        function toggleLangDropdown() {
+            document.getElementById('langDropdown').classList.toggle('show');
+        }
+
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.lang-dropdown')) {
+                document.getElementById('langDropdown').classList.remove('show');
+            }
+        });
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+
+            document.getElementById('currentFlag').textContent = t.flag;
+            document.getElementById('currentLangText').textContent = t.langText;
+
+            document.getElementById('panelTitle').textContent = t.panelTitle;
+            document.getElementById('layerLabel').textContent = t.layerLabel;
+            document.getElementById('opacityLabel').textContent = t.opacityLabel;
+            document.getElementById('downloadLabel').textContent = t.downloadLabel;
+            document.getElementById('lonMinLabel').textContent = t.lonMinLabel;
+            document.getElementById('lonMaxLabel').textContent = t.lonMaxLabel;
+            document.getElementById('latMinLabel').textContent = t.latMinLabel;
+            document.getElementById('latMaxLabel').textContent = t.latMaxLabel;
+            document.getElementById('downloadBtn').textContent = t.downloadBtn;
+            document.getElementById('resetBtn').textContent = t.resetBtn;
+            document.getElementById('resetBtn2').title = t.resetBtn2;
+            document.getElementById('legendTitle').textContent = t.legendTitle;
+            document.getElementById('legendText').textContent = t.legendText;
+            document.getElementById('footerText').innerHTML = t.footerText + '<a href="https://www.isric.org" target="_blank">ISRIC</a> · ';
+            document.getElementById('zoomInBtn').title = t.zoomIn;
+            document.getElementById('zoomOutBtn').title = t.zoomOut;
+            document.getElementById('panelToggleBtn').title = t.panelToggle;
+
+            document.getElementById('zoomLabel').textContent = t.zoomLabel;
+            document.getElementById('centerLabel').textContent = t.centerLabel;
+            document.getElementById('resolutionLabel').textContent = t.resolutionLabel;
+            document.getElementById('countryLabel').textContent = t.countryLabel;
+
+            const select = document.getElementById('layerSelect');
+            const selectedValue = select.value;
+            for (let option of select.options) {
+                option.text = option.getAttribute('data-' + lang) || option.value;
+            }
+            select.value = selectedValue;
+            updateLayerNameDisplay();
+
+            document.getElementById('langDropdown').classList.remove('show');
+            updateZoomInfo();
+        }
+
+        function getTranslation(key) {
+            return translations[currentLang][key] || key;
+        }
+
+        function updateLayerNameDisplay() {
+            const select = document.getElementById('layerSelect');
+            const selected = select.options[select.selectedIndex];
+            const lang = currentLang;
+            document.getElementById('layerNameDisplay').textContent =
+                selected.getAttribute('data-' + lang) || selected.value;
+        }
+
+        // ============================================================
+        // FONCTIONS DE LA CARTE
+        // ============================================================
+        function changeLayer() {
+            const select = document.getElementById('layerSelect');
+            const value = select.value;
+            updateLayerNameDisplay();
+
+            const source = soilLayer.getSource();
+            const mapName = value.includes('soc') ? 'soc' :
+                value.includes('clay') ? 'clay' :
+                value.includes('sand') ? 'sand' :
+                value.includes('silt') ? 'silt' :
+                value.includes('phh2o') ? 'phh2o' :
+                value.includes('nitrogen') ? 'nitrogen' :
+                value.includes('cec') ? 'cec' :
+                value.includes('bdod') ? 'bdod' : 'soc';
+
+            source.setUrl(`https://maps.isric.org/mapserv?map=/map/${mapName}.map`);
+            source.updateParams({
+                'LAYERS': value,
+                'TRANSPARENT': false,
+                'QUALITY': 'high',
+                'DPI': 300,
+                'MAX_IMAGE_SIZE': 4096,
+            });
+
+            setTimeout(() => { source.refresh(); }, 100);
+        }
+
+        function changeOpacity(val) {
+            soilLayer.setOpacity(val / 100);
+            document.getElementById('opacityValue').textContent = val + '%';
+        }
+
+        function zoomIn() {
+            const view = map.getView();
+            const currentZoom = view.getZoom();
+            if (currentZoom < 10) {
+                const newZoom = Math.min(currentZoom + 0.5, 10);
+                view.setZoom(newZoom);
+                setTimeout(() => { soilLayer.getSource().refresh(); }, 150);
+                updateZoomInfo();
+            }
+        }
+
+        function zoomOut() {
+            const view = map.getView();
+            const newZoom = view.getZoom() - 0.5;
+            if (newZoom >= view.getMinZoom()) {
+                view.setZoom(newZoom);
+                setTimeout(() => { soilLayer.getSource().refresh(); }, 150);
+                updateZoomInfo();
+            }
+        }
+
+        function resetView() {
+            const view = map.getView();
+            view.setCenter(ol.proj.fromLonLat([0, 30]));
+            view.setZoom(3);
+            popupContainer.style.display = 'none';
+            document.getElementById('locationDisplay').style.display = 'none';
+            setTimeout(() => { soilLayer.getSource().refresh(); }, 150);
+            updateZoomInfo();
+        }
+
+        function togglePanel() {
+            document.getElementById('sidePanel').classList.toggle('open');
+        }
+
+        function downloadLayer() {
+            const layer = document.getElementById('layerSelect').value;
+            const lonMin = parseFloat(document.getElementById('lonMin').value) || -10;
+            const lonMax = parseFloat(document.getElementById('lonMax').value) || 10;
+            const latMin = parseFloat(document.getElementById('latMin').value) || 30;
+            const latMax = parseFloat(document.getElementById('latMax').value) || 40;
+
+            const mapName = layer.includes('soc') ? 'soc' :
+                layer.includes('clay') ? 'clay' :
+                layer.includes('sand') ? 'sand' :
+                layer.includes('silt') ? 'silt' :
+                layer.includes('phh2o') ? 'phh2o' :
+                layer.includes('nitrogen') ? 'nitrogen' :
+                layer.includes('cec') ? 'cec' :
+                layer.includes('bdod') ? 'bdod' : 'soc';
+
+            const url =
+                `https://maps.isric.org/mapserv?map=/map/${mapName}.map&` +
+                `SERVICE=WCS&VERSION=2.0.1&REQUEST=GetCoverage&` +
+                `COVERAGEID=${layer}&FORMAT=image/tiff&` +
+                `SUBSET=long(${lonMin},${lonMax})&SUBSET=lat(${latMin},${latMax})&` +
+                `SUBSETTINGCRS=http://www.opengis.net/def/crs/EPSG/0/4326&` +
+                `OUTPUTCRS=http://www.opengis.net/def/crs/EPSG/0/4326`;
+
+            window.open(url, '_blank');
+        }
+
+        // ============================================================
+        // ÉVÉNEMENTS
+        // ============================================================
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.getElementById('sidePanel').classList.remove('open');
+                document.getElementById('langDropdown').classList.remove('show');
+                popupContainer.style.display = 'none';
+            }
+        });
+
+        // ============================================================
+        // INITIALISATION
+        // ============================================================
+        console.log('🌱 SONE SOL - Carte mondiale des sols');
+        console.log('📌 Sélectionnez un pays pour zoomer (zoom = 10)');
+        console.log('📍 Les noms des pays et villes apparaissent en haut de la carte');
+
+        setTimeout(() => {
+            soilLayer.getSource().refresh();
+            setLanguage('fr');
+            updateZoomInfo();
+        }, 500);
+    </script>
+
+</body>
+</html>

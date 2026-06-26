@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -5,7 +6,7 @@
     <title>SONE | المنصة المتكاملة للفلاحة الذكية</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
     <style>
@@ -27,12 +28,12 @@
             left: 0;
             right: 0;
             z-index: 1000;
-            padding: 15px 5%;
+            padding: 10px 5%;
             background: #0A1408;
             transition: all 0.3s ease;
             border-bottom: 2px solid #4CAF50;
         }
-        .header.scrolled { padding: 8px 5%; background: #0A1408; }
+        .header.scrolled { padding: 5px 5%; background: #0A1408; }
         .header-content {
             display: flex;
             justify-content: space-between;
@@ -46,7 +47,7 @@
         .logo {
             display: flex;
             align-items: center;
-            gap: 25px;
+            gap: 15px;
             cursor: pointer;
             text-decoration: none;
         }
@@ -54,10 +55,10 @@
         /* ===== إطار الصورة البسيط والأنيق ===== */
         .logo-wrapper {
             position: relative;
-            width: 120px;
-            height: 120px;
-            border-radius: 20px;
-            border: 3px solid #4CAF50;
+            width: 90px;
+            height: 90px;
+            border-radius: 16px;
+            border: 2px solid #4CAF50;
             overflow: hidden;
             flex-shrink: 0;
             background: #0A1408;
@@ -83,7 +84,6 @@
             transform: scale(1.05);
         }
         
-        /* خط ذهبي بسيط تحت الصورة */
         .logo-wrapper::after {
             content: '';
             position: absolute;
@@ -103,29 +103,36 @@
         .logo-text { text-align: center; }
         .logo-text h1 {
             margin: 0;
-            font-size: 58px;
-            letter-spacing: 6px;
+            font-size: 44px;
+            letter-spacing: 4px;
         }
         .logo-text h1 span.green { color: #5cbf2a; }
         .logo-text h1 span.dark { color: #f5f5f5; }
         .logo-text .tagline {
-            font-size: 14px;
+            font-size: 11px;
             color: #A5D6A7;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
         }
         
-        .nav-links { display: flex; gap: 25px; align-items: center; }
+        .nav-links { display: flex; gap: 20px; align-items: center; }
         .nav-links a {
             color: #FBFCFB;
             text-decoration: none;
             font-weight: 500;
+            font-size: 15px;
             transition: color 0.3s;
         }
         .nav-links a:hover { color: #4CAF50; }
-        .mobile-menu { display: none; font-size: 24px; cursor: pointer; }
+        .mobile-menu { display: none; font-size: 22px; cursor: pointer; }
 
-        .header-space { height: 150px; }
-        @media (max-width: 768px) { .header-space { height: 110px; } }
+        .header-space { height: 110px; }
+        @media (max-width: 768px) { 
+            .header-space { height: 90px; } 
+            .logo-wrapper { width: 70px; height: 70px; }
+            .logo-text h1 { font-size: 30px; letter-spacing: 2px; }
+            .logo-text .tagline { font-size: 9px; }
+            .logo { gap: 10px; }
+        }
 
         /* ===== شريط الأزرار ===== */
         .quick-buttons {
@@ -428,7 +435,7 @@
             .nav-links {
                 display: none;
                 position: absolute;
-                top: 80px;
+                top: 70px;
                 left: 0;
                 right: 0;
                 background: #0A1408;
@@ -444,17 +451,17 @@
             .hero h1 { font-size: 32px; }
             .section-header h2 { font-size: 28px; }
             .logo-wrapper { width: 70px; height: 70px; }
-            .logo-text h1 { font-size: 32px; letter-spacing: 3px; }
-            .logo-text .tagline { font-size: 10px; }
-            .logo { gap: 12px; }
-            .header-space { height: 100px; }
+            .logo-text h1 { font-size: 30px; letter-spacing: 2px; }
+            .logo-text .tagline { font-size: 9px; }
+            .logo { gap: 10px; }
+            .header-space { height: 90px; }
             .quick-btn { padding: 7px 14px; font-size: 11px; }
         }
     </style>
 </head>
-<body>
+<body data-aos-easing="ease" data-aos-duration="800" data-aos-delay="0">
 
-    <header class="header scrolled" id="header">
+    <header class="header" id="header">
         <div class="header-content">
             <a href="#" class="logo">
                 <div class="logo-wrapper">
@@ -504,7 +511,7 @@
     </div>
 
     <section class="hero" id="home">
-        <img class="hero-bg" id="heroBg" src="https://www.hellio.com/hubfs/Blog%20Corporate%20-%20Images/elevage-bovin-vaches-champs-agriculture-coucher-soleil.jpeg" alt="خلفية زراعية" style="opacity: 0.2;">
+        <img class="hero-bg" id="heroBg" src="https://www.mapleleaffoods.com/fr/wp-content/uploads/sites/7/2025/04/MLF-RegenerativeAgriculture-Cover.jpg" alt="خلفية زراعية" style="opacity: 0.2;">
         <div class="hero-content">
             <span class="hero-badge"><i class="fas fa-leaf"></i> الثورة الزراعية 4.0</span>
             <h1>SONE<br>زراعة دقيقة ببيانات فورية</h1>
@@ -518,22 +525,22 @@
     <!-- ===== إحصائيات ===== -->
     <section class="stats-section">
         <div class="stats-container">
-            <div class="stat-card" data-aos="fade-up">
+            <div class="stat-card aos-init aos-animate" data-aos="fade-up">
                 <div class="stat-icon"><i class="fas fa-satellite"></i></div>
                 <div class="stat-number">92%</div>
                 <div class="stat-label">دقة تحليل NDVI</div>
             </div>
-            <div class="stat-card" data-aos="fade-up" data-aos-delay="100">
+            <div class="stat-card aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
                 <div class="stat-icon"><i class="fas fa-map-marker-alt"></i></div>
                 <div class="stat-number">200+</div>
                 <div class="stat-label">مدينة مغربية</div>
             </div>
-            <div class="stat-card" data-aos="fade-up" data-aos-delay="200">
+            <div class="stat-card aos-init aos-animate" data-aos="fade-up" data-aos-delay="200">
                 <div class="stat-icon"><i class="fas fa-clock"></i></div>
                 <div class="stat-number">48h</div>
                 <div class="stat-label">إنذار مبكر</div>
             </div>
-            <div class="stat-card" data-aos="fade-up" data-aos-delay="300">
+            <div class="stat-card aos-init aos-animate" data-aos="fade-up" data-aos-delay="300">
                 <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
                 <div class="stat-number">24/7</div>
                 <div class="stat-label">بيانات حية</div>
@@ -567,7 +574,26 @@
             <a href="mylibrary.html" class="service-card"><img class="service-img" src="https://images.pexels.com/photos/256541/pexels-photo-256541.jpeg"><div class="service-icon"><i class="fas fa-book"></i></div><h3>مكتبتي</h3><p>تخزين المحتوى المفضل</p><span class="service-tag">مكتبة شخصية</span></a>
             <a href="agri-ai.html" class="service-card"><img class="service-img" src="https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg"><div class="service-icon"><i class="fas fa-robot"></i></div><h3>Agri AI</h3><p>مساعد ذكي بالذكاء الاصطناعي</p><span class="service-tag">دعم فوري</span></a>
             <a href="sun-times.html" class="service-card"><img class="service-img" src="https://modo3.com/thumbs/fit630x300/2311/1441198319/%D8%A3%D8%B0%D9%83%D8%A7%D8%B1_%D8%B7%D9%84%D9%88%D8%B9_%D8%A7%D9%84%D8%B4%D9%85%D8%B3_%D9%88%D8%BA%D8%B1%D9%88%D8%A8%D9%87%D8%A7.jpg"><div class="service-icon"><i class="fas fa-sun"></i></div><h3>أوقات الشروق</h3><p>مواعيد شروق وغروب الشمس</p><span class="service-tag">مواعيد دقيقة</span></a>
-            <a href="agritech.html" class="service-card"><img class="service-img" src="https://ar.industries.ma/wp-content/uploads/2026/02/AgricultureTech_LOgreen.jpg"><div class="service-icon"><i class="fas fa-microchip"></i></div><h3>تكنولوجيا فلاحية</h3><p>أحدث الابتكارات التكنولوجية</p><span class="service-tag">تقنيات متطورة</span></a>
+            
+            <!-- ===== البطاقات الجديدة والمعدلة ===== -->
+            <!-- 1. بطاقة SONE AGRI DATA (معدلة من تكنولوجيا فلاحية) -->
+            <a href="agritech.html" class="service-card">
+                <img class="service-img" src="https://ar.industries.ma/wp-content/uploads/2026/02/AgricultureTech_LOgreen.jpg" alt="SONE AGRI DATA">
+                <div class="service-icon"><i class="fas fa-microchip"></i></div>
+                <h3>SONE AGRI DATA</h3>
+                <p>منصة تحليل البيانات الفلاحية الذكية</p>
+                <span class="service-tag">بيانات دقيقة</span>
+            </a>
+
+            <!-- 2. بطاقة SONE SOL (جديدة) -->
+            <a href="sone-sol.html" class="service-card">
+                <img class="service-img" src="https://images.pexels.com/photos/2121134/pexels-photo-2121134.jpeg?auto=compress&cs=tinysrgb&w=600" alt="SONE SOL">
+                <div class="service-icon"><i class="fas fa-seedling"></i></div>
+                <h3>SONE SOL</h3>
+                <p>حلول ذكية لتحليل التربة والمحاصيل</p>
+                <span class="service-tag">تحليل دقيق</span>
+            </a>
+
             <a href="livestock.html" class="service-card"><img class="service-img" src="https://alalam24.press.ma/static/uploads/2022/10/%D8%A7%D9%86%D8%AA%D8%A7%D8%AC-%D8%A7%D9%84%D8%AD%D9%84%D9%8A%D8%A8-%D9%84%D8%AF%D9%89-%D8%A7%D9%84%D8%A3%D8%A8%D9%82%D8%A7%D8%B1-%D8%A7%D9%84%D8%AD%D9%84%D9%88%D8%A8.jpg"><div class="service-icon"><i class="fas fa-paw"></i></div><h3>قطاع حيواني</h3><p>دليل الثروة الحيوانية</p><span class="service-tag">أسعار تنافسية</span></a>
             <a href="sone.html" class="service-card"><img class="service-img" src="https://imgs.search.brave.com/WCNMee_ZhMH-R25v2RjoVTZCW0wDI7nNhU3_gexl4ug/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/dGlzY29udHJvbC5j/b20vdHBfUHVibGlj/L0hvbWUvaW1nL3Nv/bHV0aW9ucy9zbWFy/dF9mYXJtL2Zhcm0u/cG5n"><div class="service-icon"><i class="fas fa-microchip"></i></div><h3>مساحة SONE</h3><p>إدارة المساحات الزراعية</p><span class="service-tag">خرائط تفاعلية</span></a>
             <a href="agrinet.html" class="service-card"><img class="service-img" src="https://imgs.search.brave.com/p39TVcUsTDQm-SrdkV7I2wHF4yAfbYP-T0OcNDzIRdM/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9kMzl0/ZWN2MjlrZTkybi5j/bG91ZGZyb250Lm5l/dC9hc3NldHMvY29t/cGV0aXRvcnMvYWdy/aW5ldC05YmJmYmUx/YmM2MjI4ZThkYjNi/ODBmMDk5NjhkN2E1/YzhmMzEyYjg2N2Fh/ZDlmMTdkMTMyZjlm/ZWQ0MzA2ZjQ0LnBu/Zw"><div class="service-icon"><i class="fas fa-network-wired"></i></div><h3>شبكة AGRI NET</h3><p>شبكة تواصل زراعية</p><span class="service-price">انضم مجاناً</span></a>
@@ -613,7 +639,7 @@
         </div>
     </footer>
 
-    <button class="scroll-top show" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
         <i class="fas fa-arrow-up"></i>
     </button>
 

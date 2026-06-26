@@ -1,214 +1,534 @@
-<!DOCTYPE html>
 <html lang="ar">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>قاعدة بيانات النباتات</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>قاعدة بيانات النباتات</title>
 
-<style>
+    <style>
+        /* === الأنماط الأساسية === */
+        body {
+            font-family: Tahoma, Arial, sans-serif;
+            direction: rtl;
+            text-align: center;
+            background: #f7f9f7;
+            margin: 0;
+            padding: 40px;
+            color: #2c3e2f;
+        }
 
-body{
-    font-family: Tahoma, Arial, sans-serif;
-    direction: rtl;
-    text-align:center;
-    background:#f7f9f7;
-    margin:0;
-    padding:40px;
-    color:#2c3e2f;
-}
+        .container {
+            max-width: 1200px;
+            margin: auto;
+        }
 
-.container{
-    max-width:1200px;
-    margin:auto;
-}
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: white;
+            padding: 15px 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+            border: 1px solid #e3e8e3;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
 
-h1{
-    font-size:32px;
-    font-weight:600;
-    margin-bottom:30px;
-    color:#1f4d36;
-}
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
 
-.search-box{
-    margin-bottom:30px;
-}
+        .logo-section img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 2px solid #2f6b4f;
+        }
 
-input{
-    width:320px;
-    padding:12px;
-    border:1px solid #d0d7d0;
-    border-radius:6px;
-    font-size:15px;
-    outline:none;
-}
+        .logo-section .site-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1f4d36;
+            letter-spacing: 1px;
+        }
 
-button{
-    padding:12px 20px;
-    border:none;
-    background:#2f6b4f;
-    color:white;
-    cursor:pointer;
-    border-radius:6px;
-    font-size:14px;
-    transition:0.3s;
-}
+        .logo-section .site-name span {
+            color: #2f6b4f;
+        }
 
-button:hover{
-    background:#24553e;
-}
+        .lang-switcher {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
 
-#results{
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    gap:20px;
-}
+        .lang-btn {
+            background: transparent;
+            border: 2px solid #d0d7d0;
+            border-radius: 30px;
+            padding: 6px 14px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
 
-.card{
-    width:340px;
-    background:white;
-    border:1px solid #e3e8e3;
-    padding:20px;
-    border-radius:10px;
-    box-shadow:0 2px 8px rgba(0,0,0,0.06);
-}
+        .lang-btn:hover {
+            background: #e8f0e8;
+            border-color: #2f6b4f;
+        }
 
-.card img{
-    width:220px;
-    height:220px;
-    object-fit:cover;
-    border-radius:6px;
-    margin-bottom:15px;
-}
+        .lang-btn.active {
+            border-color: #2f6b4f;
+            background: #dce8dc;
+        }
 
-.card h3{
-    margin:10px 0;
-    font-size:20px;
-}
+        .lang-btn img {
+            width: 24px;
+            height: 16px;
+            border-radius: 3px;
+            object-fit: cover;
+        }
 
-.card p{
-    color:#666;
-    font-size:14px;
-}
+        h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: #1f4d36;
+            transition: 0.3s;
+        }
 
-.details{
-    text-align:right;
-    margin-top:15px;
-    border-top:1px solid #eee;
-    padding-top:10px;
-    font-size:14px;
-    line-height:1.8;
-}
+        .search-box {
+            margin-bottom: 30px;
+        }
 
-.action-buttons{
-    margin-top:15px;
-}
+        input {
+            width: 320px;
+            padding: 12px;
+            border: 1px solid #d0d7d0;
+            border-radius: 6px;
+            font-size: 15px;
+            outline: none;
+        }
 
-.action-buttons button{
-    margin:4px;
-}
+        button {
+            padding: 12px 20px;
+            border: none;
+            background: #2f6b4f;
+            color: white;
+            cursor: pointer;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: 0.3s;
+        }
 
-</style>
+        button:hover {
+            background: #24553e;
+        }
+
+        #results {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .card {
+            width: 340px;
+            background: white;
+            border: 1px solid #e3e8e3;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            position: relative;
+        }
+
+        .card img {
+            width: 220px;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            margin: 10px 0 5px;
+            font-size: 20px;
+        }
+        .card .scientific {
+            font-style: italic;
+            color: #555;
+            font-size: 15px;
+            margin-top: 0;
+        }
+
+        .card p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .details {
+            text-align: right;
+            margin-top: 15px;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+        .details .description {
+            font-size: 13px;
+            color: #444;
+            background: #f4f6f4;
+            padding: 8px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }
+        .details .care-section {
+            margin-top: 6px;
+            border-bottom: 1px dashed #ddd;
+            padding-bottom: 5px;
+        }
+        .details .care-section strong {
+            color: #2f6b4f;
+        }
+
+        .action-buttons {
+            margin-top: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .action-buttons button {
+            margin: 2px;
+        }
+
+        .download-btn {
+            background: #4a6fa5;
+        }
+        .download-btn:hover {
+            background: #3a5a8a;
+        }
+
+        @media (max-width: 600px) {
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+                padding: 15px;
+            }
+            .logo-section .site-name {
+                font-size: 20px;
+            }
+            .logo-section img {
+                width: 50px;
+                height: 50px;
+            }
+            .lang-switcher {
+                justify-content: center;
+            }
+            .lang-btn {
+                font-size: 16px;
+                padding: 4px 12px;
+            }
+        }
+    </style>
 </head>
 <body>
 
-<div class="container">
+    <div class="container">
 
-<h1>قاعدة بيانات النباتات</h1>
-
-<div class="search-box">
-    <input id="search" placeholder="أدخل اسم النبات">
-    <button onclick="searchPlant()">بحث</button>
-</div>
-
-<div id="results"></div>
-
-</div>
-
-<script>
-
-const API_KEY = "sk-b7ef6a32c1a15fc8b18247";
-
-async function searchPlant(){
-
-    const query = document.getElementById("search").value;
-
-    const url =
-    `https://perenual.com/api/v2/species-list?key=${API_KEY}&q=${query}`;
-
-    const response = await fetch(url);
-    const data = await response.json();
-
-    const results = document.getElementById("results");
-    results.innerHTML = "";
-
-    data.data.forEach(plant=>{
-
-        results.innerHTML += `
-        <div class="card">
-
-            <h3>${plant.common_name || "غير متوفر"}</h3>
-
-            ${
-              plant.default_image
-              ? `<img src="${plant.default_image.thumbnail}">`
-              : ""
-            }
-
-            <p>${plant.scientific_name[0]}</p>
-
-            <div class="action-buttons">
-                <button onclick="getDetails(${plant.id})">
-                   عرض المعلومات
-                </button>
-
-                <button onclick="getCare(${plant.id})">
-                   دليل العناية
-                </button>
+        <div class="header">
+            <div class="logo-section">
+                <img src="https://sone-solutions.github.io/SONE/SONELOGE.jpg" alt="شعار SONE AGRI DATA">
+                <div class="site-name">SONE <span>AGRI DATA</span></div>
             </div>
-
-            <div class="details" id="details-${plant.id}">
+            <div class="lang-switcher">
+                <button class="lang-btn active" data-lang="ar" onclick="setLanguage('ar')"><span>🇲🇦</span> عربي</button>
+                <button class="lang-btn" data-lang="fr" onclick="setLanguage('fr')"><span>🇫🇷</span> Français</button>
+                <button class="lang-btn" data-lang="en" onclick="setLanguage('en')"><span>🇬🇧</span> English</button>
             </div>
-
         </div>
-        `;
-    });
 
-}
+        <h1 id="page-title">قاعدة بيانات النباتات</h1>
 
+        <div class="search-box">
+            <input id="search" placeholder="أدخل اسم النبات">
+            <button id="search-btn" onclick="searchPlant()">بحث</button>
+        </div>
 
+        <div id="results"></div>
 
-async function getDetails(id){
+    </div>
 
-    const url =
-    `https://perenual.com/api/v2/species/details/${id}?key=${API_KEY}`;
+    <script>
+        // ===== بيانات الترجمة (موسعة) =====
+        const translations = {
+            ar: {
+                title: "قاعدة بيانات النباتات",
+                searchPlaceholder: "أدخل اسم النبات",
+                searchBtn: "بحث",
+                commonName: "الاسم الشائع",
+                scientificName: "الاسم العلمي",
+                detailsBtn: "عرض المعلومات",
+                careBtn: "دليل العناية",
+                downloadBtn: "تحميل الصورة",
+                watering: "الري",
+                cycle: "الدورة",
+                sunlight: "الإضاءة",
+                hardiness: "منطقة القساوة",
+                growthRate: "معدل النمو",
+                careLevel: "مستوى العناية",
+                cones: "مخاريط",
+                leaf: "أوراق",
+                description: "الوصف",
+                careLoaded: "● دليل العناية:",
+                noData: "لا توجد بيانات"
+            },
+            fr: {
+                title: "Base de données des plantes",
+                searchPlaceholder: "Entrez le nom de la plante",
+                searchBtn: "Rechercher",
+                commonName: "Nom commun",
+                scientificName: "Nom scientifique",
+                detailsBtn: "Afficher les détails",
+                careBtn: "Guide d'entretien",
+                downloadBtn: "Télécharger l'image",
+                watering: "Arrosage",
+                cycle: "Cycle",
+                sunlight: "Lumière",
+                hardiness: "Zone de rusticité",
+                growthRate: "Taux de croissance",
+                careLevel: "Niveau d'entretien",
+                cones: "Cônes",
+                leaf: "Feuilles",
+                description: "Description",
+                careLoaded: "● Guide d'entretien :",
+                noData: "Pas de données"
+            },
+            en: {
+                title: "Plant Database",
+                searchPlaceholder: "Enter plant name",
+                searchBtn: "Search",
+                commonName: "Common name",
+                scientificName: "Scientific name",
+                detailsBtn: "Show details",
+                careBtn: "Care guide",
+                downloadBtn: "Download image",
+                watering: "Watering",
+                cycle: "Cycle",
+                sunlight: "Sunlight",
+                hardiness: "Hardiness zone",
+                growthRate: "Growth rate",
+                careLevel: "Care level",
+                cones: "Cones",
+                leaf: "Leaves",
+                description: "Description",
+                careLoaded: "● Care guide:",
+                noData: "No data"
+            }
+        };
 
-    const res = await fetch(url);
-    const data = await res.json();
+        let currentLang = 'ar';
+        let currentPlants = [];
 
-    document.getElementById(`details-${id}`).innerHTML = `
-       <p>نظام الري: ${data.watering || "-"}</p>
-       <p>دورة النمو: ${data.cycle || "-"}</p>
-       <p>متطلبات الإضاءة: ${data.sunlight || "-"}</p>
-    `;
-}
+        // ===== تغيير اللغة =====
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === lang);
+            });
+            const t = translations[lang];
+            document.getElementById('page-title').textContent = t.title;
+            document.getElementById('search').placeholder = t.searchPlaceholder;
+            document.getElementById('search-btn').textContent = t.searchBtn;
+            document.body.dir = (lang === 'ar') ? 'rtl' : 'ltr';
+            document.body.style.textAlign = 'center';
 
+            if (currentPlants.length > 0) {
+                renderPlants(currentPlants);
+            }
+        }
 
+        // ===== عرض البطاقات =====
+        function renderPlants(plants) {
+            const results = document.getElementById('results');
+            results.innerHTML = '';
+            currentPlants = plants;
+            const t = translations[currentLang];
 
-async function getCare(id){
+            plants.forEach(plant => {
+                let imgHtml = '';
+                if (plant.default_image && plant.default_image.thumbnail) {
+                    imgHtml = `<img src="${plant.default_image.thumbnail}" alt="${plant.common_name || ''}">`;
+                } else {
+                    imgHtml = `<div style="width:220px;height:220px;background:#eee;border-radius:6px;margin-bottom:15px;display:flex;align-items:center;justify-content:center;color:#aaa;">${t.commonName}</div>`;
+                }
 
-    const url =
-    `https://perenual.com/api/species-care-guide-list?key=${API_KEY}&species_id=${id}`;
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <h3>${plant.common_name || t.commonName}</h3>
+                    <div class="scientific">${plant.scientific_name ? plant.scientific_name[0] : ''}</div>
+                    ${imgHtml}
+                    <div class="action-buttons">
+                        <button onclick="getDetails(${plant.id})">${t.detailsBtn}</button>
+                        <button onclick="getCare(${plant.id})">${t.careBtn}</button>
+                        <button class="download-btn" onclick="downloadImage('${plant.default_image ? plant.default_image.thumbnail : ''}', '${plant.common_name || 'plant'}')">${t.downloadBtn}</button>
+                    </div>
+                    <div class="details" id="details-${plant.id}"></div>
+                `;
+                results.appendChild(card);
+            });
+        }
 
-    const res = await fetch(url);
-    const data = await res.json();
+        // ===== البحث =====
+        async function searchPlant() {
+            const query = document.getElementById('search').value.trim();
+            if (!query) return;
+            const API_KEY = "sk-b7ef6a32c1a15fc8b18247";
+            const url = `https://perenual.com/api/v2/species-list?key=${API_KEY}&q=${encodeURIComponent(query)}`;
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                if (data.data && data.data.length > 0) {
+                    renderPlants(data.data);
+                } else {
+                    document.getElementById('results').innerHTML = `<p style="width:100%;color:#888;padding:40px;">🔍 ${translations[currentLang].noData}</p>`;
+                    currentPlants = [];
+                }
+            } catch (e) {
+                alert('خطأ في البحث');
+            }
+        }
 
-    document.getElementById(`details-${id}`).innerHTML += `
-       <p>تم تحميل بيانات العناية بالنبات.</p>
-    `;
-}
+        // ===== عرض التفاصيل (موسعة) =====
+        async function getDetails(id) {
+            const API_KEY = "sk-b7ef6a32c1a15fc8b18247";
+            const url = `https://perenual.com/api/v2/species/details/${id}?key=${API_KEY}`;
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+                const t = translations[currentLang];
+                const detailsDiv = document.getElementById(`details-${id}`);
 
-</script>
+                // بناء النص المعروض
+                let html = '';
+
+                // الوصف
+                if (data.description) {
+                    html += `<div class="description">📝 <strong>${t.description}:</strong> ${data.description}</div>`;
+                }
+
+                // الخصائص الأساسية
+                const fields = [
+                    { key: 'cycle', label: t.cycle },
+                    { key: 'watering', label: t.watering },
+                    { key: 'sunlight', label: t.sunlight },
+                    { key: 'hardiness', label: t.hardiness },
+                    { key: 'growth_rate', label: t.growthRate },
+                    { key: 'care_level', label: t.careLevel }
+                ];
+                fields.forEach(f => {
+                    if (data[f.key]) {
+                        html += `<p><strong>${f.label}:</strong> ${data[f.key]}</p>`;
+                    }
+                });
+
+                // المخاريط والأوراق (قيم منطقية)
+                if (data.cones !== undefined) {
+                    html += `<p><strong>${t.cones}:</strong> ${data.cones ? '✅' : '❌'}</p>`;
+                }
+                if (data.leaf !== undefined) {
+                    html += `<p><strong>${t.leaf}:</strong> ${data.leaf ? '✅' : '❌'}</p>`;
+                }
+
+                detailsDiv.innerHTML = html || `<p>${t.noData}</p>`;
+            } catch (e) {
+                alert('خطأ في جلب التفاصيل');
+            }
+        }
+
+        // ===== دليل العناية (مع أقسام منفصلة) =====
+        async function getCare(id) {
+            const API_KEY = "sk-b7ef6a32c1a15fc8b18247";
+            const url = `https://perenual.com/api/species-care-guide-list?key=${API_KEY}&species_id=${id}`;
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+                const t = translations[currentLang];
+                const detailsDiv = document.getElementById(`details-${id}`);
+
+                let html = `<div style="margin-top:10px;border-top:2px solid #2f6b4f;padding-top:8px;"><strong>${t.careLoaded}</strong></div>`;
+
+                if (data.data && data.data.length > 0) {
+                    // عرض كل قسم من دليل العناية
+                    data.data.forEach(section => {
+                        if (section.section && section.description) {
+                            html += `<div class="care-section"><strong>${section.section}:</strong> ${section.description}</div>`;
+                        }
+                    });
+                } else {
+                    html += `<p>${t.noData}</p>`;
+                }
+
+                // نضيف المحتوى الجديد إلى نهاية التفاصيل (بدلاً من استبدالها)
+                detailsDiv.innerHTML += html;
+            } catch (e) {
+                alert('خطأ في جلب العناية');
+            }
+        }
+
+        // ===== تحميل الصورة =====
+        function downloadImage(url, filename) {
+            if (!url || url === 'undefined' || url === '') {
+                alert('لا توجد صورة للتحميل');
+                return;
+            }
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) throw new Error('فشل تحميل الصورة');
+                    return response.blob();
+                })
+                .then(blob => {
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = `${filename || 'plant'}.jpg`;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(link.href);
+                })
+                .catch(() => {
+                    window.open(url, '_blank');
+                });
+        }
+
+        // ===== تحميل أولي عند بدء الصفحة =====
+        window.onload = function() {
+            setLanguage('ar');
+            // جلب قائمة افتراضية (مثلاً "fir" لتظهر شجرة التنوب الأوروبية)
+            fetch(`https://perenual.com/api/v2/species-list?key=sk-b7ef6a32c1a15fc8b18247&q=fir&page=1`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.data && data.data.length > 0) {
+                        renderPlants(data.data);
+                    } else {
+                        document.getElementById('results').innerHTML = `<p style="width:100%;color:#888;padding:40px;">🔍 ابحث عن نبات</p>`;
+                    }
+                })
+                .catch(() => {
+                    document.getElementById('results').innerHTML = `<p style="width:100%;color:#888;padding:40px;">🔍 ابحث عن نبات</p>`;
+                });
+        };
+    </script>
 
 </body>
 </html>

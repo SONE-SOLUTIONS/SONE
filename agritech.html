@@ -1,5 +1,4 @@
-<html lang="ar">
-<head>
+<html lang="ar"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>قاعدة بيانات النباتات</title>
@@ -241,7 +240,7 @@
         }
     </style>
 </head>
-<body>
+<body dir="rtl" style="text-align: center;">
 
     <div class="container">
 
@@ -264,7 +263,307 @@
             <button id="search-btn" onclick="searchPlant()">بحث</button>
         </div>
 
-        <div id="results"></div>
+        <div id="results"><div class="card">
+                    <h3>Johin Japanese Maple</h3>
+                    <div class="scientific">Acer 'Johin'</div>
+                    <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/10_acer_johin/thumbnail/pexels-photo-2183508.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=8ae35f574231ea839f70179ad8607e30d0033b1abc8f2ffb17c08326770fa5b6" alt="Johin Japanese Maple">
+                    <div class="action-buttons">
+                        <button onclick="getDetails(10)">عرض المعلومات</button>
+                        <button onclick="getCare(10)">دليل العناية</button>
+                        <button class="download-btn" onclick="downloadImage('https://s3.us-central-1.wasabisys.com/perenual/species_image/10_acer_johin/thumbnail/pexels-photo-2183508.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=8ae35f574231ea839f70179ad8607e30d0033b1abc8f2ffb17c08326770fa5b6', 'Johin Japanese Maple')">تحميل الصورة</button>
+                    </div>
+                    <div class="details" id="details-10"></div>
+                </div><div class="card">
+                    <h3>Fullmoon Maple</h3>
+                    <div class="scientific">Acer japonicum</div>
+                    <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/17_acer_japonicum/thumbnail/7175475239_52543c51b3_b.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=925c7db18b757a426a953968f0e63e88d547cb26109651deb65dfa8eef15de83" alt="Fullmoon Maple">
+                    <div class="action-buttons">
+                        <button onclick="getDetails(17)">عرض المعلومات</button>
+                        <button onclick="getCare(17)">دليل العناية</button>
+                        <button class="download-btn" onclick="downloadImage('https://s3.us-central-1.wasabisys.com/perenual/species_image/17_acer_japonicum/thumbnail/7175475239_52543c51b3_b.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=925c7db18b757a426a953968f0e63e88d547cb26109651deb65dfa8eef15de83', 'Fullmoon Maple')">تحميل الصورة</button>
+                    </div>
+                    <div class="details" id="details-17"></div>
+                </div><div class="card">
+                    <h3>Cutleaf Fullmoon Maple</h3>
+                    <div class="scientific">Acer japonicum 'Aconitifolium'</div>
+                    <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/18_acer_japonicum_aconitifolium/thumbnail/23528789198_c419363323_b.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=a2fca87b183684dd4656b44455b128a11a327720ab241061419be21a6f35f458" alt="Cutleaf Fullmoon Maple">
+                    <div class="action-buttons">
+                        <button onclick="getDetails(18)">عرض المعلومات</button>
+                        <button onclick="getCare(18)">دليل العناية</button>
+                        <button class="download-btn" onclick="downloadImage('https://s3.us-central-1.wasabisys.com/perenual/species_image/18_acer_japonicum_aconitifolium/thumbnail/23528789198_c419363323_b.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=a2fca87b183684dd4656b44455b128a11a327720ab241061419be21a6f35f458', 'Cutleaf Fullmoon Maple')">تحميل الصورة</button>
+                    </div>
+                    <div class="details" id="details-18"></div>
+                </div><div class="card">
+                    <h3>Attaryi Fullmoon Maple*</h3>
+                    <div class="scientific">Acer japonicum 'Attaryi'</div>
+                    <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/19_acer_japonicum_attaryi/thumbnail/pexels-photo-669323.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=a7e61a56932d83fd86702a72a61126fe597c86d0e237669359a33ff62c168032" alt="Attaryi Fullmoon Maple*">
+                    <div class="action-buttons">
+                        <button onclick="getDetails(19)">عرض المعلومات</button>
+                        <button onclick="getCare(19)">دليل العناية</button>
+                        <button class="download-btn" onclick="downloadImage('https://s3.us-central-1.wasabisys.com/perenual/species_image/19_acer_japonicum_attaryi/thumbnail/pexels-photo-669323.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=a7e61a56932d83fd86702a72a61126fe597c86d0e237669359a33ff62c168032', 'Attaryi Fullmoon Maple*')">تحميل الصورة</button>
+                    </div>
+                    <div class="details" id="details-19"></div>
+                </div><div class="card">
+                    <h3>Golden Fullmoon Maple</h3>
+                    <div class="scientific">Acer japonicum 'Aureum'</div>
+                    <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/20_acer_japonicum_aureum/thumbnail/2560px-Acer_shirasawanum_27Aureum27.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=22cd052c8405fbf4f34d3ba2538cfd655f7eff0f468f6d66b4ef939e4444d58e" alt="Golden Fullmoon Maple">
+                    <div class="action-buttons">
+                        <button onclick="getDetails(20)">عرض المعلومات</button>
+                        <button onclick="getCare(20)">دليل العناية</button>
+                        <button class="download-btn" onclick="downloadImage('https://s3.us-central-1.wasabisys.com/perenual/species_image/20_acer_japonicum_aureum/thumbnail/2560px-Acer_shirasawanum_27Aureum27.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=22cd052c8405fbf4f34d3ba2538cfd655f7eff0f468f6d66b4ef939e4444d58e', 'Golden Fullmoon Maple')">تحميل الصورة</button>
+                    </div>
+                    <div class="details" id="details-20"></div>
+                </div><div class="card">
+                    <h3>Emmett's Pumpkin Fullmoon Maple</h3>
+                    <div class="scientific">Acer japonicum 'Emmett's Pumpkin'</div>
+                    <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/21_acer_japonicum_emmetts_pumpkin/thumbnail/Acer_shirasawanum_28golden_fullmoon_maple29_2_284633285838129.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=89d4b8a2147970a6a049890b5798436bbc828c7812e4d329a9402f8e12d802a7" alt="Emmett's Pumpkin Fullmoon Maple">
+                    <div class="action-buttons">
+                        <button onclick="getDetails(21)">عرض المعلومات</button>
+                        <button onclick="getCare(21)">دليل العناية</button>
+                        <button class="download-btn" onclick="downloadImage('https://s3.us-central-1.wasabisys.com/perenual/species_image/21_acer_japonicum_emmetts_pumpkin/thumbnail/Acer_shirasawanum_28golden_fullmoon_maple29_2_284633285838129.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=89d4b8a2147970a6a049890b5798436bbc828c7812e4d329a9402f8e12d802a7', 'Emmett's Pumpkin Fullmoon Maple')">تحميل الصورة</button>
+                    </div>
+                    <div class="details" id="details-21"></div>
+                </div><div class="card">
+                    <h3>Green Cascade Maple</h3>
+                    <div class="scientific">Acer japonicum 'Green Cascade'</div>
+                    <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/22_acer_japonicum_green_cascade/thumbnail/4847225395_2509ee2bfe_b.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=df6d0826defbe5b3f13a37915eb3c9836bac9f91f6c1290d1194cbdf60e91b70" alt="Green Cascade Maple">
+                    <div class="action-buttons">
+                        <button onclick="getDetails(22)">عرض المعلومات</button>
+                        <button onclick="getCare(22)">دليل العناية</button>
+                        <button class="download-btn" onclick="downloadImage('https://s3.us-central-1.wasabisys.com/perenual/species_image/22_acer_japonicum_green_cascade/thumbnail/4847225395_2509ee2bfe_b.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=df6d0826defbe5b3f13a37915eb3c9836bac9f91f6c1290d1194cbdf60e91b70', 'Green Cascade Maple')">تحميل الصورة</button>
+                    </div>
+                    <div class="details" id="details-22"></div>
+                </div><div class="card">
+                    <h3>Japanese Maple</h3>
+                    <div class="scientific">Acer palmatum</div>
+                    <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/27_acer_palmatum/thumbnail/2560px-Acer_palmatum_27Bloodgood27_kz01.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=638e6036b50b0ad450b1e712fd660478fa82f225775963c998024dc041b1126f" alt="Japanese Maple">
+                    <div class="action-buttons">
+                        <button onclick="getDetails(27)">عرض المعلومات</button>
+                        <button onclick="getCare(27)">دليل العناية</button>
+                        <button class="download-btn" onclick="downloadImage('https://s3.us-central-1.wasabisys.com/perenual/species_image/27_acer_palmatum/thumbnail/2560px-Acer_palmatum_27Bloodgood27_kz01.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=638e6036b50b0ad450b1e712fd660478fa82f225775963c998024dc041b1126f', 'Japanese Maple')">تحميل الصورة</button>
+                    </div>
+                    <div class="details" id="details-27"></div>
+                </div><div class="card">
+                    <h3>Aka Shigitatsu Sawa Japanese Maple</h3>
+                    <div class="scientific">Acer palmatum 'Aka Shigitatsu Sawa'</div>
+                    <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/28_acer_palmatum_aka_shigitatsu_sawa/thumbnail/Acer_palmatum_Aka_shigitatsu_sawa_2zz.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=4af59a20c9afd122ba4952de1851e98ff6c8c084e9185cd65fbf1f237f5a34b4" alt="Aka Shigitatsu Sawa Japanese Maple">
+                    <div class="action-buttons">
+                        <button onclick="getDetails(28)">عرض المعلومات</button>
+                        <button onclick="getCare(28)">دليل العناية</button>
+                        <button class="download-btn" onclick="downloadImage('https://s3.us-central-1.wasabisys.com/perenual/species_image/28_acer_palmatum_aka_shigitatsu_sawa/thumbnail/Acer_palmatum_Aka_shigitatsu_sawa_2zz.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=4af59a20c9afd122ba4952de1851e98ff6c8c084e9185cd65fbf1f237f5a34b4', 'Aka Shigitatsu Sawa Japanese Maple')">تحميل الصورة</button>
+                    </div>
+                    <div class="details" id="details-28"></div>
+                </div><div class="card">
+                    <h3>Alpenweiss Variegated Dwarf Japanese Maple*</h3>
+                    <div class="scientific">Acer palmatum 'Alpenweiss'</div>
+                    <div style="width:220px;height:220px;background:#eee;border-radius:6px;margin-bottom:15px;display:flex;align-items:center;justify-content:center;color:#aaa;">الاسم الشائع</div>
+                    <div class="action-buttons">
+                        <button onclick="getDetails(29)">عرض المعلومات</button>
+                        <button onclick="getCare(29)">دليل العناية</button>
+                        <button class="download-btn" onclick="downloadImage('', 'Alpenweiss Variegated Dwarf Japanese Maple*')">تحميل الصورة</button>
+                    </div>
+                    <div class="details" id="details-29"></div>
+                </div><div class="card">
+                    <h3>Ao Shime No Uchi Japanese Maple</h3>
+                    <div class="scientific">Acer palmatum 'Ao Shime No Uchi'</div>
+                    <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/30_acer_palmatum_ao_shime_no_uchi/thumbnail/Acer_palmatum_Ao_shime_no_uchi_3zz.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=837bf95a1a6cef6e824339bb74d969f7d537116212235b3134522fe1d027969c" alt="Ao Shime No Uchi Japanese Maple">
+                    <div class="action-buttons">
+                        <button onclick="getDetails(30)">عرض المعلومات</button>
+                        <button onclick="getCare(30)">دليل العناية</button>
+                        <button class="download-btn" onclick="downloadImage('https://s3.us-central-1.wasabisys.com/perenual/species_image/30_acer_palmatum_ao_shime_no_uchi/thumbnail/Acer_palmatum_Ao_shime_no_uchi_3zz.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=837bf95a1a6cef6e824339bb74d969f7d537116212235b3134522fe1d027969c', 'Ao Shime No Uchi Japanese Maple')">تحميل الصورة</button>
+                    </div>
+                    <div class="details" id="details-30"></div>
+                </div><div class="card">
+                    <h3>Aoyagi Japanese Maple*</h3>
+                    <div class="scientific">Acer palmatum 'Aoyagi'</div>
+                    <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/31_acer_palmatum_aoyagi/thumbnail/acer_palmatum_japanese_maples_trees_red_red_leaves_blue_sky_blue_white-1126158.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=9e5af644d770738b06b1015c60c5a6e79915384fb201752b41349e30bddf5bc2" alt="Aoyagi Japanese Maple*">
+                    <div class="action-buttons">
+                        <button onclick="getDetails(31)">عرض المعلومات</button>
+                        <button onclick="getCare(31)">دليل العناية</button>
+                        <button class="download-btn" onclick="downloadImage('https://s3.us-central-1.wasabisys.com/perenual/species_image/31_acer_palmatum_aoyagi/thumbnail/acer_palmatum_japanese_maples_trees_red_red_leaves_blue_sky_blue_white-1126158.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=9e5af644d770738b06b1015c60c5a6e79915384fb201752b41349e30bddf5bc2', 'Aoyagi Japanese Maple*')">تحميل الصورة</button>
+                    </div>
+                    <div class="details" id="details-31"></div>
+                </div><div class="card">
+                    <h3>Arakawa Cork Bark Japanese Maple</h3>
+                    <div class="scientific">Acer palmatum 'Arakawa'</div>
+                    <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/32_acer_palmatum_arakawa/thumbnail/2560px-Montagnac-Acer-palmatum_04.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=808188815c7c431bfb5057fb849df8598a97e49c6cad37b85d450e6151bfc751" alt="Arakawa Cork Bark Japanese Maple">
+                    <div class="action-buttons">
+                        <button onclick="getDetails(32)">عرض المعلومات</button>
+                        <button onclick="getCare(32)">دليل العناية</button>
+                        <button class="download-btn" onclick="downloadImage('https://s3.us-central-1.wasabisys.com/perenual/species_image/32_acer_palmatum_arakawa/thumbnail/2560px-Montagnac-Acer-palmatum_04.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=808188815c7c431bfb5057fb849df8598a97e49c6cad37b85d450e6151bfc751', 'Arakawa Cork Bark Japanese Maple')">تحميل الصورة</button>
+                    </div>
+                    <div class="details" id="details-32"></div>
+                </div><div class="card">
+                    <h3>Asahi Zuru Japanese Maple</h3>
+                    <div class="scientific">Acer palmatum 'Asahi Zuru'</div>
+                    <div style="width:220px;height:220px;background:#eee;border-radius:6px;margin-bottom:15px;display:flex;align-items:center;justify-content:center;color:#aaa;">الاسم الشائع</div>
+                    <div class="action-buttons">
+                        <button onclick="getDetails(33)">عرض المعلومات</button>
+                        <button onclick="getCare(33)">دليل العناية</button>
+                        <button class="download-btn" onclick="downloadImage('', 'Asahi Zuru Japanese Maple')">تحميل الصورة</button>
+                    </div>
+                    <div class="details" id="details-33"></div>
+                </div><div class="card">
+                    <h3>Ribbon-leaf Japanese Maple*</h3>
+                    <div class="scientific">Acer palmatum 'Atrolineare'</div>
+                    <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/34_acer_palmatum_atrolineare/thumbnail/2560px-Acer_Palmatum_27Red_Pygmy27.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=d15d46582bffc5ac04e88baf0c0f1e084ac1a6429ae30d93ecabe8e81c5afd13" alt="Ribbon-leaf Japanese Maple*">
+                    <div class="action-buttons">
+                        <button onclick="getDetails(34)">عرض المعلومات</button>
+                        <button onclick="getCare(34)">دليل العناية</button>
+                        <button class="download-btn" onclick="downloadImage('https://s3.us-central-1.wasabisys.com/perenual/species_image/34_acer_palmatum_atrolineare/thumbnail/2560px-Acer_Palmatum_27Red_Pygmy27.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=d15d46582bffc5ac04e88baf0c0f1e084ac1a6429ae30d93ecabe8e81c5afd13', 'Ribbon-leaf Japanese Maple*')">تحميل الصورة</button>
+                    </div>
+                    <div class="details" id="details-34"></div>
+                </div><div class="card">
+                    <h3>Purple-Leaf Japanese Maple</h3>
+                    <div class="scientific">Acer palmatum 'Atropurpureum'</div>
+                    <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/35_acer_palmatum_atropurpureum/thumbnail/5656874577_617188e307_b.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=89d9f1cff15905b8ed015a8df978070917b5e40192e57d69f5da189b4a29dd84" alt="Purple-Leaf Japanese Maple">
+                    <div class="action-buttons">
+                        <button onclick="getDetails(35)">عرض المعلومات</button>
+                        <button onclick="getCare(35)">دليل العناية</button>
+                        <button class="download-btn" onclick="downloadImage('https://s3.us-central-1.wasabisys.com/perenual/species_image/35_acer_palmatum_atropurpureum/thumbnail/5656874577_617188e307_b.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=89d9f1cff15905b8ed015a8df978070917b5e40192e57d69f5da189b4a29dd84', 'Purple-Leaf Japanese Maple')">تحميل الصورة</button>
+                    </div>
+                    <div class="details" id="details-35"></div>
+                </div><div class="card">
+                    <h3>Aureum Japanese Maple*</h3>
+                    <div class="scientific">Acer palmatum 'Aureum'</div>
+                    <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/36_acer_palmatum_aureum/thumbnail/2560px-Acer_shirasawanum_22aureum22.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=79cb56fc19643923d2d73282cd27d89010ffb64ad518bb46df3476becf9cdc16" alt="Aureum Japanese Maple*">
+                    <div class="action-buttons">
+                        <button onclick="getDetails(36)">عرض المعلومات</button>
+                        <button onclick="getCare(36)">دليل العناية</button>
+                        <button class="download-btn" onclick="downloadImage('https://s3.us-central-1.wasabisys.com/perenual/species_image/36_acer_palmatum_aureum/thumbnail/2560px-Acer_shirasawanum_22aureum22.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=79cb56fc19643923d2d73282cd27d89010ffb64ad518bb46df3476becf9cdc16', 'Aureum Japanese Maple*')">تحميل الصورة</button>
+                    </div>
+                    <div class="details" id="details-36"></div>
+                </div><div class="card">
+                    <h3>Autumn Fire Japanese Maple</h3>
+                    <div class="scientific">Acer palmatum 'Autumn Fire'</div>
+                    <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/37_acer_palmatum_autumn_fire/thumbnail/2560px-Acer_palmatum_fall_foliage_01.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=3ba85e2229f3df55096c217b61022923778682386fa896bca5de5eadea50edee" alt="Autumn Fire Japanese Maple">
+                    <div class="action-buttons">
+                        <button onclick="getDetails(37)">عرض المعلومات</button>
+                        <button onclick="getCare(37)">دليل العناية</button>
+                        <button class="download-btn" onclick="downloadImage('https://s3.us-central-1.wasabisys.com/perenual/species_image/37_acer_palmatum_autumn_fire/thumbnail/2560px-Acer_palmatum_fall_foliage_01.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=3ba85e2229f3df55096c217b61022923778682386fa896bca5de5eadea50edee', 'Autumn Fire Japanese Maple')">تحميل الصورة</button>
+                    </div>
+                    <div class="details" id="details-37"></div>
+                </div><div class="card">
+                    <h3>Azuma Murasaki Japanese Maple</h3>
+                    <div class="scientific">Acer palmatum 'Azuma Murasaki'</div>
+                    <div style="width:220px;height:220px;background:#eee;border-radius:6px;margin-bottom:15px;display:flex;align-items:center;justify-content:center;color:#aaa;">الاسم الشائع</div>
+                    <div class="action-buttons">
+                        <button onclick="getDetails(38)">عرض المعلومات</button>
+                        <button onclick="getCare(38)">دليل العناية</button>
+                        <button class="download-btn" onclick="downloadImage('', 'Azuma Murasaki Japanese Maple')">تحميل الصورة</button>
+                    </div>
+                    <div class="details" id="details-38"></div>
+                </div><div class="card">
+                    <h3>Beni Kawa Coral Bark Japanese Maple*</h3>
+                    <div class="scientific">Acer palmatum 'Beni Kawa'</div>
+                    <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/39_acer_palmatum_beni_kawa/thumbnail/5695802528_935d72efaa_b.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=10a51262ea489cc9d89b5e8e1c6151ba0b8ae3fb5ee1bcb0bb6eb99447ff19a0" alt="Beni Kawa Coral Bark Japanese Maple*">
+                    <div class="action-buttons">
+                        <button onclick="getDetails(39)">عرض المعلومات</button>
+                        <button onclick="getCare(39)">دليل العناية</button>
+                        <button class="download-btn" onclick="downloadImage('https://s3.us-central-1.wasabisys.com/perenual/species_image/39_acer_palmatum_beni_kawa/thumbnail/5695802528_935d72efaa_b.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=10a51262ea489cc9d89b5e8e1c6151ba0b8ae3fb5ee1bcb0bb6eb99447ff19a0', 'Beni Kawa Coral Bark Japanese Maple*')">تحميل الصورة</button>
+                    </div>
+                    <div class="details" id="details-39"></div>
+                </div><div class="card">
+                    <h3>Beni Otake Japanese Maple</h3>
+                    <div class="scientific">Acer palmatum 'Beni Otake'</div>
+                    <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/40_acer_palmatum_beni_otake/thumbnail/Acer_palmatum_27Oshio_beni27_-_JPG2.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=19ff72e1f8ef7edd4b1fc756a36298592a40ddcb8b92b280efc0f4dd79739432" alt="Beni Otake Japanese Maple">
+                    <div class="action-buttons">
+                        <button onclick="getDetails(40)">عرض المعلومات</button>
+                        <button onclick="getCare(40)">دليل العناية</button>
+                        <button class="download-btn" onclick="downloadImage('https://s3.us-central-1.wasabisys.com/perenual/species_image/40_acer_palmatum_beni_otake/thumbnail/Acer_palmatum_27Oshio_beni27_-_JPG2.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=19ff72e1f8ef7edd4b1fc756a36298592a40ddcb8b92b280efc0f4dd79739432', 'Beni Otake Japanese Maple')">تحميل الصورة</button>
+                    </div>
+                    <div class="details" id="details-40"></div>
+                </div><div class="card">
+                    <h3>Beni Schichihenge Japanese Maple</h3>
+                    <div class="scientific">Acer palmatum 'Beni Schichihenge'</div>
+                    <div style="width:220px;height:220px;background:#eee;border-radius:6px;margin-bottom:15px;display:flex;align-items:center;justify-content:center;color:#aaa;">الاسم الشائع</div>
+                    <div class="action-buttons">
+                        <button onclick="getDetails(41)">عرض المعلومات</button>
+                        <button onclick="getCare(41)">دليل العناية</button>
+                        <button class="download-btn" onclick="downloadImage('', 'Beni Schichihenge Japanese Maple')">تحميل الصورة</button>
+                    </div>
+                    <div class="details" id="details-41"></div>
+                </div><div class="card">
+                    <h3>Beni Tsukasa Japanese Maple*</h3>
+                    <div class="scientific">Acer palmatum 'Beni Tsukasa'</div>
+                    <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/42_acer_palmatum_beni_tsukasa/thumbnail/pexels-photo-11870811.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=03b08d759fd45834c5174e14beb23cc8151c16008ca4f5bb847436fbf7f3162a" alt="Beni Tsukasa Japanese Maple*">
+                    <div class="action-buttons">
+                        <button onclick="getDetails(42)">عرض المعلومات</button>
+                        <button onclick="getCare(42)">دليل العناية</button>
+                        <button class="download-btn" onclick="downloadImage('https://s3.us-central-1.wasabisys.com/perenual/species_image/42_acer_palmatum_beni_tsukasa/thumbnail/pexels-photo-11870811.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=03b08d759fd45834c5174e14beb23cc8151c16008ca4f5bb847436fbf7f3162a', 'Beni Tsukasa Japanese Maple*')">تحميل الصورة</button>
+                    </div>
+                    <div class="details" id="details-42"></div>
+                </div><div class="card">
+                    <h3>Bloodgood Japanese Maple</h3>
+                    <div class="scientific">Acer palmatum 'Bloodgood'</div>
+                    <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/43_acer_palmatum_bloodgood/thumbnail/47923603032_5a96106ac6_b.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=894a2d728df7f84ac5115b5d7f2e38ba879661331f60a7fc749e8c1805cb4c01" alt="Bloodgood Japanese Maple">
+                    <div class="action-buttons">
+                        <button onclick="getDetails(43)">عرض المعلومات</button>
+                        <button onclick="getCare(43)">دليل العناية</button>
+                        <button class="download-btn" onclick="downloadImage('https://s3.us-central-1.wasabisys.com/perenual/species_image/43_acer_palmatum_bloodgood/thumbnail/47923603032_5a96106ac6_b.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=894a2d728df7f84ac5115b5d7f2e38ba879661331f60a7fc749e8c1805cb4c01', 'Bloodgood Japanese Maple')">تحميل الصورة</button>
+                    </div>
+                    <div class="details" id="details-43"></div>
+                </div><div class="card">
+                    <h3>Bonfire Japanese Maple</h3>
+                    <div class="scientific">Acer palmatum 'Bonfire'</div>
+                    <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/44_acer_palmatum_bonfire/thumbnail/sk3776-image-kwvuoab1.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=ef673a34b550bbeba7955524d9ac5f0bc5be27ecb499a0386029a1bd3381b46f" alt="Bonfire Japanese Maple">
+                    <div class="action-buttons">
+                        <button onclick="getDetails(44)">عرض المعلومات</button>
+                        <button onclick="getCare(44)">دليل العناية</button>
+                        <button class="download-btn" onclick="downloadImage('https://s3.us-central-1.wasabisys.com/perenual/species_image/44_acer_palmatum_bonfire/thumbnail/sk3776-image-kwvuoab1.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=ef673a34b550bbeba7955524d9ac5f0bc5be27ecb499a0386029a1bd3381b46f', 'Bonfire Japanese Maple')">تحميل الصورة</button>
+                    </div>
+                    <div class="details" id="details-44"></div>
+                </div><div class="card">
+                    <h3>Brandt's Dwarf Japanese Maple</h3>
+                    <div class="scientific">Acer palmatum 'Brandt's Dwarf'</div>
+                    <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/45_acer_palmatum_brandts_dwarf/thumbnail/Acer_palmatum_BotGartenMuenster_Faecherahorn_6691.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=6e16d5e46ac39f5bbc69921c40c7003163969a9da0bb6a5fa798aef490447e4e" alt="Brandt's Dwarf Japanese Maple">
+                    <div class="action-buttons">
+                        <button onclick="getDetails(45)">عرض المعلومات</button>
+                        <button onclick="getCare(45)">دليل العناية</button>
+                        <button class="download-btn" onclick="downloadImage('https://s3.us-central-1.wasabisys.com/perenual/species_image/45_acer_palmatum_brandts_dwarf/thumbnail/Acer_palmatum_BotGartenMuenster_Faecherahorn_6691.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=6e16d5e46ac39f5bbc69921c40c7003163969a9da0bb6a5fa798aef490447e4e', 'Brandt's Dwarf Japanese Maple')">تحميل الصورة</button>
+                    </div>
+                    <div class="details" id="details-45"></div>
+                </div><div class="card">
+                    <h3>Burgundy Lace Japanese Maple</h3>
+                    <div class="scientific">Acer palmatum 'Burgundy Lace'</div>
+                    <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/46_acer_palmatum_burgundy_lace/thumbnail/50082938346_1040fdd690_b.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=eb813239574b20a007f5da39578e614b868ac7b49cca2cd073359ec8e9183091" alt="Burgundy Lace Japanese Maple">
+                    <div class="action-buttons">
+                        <button onclick="getDetails(46)">عرض المعلومات</button>
+                        <button onclick="getCare(46)">دليل العناية</button>
+                        <button class="download-btn" onclick="downloadImage('https://s3.us-central-1.wasabisys.com/perenual/species_image/46_acer_palmatum_burgundy_lace/thumbnail/50082938346_1040fdd690_b.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=eb813239574b20a007f5da39578e614b868ac7b49cca2cd073359ec8e9183091', 'Burgundy Lace Japanese Maple')">تحميل الصورة</button>
+                    </div>
+                    <div class="details" id="details-46"></div>
+                </div><div class="card">
+                    <h3>Butterfly Variegated Japanese Maple</h3>
+                    <div class="scientific">Acer palmatum 'Butterfly'</div>
+                    <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/47_acer_palmatum_butterfly/thumbnail/20251027248_dc9cfd6f65_b.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=00fef4ee4f22db4310eb8db5130d6b3903f1566aa4a2177f76d4d3e1d31c7f91" alt="Butterfly Variegated Japanese Maple">
+                    <div class="action-buttons">
+                        <button onclick="getDetails(47)">عرض المعلومات</button>
+                        <button onclick="getCare(47)">دليل العناية</button>
+                        <button class="download-btn" onclick="downloadImage('https://s3.us-central-1.wasabisys.com/perenual/species_image/47_acer_palmatum_butterfly/thumbnail/20251027248_dc9cfd6f65_b.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=00fef4ee4f22db4310eb8db5130d6b3903f1566aa4a2177f76d4d3e1d31c7f91', 'Butterfly Variegated Japanese Maple')">تحميل الصورة</button>
+                    </div>
+                    <div class="details" id="details-47"></div>
+                </div><div class="card">
+                    <h3>Chantilly Lace Japanese Maple</h3>
+                    <div class="scientific">Acer palmatum 'Chantilly Lace'</div>
+                    <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/48_acer_palmatum_chantilly_lace/thumbnail/4714671587_8ecba52560_b.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=7ec2a36ad87615c849365c589b4382b27d0f42174370d53507529b7c1bd925ce" alt="Chantilly Lace Japanese Maple">
+                    <div class="action-buttons">
+                        <button onclick="getDetails(48)">عرض المعلومات</button>
+                        <button onclick="getCare(48)">دليل العناية</button>
+                        <button class="download-btn" onclick="downloadImage('https://s3.us-central-1.wasabisys.com/perenual/species_image/48_acer_palmatum_chantilly_lace/thumbnail/4714671587_8ecba52560_b.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=7ec2a36ad87615c849365c589b4382b27d0f42174370d53507529b7c1bd925ce', 'Chantilly Lace Japanese Maple')">تحميل الصورة</button>
+                    </div>
+                    <div class="details" id="details-48"></div>
+                </div><div class="card">
+                    <h3>Chishio Japanese Maple</h3>
+                    <div class="scientific">Acer palmatum 'Chishio'</div>
+                    <img src="https://s3.us-central-1.wasabisys.com/perenual/species_image/49_acer_palmatum_chishio/thumbnail/Acer_palmatum_Atropurpureum_JPG1fuA.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=df440860275f191e06a9b04ba6d07b7925b950d6206f6776a1bffdf5dcbad45d" alt="Chishio Japanese Maple">
+                    <div class="action-buttons">
+                        <button onclick="getDetails(49)">عرض المعلومات</button>
+                        <button onclick="getCare(49)">دليل العناية</button>
+                        <button class="download-btn" onclick="downloadImage('https://s3.us-central-1.wasabisys.com/perenual/species_image/49_acer_palmatum_chishio/thumbnail/Acer_palmatum_Atropurpureum_JPG1fuA.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0MPGHU7CIPXNPMVWMXUW%2F20260626%2Fus-central-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260626T202132Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=df440860275f191e06a9b04ba6d07b7925b950d6206f6776a1bffdf5dcbad45d', 'Chishio Japanese Maple')">تحميل الصورة</button>
+                    </div>
+                    <div class="details" id="details-49"></div>
+                </div></div>
 
     </div>
 
@@ -530,5 +829,6 @@
         };
     </script>
 
-</body>
-</html>
+
+
+</body></html>

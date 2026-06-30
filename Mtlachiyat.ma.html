@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mtlachiyat.ma | سوق البيع الفلاحي عبر واتساب</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+        body {
+            background-color: #f9f7f2;
+            color: #1e2a1a;
+        }
+        a {
+            text-decoration: none;
+        }
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ===== COLORS ===== */
+        :root {
+            --primary: #1e4d2b;
+            --primary-light: #2d6e3f;
+            --secondary: #c49a6c;
+            --accent: #e8b86d;
+            --whatsapp: #25D366;
+            --whatsapp-dark: #1fa858;
+            --bg-cream: #fcf9f2;
+            --text-dark: #1e2a1a;
+            --shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            --border-radius: 14px;
+        }
+
+        /* ===== TOP BAR ===== */
+        .top-bar {
+            background: var(--primary);
+            color: white;
+            padding: 10px 0;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .top-bar .container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            flex-wrap: wrap;
+        }
+        .top-bar .contact-info span {
+            margin-left: 25px;
+        }
+        .top-bar .contact-info i {
+            margin-left: 6px;
+            color: var(--accent);
+        }
+        .top-bar .auth-btns a {
+            color: white;
+            margin-right: 18px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+        .top-bar .auth-btns a:hover {
+            color: var(--accent);
+        }
+        .top-bar .auth-btns .btn-register {
+            background: var(--accent);
+            color: var(--primary);
+            padding: 4px 16px;
+            border-radius: 30px;
+            font-weight: 700;
+        }
+        .top-bar .auth-btns .btn-register:hover {
+            background: #f5d088;
+            color: #1a3d1a;
+        }
+
+        /* ===== MAIN HEADER ===== */
+        .main-header {
+            background: white;
+            padding: 18px 0;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+        .main-header .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .logo h1 {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--primary);
+        }
+        .logo h1 span {
+            color: var(--secondary);
+        }
+        .logo small {
+            font-size: 13px;
+            font-weight: 400;
+            color: #777;
+            display: block;
+            margin-top: -5px;
+        }
+        .search-box {
+            flex: 1;
+            max-width: 480px;
+            position: relative;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 14px 20px 14px 50px;
+            border: 2px solid #e6e1d6;
+            border-radius: 60px;
+            font-size: 16px;
+            background: var(--bg-cream);
+            transition: 0.3s;
+        }
+        .search-box input:focus {
+            border-color: var(--primary);
+            outline: none;
+            background: white;
+            box-shadow: 0 0 0 5px rgba(30, 77, 43, 0.1);
+        }
+        .search-box i {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9b8f7a;
+            font-size: 18px;
+        }
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+        .header-actions .sell-btn {
+            background: var(--whatsapp);
+            color: white;
+            padding: 12px 28px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 15px;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+        }
+        .header-actions .sell-btn:hover {
+            background: var(--whatsapp-dark);
+            transform: scale(1.03);
+        }
+        .header-actions .sell-btn i {
+            font-size: 18px;
+        }
+
+        /* ===== NAV CATEGORIES ===== */
+        .nav-categories {
+            background: white;
+            border-top: 1px solid #f0ebe3;
+            border-bottom: 1px solid #f0ebe3;
+            padding: 0;
+        }
+        .nav-categories .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .nav-categories ul {
+            display: flex;
+            list-style: none;
+            gap: 5px;
+            flex-wrap: wrap;
+            padding: 10px 0;
+        }
+        .nav-categories ul li a {
+            padding: 8px 18px;
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 15px;
+            border-radius: 40px;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .nav-categories ul li a:hover {
+            background: var(--bg-cream);
+            color: var(--primary);
+        }
+        .nav-categories ul li a i {
+            color: var(--secondary);
+        }
+        .nav-categories .scrap-link {
+            background: #ffe8d9;
+            color: #8b4a1b;
+            font-weight: 800;
+        }
+        .nav-categories .scrap-link i {
+            color: #b45f2e;
+        }
+        .nav-categories .wa-badge {
+            background: var(--whatsapp);
+            color: white !important;
+            padding: 6px 18px !important;
+            border-radius: 40px;
+        }
+        .nav-categories .wa-badge i {
+            color: white !important;
+        }
+
+        /* ===== HERO ===== */
+        .hero-slider {
+            margin: 25px 0 35px;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            position: relative;
+            box-shadow: var(--shadow);
+            background: linear-gradient(135deg, #1e4d2b 0%, #2d6e3f 100%);
+            min-height: 260px;
+            display: flex;
+            align-items: center;
+            padding: 40px;
+            color: white;
+        }
+        .hero-slider .hero-content {
+            max-width: 600px;
+        }
+        .hero-slider .hero-content h2 {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+        .hero-slider .hero-content h2 span {
+            color: var(--accent);
+        }
+        .hero-slider .hero-content p {
+            font-size: 18px;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+        .hero-slider .hero-content .btn-hero {
+            background: var(--whatsapp);
+            color: white;
+            padding: 14px 35px;
+            border-radius: 60px;
+            font-weight: 700;
+            display: inline-block;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.35);
+        }
+        .hero-slider .hero-content .btn-hero:hover {
+            background: var(--whatsapp-dark);
+            transform: translateY(-3px);
+        }
+        .hero-slider .hero-icons {
+            font-size: 120px;
+            opacity: 0.12;
+            position: absolute;
+            left: 30px;
+            bottom: 10px;
+        }
+        .hero-slider .hero-icons i {
+            margin: 0 10px;
+        }
+
+        /* ===== QUICK CATEGORIES ===== */
+        .quick-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin: 35px 0;
+        }
+        .quick-categories .cat-card {
+            background: white;
+            padding: 25px 10px;
+            text-align: center;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            transition: 0.3s;
+            border: 1px solid transparent;
+            cursor: default;
+        }
+        .quick-categories .cat-card:hover {
+            border-color: var(--secondary);
+            transform: translateY(-6px);
+        }
+        .quick-categories .cat-card i {
+            font-size: 40px;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        .quick-categories .cat-card h4 {
+            font-size: 16px;
+            color: var(--text-dark);
+        }
+        .quick-categories .cat-card span {
+            font-size: 13px;
+            color: #888;
+        }
+        .quick-categories .cat-card.scrap-card {
+            background: #fcf1e8;
+            border-color: #dba87a;
+        }
+        .quick-categories .cat-card.scrap-card i {
+            color: #a65827;
+        }
+        .quick-categories .cat-card.wa-card {
+            border-color: var(--whatsapp);
+            background: #f0faf2;
+        }
+        .quick-categories .cat-card.wa-card i {
+            color: var(--whatsapp);
+        }
+
+        /* ===== SECTION TITLE ===== */
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 40px 0 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .section-title h2 {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+        .section-title h2 i {
+            color: var(--secondary);
+            margin-left: 10px;
+        }
+        .section-title a {
+            color: var(--primary);
+            font-weight: 700;
+        }
+        .section-title a i {
+            margin-right: 6px;
+        }
+        .section-title .wa-sell-badge {
+            background: var(--whatsapp);
+            color: white;
+            padding: 8px 22px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* ===== PRODUCT GRID ===== */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 25px;
+        }
+        .product-card {
+            background: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: 0.3s;
+            position: relative;
+        }
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+        }
+        .product-card .card-img {
+            height: 200px;
+            background: #e4ddd2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 70px;
+            color: #8b7a64;
+            position: relative;
+            overflow: hidden;
+        }
+        .product-card .card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .product-card .card-img .badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 5px 16px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 13px;
+            color: white;
+            z-index: 2;
+        }
+        .badge.new {
+            background: #1e4d2b;
+        }
+        .badge.used {
+            background: #d48b3c;
+        }
+        .badge.scrap {
+            background: #9e4a1a;
+        }
+        .badge.sell {
+            background: var(--whatsapp);
+        }
+
+        .product-card .card-body {
+            padding: 18px;
+        }
+        .product-card .card-body h4 {
+            font-size: 18px;
+            margin-bottom: 6px;
+        }
+        .product-card .card-body .location {
+            font-size: 14px;
+            color: #888;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 8px;
+        }
+        .product-card .card-body .price {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--primary);
+        }
+        .product-card .card-body .price small {
+            font-size: 14px;
+            font-weight: 400;
+            color: #777;
+        }
+        .product-card .card-body .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            border-top: 1px solid #f0ebe3;
+            padding-top: 15px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .product-card .card-body .card-footer .seller {
+            font-size: 14px;
+            color: #555;
+        }
+        .product-card .card-body .card-footer .seller i {
+            color: var(--secondary);
+        }
+        .product-card .card-body .card-footer .whatsapp {
+            background: var(--whatsapp);
+            color: white;
+            padding: 6px 18px;
+            border-radius: 40px;
+            font-size: 14px;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 600;
+        }
+        .product-card .card-body .card-footer .whatsapp:hover {
+            background: var(--whatsapp-dark);
+            transform: scale(1.04);
+        }
+
+        /* ===== SCRAP SECTION ===== */
+        .scrap-section {
+            background: #f6ede4;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            margin: 40px 0;
+            border-right: 8px solid #b45f2e;
+        }
+        .scrap-section .section-title h2 {
+            color: #6b3a1a;
+        }
+        .scrap-section .section-title h2 i {
+            color: #b45f2e;
+        }
+
+        /* ===== SELLER CTA ===== */
+        .cta-section {
+            background: linear-gradient(135deg, #1e4d2b 0%, #0f2e1a 100%);
+            color: white;
+            padding: 50px 30px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            margin: 50px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .cta-section::after {
+            content: "\f232";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            font-size: 200px;
+            position: absolute;
+            left: -30px;
+            bottom: -60px;
+            opacity: 0.05;
+            color: white;
+        }
+        .cta-section h2 {
+            font-size: 32px;
+            font-weight: 800;
+            position: relative;
+            z-index: 2;
+        }
+        .cta-section p {
+            font-size: 18px;
+            opacity: 0.9;
+            margin: 15px 0 25px;
+            position: relative;
+            z-index: 2;
+        }
+        .cta-section .btn-cta {
+            background: var(--whatsapp);
+            color: white;
+            padding: 16px 50px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 18px;
+            transition: 0.3s;
+            display: inline-block;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+        }
+        .cta-section .btn-cta:hover {
+            background: var(--whatsapp-dark);
+            transform: scale(1.04);
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: #1a2b14;
+            color: #cdd9c6;
+            padding: 50px 0 20px;
+            margin-top: 40px;
+        }
+        footer .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            margin-bottom: 35px;
+        }
+        footer .footer-grid h4 {
+            color: white;
+            font-size: 20px;
+            margin-bottom: 18px;
+        }
+        footer .footer-grid h4 span {
+            color: var(--accent);
+        }
+        footer .footer-grid p {
+            line-height: 1.8;
+            font-size: 15px;
+        }
+        footer .footer-grid ul {
+            list-style: none;
+        }
+        footer .footer-grid ul li {
+            margin-bottom: 12px;
+        }
+        footer .footer-grid ul li a {
+            color: #cdd9c6;
+            transition: 0.3s;
+        }
+        footer .footer-grid ul li a:hover {
+            color: var(--accent);
+            padding-right: 5px;
+        }
+        footer .footer-grid .social-links a {
+            display: inline-block;
+            background: #2e4a2a;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            margin-left: 10px;
+            transition: 0.3s;
+        }
+        footer .footer-grid .social-links a:hover {
+            background: var(--whatsapp);
+            color: white;
+        }
+        footer .copyright {
+            border-top: 1px solid #2e4a2a;
+            padding-top: 20px;
+            text-align: center;
+            font-size: 14px;
+        }
+        footer .copyright span {
+            color: var(--accent);
+        }
+        footer .whatsapp-footer {
+            display: inline-block;
+            background: var(--whatsapp);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 60px;
+            font-weight: 700;
+            margin-top: 12px;
+            transition: 0.3s;
+        }
+        footer .whatsapp-footer:hover {
+            background: var(--whatsapp-dark);
+            transform: scale(1.03);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 992px) {
+            .main-header .container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .search-box {
+                max-width: 100%;
+            }
+            .header-actions {
+                justify-content: center;
+            }
+            .hero-slider {
+                min-height: 200px;
+                padding: 25px;
+            }
+            .hero-slider .hero-content h2 {
+                font-size: 28px;
+            }
+            .hero-slider .hero-icons {
+                display: none;
+            }
+            .top-bar .container {
+                flex-direction: column;
+                text-align: center;
+                gap: 6px;
+            }
+            .top-bar .contact-info span {
+                margin: 0 8px;
+            }
+            .nav-categories ul {
+                justify-content: center;
+            }
+            .nav-categories ul li a {
+                padding: 6px 12px;
+                font-size: 13px;
+            }
+        }
+        @media (max-width: 600px) {
+            .products-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+            .product-card .card-img {
+                height: 140px;
+                font-size: 40px;
+            }
+            .section-title h2 {
+                font-size: 20px;
+            }
+            .quick-categories {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+            }
+            .quick-categories .cat-card {
+                padding: 15px 5px;
+            }
+            .quick-categories .cat-card i {
+                font-size: 28px;
+            }
+            .cta-section h2 {
+                font-size: 24px;
+            }
+            .header-actions .sell-btn {
+                padding: 10px 18px;
+                font-size: 13px;
+            }
+            .logo h1 {
+                font-size: 26px;
+            }
+            .hero-slider .hero-content h2 {
+                font-size: 22px;
+            }
+            .hero-slider .hero-content .btn-hero {
+                padding: 10px 22px;
+                font-size: 14px;
+            }
+            .cta-section .btn-cta {
+                padding: 12px 28px;
+                font-size: 16px;
+            }
+            .section-title .wa-sell-badge {
+                font-size: 12px;
+                padding: 5px 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== TOP BAR ===== -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="contact-info">
+                <span><i class="fas fa-phone-alt"></i> 05 22 33 44 55</span>
+                <span><i class="fas fa-envelope"></i> support@mtlachiyat.ma</span>
+                <span><i class="fas fa-map-marker-alt"></i> الدار البيضاء - المغرب</span>
+            </div>
+            <div class="auth-btns">
+                <a href="#"><i class="fas fa-user"></i> تسجيل الدخول</a>
+                <a href="#" class="btn-register"><i class="fas fa-user-plus"></i> عضو جديد</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MAIN HEADER ===== -->
+    <header class="main-header">
+        <div class="container">
+            <div class="logo">
+                <h1>Mtlachiyat<span>.ma</span></h1>
+                <small>سوق البيع الفلاحي 📦</small>
+            </div>
+            <div class="search-box">
+                <input type="text" placeholder="ابحث عن جرار، محراث، مضخة، متلاشيات...">
+                <i class="fas fa-search"></i>
+            </div>
+            <div class="header-actions">
+                <a href="#" class="sell-btn"><i class="fab fa-whatsapp"></i> أضف منتجك للبيع</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== NAV CATEGORIES ===== -->
+    <nav class="nav-categories">
+        <div class="container">
+            <ul>
+                <li><a href="#"><i class="fas fa-home"></i> الرئيسية</a></li>
+                <li><a href="#"><i class="fas fa-tractor"></i> جرارات</a></li>
+                <li><a href="#"><i class="fas fa-seedling"></i> محاريث</a></li>
+                <li><a href="#"><i class="fas fa-water"></i> مضخات وري</a></li>
+                <li><a href="#"><i class="fas fa-cogs"></i> قطع غيار</a></li>
+                <li><a href="#"><i class="fas fa-tools"></i> أدوات يدوية</a></li>
+                <li><a href="#" class="scrap-link"><i class="fas fa-recycle"></i> متلاشيات</a></li>
+                <li><a href="#" class="wa-badge"><i class="fab fa-whatsapp"></i> تواصل واتساب</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ===== HERO ===== -->
+    <section class="container">
+        <div class="hero-slider">
+            <div class="hero-content">
+                <h2>🛒 سوق <span>البيع المباشر</span> عبر واتساب</h2>
+                <p>اعرض معداتك الفلاحية للبيع وتواصل مع المشترين مباشرة عبر واتساب. بيع سريع، آمن، وبدون عمولة!</p>
+                <a href="#" class="btn-hero"><i class="fab fa-whatsapp"></i> اعرض منتجك الآن</a>
+            </div>
+            <div class="hero-icons">
+                <i class="fas fa-tractor"></i>
+                <i class="fab fa-whatsapp"></i>
+                <i class="fas fa-wheat"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== QUICK CATEGORIES ===== -->
+    <section class="container">
+        <div class="quick-categories">
+            <div class="cat-card">
+                <i class="fas fa-tractor"></i>
+                <h4>جرارات</h4>
+                <span>128 للبيع</span>
+            </div>
+            <div class="cat-card">
+                <i class="fas fa-seedling"></i>
+                <h4>معدات الحرث</h4>
+                <span>94 للبيع</span>
+            </div>
+            <div class="cat-card">
+                <i class="fas fa-water"></i>
+                <h4>الري والضخ</h4>
+                <span>73 للبيع</span>
+            </div>
+            <div class="cat-card scrap-card">
+                <i class="fas fa-recycle"></i>
+                <h4>متلاشيات</h4>
+                <span>42 للبيع</span>
+            </div>
+            <div class="cat-card">
+                <i class="fas fa-cogs"></i>
+                <h4>قطع غيار</h4>
+                <span>56 للبيع</span>
+            </div>
+            <div class="cat-card wa-card">
+                <i class="fab fa-whatsapp"></i>
+                <h4>تواصل فوري</h4>
+                <span>عبر واتساب</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== LATEST PRODUCTS ===== -->
+    <section class="container">
+        <div class="section-title">
+            <h2><i class="fas fa-tag"></i> أحدث المنتجات للبيع</h2>
+            <a href="#" class="wa-sell-badge"><i class="fab fa-whatsapp"></i> اعرض منتجك</a>
+        </div>
+        <div class="products-grid">
+
+            <!-- Card 1 -->
+            <div class="product-card">
+                <div class="card-img">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1j54QZXyL6AAkZ2TxPEvpPOfSZDAF8JGjrxmJYkLJWQ&s=10" alt="جرار فيراري">
+                    <span class="badge sell">للبيع</span>
+                </div>
+                <div class="card-body">
+                    <h4>جرار فيراري موديل 2024</h4>
+                    <div class="location"><i class="fas fa-map-pin"></i> سطات، المغرب</div>
+                    <div class="price">265,000 <small>درهم</small></div>
+                    <div class="card-footer">
+                        <span class="seller"><i class="fas fa-user"></i> محمد الفلاحي</span>
+                        <a href="#" class="whatsapp"><i class="fab fa-whatsapp"></i> تواصل</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="product-card">
+                <div class="card-img">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjCCcmzrUMV1T6bZYdYl9vl7Xxh4hTRZ-KG-KCelStOQ&s" alt="محراث قلاب">
+                    <span class="badge used">مستعمل</span>
+                </div>
+                <div class="card-body">
+                    <h4>محراث قلاب 3 أسطر</h4>
+                    <div class="location"><i class="fas fa-map-pin"></i> مراكش، المغرب</div>
+                    <div class="price">12,500 <small>درهم</small></div>
+                    <div class="card-footer">
+                        <span class="seller"><i class="fas fa-user"></i> أحمد التاجر</span>
+                        <a href="#" class="whatsapp"><i class="fab fa-whatsapp"></i> تواصل</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3 (Scrap) -->
+            <div class="product-card" style="border: 2px solid #b45f2e;">
+                <div class="card-img">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLFVZwvA8nlfZwF7Mqw358HItLGqkN4aPcIlut3gUv3sOmVgT6JilYuc8Z&s=10" alt="أقراص حرث">
+                    <span class="badge scrap">متلاشيات</span>
+                </div>
+                <div class="card-body">
+                    <h4>أقراص حرث مستعملة (كمية)</h4>
+                    <div class="location"><i class="fas fa-map-pin"></i> القنيطرة، المغرب</div>
+                    <div class="price">850 <small>درهم / للقطعة</small></div>
+                    <div class="card-footer">
+                        <span class="seller"><i class="fas fa-user"></i> مصطفى الخردة</span>
+                        <a href="#" class="whatsapp"><i class="fab fa-whatsapp"></i> تواصل</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="product-card">
+                <div class="card-img">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1j54QZXyL6AAkZ2TxPEvpPOfSZDAF8JGjrxmJYkLJWQ&s=10" alt="مضخة ماء">
+                    <span class="badge used">مستعمل</span>
+                </div>
+                <div class="card-body">
+                    <h4>مضخة ماء 5 حصان</h4>
+                    <div class="location"><i class="fas fa-map-pin"></i> فاس، المغرب</div>
+                    <div class="price">3,200 <small>درهم</small></div>
+                    <div class="card-footer">
+                        <span class="seller"><i class="fas fa-user"></i> عبد الرحيم</span>
+                        <a href="#" class="whatsapp"><i class="fab fa-whatsapp"></i> تواصل</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SCRAP SECTION ===== -->
+    <section class="container scrap-section">
+        <div class="section-title">
+            <h2><i class="fas fa-recycle"></i> 🔥 متلاشيات بأسعار لا تعوض</h2>
+            <a href="#" style="color:#6b3a1a;">جميع المتلاشيات <i class="fas fa-arrow-left"></i></a>
+        </div>
+        <div class="products-grid">
+            <div class="product-card" style="background:#fcf3eb;">
+                <div class="card-img" style="background:#e3d2c1;">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLFVZwvA8nlfZwF7Mqw358HItLGqkN4aPcIlut3gUv3sOmVgT6JilYuc8Z&s=10" alt="علبة تروس">
+                    <span class="badge scrap">متلاشيات</span>
+                </div>
+                <div class="card-body">
+                    <h4>علبة تروس جرار قديم</h4>
+                    <div class="location"><i class="fas fa-map-pin"></i> بني ملال</div>
+                    <div class="price">2,200 <small>درهم</small></div>
+                    <div class="card-footer">
+                        <span class="seller"><i class="fas fa-user"></i> علي</span>
+                        <a href="#" class="whatsapp"><i class="fab fa-whatsapp"></i> تواصل</a>
+                    </div>
+                </div>
+            </div>
+            <div class="product-card" style="background:#fcf3eb;">
+                <div class="card-img" style="background:#d9cbbc;">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjCCcmzrUMV1T6bZYdYl9vl7Xxh4hTRZ-KG-KCelStOQ&s" alt="إطار حديدي">
+                    <span class="badge scrap">متلاشيات</span>
+                </div>
+                <div class="card-body">
+                    <h4>إطار حديدي لمحراث</h4>
+                    <div class="location"><i class="fas fa-map-pin"></i> خريبكة</div>
+                    <div class="price">650 <small>درهم</small></div>
+                    <div class="card-footer">
+                        <span class="seller"><i class="fas fa-user"></i> حسن</span>
+                        <a href="#" class="whatsapp"><i class="fab fa-whatsapp"></i> تواصل</a>
+                    </div>
+                </div>
+            </div>
+            <div class="product-card" style="background:#fcf3eb;">
+                <div class="card-img" style="background:#dacfc4;">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1j54QZXyL6AAkZ2TxPEvpPOfSZDAF8JGjrxmJYkLJWQ&s=10" alt="موتور ديزل">
+                    <span class="badge scrap">متلاشيات</span>
+                </div>
+                <div class="card-body">
+                    <h4>موتور ديزل مستعمل (للتصليح)</h4>
+                    <div class="location"><i class="fas fa-map-pin"></i> الجديدة</div>
+                    <div class="price">4,800 <small>درهم</small></div>
+                    <div class="card-footer">
+                        <span class="seller"><i class="fas fa-user"></i> كريم</span>
+                        <a href="#" class="whatsapp"><i class="fab fa-whatsapp"></i> تواصل</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SELLER CTA ===== -->
+    <section class="container">
+        <div class="cta-section">
+            <h2>📦 هل تريد بيع معداتك أو متلاشياتك؟</h2>
+            <p>انشر إعلانك مجاناً الآن، وتواصل مع آلاف المشترين مباشرة عبر <strong>واتساب</strong>.</p>
+            <a href="#" class="btn-cta"><i class="fab fa-whatsapp"></i> أضف منتجك للبيع الآن</a>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h4>Mtlachiyat<span>.ma</span></h4>
+                    <p>أول منصة مغربية متخصصة في <strong>بيع</strong> معدات وأدوات المجال الفلاحي. كل التواصل عبر واتساب لضمان السرعة والثقة.</p>
+                    <div style="margin-top:15px;">
+                        <i class="fas fa-check-circle" style="color:var(--accent);"></i>  بيع مباشر بدون عمولة
+                        <br><i class="fas fa-check-circle" style="color:var(--accent);"></i>  تواصل فوري عبر واتساب
+                    </div>
+                    <a href="#" class="whatsapp-footer"><i class="fab fa-whatsapp"></i> تواصل معنا</a>
+                </div>
+                <div>
+                    <h4>روابط سريعة</h4>
+                    <ul>
+                        <li><a href="#"><i class="fas fa-chevron-left" style="font-size:10px;"></i> الرئيسية</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-left" style="font-size:10px;"></i> جميع الإعلانات</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-left" style="font-size:10px;"></i> المتلاشيات</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-left" style="font-size:10px;"></i> كيف تبيع؟</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-left" style="font-size:10px;"></i> سياسة الخصوصية</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>التواصل</h4>
+                    <ul>
+                        <li><i class="fas fa-phone-alt" style="color:var(--accent);"></i> 05 22 33 44 55</li>
+                        <li><i class="fas fa-envelope" style="color:var(--accent);"></i> support@mtlachiyat.ma</li>
+                        <li><i class="fas fa-map-marker-alt" style="color:var(--accent);"></i> الدار البيضاء، المغرب</li>
+                        <li><i class="fab fa-whatsapp" style="color:var(--whatsapp);"></i> 06 12 34 56 78</li>
+                    </ul>
+                    <div class="social-links" style="margin-top:15px;">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>© 2026 <span>Mtlachiyat.ma</span> - جميع الحقوق محفوظة. تصميم متخصص للبيع عبر واتساب.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== JAVASCRIPT ===== -->
+    <script>
+        // --- Search ---
+        document.querySelector('.search-box input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                alert('🔍 سيتم البحث عن: "' + this.value + '" في قائمة المنتجات للبيع.');
+            }
+        });
+
+        // --- Sell buttons (all) ---
+        document.querySelectorAll('.sell-btn, .btn-cta, .wa-sell-badge, .btn-hero').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                alert('📦 مرحباً بك في Mtlachiyat!\n' +
+                    'سيتم توجيهك لصفحة إضافة منتجك للبيع.\n' +
+                    '📱 سيتواصل معك المشترون مباشرة عبر واتساب.');
+            });
+        });
+
+        // --- WhatsApp contact buttons ---
+        document.querySelectorAll('.whatsapp, .whatsapp-footer, .wa-badge').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                alert('📱 سيتم فتح واتساب للتواصل مع البائع / الدعم مباشرة.');
+            });
+        });
+
+        // --- Quick category cards (click) ---
+        document.querySelectorAll('.cat-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const label = this.querySelector('h4')?.innerText || 'هذه الفئة';
+                alert('🔎 عرض جميع المنتجات في فئة: "' + label + '"');
+            });
+        });
+
+        // --- Product card click (WhatsApp) ---
+        document.querySelectorAll('.product-card .card-body .whatsapp').forEach(wa => {
+            wa.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        });
+
+        console.log('🌾 Mtlachiyat.ma | سوق البيع الفلاحي عبر واتساب');
+        console.log('📦 كل المنتجات معروضة للبيع — التواصل عبر واتساب');
+    </script>
+
+</body>
+</html>

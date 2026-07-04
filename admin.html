@@ -3,31 +3,34 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>عرض الرسائل - لحظي</title>
+    <title>لوحة تحكم الرسائل</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: system-ui, sans-serif; background: #f8fafc; padding: 2rem; }
-        .container { max-width: 700px; margin: 0 auto; }
-        h1 { font-size: 1.75rem; color: #0f172a; margin-bottom: 0.25rem; }
-        .sub { color: #64748b; margin-bottom: 1.5rem; font-size: 0.95rem; }
-        .sub span { background: #dbeafe; color: #1e40af; padding: 0.2rem 0.6rem; border-radius: 20px; font-weight: 600; }
-        #messagesList { display: flex; flex-direction: column; gap: 0.75rem; }
-        .msg { background: white; padding: 1rem 1.25rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-right: 4px solid #3b82f6; animation: fadeIn 0.3s ease; }
-        .msg .content { font-size: 1.05rem; color: #0f172a; }
-        .msg .time { font-size: 0.8rem; color: #94a3b8; margin-top: 0.3rem; }
-        .empty { color: #94a3b8; text-align: center; padding: 3rem 0; font-size: 1.1rem; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-        .badge { display: inline-block; background: #3b82f6; color: white; font-size: 0.7rem; padding: 0.15rem 0.6rem; border-radius: 20px; margin-right: 0.5rem; }
+        body { font-family: system-ui, sans-serif; background: #f0f4f8; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .card { background: white; padding: 2rem; border-radius: 16px; box-shadow: 0 8px 30px rgba(0,0,0,0.12); width: 100%; max-width: 500px; }
+        h1 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #1e293b; }
+        p { color: #64748b; margin-bottom: 1.5rem; font-size: 0.95rem; }
+        textarea { width: 100%; padding: 0.75rem; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 1rem; resize: vertical; min-height: 100px; transition: border-color 0.2s; }
+        textarea:focus { outline: none; border-color: #3b82f6; }
+        button { width: 100%; padding: 0.75rem; background: #3b82f6; color: white; border: none; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: background 0.2s; margin-top: 0.75rem; }
+        button:hover { background: #2563eb; }
+        button:disabled { opacity: 0.6; cursor: not-allowed; }
+        .status { margin-top: 1rem; padding: 0.75rem; border-radius: 8px; font-size: 0.9rem; display: none; }
+        .status.success { display: block; background: #dcfce7; color: #166534; }
+        .status.error { display: block; background: #fee2e2; color: #991b1b; }
+        .status.info { display: block; background: #dbeafe; color: #1e40af; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>📡 الرسائل اللحظية</h1>
-    <p class="sub">🟢 متصل مباشرة <span>تحديث فوري</span></p>
-    <div id="messagesList">
-        <div class="empty">⏳ جاري تحميل الرسائل...</div>
-    </div>
+<div class="card">
+    <h1>✏️ كتابة رسالة جديدة</h1>
+    <p>سيتم عرض الرسالة فورًا في الموقع الثاني بشكل لحظي.</p>
+
+    <textarea id="messageInput" placeholder="اكتب رسالتك هنا..."></textarea>
+    <button id="sendBtn">إرسال الرسالة</button>
+
+    <div id="status" class="status"></div>
 </div>
 
 <script type="module">
@@ -39,86 +42,53 @@
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    const container = document.getElementById('messagesList');
+    // -------------------- عناصر الصفحة --------------------
+    const input = document.getElementById('messageInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const statusDiv = document.getElementById('status');
 
-    // -------------------- عرض الرسائل --------------------
-    function renderMessages(messages) {
-        if (!messages || messages.length === 0) {
-            container.innerHTML = `<div class="empty">📭 لا توجد رسائل بعد. اكتب رسالة في لوحة التحكم!</div>`;
+    // -------------------- دالة إرسال الرسالة --------------------
+    async function sendMessage() {
+        const content = input.value.trim();
+        if (!content) {
+            showStatus('الرجاء كتابة رسالة قبل الإرسال.', 'error');
             return;
         }
 
-        container.innerHTML = messages.map(msg => `
-            <div class="msg">
-                <div class="content">${escapeHtml(msg.content)}</div>
-                <div class="time">${new Date(msg.created_at).toLocaleString('ar-EG')}</div>
-            </div>
-        `).join('');
-    }
+        sendBtn.disabled = true;
+        showStatus('جاري الإرسال...', 'info');
 
-    function escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-    }
+        try {
+            const { data, error } = await supabase
+                .from('messages')
+                .insert({ content });
 
-    // -------------------- تحميل الرسائل الحالية --------------------
-    async function loadMessages() {
-        const { data, error } = await supabase
-            .from('messages')
-            .select('*')
-            .order('created_at', { ascending: false });
+            if (error) throw error;
 
-        if (error) {
-            console.error('خطأ في التحميل:', error);
-            container.innerHTML = `<div class="empty">❌ حدث خطأ في تحميل الرسائل.</div>`;
-            return;
+            showStatus('✅ تم إرسال الرسالة بنجاح!', 'success');
+            input.value = '';
+        } catch (err) {
+            console.error(err);
+            showStatus('❌ حدث خطأ أثناء الإرسال: ' + err.message, 'error');
+        } finally {
+            sendBtn.disabled = false;
         }
-
-        renderMessages(data);
     }
 
-    // -------------------- الاشتراك اللحظي (Realtime) --------------------
-    function subscribeToMessages() {
-        const channel = supabase
-            .channel('messages-changes')
-            .on(
-                'postgres_changes',
-                {
-                    event: 'INSERT',
-                    schema: 'public',
-                    table: 'messages'
-                },
-                (payload) => {
-                    const newMsg = payload.new;
-                    const emptyMsg = container.querySelector('.empty');
-
-                    if (emptyMsg) {
-                        loadMessages();
-                        return;
-                    }
-
-                    const msgDiv = document.createElement('div');
-                    msgDiv.className = 'msg';
-                    msgDiv.innerHTML = `
-                        <div class="content">${escapeHtml(newMsg.content)}</div>
-                        <div class="time">${new Date(newMsg.created_at).toLocaleString('ar-EG')}</div>
-                    `;
-                    container.prepend(msgDiv);
-                }
-            )
-            .subscribe((status) => {
-                if (status === 'SUBSCRIBED') {
-                    console.log('✅ متصل بالتحديثات اللحظية');
-                }
-            });
-
-        return channel;
+    // -------------------- دالة عرض الحالة --------------------
+    function showStatus(msg, type) {
+        statusDiv.textContent = msg;
+        statusDiv.className = 'status ' + type;
     }
 
-    // -------------------- تشغيل التطبيق --------------------
-    await loadMessages();
-    subscribeToMessages();
+    // -------------------- ربط الزر --------------------
+    sendBtn.addEventListener('click', sendMessage);
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+            e.preventDefault();
+            sendMessage();
+        }
+    });
 </script>
 
 </body>

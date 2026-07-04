@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>لوحة تحكم الرسائل</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: system-ui, sans-serif; background: #f0f4f8; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .card { background: white; padding: 2rem; border-radius: 16px; box-shadow: 0 8px 30px rgba(0,0,0,0.12); width: 100%; max-width: 500px; }
+        h1 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #1e293b; }
+        p { color: #64748b; margin-bottom: 1.5rem; font-size: 0.95rem; }
+        textarea { width: 100%; padding: 0.75rem; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 1rem; resize: vertical; min-height: 100px; transition: border-color 0.2s; }
+        textarea:focus { outline: none; border-color: #3b82f6; }
+        button { width: 100%; padding: 0.75rem; background: #3b82f6; color: white; border: none; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: background 0.2s; margin-top: 0.75rem; }
+        button:hover { background: #2563eb; }
+        button:disabled { opacity: 0.6; cursor: not-allowed; }
+        .status { margin-top: 1rem; padding: 0.75rem; border-radius: 8px; font-size: 0.9rem; display: none; }
+        .status.success { display: block; background: #dcfce7; color: #166534; }
+        .status.error { display: block; background: #fee2e2; color: #991b1b; }
+        .status.info { display: block; background: #dbeafe; color: #1e40af; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h1>✏️ كتابة رسالة جديدة</h1>
+    <p>سيتم عرض الرسالة فورًا في الموقع الثاني بشكل لحظي.</p>
+
+    <textarea id="messageInput" placeholder="اكتب رسالتك هنا..."></textarea>
+    <button id="sendBtn">إرسال الرسالة</button>
+
+    <div id="status" class="status"></div>
+</div>
+
+<script type="module">
+    // -------------------- إعداد اتصال Supabase --------------------
+    const SUPABASE_URL = 'https://zpjuhprlcaigmczhqlye.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_PVQ61DBLGYjzaXy-XFrWpA_k_94iEv';
+
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // -------------------- عناصر الصفحة --------------------
+    const input = document.getElementById('messageInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const statusDiv = document.getElementById('status');
+
+    // -------------------- دالة إرسال الرسالة --------------------
+    async function sendMessage() {
+        const content = input.value.trim();
+        if (!content) {
+            showStatus('الرجاء كتابة رسالة قبل الإرسال.', 'error');
+            return;
+        }
+
+        sendBtn.disabled = true;
+        showStatus('جاري الإرسال...', 'info');
+
+        try {
+            const { data, error } = await supabase
+                .from('messages')
+                .insert({ content });
+
+            if (error) throw error;
+
+            showStatus('✅ تم إرسال الرسالة بنجاح!', 'success');
+            input.value = ''; // مسح الحقل
+        } catch (err) {
+            console.error(err);
+            showStatus('❌ حدث خطأ أثناء الإرسال: ' + err.message, 'error');
+        } finally {
+            sendBtn.disabled = false;
+        }
+    }
+
+    // -------------------- دالة عرض الحالة --------------------
+    function showStatus(msg, type) {
+        statusDiv.textContent = msg;
+        statusDiv.className = 'status ' + type;
+    }
+
+    // -------------------- ربط الزر --------------------
+    sendBtn.addEventListener('click', sendMessage);
+
+    // إرسال بالضغط على Ctrl+Enter
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+            e.preventDefault();
+            sendMessage();
+        }
+    });
+</script>
+
+</body>
+</html>

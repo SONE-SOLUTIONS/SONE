@@ -36,7 +36,8 @@
 <script type="module">
     // -------------------- إعداد اتصال Supabase --------------------
     const SUPABASE_URL = 'https://zpjuhprlcaigmczhqlye.supabase.co';
-    const SUPABASE_ANON_KEY = 'sb_publishable_PVQ61DBLGYjzaXy-XFrWpA_k_94iEv';
+    // ⚠️ هام: استبدل YOUR_ANON_KEY_HERE بالمفتاح العام (Anon Key) الذي يبدأ بـ eyJ...
+    const SUPABASE_ANON_KEY = 'YOUR_ANON_KEY_HERE';
 
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -65,7 +66,7 @@
             if (error) throw error;
 
             showStatus('✅ تم إرسال الرسالة بنجاح!', 'success');
-            input.value = ''; // مسح الحقل
+            input.value = '';
         } catch (err) {
             console.error(err);
             showStatus('❌ حدث خطأ أثناء الإرسال: ' + err.message, 'error');
@@ -82,8 +83,6 @@
 
     // -------------------- ربط الزر --------------------
     sendBtn.addEventListener('click', sendMessage);
-
-    // إرسال بالضغط على Ctrl+Enter
     input.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
             e.preventDefault();

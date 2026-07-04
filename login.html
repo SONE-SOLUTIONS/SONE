@@ -1,854 +1,539 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
+ <html lang="fr" dir="ltr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>المعدات الفلاحية | Agri Maroc Précis</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Se connecter - SONE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
-            font-family: 'Cairo', sans-serif;
-            background: linear-gradient(135deg, #0A1408 0%, #1A2A14 100%);
-            color: #fff;
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
             min-height: 100vh;
+            overflow: hidden;
+            background: #0A1408;
         }
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #1C2A16; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: #A8842A; border-radius: 10px; }
-        
-        .header {
+
+        /* ===== HERO SLIDER ===== */
+        .hero-slider {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            padding: 15px 5%;
-            background: rgba(10, 20, 8, 0.95);
-            backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(168, 132, 66, 0.3);
-            transition: all 0.3s ease;
-        }
-        .header.scrolled { padding: 10px 5%; background: rgba(10, 20, 8, 0.98); }
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            transition: transform 0.3s;
-        }
-        .logo:hover { transform: scale(1.02); }
-        .logo-icon {
-            width: 45px;
-            height: 45px;
-            background: linear-gradient(135deg, #A8842A, #D4A843);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            box-shadow: 0 0 20px rgba(168, 132, 66, 0.3);
-        }
-        .logo-text h1 {
-            font-size: 20px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #fff, #A8842A);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .logo-text p { font-size: 10px; color: #C1DCB5; }
-        .back-btn {
-            background: rgba(168, 132, 66, 0.15);
-            border: 1px solid rgba(168, 132, 66, 0.5);
-            padding: 10px 25px;
-            border-radius: 50px;
-            color: #A8842A;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .back-btn:hover {
-            background: #A8842A;
-            color: #000;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(168, 132, 66, 0.3);
-        }
-        
-        .container { max-width: 1400px; margin: 0 auto; padding: 130px 20px 60px; }
-        
-        .page-header {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-        .page-header .badge {
-            display: inline-block;
-            background: rgba(168, 132, 66, 0.2);
-            padding: 8px 20px;
-            border-radius: 50px;
-            font-size: 14px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(168, 132, 66, 0.5);
-        }
-        .page-header h1 {
-            font-size: 48px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #fff, #A8842A, #C1DCB5);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 15px;
-        }
-        .page-header p { color: #C1DCB5; font-size: 18px; max-width: 600px; margin: 0 auto; }
-        
-        .search-section {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 40px;
-        }
-        .search-box {
-            width: 100%;
-            max-width: 500px;
-            position: relative;
-        }
-        .search-box i {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #A8842A;
-        }
-        .search-box input {
-            width: 100%;
-            padding: 14px 45px 14px 20px;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(168, 132, 66, 0.3);
-            border-radius: 50px;
-            color: #fff;
-            font-family: 'Cairo', sans-serif;
-            font-size: 16px;
-        }
-        .search-box input:focus { outline: none; border-color: #A8842A; }
-        
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-            gap: 30px;
-        }
-        
-        .product-card {
-            background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(10px);
-            border-radius: 24px;
-            padding: 25px;
-            border: 1px solid rgba(168, 132, 66, 0.2);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
+            inset: 0;
+            z-index: 0;
             overflow: hidden;
         }
-        .product-card::before {
-            content: '';
+        .hero-slide {
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #A8842A, #D4A843);
-            transform: scaleX(0);
-            transition: transform 0.4s;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+            transform: scale(1.05);
         }
-        .product-card:hover::before { transform: scaleX(1); }
-        .product-card:hover {
-            transform: translateY(-8px);
-            border-color: #A8842A;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-        .product-image {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            border-radius: 16px;
-            margin-bottom: 15px;
-            background: rgba(0,0,0,0.3);
-        }
-        .product-icon { font-size: 50px; margin-bottom: 15px; text-align: center; }
-        .product-card h3 { font-size: 20px; font-weight: 700; text-align: center; margin-bottom: 10px; color: #A8842A; }
-        .product-desc { font-size: 13px; color: #C1DCB5; text-align: center; margin-bottom: 15px; line-height: 1.5; }
-        .info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin: 15px 0;
-            background: rgba(0,0,0,0.3);
-            border-radius: 16px;
-            padding: 12px;
-        }
-        .info-item {
-            font-size: 12px;
-        }
-        .info-item strong { color: #A8842A; }
-        .price-tag {
-            display: inline-block;
-            background: linear-gradient(135deg, #A8842A, #C49B3A);
-            padding: 6px 15px;
-            border-radius: 50px;
-            font-size: 14px;
-            font-weight: 700;
-            color: #000;
-        }
-        .product-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px dashed rgba(168, 132, 66, 0.2);
-        }
-        .brand { font-size: 12px; color: #A8842A; }
-        .tags { display: flex; gap: 8px; flex-wrap: wrap; }
-        .tag {
-            background: rgba(168, 132, 66, 0.15);
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 10px;
-        }
-        
-        .footer {
-            background: rgba(10, 20, 8, 0.95);
-            padding: 40px 5% 20px;
-            border-top: 1px solid rgba(168, 132, 66, 0.2);
-            text-align: center;
-            margin-top: 60px;
-        }
-        .footer p { color: #C1DCB5; font-size: 14px; }
-        
-        .no-results {
-            text-align: center;
-            padding: 60px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 24px;
-            color: #C1DCB5;
-            grid-column: 1/-1;
-        }
-        .no-results i { font-size: 60px; margin-bottom: 20px; color: #A8842A; }
-        
-        .admin-trigger {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 14px;
-            height: 14px;
-            background: #f44336;
-            border-radius: 50%;
-            z-index: 10002;
-            cursor: pointer;
-            opacity: 0.5;
-            transition: all 0.3s;
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-        .admin-trigger:hover {
+        .hero-slide.active {
             opacity: 1;
-            transform: scale(1.3);
-            box-shadow: 0 0 10px #f44336;
+            transform: scale(1);
+            z-index: 2;
         }
-        
-        .password-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
+        .hero-slide img {
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 15000;
-            justify-content: center;
-            align-items: center;
+            object-fit: cover;
         }
-        .password-modal.show { display: flex; }
-        .password-content {
-            background: #1C2A16;
-            border-radius: 20px;
-            padding: 30px;
-            width: 90%;
-            max-width: 350px;
-            text-align: center;
-            border: 2px solid #A8842A;
+        .hero-slide .overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(10, 20, 8, 0.75) 0%, rgba(10, 20, 8, 0.55) 40%, rgba(10, 20, 8, 0.85) 100%);
         }
-        .password-content input {
-            width: 100%;
-            padding: 12px;
-            margin: 15px 0;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid #A8842A;
-            border-radius: 10px;
-            color: white;
-            font-family: 'Cairo', sans-serif;
-            text-align: center;
-        }
-        
-        .admin-panel {
-            display: none;
+
+        /* ===== SLIDER DOTS ===== */
+        .slider-dots {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 20000;
-            justify-content: center;
-            align-items: center;
-        }
-        .admin-panel.show { display: flex; }
-        .admin-content {
-            background: #1C2A16;
-            border-radius: 20px;
-            width: 95%;
-            max-width: 550px;
-            max-height: 90vh;
-            overflow-y: auto;
-            padding: 25px;
-            border: 2px solid #A8842A;
-        }
-        .admin-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(168,132,66,0.3);
-        }
-        .admin-header h3 { color: #A8842A; font-size: 20px; }
-        .close-admin {
-            background: #f44336;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 50px;
-            color: white;
-            cursor: pointer;
-        }
-        .admin-form-group {
-            margin-bottom: 15px;
-        }
-        .admin-form-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: #C1DCB5;
-            font-size: 13px;
-            font-weight: 500;
-        }
-        .admin-form-group input, .admin-form-group select, .admin-form-group textarea {
-            width: 100%;
-            padding: 10px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(168,132,66,0.3);
-            border-radius: 8px;
-            color: #fff;
-            font-family: 'Cairo', sans-serif;
-        }
-        .admin-form-group textarea { resize: vertical; }
-        .image-preview {
-            margin-top: 10px;
-            text-align: center;
-            display: none;
-        }
-        .image-preview img {
-            max-width: 100%;
-            max-height: 100px;
-            border-radius: 8px;
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, #A8842A, #C49B3A);
-            color: #000;
-            border: none;
-            padding: 10px;
-            border-radius: 50px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 10px;
-        }
-        .products-list {
-            margin-top: 20px;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-        .product-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 10px;
-            margin-bottom: 8px;
-        }
-        .product-item-actions button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            margin: 0 5px;
-            font-size: 14px;
-        }
-        .edit-product { color: #2196f3; }
-        .delete-product { color: #f44336; }
-        
-        .toast {
-            position: fixed;
-            bottom: 25px;
+            bottom: 2rem;
             left: 50%;
             transform: translateX(-50%);
-            background: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 50px;
-            z-index: 3000;
-            display: none;
-            font-size: 13px;
+            z-index: 5;
+            display: flex;
+            gap: 0.6rem;
         }
-        
-        @media (max-width: 768px) {
-            .page-header h1 { font-size: 32px; }
-            .products-grid { grid-template-columns: 1fr; }
-            .info-grid { grid-template-columns: 1fr; }
+        .slider-dots button {
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, 0.25);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            padding: 0;
+        }
+        .slider-dots button.active {
+            background: #D4A843;
+            width: 1.8rem;
+            border-radius: 20px;
+            box-shadow: 0 0 25px rgba(212, 168, 67, 0.4);
+        }
+
+        /* ===== GLASS CARD ===== */
+        .glass-card {
+            backdrop-filter: blur(20px);
+            background: rgba(10, 20, 8, 0.75);
+            border: 1px solid rgba(212, 168, 67, 0.2);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+            position: relative;
+            z-index: 10;
+        }
+        .glass-card:hover {
+            border-color: rgba(212, 168, 67, 0.35);
+            box-shadow: 0 40px 100px rgba(212, 168, 67, 0.08);
+        }
+
+        /* ===== LOGO ===== */
+        .logo-img {
+            width: 85px;
+            height: 85px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid rgba(212, 168, 67, 0.3);
+            box-shadow: 0 0 40px rgba(212, 168, 67, 0.15);
+            transition: all 0.4s ease;
+        }
+        .logo-img:hover {
+            transform: scale(1.06) rotate(-2deg);
+            box-shadow: 0 0 60px rgba(212, 168, 67, 0.3);
+        }
+
+        /* ===== GOLD TEXT ===== */
+        .gold-text {
+            background: linear-gradient(135deg, #A8842A, #D4A843, #C49B3A);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ===== INPUT FIELDS ===== */
+        .input-field {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(212, 168, 67, 0.15);
+            transition: all 0.3s ease;
+            color: #fff;
+            font-size: 0.95rem;
+        }
+        .input-field:focus {
+            border-color: #D4A843;
+            box-shadow: 0 0 0 4px rgba(212, 168, 67, 0.12);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        .input-field::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn-login {
+            background: linear-gradient(135deg, #A8842A, #D4A843, #C49B3A);
+            color: #0A1408;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            letter-spacing: 0.02em;
+        }
+        .btn-login:hover {
+            transform: scale(1.02);
+            box-shadow: 0 12px 40px rgba(212, 168, 67, 0.35);
+            color: #0A1408;
+        }
+        .btn-google {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            transition: all 0.3s ease;
+        }
+        .btn-google:hover {
+            transform: scale(1.02);
+            background: #ffffff;
+            color: #1a1a1a;
+            border-color: #ffffff;
+        }
+
+        /* ===== TOAST ===== */
+        .error-toast {
+            animation: slideUp 0.4s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* ===== DECORATIVE GLOW ===== */
+        .glow-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            pointer-events: none;
+            z-index: 1;
+        }
+        .glow-orb-1 {
+            width: 400px;
+            height: 400px;
+            background: rgba(212, 168, 67, 0.06);
+            top: -10%;
+            right: -10%;
+        }
+        .glow-orb-2 {
+            width: 300px;
+            height: 300px;
+            background: rgba(76, 175, 80, 0.05);
+            bottom: -5%;
+            left: -5%;
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0A1408; }
+        ::-webkit-scrollbar-thumb { background: #D4A843; border-radius: 10px; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 480px) {
+            .logo-img { width: 65px; height: 65px; }
+            .glass-card { padding: 0; }
+        }
+        @media (min-width: 768px) {
+            .glass-card { min-width: 420px; }
         }
     </style>
 </head>
 <body>
 
-    <header class="header" id="header">
-        <div class="header-content">
-            <a href="index.html" class="logo">
-                <div class="logo-icon"><i class="fas fa-leaf"></i></div>
-                <div class="logo-text">
-                    <h1>Agri Maroc Précis</h1>
-                    <p>المنصة المتكاملة للفلاحة الذكية</p>
-                </div>
-            </a>
-            <a href="index.html" class="back-btn"><i class="fas fa-arrow-right"></i> العودة للرئيسية</a>
+    <!-- ===== DECORATIVE GLOW ===== -->
+    <div class="glow-orb glow-orb-1"></div>
+    <div class="glow-orb glow-orb-2"></div>
+
+    <!-- ===== HERO SLIDER (FULL BACKGROUND) ===== -->
+    <div class="hero-slider" id="heroSlider">
+        <!-- Slide 1 -->
+        <div class="hero-slide active" data-index="0">
+            <img src="Rejoignez les agriculteurs qui ont choisi l'avenir vert avec SONE..webp" alt="SONE Agriculture" loading="lazy">
+            <div class="overlay"></div>
         </div>
-    </header>
-
-    <div class="container">
-        <div class="page-header" data-aos="fade-up">
-            <span class="badge"><i class="fas fa-industry"></i> جودة عالية</span>
-            <h1><i class="fas fa-tractor"></i> المعدات الفلاحية</h1>
-            <p>أحدث المعدات والجرارات الزراعية لتحسين الإنتاجية والكفاءة</p>
+        <!-- Slide 2 -->
+        <div class="hero-slide" data-index="1">
+            <img src="Surveillez vos cultures depuis votre téléphone, où que vous soyez..webp" alt="Surveillez vos cultures" loading="lazy">
+            <div class="overlay"></div>
         </div>
-
-        <div class="search-section" data-aos="fade-up" data-aos-delay="100">
-            <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="ابحث عن معدة...">
-            </div>
+        <!-- Slide 3 -->
+        <div class="hero-slide" data-index="2">
+            <img src="Moins d'eau, plus de rendement. La technologie au service de la terre..jpeg" alt="Moins d'eau, plus de rendement" loading="lazy">
+            <div class="overlay"></div>
         </div>
-
-        <div class="products-grid" id="productsGrid">
-            <!-- سيتم تعبئتها بواسطة JavaScript -->
+        <!-- Slide 4 -->
+        <div class="hero-slide" data-index="3">
+            <img src="Votre ferme mérite mieux que l'intuition — découvrez l'agriculture de précision..png" alt="Agriculture de précision" loading="lazy">
+            <div class="overlay"></div>
         </div>
-    </div>
-
-    <footer class="footer">
-        <p>© 2026 Agri Maroc Précis - جميع الحقوق محفوظة | المنصة المتكاملة للفلاحة الذكية</p>
-    </footer>
-
-    <div class="admin-trigger" onclick="showAdminPassword()"></div>
-
-    <div id="passwordModal" class="password-modal">
-        <div class="password-content">
-            <i class="fas fa-lock" style="font-size: 40px; color: #A8842A;"></i>
-            <h3 style="margin: 10px 0;">لوحة التحكم</h3>
-            <input type="password" id="adminPassword" placeholder="أدخل كلمة المرور" onkeypress="if(event.keyCode==13) checkAdminPassword()">
-            <div style="display: flex; gap: 10px;">
-                <button class="btn-primary" onclick="checkAdminPassword()" style="flex:1;">دخول</button>
-                <button class="btn-primary" onclick="closePasswordModal()" style="flex:1; background:#333;">إلغاء</button>
-            </div>
+        <!-- Slide 5 -->
+        <div class="hero-slide" data-index="4">
+            <img src="L'IA qui protège vos cultures avant même l'apparition des symptômes..jpg" alt="IA protection cultures" loading="lazy">
+            <div class="overlay"></div>
+        </div>
+        <!-- Slide 6 -->
+        <div class="hero-slide" data-index="5">
+            <img src="Chaque parcelle a une histoire. Nos capteurs vous aident à la lire..webp" alt="Chaque parcelle a une histoire" loading="lazy">
+            <div class="overlay"></div>
         </div>
     </div>
 
-    <div id="adminPanel" class="admin-panel">
-        <div class="admin-content">
-            <div class="admin-header">
-                <h3><i class="fas fa-cog"></i> لوحة التحكم - إدارة المعدات</h3>
-                <button class="close-admin" onclick="closeAdminPanel()">✖</button>
+    <!-- ===== SLIDER DOTS ===== -->
+    <div class="slider-dots" id="sliderDots">
+        <button class="active" data-slide="0" aria-label="Slide 1"></button>
+        <button data-slide="1" aria-label="Slide 2"></button>
+        <button data-slide="2" aria-label="Slide 3"></button>
+        <button data-slide="3" aria-label="Slide 4"></button>
+        <button data-slide="4" aria-label="Slide 5"></button>
+        <button data-slide="5" aria-label="Slide 6"></button>
+    </div>
+
+    <!-- ===== LOGIN CARD ===== -->
+    <div class="relative z-10 flex items-center justify-center min-h-screen p-4">
+        <div class="w-full max-w-md">
+
+            <div class="glass-card rounded-3xl overflow-hidden shadow-2xl transition-all duration-500">
+
+                <!-- Header with Logo -->
+                <div class="px-6 pt-8 pb-6 text-center border-b border-white/10">
+                    <div class="flex flex-col items-center">
+                        <!-- Logo -->
+                        <img src="SONELOGE.jpg" alt="SONE Logo" class="logo-img mb-3">
+
+                        <div class="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-[#A8842A]/20 to-[#D4A843]/10 rounded-2xl mb-2">
+                            <i class="fas fa-lock text-2xl text-[#D4A843]"></i>
+                        </div>
+                        <h1 class="text-2xl font-bold text-white tracking-tight">Bienvenue</h1>
+                        <p class="text-gray-400 text-sm mt-1">
+                            Connectez-vous à votre compte <span class="gold-text font-bold">SONE</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Form -->
+                <div class="p-6 space-y-5">
+                    <form id="loginForm" class="space-y-4">
+                        <div>
+                            <label class="block text-gray-300 text-sm font-medium mb-1.5">
+                                <i class="fas fa-envelope mr-1.5 text-[#D4A843]"></i> Adresse e-mail
+                            </label>
+                            <input type="email" id="email" required
+                                   class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-400 focus:border-[#D4A843] focus:outline-none focus:ring-2 focus:ring-[#D4A843]/20 transition input-field"
+                                   placeholder="exemple@email.com">
+                        </div>
+                        <div>
+                            <label class="block text-gray-300 text-sm font-medium mb-1.5">
+                                <i class="fas fa-key mr-1.5 text-[#D4A843]"></i> Mot de passe
+                            </label>
+                            <input type="password" id="password" required
+                                   class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-400 focus:border-[#D4A843] focus:outline-none focus:ring-2 focus:ring-[#D4A843]/20 transition input-field"
+                                   placeholder="••••••••">
+                        </div>
+                        <button type="submit" id="signInBtn"
+                                class="w-full btn-login text-white font-bold py-3.5 rounded-xl transition duration-200 flex items-center justify-center gap-2.5 shadow-lg text-base">
+                            <i class="fas fa-sign-in-alt"></i> Se connecter
+                        </button>
+                    </form>
+
+                    <!-- Divider -->
+                    <div class="relative my-4">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-white/10"></div>
+                        </div>
+                        <div class="relative flex justify-center text-xs">
+                            <span class="px-3 bg-[#0A1408]/80 text-gray-400 rounded-full backdrop-blur-sm">ou</span>
+                        </div>
+                    </div>
+
+                    <!-- Google Button -->
+                    <button id="googleSignInBtn"
+                            class="w-full btn-google text-white font-semibold py-3.5 rounded-xl transition duration-200 flex items-center justify-center gap-3 text-base">
+                        <i class="fab fa-google text-xl"></i>
+                        <span>Se connecter avec Google</span>
+                    </button>
+
+                    <!-- Secure badge -->
+                    <div class="text-center text-xs text-gray-500 pt-2 flex items-center justify-center gap-2">
+                        <i class="fas fa-shield-alt text-[#D4A843]"></i>
+                        <span>Connexion sécurisée et chiffrée</span>
+                    </div>
+
+                    <!-- Lien vers l'accueil -->
+                    <div class="text-center pt-1">
+                        <a href="index.html" class="text-xs text-gray-400 hover:text-[#D4A843] transition flex items-center justify-center gap-1.5">
+                            <i class="fas fa-arrow-left"></i> Retour à l'accueil
+                        </a>
+                    </div>
+                </div>
+
             </div>
-            
-            <div style="margin-bottom: 20px;">
-                <h4 style="color: #A8842A; margin-bottom: 10px;">➕ إضافة معدة جديدة</h4>
-                
-                <div class="admin-form-group">
-                    <label>اسم المعدة</label>
-                    <input type="text" id="productName" placeholder="مثال: جرار فيات 80 حصان">
-                </div>
-                
-                <div class="admin-form-group">
-                    <label>نوع المعدة</label>
-                    <select id="productType">
-                        <option value="جرار">🚜 جرار زراعي</option>
-                        <option value="مضخة">💧 مضخة مياه</option>
-                        <option value="محشة">🌾 محشة/حاصدة</option>
-                        <option value="رشاش">🧴 رشاش زراعي</option>
-                        <option value="محراث">⛏️ محراث</option>
-                        <option value="منشار">🌳 منشار تقليم</option>
-                        <option value="نظام ري">💦 نظام ري</option>
-                        <option value="أخرى">🔧 أخرى</option>
-                    </select>
-                </div>
-                
-                <div class="admin-form-group">
-                    <label>العلامة التجارية (الماركة)</label>
-                    <input type="text" id="productBrand" placeholder="مثال: Fiat, Massey Ferguson, Netafim">
-                </div>
-                
-                <div class="admin-form-group">
-                    <label>الأيقونة (إيموجي)</label>
-                    <input type="text" id="productIcon" placeholder="مثال: 🚜" value="🚜">
-                </div>
-                
-                <div class="admin-form-group">
-                    <label>الوصف</label>
-                    <textarea id="productDesc" rows="2" placeholder="وصف المعدة ومميزاتها..."></textarea>
-                </div>
-                
-                <div class="admin-form-group">
-                    <label>العملية التي تستخدم فيها</label>
-                    <textarea id="productUsage" rows="2" placeholder="مثال: حراثة الأرض، ري المحاصيل، رش المبيدات، حصاد المحاصيل..."></textarea>
-                </div>
-                
-                <div class="admin-form-group">
-                    <label>العلامات (كلمات مفتاحية)</label>
-                    <input type="text" id="productTags" placeholder="مثال: قوي، متين، اقتصادي، حديث">
-                </div>
-                
-                <div class="admin-form-group">
-                    <label>السعر</label>
-                    <input type="text" id="productPrice" placeholder="مثال: 185,000 درهم">
-                </div>
-                
-                <div class="admin-form-group">
-                    <label>صورة المعدة (اختياري)</label>
-                    <input type="file" id="productImage" accept="image/*">
-                    <div id="imagePreview" class="image-preview"></div>
-                </div>
-                
-                <button class="btn-primary" onclick="addProduct()"><i class="fas fa-plus"></i> إضافة معدة</button>
+
+            <!-- Toast Container -->
+            <div id="toastContainer" class="fixed bottom-5 left-5 right-5 md:left-auto md:right-5 md:w-96 z-50 flex flex-col gap-2 pointer-events-none">
+                <!-- Toasts will be injected here -->
             </div>
-            
-            <hr style="border-color: rgba(168,132,66,0.3); margin: 15px 0;">
-            
-            <h4 style="color: #A8842A; margin-bottom: 10px;">📋 المعدات الحالية</h4>
-            <div id="productsList" class="products-list"></div>
+
         </div>
     </div>
 
-    <div class="toast" id="toast"></div>
-
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- ===== SCRIPTS ===== -->
     <script>
-        // ========== إعدادات Supabase (تم تعويضها بمفاتيحك) ==========
-        const SUPABASE_URL = 'https://zpjuhprlcaigmczhqlye.supabase.co';
-        const SUPABASE_ANON_KEY = 'sb_publishable_PVQ61DBLGYjzaXy-XFrWpA_k_94iEvK';
-        const ADMIN_PASSWORD = 'admin@2005@1234';
+        // ============================================================
+        //   HERO SLIDER
+        // ============================================================
+        const slides = document.querySelectorAll('.hero-slide');
+        const dots = document.querySelectorAll('.slider-dots button');
+        let currentSlide = 0;
+        let slideInterval;
 
-        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        function goToSlide(index) {
+            if (index < 0) index = slides.length - 1;
+            if (index >= slides.length) index = 0;
+            slides.forEach((s, i) => {
+                s.classList.toggle('active', i === index);
+            });
+            dots.forEach((d, i) => {
+                d.classList.toggle('active', i === index);
+            });
+            currentSlide = index;
+            resetAutoPlay();
+        }
 
-        let products = [];
-        let editingProductId = null;
-        let currentImageData = null;
+        function resetAutoPlay() {
+            clearInterval(slideInterval);
+            slideInterval = setInterval(() => {
+                goToSlide(currentSlide + 1);
+            }, 5500);
+        }
 
-        // ===================== دوال Supabase =====================
-        async function fetchProducts() {
-            const { data, error } = await supabase
-                .from('equipment')
-                .select('*')
-                .order('created_at', { ascending: false });
+        dots.forEach((dot, i) => {
+            dot.addEventListener('click', () => goToSlide(i));
+        });
 
-            if (error) {
-                console.error('خطأ في جلب البيانات:', error);
-                showToast('❌ فشل في تحميل البيانات', 'error');
-                return [];
+        // Touch support for slider
+        let touchStartX = 0;
+        let touchEndX = 0;
+        const sliderContainer = document.getElementById('heroSlider');
+        sliderContainer.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+        sliderContainer.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            const diff = touchStartX - touchEndX;
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) goToSlide(currentSlide + 1);
+                else goToSlide(currentSlide - 1);
             }
-            return data || [];
-        }
+        }, { passive: true });
 
-        async function insertProduct(product) {
-            const { data, error } = await supabase
-                .from('equipment')
-                .insert([product])
-                .select();
+        // Keyboard support
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') goToSlide(currentSlide - 1);
+            if (e.key === 'ArrowRight') goToSlide(currentSlide + 1);
+        });
 
-            if (error) {
-                console.error('خطأ في الإضافة:', error);
-                showToast('❌ فشل في إضافة المعدة', 'error');
-                return null;
-            }
-            return data ? data[0] : null;
-        }
+        resetAutoPlay();
 
-        async function updateProduct(id, updates) {
-            const { data, error } = await supabase
-                .from('equipment')
-                .update(updates)
-                .eq('id', id)
-                .select();
+        // ============================================================
+        //   SUPABASE AUTH
+        // ============================================================
+        const SUPABASE_URL = "https://zpjuhprlcaigmczhqlye.supabase.co";
+        const SUPABASE_ANON_KEY = "sb_publishable_PVQ61DBLGYjzaXy-XFrWpA_k_94iEvK";
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-            if (error) {
-                console.error('خطأ في التحديث:', error);
-                showToast('❌ فشل في تحديث المعدة', 'error');
-                return null;
-            }
-            return data ? data[0] : null;
-        }
+        const REDIRECT_URL = "https://sone-solutions.github.io/SONE/service.html";
 
-        async function deleteProductById(id) {
-            const { error } = await supabase
-                .from('equipment')
-                .delete()
-                .eq('id', id);
-
-            if (error) {
-                console.error('خطأ في الحذف:', error);
-                showToast('❌ فشل في حذف المعدة', 'error');
-                return false;
-            }
-            return true;
-        }
-
-        // ===================== دوال العرض =====================
-        async function loadProducts() {
-            products = await fetchProducts();
-            displayProducts();
-            updateProductsList();
-        }
-
-        function displayProducts() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = products.filter(p =>
-                p.name.toLowerCase().includes(searchTerm) ||
-                (p.brand && p.brand.toLowerCase().includes(searchTerm)) ||
-                (p.tags && p.tags.toLowerCase().includes(searchTerm))
-            );
-
-            const grid = document.getElementById('productsGrid');
-
-            if (filtered.length === 0) {
-                grid.innerHTML = `<div class="no-results"><i class="fas fa-search"></i><h3>لا توجد نتائج</h3><p>لم نجد أي معدة تطابق بحثك</p></div>`;
-                return;
-            }
-
-            grid.innerHTML = filtered.map(p => `
-                <div class="product-card" data-aos="fade-up">
-                    ${p.image_data ? `<img src="${p.image_data}" class="product-image" alt="${p.name}">` : `<div class="product-icon">${p.icon || '🔧'}</div>`}
-                    <h3>${p.name}</h3>
-                    <div class="product-desc">${p.description || ''}</div>
-                    
-                    <div class="info-grid">
-                        <div class="info-item"><strong>🔧 نوع المعدة:</strong><br>${p.type || 'غير محدد'}</div>
-                        <div class="info-item"><strong>🏭 الماركة:</strong><br>${p.brand || 'غير محدد'}</div>
-                        <div class="info-item"><strong>⚙️ تستخدم في:</strong><br>${p.usage || 'غير محدد'}</div>
-                        <div class="info-item"><strong>🏷️ العلامات:</strong><br>${p.tags || 'غير محدد'}</div>
-                    </div>
-                    
-                    <div style="text-align: center;">
-                        <span class="price-tag">💰 ${p.price || 'غير محدد'}</span>
-                    </div>
-                    
-                    <div class="product-footer">
-                        <span class="brand"><i class="fas fa-copyright"></i> ${p.brand || 'غير محدد'}</span>
-                        <div class="tags">${(p.tags || '').split('،').map(t => `<span class="tag">${t.trim()}</span>`).join('')}</div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function updateProductsList() {
-            const container = document.getElementById('productsList');
+        // ============================================================
+        //   TOAST SYSTEM
+        // ============================================================
+        function showToast(message, type = 'error') {
+            const container = document.getElementById('toastContainer');
             if (!container) return;
 
-            container.innerHTML = products.map(p => `
-                <div class="product-item">
-                    <div><strong>${p.name}</strong><br><span style="font-size:11px;">${p.price || 'لا يوجد سعر'} | ${p.type || 'نوع غير محدد'}</span></div>
-                    <div class="product-item-actions">
-                        <button class="edit-product" onclick="editProduct(${p.id})"><i class="fas fa-edit"></i></button>
-                        <button class="delete-product" onclick="deleteProduct(${p.id})"><i class="fas fa-trash"></i></button>
-                    </div>
-                </div>
-            `).join('');
+            const toast = document.createElement('div');
+            toast.className = `glass-card rounded-xl p-4 flex items-start gap-3 shadow-xl error-toast border-l-4 pointer-events-auto transition-all duration-300 ${
+                type === 'error' ? 'border-red-500 bg-red-900/40' : 'border-green-500 bg-green-900/40'
+            }`;
+            const icon = type === 'error'
+                ? '<i class="fas fa-exclamation-circle text-red-400 text-lg"></i>'
+                : '<i class="fas fa-check-circle text-green-400 text-lg"></i>';
+            toast.innerHTML = `
+                <div class="flex-shrink-0">${icon}</div>
+                <div class="flex-1 text-sm text-white">${message}</div>
+                <button class="text-gray-300 hover:text-white transition ml-2"><i class="fas fa-times"></i></button>
+            `;
+            container.appendChild(toast);
+
+            const closeBtn = toast.querySelector('button');
+            closeBtn.addEventListener('click', () => toast.remove());
+            setTimeout(() => { if (toast.parentNode) toast.remove(); }, 5000);
         }
 
-        // ===================== دوال الإدارة =====================
-        async function addProduct() {
-            const name = document.getElementById('productName').value.trim();
-            const type = document.getElementById('productType').value;
-            const brand = document.getElementById('productBrand').value.trim();
-            const icon = document.getElementById('productIcon').value.trim() || '🔧';
-            const description = document.getElementById('productDesc').value.trim();
-            const usage = document.getElementById('productUsage').value.trim();
-            const tags = document.getElementById('productTags').value.trim();
-            const price = document.getElementById('productPrice').value.trim();
+        // ============================================================
+        //   AUTH FUNCTIONS
+        // ============================================================
+        async function signInWithEmail(email, password) {
+            const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+            if (error) {
+                showToast(error.message || "Échec de la connexion", 'error');
+                return false;
+            }
+            if (data?.user) {
+                showToast(`Bienvenue ${data.user.email}! Connexion réussie ✅`, 'success');
+                setTimeout(() => {
+                    window.location.href = REDIRECT_URL;
+                }, 1500);
+                return true;
+            }
+            return false;
+        }
 
-            if (!name) {
-                showToast('الرجاء إدخال اسم المعدة', 'error');
+        async function signInWithGoogle() {
+            try {
+                const { error } = await supabaseClient.auth.signInWithOAuth({
+                    provider: 'google',
+                    options: {
+                        redirectTo: REDIRECT_URL,
+                        queryParams: {
+                            access_type: 'offline',
+                            prompt: 'consent',
+                        }
+                    }
+                });
+                if (error) {
+                    if (error.message.includes("redirect_uri_mismatch")) {
+                        showToast("Erreur: Veuillez ajouter l'URL de redirection dans Google Cloud Console", 'error');
+                    } else {
+                        showToast("Échec de la connexion Google: " + error.message, 'error');
+                    }
+                }
+            } catch (err) {
+                showToast("Une erreur inattendue s'est produite", 'error');
+            }
+        }
+
+        async function checkCurrentSession() {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (session) {
+                window.location.href = REDIRECT_URL;
+            }
+        }
+
+        // ============================================================
+        //   EVENT LISTENERS
+        // ============================================================
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            if (!email || !password) {
+                showToast("Veuillez saisir votre e-mail et mot de passe", 'error');
                 return;
             }
+            const btn = document.getElementById('signInBtn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connexion...';
+            btn.disabled = true;
+            await signInWithEmail(email, password);
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        });
 
-            const productData = {
-                id: Date.now(),
-                name,
-                type,
-                brand: brand || 'غير محدد',
-                icon,
-                description: description || '',
-                usage: usage || 'غير محدد',
-                tags: tags || '',
-                price: price || 'غير محدد',
-                image_data: currentImageData || null
-            };
+        document.getElementById('googleSignInBtn').addEventListener('click', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('googleSignInBtn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Redirection vers Google...';
+            btn.disabled = true;
+            await signInWithGoogle();
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fab fa-google text-xl"></i> <span>Se connecter avec Google</span>';
+                btn.disabled = false;
+            }, 3000);
+        });
 
-            if (editingProductId) {
-                const { id, ...updates } = productData;
-                const result = await updateProduct(editingProductId, updates);
-                if (result) {
-                    const index = products.findIndex(p => p.id === editingProductId);
-                    if (index !== -1) products[index] = result;
-                    showToast('✅ تم تعديل المعدة بنجاح', 'success');
-                    editingProductId = null;
-                }
-            } else {
-                const result = await insertProduct(productData);
-                if (result) {
-                    products.unshift(result);
-                    showToast('✅ تم إضافة المعدة بنجاح', 'success');
-                }
-            }
-
-            clearAdminForm();
-            await loadProducts();
-        }
-
-        function editProduct(id) {
-            const product = products.find(p => p.id === id);
-            if (!product) return;
-
-            editingProductId = id;
-            document.getElementById('productName').value = product.name;
-            document.getElementById('productType').value = product.type || 'جرار';
-            document.getElementById('productBrand').value = product.brand || '';
-            document.getElementById('productIcon').value = product.icon || '🔧';
-            document.getElementById('productDesc').value = product.description || '';
-            document.getElementById('productUsage').value = product.usage || '';
-            document.getElementById('productTags').value = product.tags || '';
-            document.getElementById('productPrice').value = product.price || '';
-
-            if (product.image_data) {
-                currentImageData = product.image_data;
-                const preview = document.getElementById('imagePreview');
-                preview.innerHTML = `<img src="${product.image_data}"><button onclick="clearImage()" style="background:#f44336; border:none; padding:3px 10px; border-radius:50px; margin-top:5px;">إزالة</button>`;
-                preview.style.display = 'block';
-            } else {
-                clearImage();
-            }
-
-            document.querySelector('.admin-header h3').innerHTML = '<i class="fas fa-edit"></i> تعديل المعدة';
-            showToast('يمكنك الآن تعديل بيانات المعدة', 'info');
-        }
-
-        async function deleteProduct(id) {
-            if (!confirm('هل أنت متأكد من حذف هذه المعدة؟')) return;
-
-            const success = await deleteProductById(id);
-            if (success) {
-                products = products.filter(p => p.id !== id);
-                showToast('🗑️ تم حذف المعدة', 'success');
-                await loadProducts();
-            }
-        }
-
-        // ===================== دوال مساعدة =====================
-        function clearAdminForm() {
-            document.getElementById('productName').value = '';
-            document.getElementById('productType').value = 'جرار';
-            document.getElementById('productBrand').value = '';
-            document.getElementById('productIcon').value = '🚜';
-            document.getElementById('productDesc').value = '';
-            document.getElementById('productUsage').value = '';
-            document.getElementById('productTags').value = '';
-            document.getElementById('productPrice').value = '';
-            clearImage();
-            editingProductId = null;
-            document.querySelector('.admin-header h3').innerHTML = '<i class="fas fa-cog"></i> لوحة التحكم - إدارة المعدات';
-        }
-
-        function clearImage() {
-            currentImageData = null;
-            document.getElementById('imagePreview').innerHTML = '';
-            document.getElementById('imagePreview').style.display = 'none';
-            document.getElementById('productImage').value = '';
-        }
-
-        document.getElementById('productImage').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file && file.type.startsWith('image/')) {
-                const reader = new FileReader();
-                reader.onload = function(ev) {
-                    currentImageData = ev.target.result;
-                    const preview = document.getElementById('imagePreview');
-                    preview.innerHTML = `<img src="${currentImageData}"><button onclick="clearImage()" style="background:#f44336; border:none; padding:3px 10px; border-radius:50px; margin-top:5px;">إزالة</button>`;
-                    preview.style.display = 'block';
-                };
-                reader.readAsDataURL(file);
+        // ============================================================
+        //   AUTH STATE CHANGE
+        // ============================================================
+        supabaseClient.auth.onAuthStateChange((event, session) => {
+            if (event === 'SIGNED_IN' && session) {
+                showToast(`Connexion réussie! Redirection...`, 'success');
+                setTimeout(() => {
+                    window.location.href = REDIRECT_URL;
+                }, 1500);
             }
         });
 
-        // ===================== دوال التحكم =====================
-        function showAdminPassword() { document.getElementById('passwordModal').classList.add('show'); }
-        function closePasswordModal() { document.getElementById('passwordModal').classList.remove('show'); }
-
-        function checkAdminPassword() {
-            const pwd = document.getElementById('adminPassword').value;
-            if (pwd === ADMIN_PASSWORD) {
-                closePasswordModal();
-                document.getElementById('adminPanel').classList.add('show');
-                updateProductsList();
-                document.getElementById('adminPassword').value = '';
-            } else {
-                showToast('كلمة المرور غير صحيحة', 'error');
-            }
-        }
-
-        function closeAdminPanel() {
-            document.getElementById('adminPanel').classList.remove('show');
-            clearAdminForm();
-        }
-
-        document.getElementById('searchInput').addEventListener('input', displayProducts);
-
-        function showToast(msg, type) {
-            const toast = document.getElementById('toast');
-            toast.style.background = type === 'success' ? '#4CAF50' : (type === 'error' ? '#f44336' : '#2196f3');
-            toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : (type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle')}"></i> ${msg}`;
-            toast.style.display = 'block';
-            setTimeout(() => toast.style.display = 'none', 3000);
-        }
-
-        window.addEventListener('scroll', () => {
-            document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
-        });
-
-        AOS.init({ duration: 800, once: true });
-
-        loadProducts();
+        // ============================================================
+        //   INIT
+        // ============================================================
+        checkCurrentSession();
+        console.log("✅ Supabase connecté avec succès");
+        console.log("🔐 URL de redirection:", REDIRECT_URL);
     </script>
 
 </body>

@@ -7,478 +7,78 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Cairo', sans-serif;
-            background: linear-gradient(135deg, #0A1408 0%, #0F1E0C 50%, #1A2A14 100%);
-            color: #fff;
-            min-height: 100vh;
-        }
-
+        /* نفس الأنماط السابقة - احتفظ بها كما هي */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Cairo', sans-serif; background: linear-gradient(135deg, #0A1408 0%, #0F1E0C 50%, #1A2A14 100%); color: #fff; min-height: 100vh; }
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #1C2A16; }
         ::-webkit-scrollbar-thumb { background: #A8842A; border-radius: 10px; }
 
-        /* ========== شاشة التسجيل ========== */
-        .auth-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, #0A1408, #0F1E0C);
-            z-index: 2000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(10px);
-        }
+        .auth-screen { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, #0A1408, #0F1E0C); z-index: 2000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
+        .auth-card { background: rgba(255,255,255,0.05); backdrop-filter: blur(15px); border-radius: 48px; padding: 40px; width: 90%; max-width: 500px; border: 1px solid rgba(168,132,66,0.3); text-align: center; animation: fadeInUp 0.6s ease; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .auth-logo { width: 80px; height: 80px; background: linear-gradient(135deg, #A8842A, #D4A843); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 40px; }
+        .auth-card h2 { font-size: 28px; margin-bottom: 10px; background: linear-gradient(135deg, #fff, #A8842A); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .auth-card p { color: #C1DCB5; margin-bottom: 30px; font-size: 14px; }
+        .auth-input { width: 100%; padding: 15px 20px; margin-bottom: 15px; background: rgba(0,0,0,0.3); border: 1px solid rgba(168,132,66,0.3); border-radius: 60px; color: #fff; font-family: 'Cairo', sans-serif; font-size: 16px; transition: all 0.3s; }
+        .auth-input:focus { outline: none; border-color: #A8842A; box-shadow: 0 0 15px rgba(168,132,66,0.2); }
+        .room-input { background: rgba(0,0,0,0.5); direction: ltr; text-align: center; letter-spacing: 2px; font-weight: bold; }
+        .auth-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, #A8842A, #C49B3A); border: none; border-radius: 60px; color: #000; font-size: 18px; font-weight: 700; cursor: pointer; transition: all 0.3s; margin-top: 10px; }
+        .auth-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(168,132,66,0.3); }
+        .room-info-text { margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(168,132,66,0.2); font-size: 12px; color: #C1DCB5; }
 
-        .auth-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(15px);
-            border-radius: 48px;
-            padding: 40px;
-            width: 90%;
-            max-width: 500px;
-            border: 1px solid rgba(168, 132, 66, 0.3);
-            text-align: center;
-            animation: fadeInUp 0.6s ease;
-        }
+        .platform-container { display: none; height: 100vh; flex-direction: column; }
+        .main-header { background: rgba(10,20,8,0.95); backdrop-filter: blur(15px); padding: 12px 5%; border-bottom: 1px solid rgba(168,132,66,0.3); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .room-info-header { display: flex; align-items: center; gap: 10px; background: rgba(168,132,66,0.15); padding: 8px 20px; border-radius: 50px; }
+        .room-code { font-family: monospace; font-size: 16px; letter-spacing: 1px; color: #A8842A; font-weight: bold; }
+        .copy-btn { background: none; border: none; color: #A8842A; cursor: pointer; font-size: 16px; transition: all 0.3s; }
+        .copy-btn:hover { transform: scale(1.1); }
+        .user-badge { display: flex; align-items: center; gap: 15px; }
+        .user-avatar { width: 40px; height: 40px; background: linear-gradient(135deg, #A8842A, #D4A843); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px; }
+        .leave-btn { background: rgba(244,67,54,0.2); border: 1px solid #f44336; padding: 8px 18px; border-radius: 50px; color: #f44336; cursor: pointer; transition: all 0.3s; }
+        .leave-btn:hover { background: #f44336; color: #fff; }
 
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .main-content { display: flex; flex: 1; overflow: hidden; }
+        .chat-main { flex: 1; display: flex; flex-direction: column; background: rgba(0,0,0,0.2); }
+        .chat-header { padding: 20px 25px; border-bottom: 1px solid rgba(168,132,66,0.2); background: rgba(0,0,0,0.2); }
+        .chat-header h3 { font-size: 20px; color: #A8842A; }
+        .chat-header p { font-size: 13px; color: #C1DCB5; margin-top: 5px; }
+        .chat-messages { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+        .message { display: flex; flex-direction: column; max-width: 75%; animation: messageAppear 0.3s ease; }
+        @keyframes messageAppear { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .message.sent { align-self: flex-end; }
+        .message.received { align-self: flex-start; }
+        .message-sender { font-size: 11px; color: #A8842A; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+        .message-sender i { font-size: 12px; }
+        .message-text { background: rgba(168,132,66,0.15); padding: 10px 16px; border-radius: 20px; font-size: 14px; line-height: 1.5; word-break: break-word; }
+        .message.sent .message-text { background: linear-gradient(135deg, rgba(168,132,66,0.35), rgba(168,132,66,0.2)); border-bottom-left-radius: 4px; }
+        .message.received .message-text { background: rgba(255,255,255,0.05); border-bottom-right-radius: 4px; }
+        .message-time { font-size: 9px; color: #C1DCB5; margin-top: 4px; margin-right: 5px; }
 
-        .auth-logo {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #A8842A, #D4A843);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 40px;
-        }
+        .chat-input-area { display: flex; gap: 12px; padding: 20px; background: rgba(0,0,0,0.3); border-top: 1px solid rgba(168,132,66,0.2); }
+        .chat-input { flex: 1; padding: 14px 20px; background: rgba(0,0,0,0.3); border: 1px solid rgba(168,132,66,0.3); border-radius: 60px; color: #fff; font-family: 'Cairo', sans-serif; font-size: 15px; transition: all 0.3s; }
+        .chat-input:focus { outline: none; border-color: #A8842A; box-shadow: 0 0 10px rgba(168,132,66,0.2); }
+        .send-btn { width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, #A8842A, #C49B3A); border: none; cursor: pointer; font-size: 20px; color: #000; transition: all 0.3s; }
+        .send-btn:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(168,132,66,0.3); }
 
-        .auth-card h2 {
-            font-size: 28px;
-            margin-bottom: 10px;
-            background: linear-gradient(135deg, #fff, #A8842A);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        .participants-sidebar { width: 280px; background: rgba(0,0,0,0.3); backdrop-filter: blur(10px); border-right: 1px solid rgba(168,132,66,0.2); display: flex; flex-direction: column; }
+        .participants-header { padding: 20px; border-bottom: 1px solid rgba(168,132,66,0.2); display: flex; justify-content: space-between; align-items: center; }
+        .participants-header h4 { font-size: 16px; color: #A8842A; }
+        .participants-count { background: rgba(168,132,66,0.2); padding: 4px 10px; border-radius: 50px; font-size: 12px; }
+        .participants-list { flex: 1; padding: 15px; overflow-y: auto; }
+        .participant-item { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 16px; margin-bottom: 8px; transition: all 0.3s; background: rgba(255,255,255,0.02); }
+        .participant-item:hover { background: rgba(168,132,66,0.1); }
+        .participant-avatar { width: 40px; height: 40px; background: linear-gradient(135deg, #A8842A, #D4A843); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px; }
+        .participant-info { flex: 1; }
+        .participant-name { font-weight: 600; font-size: 14px; }
+        .participant-role { font-size: 11px; color: #A8842A; }
+        .participant-status { width: 8px; height: 8px; border-radius: 50%; background: #4CAF50; box-shadow: 0 0 5px #4CAF50; }
 
-        .auth-card p {
-            color: #C1DCB5;
-            margin-bottom: 30px;
-            font-size: 14px;
-        }
+        .toast { position: fixed; bottom: 30px; left: 30px; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); padding: 12px 20px; border-radius: 50px; border-right: 3px solid #A8842A; z-index: 1000; animation: slideIn 0.3s ease; font-size: 13px; }
+        @keyframes slideIn { from { transform: translateX(-100px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
-        .auth-input {
-            width: 100%;
-            padding: 15px 20px;
-            margin-bottom: 15px;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(168, 132, 66, 0.3);
-            border-radius: 60px;
-            color: #fff;
-            font-family: 'Cairo', sans-serif;
-            font-size: 16px;
-            transition: all 0.3s;
-        }
-
-        .auth-input:focus {
-            outline: none;
-            border-color: #A8842A;
-            box-shadow: 0 0 15px rgba(168, 132, 66, 0.2);
-        }
-
-        .room-input {
-            background: rgba(0, 0, 0, 0.5);
-            direction: ltr;
-            text-align: center;
-            letter-spacing: 2px;
-            font-weight: bold;
-        }
-
-        .auth-btn {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #A8842A, #C49B3A);
-            border: none;
-            border-radius: 60px;
-            color: #000;
-            font-size: 18px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 10px;
-        }
-
-        .auth-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(168, 132, 66, 0.3);
-        }
-
-        .room-info-text {
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px solid rgba(168, 132, 66, 0.2);
-            font-size: 12px;
-            color: #C1DCB5;
-        }
-
-        /* ========== المنصة الرئيسية ========== */
-        .platform-container {
-            display: none;
-            height: 100vh;
-            flex-direction: column;
-        }
-
-        /* الهيدر */
-        .main-header {
-            background: rgba(10, 20, 8, 0.95);
-            backdrop-filter: blur(15px);
-            padding: 12px 5%;
-            border-bottom: 1px solid rgba(168, 132, 66, 0.3);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .room-info-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(168, 132, 66, 0.15);
-            padding: 8px 20px;
-            border-radius: 50px;
-        }
-
-        .room-code {
-            font-family: monospace;
-            font-size: 16px;
-            letter-spacing: 1px;
-            color: #A8842A;
-            font-weight: bold;
-        }
-
-        .copy-btn {
-            background: none;
-            border: none;
-            color: #A8842A;
-            cursor: pointer;
-            font-size: 16px;
-            transition: all 0.3s;
-        }
-
-        .copy-btn:hover {
-            transform: scale(1.1);
-        }
-
-        .user-badge {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #A8842A, #D4A843);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 18px;
-        }
-
-        .leave-btn {
-            background: rgba(244, 67, 54, 0.2);
-            border: 1px solid #f44336;
-            padding: 8px 18px;
-            border-radius: 50px;
-            color: #f44336;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .leave-btn:hover {
-            background: #f44336;
-            color: #fff;
-        }
-
-        /* المحتوى الرئيسي */
-        .main-content {
-            display: flex;
-            flex: 1;
-            overflow: hidden;
-        }
-
-        /* ===== قسم الدردشة (الرئيسي) ===== */
-        .chat-main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            background: rgba(0, 0, 0, 0.2);
-        }
-
-        .chat-header {
-            padding: 20px 25px;
-            border-bottom: 1px solid rgba(168, 132, 66, 0.2);
-            background: rgba(0, 0, 0, 0.2);
-        }
-
-        .chat-header h3 {
-            font-size: 20px;
-            color: #A8842A;
-        }
-
-        .chat-header p {
-            font-size: 13px;
-            color: #C1DCB5;
-            margin-top: 5px;
-        }
-
-        .chat-messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .message {
-            display: flex;
-            flex-direction: column;
-            max-width: 75%;
-            animation: messageAppear 0.3s ease;
-        }
-
-        @keyframes messageAppear {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .message.sent {
-            align-self: flex-end;
-        }
-
-        .message.received {
-            align-self: flex-start;
-        }
-
-        .message-sender {
-            font-size: 11px;
-            color: #A8842A;
-            margin-bottom: 4px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .message-sender i {
-            font-size: 12px;
-        }
-
-        .message-text {
-            background: rgba(168, 132, 66, 0.15);
-            padding: 10px 16px;
-            border-radius: 20px;
-            font-size: 14px;
-            line-height: 1.5;
-            word-break: break-word;
-        }
-
-        .message.sent .message-text {
-            background: linear-gradient(135deg, rgba(168, 132, 66, 0.35), rgba(168, 132, 66, 0.2));
-            border-bottom-left-radius: 4px;
-        }
-
-        .message.received .message-text {
-            background: rgba(255, 255, 255, 0.05);
-            border-bottom-right-radius: 4px;
-        }
-
-        .message-time {
-            font-size: 9px;
-            color: #C1DCB5;
-            margin-top: 4px;
-            margin-right: 5px;
-        }
-
-        /* منطقة إدخال الرسالة */
-        .chat-input-area {
-            display: flex;
-            gap: 12px;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.3);
-            border-top: 1px solid rgba(168, 132, 66, 0.2);
-        }
-
-        .chat-input {
-            flex: 1;
-            padding: 14px 20px;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(168, 132, 66, 0.3);
-            border-radius: 60px;
-            color: #fff;
-            font-family: 'Cairo', sans-serif;
-            font-size: 15px;
-            transition: all 0.3s;
-        }
-
-        .chat-input:focus {
-            outline: none;
-            border-color: #A8842A;
-            box-shadow: 0 0 10px rgba(168, 132, 66, 0.2);
-        }
-
-        .send-btn {
-            width: 52px;
-            height: 52px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #A8842A, #C49B3A);
-            border: none;
-            cursor: pointer;
-            font-size: 20px;
-            color: #000;
-            transition: all 0.3s;
-        }
-
-        .send-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(168, 132, 66, 0.3);
-        }
-
-        /* ===== قائمة المشاركين (جانبية) ===== */
-        .participants-sidebar {
-            width: 280px;
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
-            border-right: 1px solid rgba(168, 132, 66, 0.2);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .participants-header {
-            padding: 20px;
-            border-bottom: 1px solid rgba(168, 132, 66, 0.2);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .participants-header h4 {
-            font-size: 16px;
-            color: #A8842A;
-        }
-
-        .participants-count {
-            background: rgba(168, 132, 66, 0.2);
-            padding: 4px 10px;
-            border-radius: 50px;
-            font-size: 12px;
-        }
-
-        .participants-list {
-            flex: 1;
-            padding: 15px;
-            overflow-y: auto;
-        }
-
-        .participant-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px;
-            border-radius: 16px;
-            margin-bottom: 8px;
-            transition: all 0.3s;
-            background: rgba(255, 255, 255, 0.02);
-        }
-
-        .participant-item:hover {
-            background: rgba(168, 132, 66, 0.1);
-        }
-
-        .participant-avatar {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #A8842A, #D4A843);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 16px;
-        }
-
-        .participant-info {
-            flex: 1;
-        }
-
-        .participant-name {
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .participant-role {
-            font-size: 11px;
-            color: #A8842A;
-        }
-
-        .participant-status {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #4CAF50;
-            box-shadow: 0 0 5px #4CAF50;
-        }
-
-        /* إشعار منبثق */
-        .toast {
-            position: fixed;
-            bottom: 30px;
-            left: 30px;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            padding: 12px 20px;
-            border-radius: 50px;
-            border-right: 3px solid #A8842A;
-            z-index: 1000;
-            animation: slideIn 0.3s ease;
-            font-size: 13px;
-        }
-
-        @keyframes slideIn {
-            from { transform: translateX(-100px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        @media (max-width: 768px) {
-            .participants-sidebar { width: 250px; }
-            .message { max-width: 85%; }
-        }
-
-        @media (max-width: 576px) {
-            .participants-sidebar { display: none; }
-            .chat-header { padding: 15px; }
-            .chat-messages { padding: 15px; }
-            .chat-input-area { padding: 15px; }
-        }
+        @media (max-width: 768px) { .participants-sidebar { width: 250px; } .message { max-width: 85%; } }
+        @media (max-width: 576px) { .participants-sidebar { display: none; } .chat-header { padding: 15px; } .chat-messages { padding: 15px; } .chat-input-area { padding: 15px; } }
     </style>
 </head>
 <body>
@@ -486,20 +86,14 @@
     <!-- شاشة التسجيل -->
     <div class="auth-screen" id="authScreen">
         <div class="auth-card">
-            <div class="auth-logo">
-                <i class="fas fa-leaf"></i>
-            </div>
+            <div class="auth-logo"><i class="fas fa-leaf"></i></div>
             <h2>🌾 AGRI NET</h2>
             <p>منصة التواصل الزراعي | دردشة جماعية ومشاركة الأفكار</p>
             <input type="text" class="auth-input" id="userName" placeholder="الاسم الكامل" autocomplete="off">
             <input type="text" class="auth-input" id="userRole" placeholder="المهنة (مزارع / مهندس / باحث)" autocomplete="off">
             <input type="text" class="auth-input room-input" id="roomIdInput" placeholder="🔑 رمز الغرفة (اتركه فارغاً لإنشاء غرفة جديدة)" autocomplete="off" dir="ltr">
-            <button class="auth-btn" onclick="joinOrCreateRoom()">
-                <i class="fas fa-sign-in-alt"></i> دخول إلى المنصة
-            </button>
-            <div class="room-info-text">
-                <i class="fas fa-info-circle"></i> يمكنك إنشاء غرفة جديدة أو الانضمام إلى غرفة موجودة عبر رمز موحد
-            </div>
+            <button class="auth-btn" onclick="joinOrCreateRoom()"><i class="fas fa-sign-in-alt"></i> دخول إلى المنصة</button>
+            <div class="room-info-text"><i class="fas fa-info-circle"></i> يمكنك إنشاء غرفة جديدة أو الانضمام إلى غرفة موجودة عبر رمز موحد</div>
         </div>
     </div>
 
@@ -509,9 +103,7 @@
             <div class="room-info-header">
                 <i class="fas fa-key"></i>
                 <span class="room-code" id="roomCodeDisplay">------</span>
-                <button class="copy-btn" onclick="copyRoomCode()" title="نسخ رمز الغرفة">
-                    <i class="fas fa-copy"></i>
-                </button>
+                <button class="copy-btn" onclick="copyRoomCode()" title="نسخ رمز الغرفة"><i class="fas fa-copy"></i></button>
             </div>
             <div class="user-badge">
                 <div class="user-avatar" id="userAvatar">A</div>
@@ -519,14 +111,11 @@
                     <div id="userNameDisplay" style="font-weight:600">أحمد</div>
                     <div id="userRoleDisplay" style="font-size:12px; color:#A8842A">مزارع</div>
                 </div>
-                <button class="leave-btn" onclick="leaveRoom()">
-                    <i class="fas fa-sign-out-alt"></i> مغادرة
-                </button>
+                <button class="leave-btn" onclick="leaveRoom()"><i class="fas fa-sign-out-alt"></i> مغادرة</button>
             </div>
         </div>
 
         <div class="main-content">
-            <!-- قسم الدردشة الرئيسي -->
             <div class="chat-main">
                 <div class="chat-header">
                     <h3><i class="fas fa-comments"></i> غرفة الدردشة الجماعية</h3>
@@ -534,47 +123,282 @@
                 </div>
                 <div class="chat-messages" id="chatMessages">
                     <div class="message received">
-                        <div class="message-sender">
-                            <i class="fas fa-robot"></i> AGRI NET
-                        </div>
+                        <div class="message-sender"><i class="fas fa-robot"></i> AGRI NET</div>
                         <div class="message-text">مرحباً بك في منصة AGRI NET! يمكنك الآن الدردشة مع جميع المشاركين في هذه الغرفة.</div>
                         <div class="message-time"></div>
                     </div>
                 </div>
                 <div class="chat-input-area">
                     <input type="text" class="chat-input" id="chatInput" placeholder="اكتب رسالتك..." onkeypress="if(event.key==='Enter') sendMessage()">
-                    <button class="send-btn" onclick="sendMessage()">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
+                    <button class="send-btn" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
                 </div>
             </div>
 
-            <!-- قائمة المشاركين -->
             <div class="participants-sidebar">
                 <div class="participants-header">
                     <h4><i class="fas fa-users"></i> المشاركون</h4>
-                    <span class="participants-count" id="participantsCount">1</span>
+                    <span class="participants-count" id="participantsCount">0</span>
                 </div>
-                <div class="participants-list" id="participantsList">
-                    <!-- سيتم تعبئتها عبر JavaScript -->
-                </div>
+                <div class="participants-list" id="participantsList"></div>
             </div>
         </div>
     </div>
 
-    <script>
-        // ========== المتغيرات ==========
-        let currentUser = {
-            id: null,
-            name: '',
-            role: '',
-            avatar: ''
-        };
-        let currentRoomId = null;
-        let messages = [];
+    <!-- ======  سكريبت Supabase ====== -->
+    <script type="module">
+        // ----- استيراد Supabase -----
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
-        // ========== إنشاء أو الانضمام للغرفة ==========
-        function joinOrCreateRoom() {
+        const SUPABASE_URL = 'https://zpjuhprlcaigmczhqlye.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_PVQ61DBLGYjzaXy-XFrWpA_k_94iEvK'; // المفتاح الذي طلبت وضعه
+
+        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // ----- متغيرات عامة -----
+        let currentUser = { id: null, name: '', role: '', avatar: '' };
+        let currentRoomId = null;
+        let messagesLoaded = false;
+
+        // ----- جعل الكائنات متاحة للوظائف العامة -----
+        window.supabase = supabase;
+        window.currentUser = currentUser;
+        window.currentRoomId = currentRoomId;
+
+        // ========== دوال مساعدة ==========
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function showToast(message, type = 'info') {
+            const old = document.querySelector('.toast');
+            if (old) old.remove();
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            const icon = type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️';
+            toast.innerHTML = `${icon} ${message}`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        function generateRoomId() {
+            const prefixes = ['AGRI', 'FARM', 'CROP', 'SOIL', 'SEED'];
+            const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
+            const numbers = Math.floor(Math.random() * 9000 + 1000);
+            return `${prefix}-${numbers}`;
+        }
+
+        function scrollToBottom() {
+            const container = document.getElementById('chatMessages');
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // ========== عرض الرسائل في الواجهة ==========
+        function displayMessage(message, isSent) {
+            const container = document.getElementById('chatMessages');
+            const div = document.createElement('div');
+            div.className = `message ${isSent ? 'sent' : 'received'}`;
+            div.dataset.messageId = message.id;
+            div.innerHTML = `
+                <div class="message-sender">
+                    ${!isSent ? `<i class="fas fa-user-circle"></i>` : ''}
+                    ${message.user_name} ${message.user_role ? `(${message.user_role})` : ''}
+                    ${isSent ? `<i class="fas fa-user-check" style="margin-right:auto;"></i>` : ''}
+                </div>
+                <div class="message-text">${escapeHtml(message.text)}</div>
+                <div class="message-time">${new Date(message.created_at).toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' })}</div>
+            `;
+            container.appendChild(div);
+            scrollToBottom();
+        }
+
+        function addSystemMessage(text) {
+            const container = document.getElementById('chatMessages');
+            const div = document.createElement('div');
+            div.className = 'message received';
+            div.innerHTML = `
+                <div class="message-sender"><i class="fas fa-robot"></i> النظام</div>
+                <div class="message-text" style="background: rgba(168,132,66,0.1); font-style:italic;">${escapeHtml(text)}</div>
+                <div class="message-time">${new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' })}</div>
+            `;
+            container.appendChild(div);
+            scrollToBottom();
+        }
+
+        // ========== تحميل الرسائل السابقة ==========
+        async function loadMessages(roomId) {
+            const { data, error } = await supabase
+                .from('messages')
+                .select('*')
+                .eq('room_id', roomId)
+                .order('created_at', { ascending: true });
+
+            if (error) {
+                console.error('خطأ في تحميل الرسائل:', error);
+                return;
+            }
+
+            // تفريغ الرسائل السابقة مع الاحتفاظ بالترحيب
+            const container = document.getElementById('chatMessages');
+            container.innerHTML = '';
+            // إضافة رسالة ترحيب
+            const welcome = document.createElement('div');
+            welcome.className = 'message received';
+            welcome.innerHTML = `
+                <div class="message-sender"><i class="fas fa-robot"></i> AGRI NET</div>
+                <div class="message-text">مرحباً بك في منصة AGRI NET! يمكنك الآن الدردشة مع جميع المشاركين في هذه الغرفة.</div>
+                <div class="message-time"></div>
+            `;
+            container.appendChild(welcome);
+
+            // عرض الرسائل المحملة
+            data.forEach(msg => {
+                const isSent = (msg.user_id === currentUser.id);
+                displayMessage(msg, isSent);
+            });
+            scrollToBottom();
+        }
+
+        // ========== الاشتراك في تحديثات الرسائل (Realtime) ==========
+        function subscribeToMessages(roomId) {
+            const channel = supabase
+                .channel(`messages-${roomId}`)
+                .on(
+                    'postgres_changes',
+                    {
+                        event: 'INSERT',
+                        schema: 'public',
+                        table: 'messages',
+                        filter: `room_id=eq.${roomId}`
+                    },
+                    (payload) => {
+                        const newMsg = payload.new;
+                        // تجاهل الرسائل التي أرسلها المستخدم الحالي (تم إضافتها محلياً)
+                        if (newMsg.user_id === currentUser.id) return;
+                        displayMessage(newMsg, false);
+                    }
+                )
+                .subscribe((status) => {
+                    if (status === 'SUBSCRIBED') console.log('✅ مشترك في تحديثات الرسائل');
+                });
+            return channel;
+        }
+
+        // ========== إرسال رسالة ==========
+        window.sendMessage = async function() {
+            const input = document.getElementById('chatInput');
+            const text = input.value.trim();
+            if (!text) return;
+
+            const message = {
+                room_id: currentRoomId,
+                user_id: currentUser.id,
+                user_name: currentUser.name,
+                user_role: currentUser.role,
+                text: text
+            };
+
+            // عرض فوري للمرسل
+            const tempMsg = { ...message, id: 'temp-' + Date.now(), created_at: new Date().toISOString() };
+            displayMessage(tempMsg, true);
+
+            input.value = '';
+
+            // حفظ في Supabase
+            const { error } = await supabase
+                .from('messages')
+                .insert(message);
+
+            if (error) {
+                console.error('خطأ في الإرسال:', error);
+                showToast('❌ فشل إرسال الرسالة', 'error');
+            }
+        };
+
+        // ========== إدارة المشاركين ==========
+        async function updateParticipantsList(roomId) {
+            // جلب المشاركين النشطين (آخر ظهور خلال 60 ثانية)
+            const cutoff = new Date(Date.now() - 60000).toISOString();
+            const { data, error } = await supabase
+                .from('room_participants')
+                .select('*')
+                .eq('room_id', roomId)
+                .gte('last_seen', cutoff);
+
+            if (error) {
+                console.error('خطأ في جلب المشاركين:', error);
+                return;
+            }
+
+            const container = document.getElementById('participantsList');
+            const countSpan = document.getElementById('participantsCount');
+            countSpan.textContent = data.length;
+
+            if (data.length === 0) {
+                container.innerHTML = `<div style="color:#C1DCB5; text-align:center; padding:20px;">لا يوجد مشاركون حالياً</div>`;
+                return;
+            }
+
+            container.innerHTML = data.map(user => `
+                <div class="participant-item" data-user-id="${user.user_id}">
+                    <div class="participant-avatar">${user.avatar || user.user_name.charAt(0).toUpperCase()}</div>
+                    <div class="participant-info">
+                        <div class="participant-name">${escapeHtml(user.user_name)}</div>
+                        <div class="participant-role">${escapeHtml(user.user_role || '')}</div>
+                    </div>
+                    <div class="participant-status"></div>
+                </div>
+            `).join('');
+        }
+
+        // ========== تحديث آخر ظهور للمستخدم ==========
+        async function updateLastSeen(userId, roomId) {
+            const { error } = await supabase
+                .from('room_participants')
+                .update({ last_seen: new Date().toISOString() })
+                .eq('user_id', userId)
+                .eq('room_id', roomId);
+
+            if (error) {
+                // إذا لم يوجد المستخدم، نقوم بإدراجه
+                await supabase
+                    .from('room_participants')
+                    .insert({
+                        room_id: roomId,
+                        user_id: currentUser.id,
+                        user_name: currentUser.name,
+                        user_role: currentUser.role,
+                        avatar: currentUser.avatar,
+                        last_seen: new Date().toISOString()
+                    });
+            }
+        }
+
+        // ========== الاشتراك في تحديثات المشاركين ==========
+        function subscribeToParticipants(roomId) {
+            const channel = supabase
+                .channel(`participants-${roomId}`)
+                .on(
+                    'postgres_changes',
+                    {
+                        event: '*',
+                        schema: 'public',
+                        table: 'room_participants',
+                        filter: `room_id=eq.${roomId}`
+                    },
+                    () => {
+                        updateParticipantsList(roomId);
+                    }
+                )
+                .subscribe((status) => {
+                    if (status === 'SUBSCRIBED') console.log('✅ مشترك في تحديثات المشاركين');
+                });
+            return channel;
+        }
+
+        // ========== الانضمام أو إنشاء الغرفة ==========
+        window.joinOrCreateRoom = async function() {
             const name = document.getElementById('userName').value.trim();
             const role = document.getElementById('userRole').value.trim();
             let roomId = document.getElementById('roomIdInput').value.trim();
@@ -584,7 +408,6 @@
                 return;
             }
 
-            // إنشاء رمز غرفة عشوائي إذا لم يتم إدخاله
             if (!roomId) {
                 roomId = generateRoomId();
                 document.getElementById('roomIdInput').value = roomId;
@@ -596,259 +419,67 @@
                 role: role,
                 avatar: name.charAt(0).toUpperCase()
             };
-
             currentRoomId = roomId;
 
-            // تحديث واجهة المستخدم
+            // تحديث الواجهة
             document.getElementById('userAvatar').innerText = currentUser.avatar;
             document.getElementById('userNameDisplay').innerText = currentUser.name;
             document.getElementById('userRoleDisplay').innerText = currentUser.role;
             document.getElementById('roomCodeDisplay').innerText = currentRoomId;
 
-            // تحميل رسائل الغرفة السابقة
-            loadRoomMessages();
-
-            // تحديث قائمة المشاركين
-            updateParticipantsList();
-
             // إخفاء شاشة التسجيل
             document.getElementById('authScreen').style.display = 'none';
             document.getElementById('platformContainer').style.display = 'flex';
 
-            // إضافة رسالة انضمام
-            addSystemMessage(`${currentUser.name} (${currentUser.role}) انضم إلى الغرفة`);
+            // إدراج المستخدم في قائمة المشاركين
+            await updateLastSeen(currentUser.id, currentRoomId);
 
-            // حفظ المستخدم في الغرفة
-            saveUserToRoom();
+            // تحميل الرسائل السابقة
+            await loadMessages(currentRoomId);
+
+            // الاشتراك في التحديثات
+            subscribeToMessages(currentRoomId);
+            subscribeToParticipants(currentRoomId);
+
+            // تحديث قائمة المشاركين كل 5 ثوانٍ (كحماية إضافية)
+            setInterval(() => {
+                if (currentRoomId) {
+                    updateLastSeen(currentUser.id, currentRoomId);
+                    updateParticipantsList(currentRoomId);
+                }
+            }, 5000);
 
             showToast(`مرحباً ${currentUser.name}! تم الدخول إلى الغرفة بنجاح`, 'success');
-        }
+        };
 
-        // توليد رمز غرفة عشوائي
-        function generateRoomId() {
-            const prefixes = ['AGRI', 'FARM', 'CROP', 'SOIL', 'SEED'];
-            const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
-            const numbers = Math.floor(Math.random() * 9000 + 1000);
-            return `${prefix}-${numbers}`;
-        }
-
-        // نسخ رمز الغرفة
-        function copyRoomCode() {
+        // ========== نسخ رمز الغرفة ==========
+        window.copyRoomCode = function() {
             navigator.clipboard.writeText(currentRoomId);
             showToast('تم نسخ رمز الغرفة: ' + currentRoomId, 'success');
-        }
-
-        // ========== إدارة الرسائل ==========
-        function sendMessage() {
-            const input = document.getElementById('chatInput');
-            const messageText = input.value.trim();
-            if (!messageText) return;
-
-            const message = {
-                id: Date.now(),
-                senderId: currentUser.id,
-                senderName: currentUser.name,
-                senderRole: currentUser.role,
-                text: messageText,
-                time: new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' }),
-                timestamp: Date.now()
-            };
-
-            messages.push(message);
-            saveMessages();
-            displayMessage(message, 'sent');
-            input.value = '';
-
-            // تمرير إلى أسفل
-            scrollToBottom();
-        }
-
-        function displayMessage(message, type) {
-            const container = document.getElementById('chatMessages');
-            const isSent = (type === 'sent') || (message.senderId === currentUser.id);
-            
-            const div = document.createElement('div');
-            div.className = `message ${isSent ? 'sent' : 'received'}`;
-            div.innerHTML = `
-                <div class="message-sender">
-                    ${!isSent ? `<i class="fas fa-user-circle"></i>` : ''}
-                    ${message.senderName} ${message.senderRole ? `(${message.senderRole})` : ''}
-                    ${isSent ? `<i class="fas fa-user-check" style="margin-right:auto;"></i>` : ''}
-                </div>
-                <div class="message-text">${escapeHtml(message.text)}</div>
-                <div class="message-time">${message.time || new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' })}</div>
-            `;
-            container.appendChild(div);
-        }
-
-        function addSystemMessage(text) {
-            const container = document.getElementById('chatMessages');
-            const div = document.createElement('div');
-            div.className = 'message received';
-            div.innerHTML = `
-                <div class="message-sender">
-                    <i class="fas fa-robot"></i> النظام
-                </div>
-                <div class="message-text" style="background: rgba(168,132,66,0.1); font-style:italic;">${escapeHtml(text)}</div>
-                <div class="message-time">${new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' })}</div>
-            `;
-            container.appendChild(div);
-            scrollToBottom();
-        }
-
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
-        function scrollToBottom() {
-            const container = document.getElementById('chatMessages');
-            container.scrollTop = container.scrollHeight;
-        }
-
-        // ========== حفظ واسترجاع الرسائل في localStorage ==========
-        function saveMessages() {
-            localStorage.setItem(`chat_${currentRoomId}`, JSON.stringify(messages));
-        }
-
-        function loadRoomMessages() {
-            const saved = localStorage.getItem(`chat_${currentRoomId}`);
-            if (saved) {
-                messages = JSON.parse(saved);
-            } else {
-                messages = [];
-            }
-            
-            // عرض جميع الرسائل
-            const container = document.getElementById('chatMessages');
-            container.innerHTML = '';
-            
-            if (messages.length === 0) {
-                const welcomeDiv = document.createElement('div');
-                welcomeDiv.className = 'message received';
-                welcomeDiv.innerHTML = `
-                    <div class="message-sender"><i class="fas fa-robot"></i> AGRI NET</div>
-                    <div class="message-text">مرحباً بك في منصة AGRI NET! يمكنك الآن الدردشة مع جميع المشاركين في هذه الغرفة.</div>
-                    <div class="message-time"></div>
-                `;
-                container.appendChild(welcomeDiv);
-            } else {
-                messages.forEach(msg => {
-                    displayMessage(msg, msg.senderId === currentUser.id ? 'sent' : 'received');
-                });
-            }
-            scrollToBottom();
-        }
-
-        // ========== إدارة المشاركين ==========
-        function saveUserToRoom() {
-            let users = JSON.parse(localStorage.getItem(`room_users_${currentRoomId}`)) || [];
-            // التحقق من عدم وجود المستخدم مسبقاً
-            if (!users.find(u => u.id === currentUser.id)) {
-                users.push({
-                    id: currentUser.id,
-                    name: currentUser.name,
-                    role: currentUser.role,
-                    avatar: currentUser.avatar,
-                    lastSeen: Date.now()
-                });
-                localStorage.setItem(`room_users_${currentRoomId}`, JSON.stringify(users));
-            }
-            updateParticipantsList();
-        }
-
-        function updateParticipantsList() {
-            let users = JSON.parse(localStorage.getItem(`room_users_${currentRoomId}`)) || [];
-            // تنظيف المستخدمين غير النشطين (آخر ظهور منذ أكثر من دقيقة)
-            const now = Date.now();
-            users = users.filter(u => (now - (u.lastSeen || 0)) < 60000);
-            
-            // تحديث آخر ظهور للمستخدم الحالي
-            const currentUserInList = users.find(u => u.id === currentUser.id);
-            if (currentUserInList) {
-                currentUserInList.lastSeen = now;
-            } else {
-                users.push({
-                    id: currentUser.id,
-                    name: currentUser.name,
-                    role: currentUser.role,
-                    avatar: currentUser.avatar,
-                    lastSeen: now
-                });
-            }
-            localStorage.setItem(`room_users_${currentRoomId}`, JSON.stringify(users));
-            
-            // عرض القائمة
-            const container = document.getElementById('participantsList');
-            const count = users.length;
-            document.getElementById('participantsCount').innerHTML = count;
-            
-            container.innerHTML = users.map(user => `
-                <div class="participant-item">
-                    <div class="participant-avatar">${user.avatar}</div>
-                    <div class="participant-info">
-                        <div class="participant-name">${escapeHtml(user.name)}</div>
-                        <div class="participant-role">${escapeHtml(user.role)}</div>
-                    </div>
-                    <div class="participant-status"></div>
-                </div>
-            `).join('');
-        }
+        };
 
         // ========== مغادرة الغرفة ==========
-        function leaveRoom() {
-            // إزالة المستخدم من قائمة المشاركين
-            let users = JSON.parse(localStorage.getItem(`room_users_${currentRoomId}`)) || [];
-            users = users.filter(u => u.id !== currentUser.id);
-            localStorage.setItem(`room_users_${currentRoomId}`, JSON.stringify(users));
-            
+        window.leaveRoom = async function() {
+            if (currentRoomId && currentUser.id) {
+                // حذف المستخدم من قائمة المشاركين
+                await supabase
+                    .from('room_participants')
+                    .delete()
+                    .eq('user_id', currentUser.id)
+                    .eq('room_id', currentRoomId);
+            }
+
             // إعادة تعيين الواجهة
             document.getElementById('authScreen').style.display = 'flex';
             document.getElementById('platformContainer').style.display = 'none';
-            
-            // تنظيف حقل الإدخال
             document.getElementById('userName').value = '';
             document.getElementById('userRole').value = '';
             document.getElementById('roomIdInput').value = '';
-            
             showToast('تم مغادرة الغرفة بنجاح', 'info');
-        }
+        };
 
-        // ========== الإشعارات ==========
-        function showToast(message, type = 'info') {
-            const existingToast = document.querySelector('.toast');
-            if (existingToast) existingToast.remove();
-            
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            const icon = type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️';
-            toast.innerHTML = `${icon} ${message}`;
-            document.body.appendChild(toast);
-            
-            setTimeout(() => {
-                toast.remove();
-            }, 3000);
-        }
-
-        // ========== تحديث دوري ==========
-        setInterval(() => {
-            if (currentRoomId && document.getElementById('platformContainer').style.display === 'flex') {
-                // تحديث قائمة المشاركين
-                updateParticipantsList();
-                // تحديث الرسائل (من مستخدمين آخرين)
-                const saved = localStorage.getItem(`chat_${currentRoomId}`);
-                if (saved) {
-                    const newMessages = JSON.parse(saved);
-                    if (newMessages.length !== messages.length) {
-                        messages = newMessages;
-                        loadRoomMessages();
-                    }
-                }
-                // تحديث آخر ظهور
-                saveUserToRoom();
-            }
-        }, 3000);
+        // ========== عند تحميل الصفحة، نعرض شاشة التسجيل ==========
+        document.getElementById('authScreen').style.display = 'flex';
     </script>
 </body>
 </html>

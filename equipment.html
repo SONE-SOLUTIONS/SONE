@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>المعدات الفلاحية | Agri Maroc Précis</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -244,7 +245,6 @@
         }
         .no-results i { font-size: 60px; margin-bottom: 20px; color: #A8842A; }
         
-        /* ===== نقطة التحكم الحمراء ===== */
         .admin-trigger {
             position: fixed;
             bottom: 20px;
@@ -265,7 +265,6 @@
             box-shadow: 0 0 10px #f44336;
         }
         
-        /* ===== نافذة كلمة المرور ===== */
         .password-modal {
             display: none;
             position: fixed;
@@ -300,7 +299,6 @@
             text-align: center;
         }
         
-        /* ===== لوحة التحكم ===== */
         .admin-panel {
             display: none;
             position: fixed;
@@ -456,17 +454,17 @@
             </div>
         </div>
 
-        <div class="products-grid" id="productsGrid"></div>
+        <div class="products-grid" id="productsGrid">
+            <!-- سيتم تعبئتها بواسطة JavaScript -->
+        </div>
     </div>
 
     <footer class="footer">
         <p>© 2026 Agri Maroc Précis - جميع الحقوق محفوظة | المنصة المتكاملة للفلاحة الذكية</p>
     </footer>
 
-    <!-- نقطة التحكم الحمراء -->
     <div class="admin-trigger" onclick="showAdminPassword()"></div>
 
-    <!-- نافذة كلمة المرور -->
     <div id="passwordModal" class="password-modal">
         <div class="password-content">
             <i class="fas fa-lock" style="font-size: 40px; color: #A8842A;"></i>
@@ -479,7 +477,6 @@
         </div>
     </div>
 
-    <!-- لوحة التحكم -->
     <div id="adminPanel" class="admin-panel">
         <div class="admin-content">
             <div class="admin-header">
@@ -559,63 +556,102 @@
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({ duration: 800, once: true });
-        
-        const ADMIN_PASSWORD = "admin@2005@1234";
+        // ========== إعدادات Supabase (تم تعويضها بمفاتيحك) ==========
+        const SUPABASE_URL = 'https://zpjuhprlcaigmczhqlye.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_PVQ61DBLGYjzaXy-XFrWpA_k_94iEvK';
+        const ADMIN_PASSWORD = 'admin@2005@1234';
+
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
         let products = [];
         let editingProductId = null;
         let currentImageData = null;
-        
-        // البيانات الافتراضية
-        const defaultProducts = [
-            { id: 1, name: "جرار فيات 80 حصان", type: "جرار", brand: "Fiat", icon: "🚜", desc: "جرار فلاحي بقوة 80 حصان، نظام تبريد متطور، دفع رباعي", usage: "حراثة الأرض، جر المعدات الزراعية، نقل المحاصيل", tags: "80 حصان، دفع رباعي، حديث", price: "185,000 درهم", imageData: null },
-            { id: 2, name: "جرار ماسي فيرغسون 165", type: "جرار", brand: "Massey Ferguson", icon: "🚜", desc: "جرار كلاسيكي قوي بقوة 65 حصان، اقتصادي في استهلاك الوقود", usage: "الحراثة، التسوية، جر المقطورات", tags: "65 حصان، اقتصادي، متين", price: "95,000 درهم", imageData: null },
-            { id: 3, name: "محشّة زراعية", type: "محشة", brand: "Kverneland", icon: "🌾", desc: "محشة أعلاف بقص عرض 2.2 متر، سهلة الاستخدام", usage: "جز وحش الأعلاف والحشائش", tags: "أعلاف، متينة، فعالة", price: "32,000 درهم", imageData: null },
-            { id: 4, name: "نظام ري بالتنقيط كامل", type: "نظام ري", brand: "Netafim", icon: "💧", desc: "نظام ري بالتنقيط لمساحة 1 هكتار، توفير المياه حتى 50%", usage: "ري المحاصيل الحقلية والبستانية", tags: "توفير مياه، حديث، للهكتار", price: "12,500 درهم", imageData: null },
-            { id: 5, name: "مضخة ماء زراعية", type: "مضخة", brand: "Grundfos", icon: "💦", desc: "مضخة غاطسة بقدرة 7.5 حصان، رفع مياه حتى 80 متر", usage: "سحب وضخ المياه من الآبار والأحواض", tags: "غاطسة، قوية، متينة", price: "8,500 درهم", imageData: null },
-            { id: 6, name: "رشاشة ظهرية", type: "رشاش", brand: "Solo", icon: "🧴", desc: "رشاشة ظهرية 16 لتر لمكافحة الآفات، خفيفة الوزن", usage: "رش المبيدات والأسمدة على المحاصيل", tags: "يدوية، خفيفة، عملية", price: "850 درهم", imageData: null },
-            { id: 7, name: "منشار تلسكوبي لتقليم الأشجار", type: "منشار", brand: "Stihl", icon: "🌳", desc: "منشار كهربائي بطول 2.5 متر، خفيف وقوي", usage: "تقليم الأشجار العالية والأغصان", tags: "تلسكوبي، كهربائي، آمن", price: "2,200 درهم", imageData: null },
-            { id: 8, name: "محراث قلاب", type: "محراث", brand: "Lemken", icon: "⛏️", desc: "محراث قلاب 3 أسلحة لتهيئة التربة للزراعة", usage: "تهيئة التربة للزراعة، تقليب التربة", tags: "قلاب، متين، فعال", price: "22,000 درهم", imageData: null }
-        ];
-        
-        // تحميل البيانات
-        function loadProducts() {
-            const stored = localStorage.getItem('equipments_products');
-            if (stored) {
-                products = JSON.parse(stored);
-            } else {
-                products = [...defaultProducts];
-                saveProducts();
+
+        // ===================== دوال Supabase =====================
+        async function fetchProducts() {
+            const { data, error } = await supabase
+                .from('equipment')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                console.error('خطأ في جلب البيانات:', error);
+                showToast('❌ فشل في تحميل البيانات', 'error');
+                return [];
             }
-            displayProducts();
+            return data || [];
         }
-        
-        function saveProducts() {
-            localStorage.setItem('equipments_products', JSON.stringify(products));
+
+        async function insertProduct(product) {
+            const { data, error } = await supabase
+                .from('equipment')
+                .insert([product])
+                .select();
+
+            if (error) {
+                console.error('خطأ في الإضافة:', error);
+                showToast('❌ فشل في إضافة المعدة', 'error');
+                return null;
+            }
+            return data ? data[0] : null;
+        }
+
+        async function updateProduct(id, updates) {
+            const { data, error } = await supabase
+                .from('equipment')
+                .update(updates)
+                .eq('id', id)
+                .select();
+
+            if (error) {
+                console.error('خطأ في التحديث:', error);
+                showToast('❌ فشل في تحديث المعدة', 'error');
+                return null;
+            }
+            return data ? data[0] : null;
+        }
+
+        async function deleteProductById(id) {
+            const { error } = await supabase
+                .from('equipment')
+                .delete()
+                .eq('id', id);
+
+            if (error) {
+                console.error('خطأ في الحذف:', error);
+                showToast('❌ فشل في حذف المعدة', 'error');
+                return false;
+            }
+            return true;
+        }
+
+        // ===================== دوال العرض =====================
+        async function loadProducts() {
+            products = await fetchProducts();
+            displayProducts();
             updateProductsList();
         }
-        
-        // عرض المنتجات في الصفحة الرئيسية
+
         function displayProducts() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = products.filter(p => 
-                p.name.toLowerCase().includes(searchTerm) || 
+            const filtered = products.filter(p =>
+                p.name.toLowerCase().includes(searchTerm) ||
                 (p.brand && p.brand.toLowerCase().includes(searchTerm)) ||
                 (p.tags && p.tags.toLowerCase().includes(searchTerm))
             );
-            
+
             const grid = document.getElementById('productsGrid');
-            
+
             if (filtered.length === 0) {
                 grid.innerHTML = `<div class="no-results"><i class="fas fa-search"></i><h3>لا توجد نتائج</h3><p>لم نجد أي معدة تطابق بحثك</p></div>`;
                 return;
             }
-            
+
             grid.innerHTML = filtered.map(p => `
                 <div class="product-card" data-aos="fade-up">
-                    ${p.imageData ? `<img src="${p.imageData}" class="product-image" alt="${p.name}">` : `<div class="product-icon">${p.icon || '🔧'}</div>`}
+                    ${p.image_data ? `<img src="${p.image_data}" class="product-image" alt="${p.name}">` : `<div class="product-icon">${p.icon || '🔧'}</div>`}
                     <h3>${p.name}</h3>
-                    <div class="product-desc">${p.desc || ''}</div>
+                    <div class="product-desc">${p.description || ''}</div>
                     
                     <div class="info-grid">
                         <div class="info-item"><strong>🔧 نوع المعدة:</strong><br>${p.type || 'غير محدد'}</div>
@@ -635,12 +671,11 @@
                 </div>
             `).join('');
         }
-        
-        // عرض قائمة المنتجات في لوحة التحكم
+
         function updateProductsList() {
             const container = document.getElementById('productsList');
             if (!container) return;
-            
+
             container.innerHTML = products.map(p => `
                 <div class="product-item">
                     <div><strong>${p.name}</strong><br><span style="font-size:11px;">${p.price || 'لا يوجد سعر'} | ${p.type || 'نوع غير محدد'}</span></div>
@@ -651,87 +686,96 @@
                 </div>
             `).join('');
         }
-        
-        // إضافة أو تعديل منتج
-        function addProduct() {
+
+        // ===================== دوال الإدارة =====================
+        async function addProduct() {
             const name = document.getElementById('productName').value.trim();
             const type = document.getElementById('productType').value;
             const brand = document.getElementById('productBrand').value.trim();
             const icon = document.getElementById('productIcon').value.trim() || '🔧';
-            const desc = document.getElementById('productDesc').value.trim();
+            const description = document.getElementById('productDesc').value.trim();
             const usage = document.getElementById('productUsage').value.trim();
             const tags = document.getElementById('productTags').value.trim();
             const price = document.getElementById('productPrice').value.trim();
-            
+
             if (!name) {
-                showToast("الرجاء إدخال اسم المعدة", "error");
+                showToast('الرجاء إدخال اسم المعدة', 'error');
                 return;
             }
-            
+
             const productData = {
-                name: name,
-                type: type,
-                brand: brand || "غير محدد",
-                icon: icon,
-                desc: desc || "",
-                usage: usage || "غير محدد",
-                tags: tags || "",
-                price: price || "غير محدد",
-                imageData: currentImageData || null
+                id: Date.now(),
+                name,
+                type,
+                brand: brand || 'غير محدد',
+                icon,
+                description: description || '',
+                usage: usage || 'غير محدد',
+                tags: tags || '',
+                price: price || 'غير محدد',
+                image_data: currentImageData || null
             };
-            
+
             if (editingProductId) {
-                const index = products.findIndex(p => p.id === editingProductId);
-                if (index !== -1) {
-                    products[index] = { ...products[index], ...productData, id: editingProductId };
-                    showToast("✅ تم تعديل المعدة بنجاح", "success");
+                const { id, ...updates } = productData;
+                const result = await updateProduct(editingProductId, updates);
+                if (result) {
+                    const index = products.findIndex(p => p.id === editingProductId);
+                    if (index !== -1) products[index] = result;
+                    showToast('✅ تم تعديل المعدة بنجاح', 'success');
+                    editingProductId = null;
                 }
-                editingProductId = null;
             } else {
-                const newProduct = { id: Date.now(), ...productData };
-                products.push(newProduct);
-                showToast("✅ تم إضافة المعدة بنجاح", "success");
+                const result = await insertProduct(productData);
+                if (result) {
+                    products.unshift(result);
+                    showToast('✅ تم إضافة المعدة بنجاح', 'success');
+                }
             }
-            
-            saveProducts();
-            displayProducts();
+
             clearAdminForm();
+            await loadProducts();
         }
-        
+
         function editProduct(id) {
             const product = products.find(p => p.id === id);
             if (!product) return;
-            
+
             editingProductId = id;
             document.getElementById('productName').value = product.name;
             document.getElementById('productType').value = product.type || 'جرار';
             document.getElementById('productBrand').value = product.brand || '';
             document.getElementById('productIcon').value = product.icon || '🔧';
-            document.getElementById('productDesc').value = product.desc || '';
+            document.getElementById('productDesc').value = product.description || '';
             document.getElementById('productUsage').value = product.usage || '';
             document.getElementById('productTags').value = product.tags || '';
             document.getElementById('productPrice').value = product.price || '';
-            
-            if (product.imageData) {
-                currentImageData = product.imageData;
+
+            if (product.image_data) {
+                currentImageData = product.image_data;
                 const preview = document.getElementById('imagePreview');
-                preview.innerHTML = `<img src="${product.imageData}"><button onclick="clearImage()" style="background:#f44336; border:none; padding:3px 10px; border-radius:50px; margin-top:5px;">إزالة</button>`;
+                preview.innerHTML = `<img src="${product.image_data}"><button onclick="clearImage()" style="background:#f44336; border:none; padding:3px 10px; border-radius:50px; margin-top:5px;">إزالة</button>`;
                 preview.style.display = 'block';
+            } else {
+                clearImage();
             }
-            
+
             document.querySelector('.admin-header h3').innerHTML = '<i class="fas fa-edit"></i> تعديل المعدة';
-            showToast("يمكنك الآن تعديل بيانات المعدة", "info");
+            showToast('يمكنك الآن تعديل بيانات المعدة', 'info');
         }
-        
-        function deleteProduct(id) {
-            if (confirm("هل أنت متأكد من حذف هذه المعدة؟")) {
+
+        async function deleteProduct(id) {
+            if (!confirm('هل أنت متأكد من حذف هذه المعدة؟')) return;
+
+            const success = await deleteProductById(id);
+            if (success) {
                 products = products.filter(p => p.id !== id);
-                saveProducts();
-                displayProducts();
-                showToast("🗑️ تم حذف المعدة", "success");
+                showToast('🗑️ تم حذف المعدة', 'success');
+                await loadProducts();
             }
         }
-        
+
+        // ===================== دوال مساعدة =====================
         function clearAdminForm() {
             document.getElementById('productName').value = '';
             document.getElementById('productType').value = 'جرار';
@@ -745,15 +789,14 @@
             editingProductId = null;
             document.querySelector('.admin-header h3').innerHTML = '<i class="fas fa-cog"></i> لوحة التحكم - إدارة المعدات';
         }
-        
+
         function clearImage() {
             currentImageData = null;
             document.getElementById('imagePreview').innerHTML = '';
             document.getElementById('imagePreview').style.display = 'none';
             document.getElementById('productImage').value = '';
         }
-        
-        // رفع الصورة
+
         document.getElementById('productImage').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file && file.type.startsWith('image/')) {
@@ -767,11 +810,11 @@
                 reader.readAsDataURL(file);
             }
         });
-        
-        // لوحة التحكم
+
+        // ===================== دوال التحكم =====================
         function showAdminPassword() { document.getElementById('passwordModal').classList.add('show'); }
         function closePasswordModal() { document.getElementById('passwordModal').classList.remove('show'); }
-        
+
         function checkAdminPassword() {
             const pwd = document.getElementById('adminPassword').value;
             if (pwd === ADMIN_PASSWORD) {
@@ -780,18 +823,17 @@
                 updateProductsList();
                 document.getElementById('adminPassword').value = '';
             } else {
-                showToast("كلمة المرور غير صحيحة", "error");
+                showToast('كلمة المرور غير صحيحة', 'error');
             }
         }
-        
+
         function closeAdminPanel() {
             document.getElementById('adminPanel').classList.remove('show');
             clearAdminForm();
         }
-        
-        // البحث
+
         document.getElementById('searchInput').addEventListener('input', displayProducts);
-        
+
         function showToast(msg, type) {
             const toast = document.getElementById('toast');
             toast.style.background = type === 'success' ? '#4CAF50' : (type === 'error' ? '#f44336' : '#2196f3');
@@ -799,14 +841,15 @@
             toast.style.display = 'block';
             setTimeout(() => toast.style.display = 'none', 3000);
         }
-        
-        // تأثير الهيدر
+
         window.addEventListener('scroll', () => {
             document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
         });
-        
-        // تحميل البيانات
+
+        AOS.init({ duration: 800, once: true });
+
         loadProducts();
     </script>
+
 </body>
 </html>

@@ -108,16 +108,60 @@
         .hero-slide .slide-overlay {
             position: absolute;
             inset: 0;
-            background: rgba(10, 20, 8, 0.25);
+            background: linear-gradient(135deg, rgba(10, 20, 8, 0.30) 0%, rgba(10, 20, 8, 0.55) 50%, rgba(10, 20, 8, 0.80) 100%);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: 1.5rem;
+            text-align: center;
+        }
+        @media (min-width: 768px) {
+            .hero-slide .slide-overlay {
+                padding: 3rem 4rem;
+            }
         }
 
         .hero-slide .slide-title {
-            display: none !important;
+            font-size: 1.8rem;
+            font-weight: 900;
+            line-height: 1.1;
+            text-align: center;
+            max-width: 100%;
+            text-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
+            background: linear-gradient(to right, #86efac 50%, #ffffff 50%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: block;
+            padding: 0 0.5rem;
+        }
+        @media (min-width: 480px) {
+            .hero-slide .slide-title {
+                font-size: 2.2rem;
+            }
+        }
+        @media (min-width: 640px) {
+            .hero-slide .slide-title {
+                font-size: 2.8rem;
+            }
+        }
+        @media (min-width: 768px) {
+            .hero-slide .slide-title {
+                font-size: 3.5rem;
+            }
+        }
+        @media (min-width: 1024px) {
+            .hero-slide .slide-title {
+                font-size: 4.5rem;
+                max-width: 90%;
+            }
+        }
+        @media (min-width: 1280px) {
+            .hero-slide .slide-title {
+                font-size: 5.5rem;
+                max-width: 85%;
+            }
         }
 
         .hero-dots {
@@ -805,40 +849,11 @@
             }
         }
 
-        /* ===== زر التحميل المخصص ===== */
-        .download-btn {
-            background: linear-gradient(135deg, #1a73e8, #0d47a1) !important;
-            box-shadow: 0 4px 20px rgba(26, 115, 232, 0.4) !important;
-        }
-        .download-btn:hover {
-            box-shadow: 0 8px 35px rgba(26, 115, 232, 0.6) !important;
-            transform: scale(1.05);
-        }
-        .download-btn-hero {
-            font-size: 0.9rem !important;
-            padding: 0.7rem 2rem !important;
-        }
-        @media (min-width: 640px) {
-            .download-btn-hero {
-                font-size: 1.1rem !important;
-                padding: 0.9rem 2.5rem !important;
-            }
-        }
-        .download-btn-hero svg {
-            width: 20px !important;
-            height: 20px !important;
-        }
-        @media (min-width: 640px) {
-            .download-btn-hero svg {
-                width: 24px !important;
-                height: 24px !important;
-            }
-        }
-
         .floating-services-btn {
             display: none !important;
         }
 
+        /* زر التحميل في الموبايل (تم الاحتفاظ به فقط في القائمة الجانبية) */
         .mobile-download-btn {
             display: flex;
             align-items: center;
@@ -891,8 +906,8 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="sparkles" class="lucide lucide-sparkles w-4 h-4"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path><path d="M5 3v4"></path><path d="M19 17v4"></path><path d="M3 5h4"></path><path d="M17 19h4"></path></svg>
                 <span data-i18n="nav_services_btn">Our Services</span>
             </a>
-            <!-- ✅ زر تحميل التطبيق في الهيدر -->
-            <a href="https://sone-solutions.github.io/SONE/SONE%20SOLUTIONS.apk" download class="services-btn download-btn">
+            <!-- زر تحميل التطبيق في الهيدر (تم الاحتفاظ به) -->
+            <a href="https://sone-solutions.github.io/SONE/SONE%20SOLUTIONS.apk" download class="services-btn" style="background: linear-gradient(135deg, #1a73e8, #0d47a1);">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="download" class="lucide lucide-download w-4 h-4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" x2="12" y1="15" y2="3"></line></svg>
                 <span data-i18n="download_app">Download App</span>
             </a>
@@ -924,7 +939,7 @@
     <a href="#about" data-i18n="nav_about">About</a>
     <a href="#contact" data-i18n="nav_contact">Contact</a>
     <a href="https://sone-solutions.github.io/SONE/login.html" target="_blank" class="text-green-400 hover:text-green-300 font-bold py-2 flex items-center gap-2" data-i18n="nav_services_btn">Our Services</a>
-    <!-- ✅ زر تحميل التطبيق في القائمة الجانبية للموبايل -->
+    <!-- زر تحميل التطبيق في القائمة الجانبية -->
     <a href="https://sone-solutions.github.io/SONE/SONE%20SOLUTIONS.apk" download class="mobile-download-btn">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="download" class="lucide lucide-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" x2="12" y1="15" y2="3"></line></svg>
         <span data-i18n="download_app">Download App</span>
@@ -963,7 +978,7 @@
                 <div class="hero-slide" data-index="0">
                     <img src="Rejoignez les agriculteurs qui ont choisi l'avenir vert avec SONE..webp" alt="Rejoignez les agriculteurs" loading="lazy">
                     <div class="slide-overlay">
-                        <!-- تم حذف النص -->
+                        <h2 class="slide-title" data-i18n="hero_slide1_title">Join the farmers who have chosen the green future with SONE.</h2>
                     </div>
                 </div>
 
@@ -971,7 +986,7 @@
                 <div class="hero-slide" data-index="1">
                     <img src="Surveillez vos cultures depuis votre téléphone, où que vous soyez..webp" alt="Surveillez vos cultures" loading="lazy">
                     <div class="slide-overlay">
-                        <!-- تم حذف النص -->
+                        <h2 class="slide-title" data-i18n="hero_slide2_title">Monitor your crops from your phone, wherever you are.</h2>
                     </div>
                 </div>
 
@@ -979,7 +994,7 @@
                 <div class="hero-slide active" data-index="2">
                     <img src="Moins d'eau, plus de rendement. La technologie au service de la terre..jpeg" alt="Moins d'eau, plus de rendement" loading="lazy">
                     <div class="slide-overlay">
-                        <!-- تم حذف النص -->
+                        <h2 class="slide-title" data-i18n="hero_slide3_title">Less water, more yield. Technology serving the earth.</h2>
                     </div>
                 </div>
 
@@ -987,7 +1002,7 @@
                 <div class="hero-slide" data-index="3">
                     <img src="Votre ferme mérite mieux que l'intuition — découvrez l'agriculture de précision..png" alt="Agriculture de précision" loading="lazy">
                     <div class="slide-overlay">
-                        <!-- تم حذف النص -->
+                        <h2 class="slide-title" data-i18n="hero_slide4_title">Your farm deserves better than intuition — discover precision agriculture.</h2>
                     </div>
                 </div>
 
@@ -995,7 +1010,7 @@
                 <div class="hero-slide" data-index="4">
                     <img src="L'IA qui protège vos cultures avant même l'apparition des symptômes..jpg" alt="IA protection cultures" loading="lazy">
                     <div class="slide-overlay">
-                        <!-- تم حذف النص -->
+                        <h2 class="slide-title" data-i18n="hero_slide5_title">AI that protects your crops before symptoms even appear.</h2>
                     </div>
                 </div>
 
@@ -1003,13 +1018,13 @@
                 <div class="hero-slide" data-index="5">
                     <img src="Chaque parcelle a une histoire. Nos capteurs vous aident à la lire..webp" alt="Chaque parcelle a une histoire" loading="lazy">
                     <div class="slide-overlay">
-                        <!-- تم حذف النص -->
+                        <h2 class="slide-title" data-i18n="hero_slide6_title">Every plot has a story. Our sensors help you read it.</h2>
                     </div>
                 </div>
 
             </div>
 
-            <!-- ✅ تم إزالة زر التحميل من هنا بناءً على طلبك -->
+            <!-- ✅ تم إزالة زر التحميل من هنا (كما طلبت) -->
 
             <!-- Dots (6) -->
             <div class="hero-dots">
@@ -1023,9 +1038,9 @@
 
         </div>
 
-        <!-- تم إزالة النص السفلي "Découvrez nos solutions · Glissez pour explorer" -->
+        <!-- ✅ النص السفلي المسترجع -->
         <div class="absolute bottom-4 md:bottom-6 left-0 right-0 z-10 text-center pointer-events-none">
-            <!-- تم الحذف -->
+            <p class="text-green-400/60 text-[8px] md:text-xs font-medium tracking-widest uppercase" data-i18n="hero_cta">Discover our solutions · Swipe to explore</p>
         </div>
 
     </div>
@@ -1420,8 +1435,9 @@
                 <li class="flex items-center gap-2 md:gap-2.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="phone" class="lucide lucide-phone w-3 h-3 md:w-4 md:h-4 text-green-600"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg> +212 600 000 000</li>
                 <li class="flex items-center gap-2 md:gap-2.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="map-pin" class="lucide lucide-map-pin w-3 h-3 md:w-4 md:h-4 text-green-600"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path><circle cx="12" cy="10" r="3"></circle></svg> Maroc</li>
             </ul>
+            <!-- زر التحميل في الفوتر (تم الاحتفاظ به) -->
             <div class="mt-4 md:mt-6">
-                <a href="https://sone-solutions.github.io/SONE/SONE%20SOLUTIONS.apk" download class="services-btn download-btn" style="font-size: 0.8rem; padding: 0.5rem 1.2rem;">
+                <a href="https://sone-solutions.github.io/SONE/SONE%20SOLUTIONS.apk" download class="services-btn" style="background: linear-gradient(135deg, #1a73e8, #0d47a1); font-size: 0.8rem; padding: 0.5rem 1.2rem;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="download" class="lucide lucide-download w-4 h-4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" x2="12" y1="15" y2="3"></line></svg>
                     <span data-i18n="download_app">Download App</span>
                 </a>
@@ -1465,6 +1481,13 @@
             nav_contact: "Contact",
             menu_title: "Menu",
             download_app: "Télécharger l'App",
+            hero_cta: "Découvrez nos solutions · Glissez pour explorer",
+            hero_slide1_title: "Rejoignez les agriculteurs qui ont choisi l'avenir vert avec SONE.",
+            hero_slide2_title: "Surveillez vos cultures depuis votre téléphone, où que vous soyez.",
+            hero_slide3_title: "Moins d'eau, plus de rendement. La technologie au service de la terre.",
+            hero_slide4_title: "Votre ferme mérite mieux que l'intuition — découvrez l'agriculture de précision.",
+            hero_slide5_title: "L'IA qui protège vos cultures avant même l'apparition des symptômes.",
+            hero_slide6_title: "Chaque parcelle a une histoire. Nos capteurs vous aident à la lire.",
             about_title: "Qui sommes-nous ?",
             about_sub: "Une vision claire : faire de l'agriculture un levier de développement durable et de compétitivité.",
             about_p1: "« Autonomiser les agriculteurs en les aidant à prendre des décisions éclairées » est notre mission. « Des solutions intelligentes pour un avenir vert » est notre devise.",
@@ -1560,6 +1583,13 @@
             nav_contact: "Contact",
             menu_title: "Menu",
             download_app: "Download App",
+            hero_cta: "Discover our solutions · Swipe to explore",
+            hero_slide1_title: "Join the farmers who have chosen the green future with SONE.",
+            hero_slide2_title: "Monitor your crops from your phone, wherever you are.",
+            hero_slide3_title: "Less water, more yield. Technology serving the earth.",
+            hero_slide4_title: "Your farm deserves better than intuition — discover precision agriculture.",
+            hero_slide5_title: "AI that protects your crops before symptoms even appear.",
+            hero_slide6_title: "Every plot has a story. Our sensors help you read it.",
             about_title: "Who are we?",
             about_sub: "A clear vision: making agriculture a lever for sustainable development and competitiveness.",
             about_p1: "“Empowering farmers by helping them make informed decisions” is our mission. “Smart solutions for a green future” is our motto.",
@@ -1655,6 +1685,13 @@
             nav_contact: "اتصل بنا",
             menu_title: "القائمة",
             download_app: "تحميل التطبيق",
+            hero_cta: "اكتشف حلولنا · اسحب لاستكشاف",
+            hero_slide1_title: "انضم إلى المزارعين الذين اختاروا المستقبل الأخضر مع SONE.",
+            hero_slide2_title: "راقب محاصيلك من هاتفك، أينما كنت.",
+            hero_slide3_title: "ماء أقل، محصول أوفر. التكنولوجيا في خدمة الأرض.",
+            hero_slide4_title: "مزرعتك تستحق أكثر من الحدس — اكتشف الزراعة الدقيقة.",
+            hero_slide5_title: "الذكاء الاصطناعي يحمي محاصيلك قبل ظهور أي أعراض.",
+            hero_slide6_title: "كل قطعة أرض لها قصة. أجهزتنا تساعدك على قراءتها.",
             about_title: "من نحن؟",
             about_sub: "رؤية واضحة: جعل الزراعة رافعة للتنمية المستدامة والقدرة التنافسية.",
             about_p1: "« تمكين المزارعين من خلال مساعدتهم على اتخاذ قرارات مستنيرة » هي مهمتنا. « حلول ذكية لمستقبل أخضر » هو شعارنا.",

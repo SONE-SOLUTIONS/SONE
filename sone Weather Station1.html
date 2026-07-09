@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>sone Weather Station</title>
+    <!-- الخطوط -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Cairo:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        /* ===== إعادة تعيين ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: radial-gradient(ellipse at 50% 30%, #0a1f2e, #020810);
+            font-family: 'Cairo', 'Segoe UI', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* ===== خلفية الجسيمات (تم تقليل عددها لتحسين الأداء في التطبيقات) ===== */
+        #particles-canvas {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ===== الطبقة الرئيسية ===== */
+        .welcome-wrapper {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 660px;
+            padding: 20px;
+            animation: fadeInUp 0.9s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(35px) scale(0.96); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .welcome-card {
+            background: rgba(7, 24, 40, 0.7);
+            backdrop-filter: blur(20px) saturate(1.5);
+            -webkit-backdrop-filter: blur(20px) saturate(1.5);
+            border-radius: 48px;
+            padding: 44px 38px 36px;
+            border: 1px solid rgba(0, 255, 157, 0.15);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7), 0 0 60px rgba(0, 255, 157, 0.05);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* ===== شريط LED علوي متوهج ===== */
+        .welcome-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 10%;
+            right: 10%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00ff9d, #00ff9d, transparent);
+            box-shadow: 0 0 20px rgba(0, 255, 157, 0.4);
+            border-radius: 100%;
+        }
+
+        /* ===== وهج خلفي ثابت ===== */
+        .welcome-card::before {
+            content: '';
+            position: absolute;
+            inset: -50%;
+            background: radial-gradient(circle at 30% 20%, rgba(0, 255, 157, 0.05), transparent 60%);
+            pointer-events: none;
+        }
+
+        /* ===== العنوان الرئيسي ===== */
+        .title {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: clamp(2.4rem, 7vw, 4rem);
+            letter-spacing: 3px;
+            margin-bottom: 2px;
+            line-height: 1.15;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .title .sone {
+            color: #00ff9d;
+            text-shadow: 0 0 35px rgba(0, 255, 157, 0.25);
+        }
+        .title .station {
+            color: #ffffff;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.08);
+        }
+
+        .sub-title {
+            font-size: 0.95rem;
+            letter-spacing: 8px;
+            color: #6a9bb0;
+            text-transform: uppercase;
+            font-weight: 300;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .divider {
+            width: 70px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00ff9d, transparent);
+            margin: 14px auto 18px;
+            border-radius: 4px;
+            box-shadow: 0 0 15px rgba(0, 255, 157, 0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        .greeting {
+            font-size: 1.1rem;
+            line-height: 2;
+            color: #c8e8f8;
+            opacity: 0.85;
+            margin: 8px 0 28px;
+            font-weight: 300;
+            position: relative;
+            z-index: 1;
+        }
+        .greeting span {
+            color: #00ff9d;
+            font-weight: 700;
+            text-shadow: 0 0 20px rgba(0, 255, 157, 0.15);
+        }
+
+        /* ===== زر الدخول المحسّن للتطبيقات ===== */
+        .btn-enter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 16px 52px;
+            border-radius: 60px;
+            background: linear-gradient(135deg, #00b894, #00a86b);
+            color: #fff;
+            font-size: 1.15rem;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 30px rgba(0, 184, 148, 0.35);
+            font-family: 'Cairo', sans-serif;
+            letter-spacing: 2px;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            min-width: 200px;
+            height: 60px;
+            -webkit-tap-highlight-color: transparent; /* إزالة التمييز الأزرق في التطبيقات */
+        }
+
+        .btn-enter .btn-text {
+            transition: opacity 0.2s;
+        }
+        .btn-enter .spinner {
+            display: none;
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #ffffff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .btn-enter.loading {
+            background: #0a2a3a;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .btn-enter.loading .btn-text {
+            opacity: 0.7;
+        }
+        .btn-enter.loading .spinner {
+            display: block;
+        }
+
+        .btn-enter:hover:not(.loading) {
+            transform: scale(1.04) translateY(-3px);
+            box-shadow: 0 12px 40px rgba(0, 184, 148, 0.55);
+        }
+        .btn-enter:active:not(.loading) {
+            transform: scale(0.97);
+        }
+
+        .decor-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 28px;
+            position: relative;
+            z-index: 1;
+        }
+        .decor-dots span {
+            display: block;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: #00ff9d;
+            opacity: 0.25;
+            transition: opacity 0.3s;
+        }
+        .decor-dots span:nth-child(2) { opacity: 0.5; width: 6px; height: 6px; }
+        .decor-dots span:nth-child(3) { opacity: 0.35; }
+
+        .brand-badge {
+            margin-top: 10px;
+            font-size: 0.65rem;
+            letter-spacing: 4px;
+            color: #3a5f6e;
+            text-transform: uppercase;
+            position: relative;
+            z-index: 1;
+        }
+
+        @media (max-width: 480px) {
+            .welcome-card { padding: 30px 18px; }
+            .btn-enter { padding: 14px 24px; font-size: 1rem; min-width: 160px; height: 54px; }
+        }
+
+        .footer-note {
+            position: fixed;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: rgba(255,255,255,0.06);
+            font-size: 0.55rem;
+            letter-spacing: 6px;
+            z-index: 1;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="particles-canvas"></canvas>
+
+    <div class="welcome-wrapper">
+        <div class="welcome-card">
+            <div class="title">
+                <span class="sone">sone</span>
+                <span class="station">Weather Station</span>
+            </div>
+            <div class="sub-title">محطة الطقس الزراعية</div>
+            <div class="divider"></div>
+
+            <p class="greeting">
+                مرحباً بك في نظام المراقبة الذكي<br>
+                <span>بيانات دقيقة لحقولك الزراعية</span>
+            </p>
+
+            <!-- زر التوجيه المباشر -->
+            <a href="http://192.168.4.1/" class="btn-enter" id="goBtn">
+                <span class="btn-text">دخول إلى المحطة</span>
+                <span class="spinner"></span>
+            </a>
+
+            <div class="decor-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="brand-badge">⏻  sone Weather Station  ·  v3.1 (App)</div>
+        </div>
+    </div>
+
+    <div class="footer-note">——  ESP32-C3  ·  Powered by Solar ——</div>
+
+    <script>
+        // ============================================================
+        //  1.  نظام الجسيمات (تم تقليل العدد إلى 120 لتحسين الأداء)
+        // ============================================================
+        (function initParticles() {
+            const canvas = document.getElementById('particles-canvas');
+            const ctx = canvas.getContext('2d');
+            let w, h;
+            const particles = [];
+            const COUNT = 120; // أقل من السابق (150) لتوفير البطارية
+            const MAX_DIST = 150;
+
+            function resize() {
+                w = canvas.width = window.innerWidth;
+                h = canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            class Particle {
+                constructor() {
+                    this.reset();
+                }
+                reset() {
+                    this.x = Math.random() * w;
+                    this.y = Math.random() * h;
+                    this.vx = (Math.random() - 0.5) * 0.4;
+                    this.vy = (Math.random() - 0.5) * 0.4;
+                    this.radius = Math.random() * 1.8 + 0.8;
+                    this.opacity = Math.random() * 0.5 + 0.15;
+                }
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    if (this.x < 0 || this.x > w) this.vx *= -1;
+                    if (this.y < 0 || this.y > h) this.vy *= -1;
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(0, 255, 157, ${this.opacity})`;
+                    ctx.fill();
+                }
+            }
+
+            for (let i = 0; i < COUNT; i++) {
+                particles.push(new Particle());
+            }
+
+            function drawLines() {
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < MAX_DIST) {
+                            const alpha = (1 - dist / MAX_DIST) * 0.25;
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.strokeStyle = `rgba(0, 255, 157, ${alpha})`;
+                            ctx.lineWidth = 0.6;
+                            ctx.stroke();
+                        }
+                    }
+                }
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, w, h);
+                particles.forEach(p => { p.update(); p.draw(); });
+                drawLines();
+                requestAnimationFrame(animate);
+            }
+            animate();
+        })();
+
+        // ============================================================
+        //  2.  زر الدخول (تم إزالة التوجيه التلقائي الاحتياطي)
+        //      لأن المستخدم في التطبيق يفضل التحكم الكامل يدوياً
+        // ============================================================
+        const goBtn = document.getElementById('goBtn');
+        let isRedirecting = false;
+
+        goBtn.addEventListener('click', function(e) {
+            // منع التوجيه المزدوج
+            if (isRedirecting) {
+                e.preventDefault();
+                return;
+            }
+
+            // تفعيل حالة التحميل مع سبينر
+            isRedirecting = true;
+            this.classList.add('loading');
+            
+            // نمنع الرابط من التوجيه الفوري لنظهر تأثير التحميل
+            e.preventDefault();
+            
+            // نوجه بعد 300 مللي ثانية فقط لإعطاء انطباع بالاستجابة السريعة
+            setTimeout(() => {
+                window.location.href = 'http://192.168.4.1/';
+            }, 300);
+        });
+
+        // ============================================================
+        //  3.  تحسين إضافي للتطبيقات: إلغاء تحديد النص عند النقر المزدوج
+        // ============================================================
+        document.addEventListener('selectstart', function(e) {
+            e.preventDefault();
+        });
+
+        console.log('🌿 sone Weather Station | جاهز للتطبيقات');
+    </script>
+
+</body>
+</html>

@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>سوق الفلاحة | Agri Maroc Précis</title>
+    <title>SONE Marché | سوق الفلاحة</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
+        /* جميع الأنماط الخاصة بالتصميم الأساسي */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Cairo', sans-serif;
@@ -15,29 +16,86 @@
             color: #fff;
             min-height: 100vh;
         }
+        body[dir="rtl"] { direction: rtl; }
+        body[dir="ltr"] { direction: ltr; }
+
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #1C2A16; border-radius: 10px; }
         ::-webkit-scrollbar-thumb { background: #A8842A; border-radius: 10px; }
 
-        .header {
+        /* ===== شريط اللغة ===== */
+        .lang-switcher {
+            background: rgba(10, 20, 8, 0.98);
+            padding: 8px 5%;
+            border-bottom: 2px solid rgba(168, 132, 66, 0.3);
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
+            z-index: 1001;
+        }
+        .lang-switcher a {
+            display: inline-block;
+            background: transparent;
+            border: 2px solid transparent;
+            border-radius: 30px;
+            padding: 4px 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: 600;
+            color: #C1DCB5;
+            text-decoration: none;
+        }
+        .lang-switcher a:hover {
+            border-color: rgba(168, 132, 66, 0.5);
+            background: rgba(168, 132, 66, 0.1);
+        }
+        .lang-switcher a.active {
+            border-color: #A8842A;
+            background: rgba(168, 132, 66, 0.2);
+            color: #A8842A;
+        }
+        .lang-switcher a img {
+            width: 22px;
+            height: 16px;
+            border-radius: 3px;
+            object-fit: cover;
+            border: 1px solid rgba(255,255,255,0.2);
+            vertical-align: middle;
+        }
+        @media (max-width: 500px) {
+            .lang-switcher a span:not(.flag-text) { display: none; }
+            .lang-switcher a .flag-text { display: inline; }
+        }
+
+        /* ===== الهيدر ===== */
+        .header {
+            position: fixed;
+            top: 55px;
+            left: 0;
+            right: 0;
             z-index: 1000;
-            padding: 15px 5%;
+            padding: 12px 5%;
             background: rgba(10, 20, 8, 0.95);
             backdrop-filter: blur(15px);
             border-bottom: 1px solid rgba(168, 132, 66, 0.3);
             transition: all 0.3s ease;
         }
-        .header.scrolled { padding: 10px 5%; background: rgba(10, 20, 8, 0.98); }
+        .header.scrolled { padding: 8px 5%; background: rgba(10, 20, 8, 0.98); }
         .header-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
             max-width: 1400px;
             margin: 0 auto;
+            gap: 15px;
+            flex-wrap: wrap;
         }
         .logo {
             display: flex;
@@ -50,18 +108,17 @@
         .logo-icon {
             width: 45px;
             height: 45px;
-            background: linear-gradient(135deg, #A8842A, #D4A843);
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
+            overflow: hidden;
+            border: 2px solid #A8842A;
             box-shadow: 0 0 20px rgba(168, 132, 66, 0.3);
-            animation: pulse 2s infinite;
+            flex-shrink: 0;
         }
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(168, 132, 66, 0.4); }
-            50% { box-shadow: 0 0 0 10px rgba(168, 132, 66, 0); }
+        .logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }
         .logo-text h1 {
             font-size: 20px;
@@ -70,56 +127,181 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .logo-text p { font-size: 10px; color: #C1DCB5; }
-        .back-btn {
-            background: rgba(168, 132, 66, 0.15);
-            border: 1px solid rgba(168, 132, 66, 0.5);
-            padding: 10px 25px;
+        .logo-text p { font-size: 10px; color: #C1DCB5; letter-spacing: 1px; }
+
+        /* ===== شريط البحث ===== */
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(168, 132, 66, 0.3);
             border-radius: 50px;
+            padding: 4px 4px 4px 16px;
+            flex: 1;
+            max-width: 450px;
+            min-width: 180px;
+            transition: all 0.3s ease;
+        }
+        .search-bar:focus-within {
+            border-color: #A8842A;
+            box-shadow: 0 0 20px rgba(168, 132, 66, 0.15);
+        }
+        .search-bar input {
+            background: transparent;
+            border: none;
+            padding: 8px 0;
+            color: #fff;
+            font-family: 'Cairo', sans-serif;
+            font-size: 14px;
+            flex: 1;
+            outline: none;
+        }
+        .search-bar input::placeholder {
+            color: rgba(255,255,255,0.4);
+        }
+        .search-bar button {
+            background: linear-gradient(135deg, #A8842A, #C49B3A);
+            border: none;
+            border-radius: 50px;
+            padding: 8px 18px;
+            color: #000;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+        .search-bar button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(168, 132, 66, 0.4);
+        }
+        .search-toggle {
+            background: rgba(168, 132, 66, 0.15);
+            border: 1px solid rgba(168, 132, 66, 0.3);
+            border-radius: 50px;
+            padding: 8px 14px;
+            color: #C1DCB5;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 16px;
+            display: none;
+        }
+        .search-toggle:hover {
+            background: rgba(168, 132, 66, 0.3);
+        }
+        .search-toggle.active {
             color: #A8842A;
+            border-color: #A8842A;
+        }
+
+        /* ===== الأزرار الإضافية ===== */
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .header-btn {
+            background: rgba(168, 132, 66, 0.12);
+            border: 1px solid rgba(168, 132, 66, 0.25);
+            border-radius: 50px;
+            padding: 6px 16px;
+            color: #C1DCB5;
             text-decoration: none;
+            font-size: 13px;
             font-weight: 500;
             transition: all 0.3s;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
+            cursor: pointer;
         }
-        .back-btn:hover {
-            background: #A8842A;
-            color: #000;
+        .header-btn:hover {
+            background: rgba(168, 132, 66, 0.25);
+            border-color: #A8842A;
+            color: #fff;
             transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(168, 132, 66, 0.3);
+        }
+        .header-btn.primary {
+            background: linear-gradient(135deg, #A8842A, #C49B3A);
+            border-color: #A8842A;
+            color: #000;
+            font-weight: 700;
+        }
+        .header-btn.primary:hover {
+            box-shadow: 0 4px 20px rgba(168, 132, 66, 0.4);
         }
 
-        .container { max-width: 1400px; margin: 0 auto; padding: 130px 20px 60px; }
+        @media (max-width: 992px) {
+            .search-bar { max-width: 280px; }
+            .search-bar input { font-size: 12px; }
+            .search-bar button { padding: 6px 12px; font-size: 12px; }
+            .header-btn { padding: 4px 12px; font-size: 12px; }
+            .header-content { gap: 10px; }
+        }
+        @media (max-width: 768px) {
+            .search-bar { max-width: 100%; order: 10; flex-basis: 100%; margin-top: 6px; }
+            .search-toggle { display: block; }
+            .search-bar.hidden { display: none; }
+            .header-actions .header-btn span { display: none; }
+            .logo-text h1 { font-size: 17px; }
+            .logo-icon { width: 38px; height: 38px; }
+            .header { top: 48px; padding: 8px 4%; }
+            .lang-switcher { padding: 5px 4%; }
+        }
+        @media (max-width: 500px) {
+            .header { top: 44px; }
+            .lang-switcher { padding: 4px 3%; }
+            .lang-switcher a { padding: 2px 8px; font-size: 12px; }
+            .lang-switcher a img { width: 18px; height: 12px; }
+            .header-btn { padding: 4px 10px; font-size: 11px; }
+        }
 
+        /* ===== المحتوى الرئيسي ===== */
+        .container { max-width: 1400px; margin: 0 auto; padding: 160px 20px 60px; }
         .page-header { text-align: center; margin-bottom: 40px; }
         .page-header .badge {
             display: inline-block;
             background: rgba(168, 132, 66, 0.2);
-            padding: 8px 20px;
+            padding: 6px 18px;
             border-radius: 50px;
-            font-size: 14px;
-            margin-bottom: 20px;
+            font-size: 13px;
+            margin-bottom: 15px;
             border: 1px solid rgba(168, 132, 66, 0.5);
         }
         .page-header h1 {
-            font-size: 48px;
+            font-size: 42px;
             font-weight: 800;
             background: linear-gradient(135deg, #fff, #A8842A, #C1DCB5);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
-        .page-header p { color: #C1DCB5; font-size: 18px; max-width: 600px; margin: 0 auto; }
+        .page-header p { color: #C1DCB5; font-size: 17px; max-width: 600px; margin: 0 auto; }
 
+        /* ===== صورة الغلاف ===== */
+        .hero-image {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 24px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(168, 132, 66, 0.2);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+            background: #1C2A16;
+        }
+
+        /* ===== زر إضافة المنتج ===== */
         .show-form-btn {
             background: linear-gradient(135deg, #A8842A, #C49B3A);
             color: #000;
             border: none;
-            padding: 16px 30px;
+            padding: 14px 25px;
             border-radius: 60px;
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 800;
             cursor: pointer;
             transition: all 0.3s;
@@ -128,7 +310,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
+            gap: 10px;
             box-shadow: 0 5px 20px rgba(168, 132, 66, 0.3);
         }
         .show-form-btn:hover {
@@ -136,12 +318,13 @@
             box-shadow: 0 10px 30px rgba(168, 132, 66, 0.4);
         }
 
+        /* ===== نموذج الإضافة ===== */
         .form-section {
             background: rgba(255, 255, 255, 0.04);
             backdrop-filter: blur(10px);
             border-radius: 32px;
-            padding: 30px;
-            margin-bottom: 50px;
+            padding: 25px;
+            margin-bottom: 40px;
             border: 1px solid rgba(168, 132, 66, 0.2);
             transition: all 0.3s;
             display: none;
@@ -153,8 +336,8 @@
             to { opacity: 1; transform: translateY(0); }
         }
         .form-section h2 {
-            font-size: 24px;
-            margin-bottom: 25px;
+            font-size: 22px;
+            margin-bottom: 20px;
             color: #A8842A;
             display: flex;
             align-items: center;
@@ -162,24 +345,25 @@
         }
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 18px;
         }
-        .form-group { margin-bottom: 15px; }
+        .form-group { margin-bottom: 12px; }
         .form-group label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
             color: #C1DCB5;
         }
-        .form-group label i { margin-left: 8px; color: #A8842A; }
+        .form-group label i { margin-left: 6px; color: #A8842A; }
+        body[dir="ltr"] .form-group label i { margin-left: 0; margin-right: 6px; }
         .form-group input, .form-group select, .form-group textarea {
             width: 100%;
-            padding: 12px 15px;
+            padding: 10px 14px;
             background: rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(168, 132, 66, 0.3);
-            border-radius: 16px;
+            border-radius: 14px;
             color: #fff;
             font-family: 'Cairo', sans-serif;
             font-size: 14px;
@@ -188,28 +372,28 @@
             outline: none;
             border-color: #A8842A;
         }
-        .form-group textarea { resize: vertical; min-height: 80px; }
+        .form-group textarea { resize: vertical; min-height: 70px; }
         .file-upload {
             background: rgba(168, 132, 66, 0.1);
             border: 1px dashed rgba(168, 132, 66, 0.5);
-            border-radius: 16px;
-            padding: 15px;
+            border-radius: 14px;
+            padding: 12px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s;
         }
         .file-upload:hover { background: rgba(168, 132, 66, 0.2); }
-        .file-upload i { font-size: 24px; margin-bottom: 5px; display: block; }
+        .file-upload i { font-size: 22px; margin-bottom: 4px; display: block; }
         .image-preview {
-            margin-top: 10px;
+            margin-top: 8px;
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 8px;
         }
         .image-preview-item {
-            width: 100px;
-            height: 100px;
-            border-radius: 16px;
+            width: 80px;
+            height: 80px;
+            border-radius: 14px;
             overflow: hidden;
             position: relative;
             border: 2px solid rgba(168, 132, 66, 0.3);
@@ -221,120 +405,166 @@
             right: -5px;
             background: #f44336;
             border-radius: 50%;
-            width: 22px;
-            height: 22px;
+            width: 20px;
+            height: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 10px;
+            font-size: 9px;
             cursor: pointer;
         }
         .submit-btn {
             background: linear-gradient(135deg, #A8842A, #C49B3A);
             color: #000;
             border: none;
-            padding: 14px 30px;
+            padding: 12px 25px;
             border-radius: 50px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s;
-            margin-top: 20px;
+            margin-top: 15px;
             width: 100%;
         }
         .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(168, 132, 66, 0.3); }
 
+        /* ===== شبكة المنتجات ===== */
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
             gap: 25px;
         }
         .product-card {
             background: rgba(255, 255, 255, 0.04);
             backdrop-filter: blur(10px);
-            border-radius: 24px;
+            border-radius: 20px;
             overflow: hidden;
             transition: all 0.4s;
             border: 1px solid rgba(168, 132, 66, 0.2);
             cursor: pointer;
         }
         .product-card:hover {
-            transform: translateY(-8px);
+            transform: translateY(-6px);
             border-color: #A8842A;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         }
         .product-image {
             width: 100%;
-            height: 220px;
+            height: 200px;
             object-fit: cover;
             transition: transform 0.3s;
             background: #1C2A16;
             display: block;
         }
         .product-card:hover .product-image { transform: scale(1.03); }
-        .product-info { padding: 20px; }
+        .product-info { padding: 16px; }
         .product-title {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             color: #A8842A;
         }
         .product-category {
             display: inline-block;
             background: rgba(168, 132, 66, 0.15);
-            padding: 4px 12px;
+            padding: 3px 10px;
             border-radius: 50px;
             font-size: 11px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         .product-desc {
-            font-size: 13px;
+            font-size: 12px;
             color: #C1DCB5;
             line-height: 1.5;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
         .product-details {
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
+            gap: 10px;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
             border-bottom: 1px dashed rgba(168, 132, 66, 0.2);
         }
         .detail-item {
             display: flex;
             align-items: center;
-            gap: 5px;
-            font-size: 12px;
+            gap: 4px;
+            font-size: 11px;
             color: #C1DCB5;
         }
         .detail-item i { color: #A8842A; }
         .product-price {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 800;
             color: #A8842A;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         .seller-info {
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 10px;
-            font-size: 12px;
+            gap: 8px;
+            font-size: 11px;
             color: #C1DCB5;
-            margin-top: 10px;
+            margin-top: 8px;
         }
 
+        /* ===== قسم التغذية الراجعة ===== */
+        .feedback-section {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px 20px;
+            margin-top: 40px;
+            border: 1px solid rgba(168, 132, 66, 0.2);
+            text-align: center;
+        }
+        .feedback-section .feedback-inner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .feedback-section .feedback-icon { font-size: 32px; color: #A8842A; }
+        .feedback-section .feedback-title {
+            color: #A8842A;
+            font-size: 18px;
+            font-weight: 700;
+        }
+        .feedback-section .feedback-sub { color: #C1DCB5; font-size: 13px; }
+        .feedback-section .feedback-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #A8842A, #C49B3A);
+            color: #000;
+            padding: 10px 24px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 14px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(168, 132, 66, 0.3);
+        }
+        .feedback-section .feedback-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(168, 132, 66, 0.5);
+        }
+
+        /* ===== الفوتر ===== */
         .footer {
             background: rgba(10, 20, 8, 0.95);
-            padding: 40px 5% 20px;
+            padding: 30px 5% 15px;
             border-top: 1px solid rgba(168, 132, 66, 0.2);
             text-align: center;
-            margin-top: 60px;
+            margin-top: 50px;
         }
-        .footer p { color: #C1DCB5; font-size: 14px; }
+        .footer p { color: #C1DCB5; font-size: 13px; }
 
+        /* ===== مودال التفاصيل ===== */
         .detail-modal {
             display: none;
             position: fixed;
@@ -351,49 +581,50 @@
         .detail-modal.active { display: flex; }
         .detail-content {
             background: #1C2A16;
-            border-radius: 32px;
-            padding: 30px;
-            max-width: 800px;
+            border-radius: 28px;
+            padding: 25px;
+            max-width: 750px;
             width: 90%;
             max-height: 85vh;
             overflow-y: auto;
             border: 1px solid #A8842A;
         }
-        .detail-header { text-align: center; margin-bottom: 20px; }
-        .detail-header h2 { color: #A8842A; font-size: 24px; }
+        .detail-header { text-align: center; margin-bottom: 15px; }
+        .detail-header h2 { color: #A8842A; font-size: 22px; }
         .detail-gallery {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-            margin: 15px 0;
+            gap: 8px;
+            margin: 12px 0;
         }
         .detail-gallery img {
-            width: 120px;
-            height: 120px;
+            width: 100px;
+            height: 100px;
             object-fit: cover;
-            border-radius: 12px;
+            border-radius: 10px;
             cursor: pointer;
             background: #1C2A16;
         }
         .detail-section {
-            margin: 15px 0;
-            padding: 15px;
+            margin: 12px 0;
+            padding: 12px;
             background: rgba(0, 0, 0, 0.3);
-            border-radius: 16px;
+            border-radius: 14px;
         }
         .close-detail {
             background: #A8842A;
             color: #000;
             border: none;
-            padding: 10px 25px;
+            padding: 10px 20px;
             border-radius: 50px;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            margin-top: 20px;
+            margin-top: 15px;
             width: 100%;
         }
 
+        /* ===== الإشعارات ===== */
         .toast {
             position: fixed;
             bottom: 25px;
@@ -408,126 +639,458 @@
             font-size: 13px;
         }
 
+        .uploading-indicator {
+            display: none;
+            color: #A8842A;
+            font-size: 13px;
+            margin-top: 6px;
+        }
+        .uploading-indicator i { animation: spin 1s linear infinite; }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         @media (max-width: 768px) {
-            .page-header h1 { font-size: 32px; }
+            .page-header h1 { font-size: 30px; }
             .products-grid { grid-template-columns: 1fr; }
             .form-grid { grid-template-columns: 1fr; }
+            .container { padding: 140px 15px 40px; }
+            .hero-image { max-height: 250px; }
         }
     </style>
 </head>
 <body>
+    <!-- ===== شريط تبديل اللغة ===== -->
+    <div class="lang-switcher">
+        <a href="#" data-lang="ar" class="active" onclick="switchLanguage('ar'); return false;">
+            <img src="https://flagcdn.com/w40/ma.png" alt="المغرب"> <span>🇲🇦 العربية</span> <span class="flag-text">ع</span>
+        </a>
+        <a href="#" data-lang="fr" onclick="switchLanguage('fr'); return false;">
+            <img src="https://flagcdn.com/w40/fr.png" alt="France"> <span>🇫🇷 Français</span> <span class="flag-text">ف</span>
+        </a>
+        <a href="#" data-lang="en" onclick="switchLanguage('en'); return false;">
+            <img src="https://flagcdn.com/w40/gb.png" alt="English"> <span>🇬🇧 English</span> <span class="flag-text">E</span>
+        </a>
+    </div>
 
+    <!-- ===== الهيدر ===== -->
     <header class="header scrolled" id="header">
         <div class="header-content">
-            <a href="index.html" class="logo">
-                <div class="logo-icon"><i class="fas fa-leaf"></i></div>
+            <a href="#" class="logo">
+                <div class="logo-icon"><img src="https://sone-solutions.github.io/SONE/SONELOGE.jpg" alt="SONE Marché"></div>
                 <div class="logo-text">
-                    <h1>Agri Maroc Précis</h1>
-                    <p>المنصة المتكاملة للفلاحة الذكية</p>
+                    <h1>SONE Marché</h1>
+                    <p data-lang-key="subtitle">سوق الفلاحة الذكي</p>
                 </div>
             </a>
-            <a href="index.html" class="back-btn"><i class="fas fa-arrow-right"></i> <span>العودة للرئيسية</span></a>
+
+            <!-- شريط البحث -->
+            <div class="search-bar" id="searchBar">
+                <input type="text" id="searchInput" data-lang-key="searchPlaceholder" placeholder="🔍 ابحث عن منتج..." oninput="filterProducts()">
+                <button onclick="filterProducts()"><i class="fas fa-search"></i> <span data-lang-key="searchBtn">بحث</span></button>
+            </div>
+
+            <!-- الأزرار الإضافية -->
+            <div class="header-actions">
+                <button class="search-toggle" id="searchToggle" onclick="toggleSearchBar()" title="بحث">
+                    <i class="fas fa-search"></i>
+                </button>
+                <a href="#" class="header-btn" onclick="toggleForm(); return false;">
+                    <i class="fas fa-plus-circle"></i> <span data-lang-key="addShort">إضافة</span>
+                </a>
+                <a href="#" class="header-btn primary" onclick="document.querySelector('.products-grid').scrollIntoView({behavior:'smooth'}); return false;">
+                    <i class="fas fa-store"></i> <span data-lang-key="marketBtn">السوق</span>
+                </a>
+            </div>
         </div>
     </header>
 
     <div class="container">
+        <!-- ===== صورة الغلاف الرئيسية ===== -->
+        <img src="https://sone-solutions.github.io/SONE/market.png" alt="SONE Marché - سوق الفلاحة" class="hero-image" loading="lazy" onerror="this.style.display='none'">
+
+        <!-- ===== رأس الصفحة ===== -->
         <div class="page-header" data-aos="fade-up">
-            <span class="badge"><i class="fas fa-store"></i> بيع وشراء</span>
-            <h1><i class="fas fa-store"></i> سوق الفلاحة</h1>
-            <p>منصة متكاملة لعرض المنتجات الزراعية والتواصل بين البائعين والمشترين</p>
+            <span class="badge"><i class="fas fa-store"></i> <span data-lang-key="badge">بيع وشراء</span></span>
+            <h1><i class="fas fa-store"></i> <span data-lang-key="pageTitle">سوق الفلاحة</span></h1>
+            <p data-lang-key="pageDesc">منصة متكاملة لعرض المنتجات الزراعية والتواصل بين البائعين والمشترين</p>
         </div>
 
+        <!-- ===== زر إضافة المنتج ===== -->
         <button class="show-form-btn" onclick="toggleForm()">
-            <i class="fas fa-plus-circle"></i> ➕ أضف منتجك للبيع
+            <i class="fas fa-plus-circle"></i> <span data-lang-key="addBtn">➕ أضف منتجك للبيع</span>
         </button>
 
+        <!-- ===== نموذج إضافة المنتج ===== -->
         <div class="form-section" id="addProductForm" data-aos="fade-up">
-            <h2><i class="fas fa-plus-circle"></i> نموذج إضافة منتج</h2>
+            <h2><i class="fas fa-plus-circle"></i> <span data-lang-key="formTitle">نموذج إضافة منتج</span></h2>
             <div class="form-grid">
                 <div class="form-group">
-                    <label><i class="fas fa-tag"></i> اسم المنتج</label>
-                    <input type="text" id="productName" placeholder="مثال: طماطم عضوية">
+                    <label><i class="fas fa-tag"></i> <span data-lang-key="productName">اسم المنتج</span></label>
+                    <input type="text" id="productName" data-lang-key="namePlaceholder" placeholder="مثال: طماطم عضوية">
                 </div>
                 <div class="form-group">
-                    <label><i class="fas fa-list"></i> الفئة</label>
+                    <label><i class="fas fa-list"></i> <span data-lang-key="category">الفئة</span></label>
                     <select id="productCategory">
-                        <option value="خضروات">🥬 خضروات</option>
-                        <option value="فواكه">🍎 فواكه</option>
-                        <option value="حبوب">🌾 حبوب</option>
-                        <option value="مشتقات حيوانية">🥛 مشتقات حيوانية</option>
-                        <option value="معدات">🚜 معدات فلاحية</option>
-                        <option value="أسمدة">🌱 أسمدة</option>
-                        <option value="مبيدات">🧪 مبيدات</option>
-                        <option value="أخرى">📦 أخرى</option>
+                        <option value="خضروات">🥬 <span data-lang-key="catVeg">خضروات</span></option>
+                        <option value="فواكه">🍎 <span data-lang-key="catFruit">فواكه</span></option>
+                        <option value="حبوب">🌾 <span data-lang-key="catGrain">حبوب</span></option>
+                        <option value="مشتقات حيوانية">🥛 <span data-lang-key="catDairy">مشتقات حيوانية</span></option>
+                        <option value="معدات">🚜 <span data-lang-key="catEquip">معدات فلاحية</span></option>
+                        <option value="أسمدة">🌱 <span data-lang-key="catFert">أسمدة</span></option>
+                        <option value="مبيدات">🧪 <span data-lang-key="catPest">مبيدات</span></option>
+                        <option value="أخرى">📦 <span data-lang-key="catOther">أخرى</span></option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label><i class="fas fa-dollar-sign"></i> السعر (درهم)</label>
+                    <label><i class="fas fa-dollar-sign"></i> <span data-lang-key="price">السعر (درهم)</span></label>
                     <input type="number" id="productPrice" placeholder="مثال: 150">
                 </div>
                 <div class="form-group">
-                    <label><i class="fas fa-balance-scale"></i> الكمية</label>
+                    <label><i class="fas fa-balance-scale"></i> <span data-lang-key="quantity">الكمية</span></label>
                     <input type="text" id="productQuantity" placeholder="مثال: 50 كغ">
                 </div>
                 <div class="form-group">
-                    <label><i class="fas fa-map-marker-alt"></i> الموقع</label>
+                    <label><i class="fas fa-map-marker-alt"></i> <span data-lang-key="location">الموقع</span></label>
                     <input type="text" id="productLocation" placeholder="مثال: الدار البيضاء">
                 </div>
                 <div class="form-group">
-                    <label><i class="fas fa-phone"></i> رقم الهاتف</label>
+                    <label><i class="fas fa-phone"></i> <span data-lang-key="phone">رقم الهاتف</span></label>
                     <input type="tel" id="productPhone" placeholder="مثال: 06XXXXXXXX">
                 </div>
                 <div class="form-group">
-                    <label><i class="fas fa-image"></i> صورة الغلاف</label>
+                    <label><i class="fas fa-image"></i> <span data-lang-key="coverImg">صورة الغلاف</span></label>
                     <div class="file-upload" onclick="document.getElementById('coverImage').click()">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <span>اضغط لرفع صورة الغلاف</span>
+                        <i class="fas fa-cloud-upload-alt"></i> <span data-lang-key="uploadCover">اضغط لرفع صورة الغلاف</span>
                     </div>
-                    <input type="file" id="coverImage" accept="image/*" style="display:none" onchange="previewCoverImage()">
+                    <input type="file" id="coverImage" accept="image/*" style="display:none" onchange="handleCoverImageUpload()">
                     <div class="image-preview" id="coverPreview"></div>
+                    <div class="uploading-indicator" id="uploadIndicator"><i class="fas fa-spinner"></i> <span data-lang-key="uploading">جاري رفع الصورة...</span></div>
                 </div>
                 <div class="form-group">
-                    <label><i class="fas fa-images"></i> صور إضافية</label>
+                    <label><i class="fas fa-images"></i> <span data-lang-key="extraImgs">صور إضافية</span></label>
                     <div class="file-upload" onclick="document.getElementById('extraImages').click()">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <span>اضغط لرفع صور إضافية</span>
+                        <i class="fas fa-cloud-upload-alt"></i> <span data-lang-key="uploadExtra">اضغط لرفع صور إضافية</span>
                     </div>
                     <input type="file" id="extraImages" accept="image/*" multiple style="display:none" onchange="previewExtraImages()">
                     <div class="image-preview" id="extraImagesPreview"></div>
                 </div>
                 <div class="form-group">
-                    <label><i class="fas fa-align-left"></i> الوصف</label>
-                    <textarea id="productDesc" rows="2" placeholder="وصف تفصيلي للمنتج..."></textarea>
+                    <label><i class="fas fa-align-left"></i> <span data-lang-key="desc">الوصف</span></label>
+                    <textarea id="productDesc" rows="2" data-lang-key="descPlaceholder" placeholder="وصف تفصيلي للمنتج..."></textarea>
                 </div>
             </div>
-            <button class="submit-btn" onclick="addProduct()"><i class="fas fa-cloud-upload-alt"></i> إضافة المنتج</button>
+            <button class="submit-btn" id="submitProductBtn" onclick="addProduct()">
+                <i class="fas fa-cloud-upload-alt"></i> <span data-lang-key="submitBtn">إضافة المنتج</span>
+            </button>
         </div>
 
+        <!-- ===== شبكة المنتجات ===== -->
         <div class="products-grid" id="approvedGrid">
-            <div style="grid-column:1/-1; text-align:center; padding:60px;">
-                <i class="fas fa-spinner fa-spin" style="font-size:40px;"></i>
-                <h3>جاري تحميل المنتجات...</h3>
+            <div style="grid-column:1/-1; text-align:center; padding:40px;">
+                <i class="fas fa-spinner fa-spin" style="font-size:35px;"></i>
+                <h3 data-lang-key="loading">جاري تحميل المنتجات...</h3>
+            </div>
+        </div>
+
+        <!-- ===== قسم التغذية الراجعة ===== -->
+        <div class="feedback-section" data-aos="fade-up">
+            <div class="feedback-inner">
+                <div class="feedback-icon"><i class="fas fa-comment-dots"></i></div>
+                <div>
+                    <div class="feedback-title" data-lang-key="feedbackTitle">💬 إبلاغ عن مشكلة أو اقتراح</div>
+                    <div class="feedback-sub" data-lang-key="feedbackSub">نرحب بملاحظاتك لتطوير المنصة</div>
+                </div>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSeXPpvcl-CUd4EUesdfL0HgaXFtOD8k-Ug7kfA7M-uickgwXQ/viewform?usp=header" target="_blank" class="feedback-btn">
+                    <i class="fas fa-pen"></i> <span data-lang-key="feedbackBtn">اكتب ملاحظتك</span> <i class="fas fa-arrow-left" style="font-size:13px;"></i>
+                </a>
             </div>
         </div>
     </div>
 
+    <!-- ===== فوتر ===== -->
     <footer class="footer">
-        <p>© 2026 Agri Maroc Précis - جميع الحقوق محفوظة | المنصة المتكاملة للفلاحة الذكية</p>
+        <p data-lang-key="footer">© 2026 SONE Marché - جميع الحقوق محفوظة | المنصة المتكاملة للفلاحة الذكية</p>
     </footer>
 
-    <div id="detailModal" class="detail-modal">
-        <div class="detail-content" id="detailContent"></div>
-    </div>
-
+    <!-- ===== مودال التفاصيل ===== -->
+    <div id="detailModal" class="detail-modal"><div class="detail-content" id="detailContent"></div></div>
     <div class="toast" id="toast"></div>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({ duration: 800, once: true });
+        // ===============================
+        // 1. بيانات الترجمة
+        // ===============================
+        const translations = {
+            ar: {
+                dir: 'rtl',
+                subtitle: 'سوق الفلاحة الذكي',
+                badge: 'بيع وشراء',
+                pageTitle: 'سوق الفلاحة',
+                pageDesc: 'منصة متكاملة لعرض المنتجات الزراعية والتواصل بين البائعين والمشترين',
+                addBtn: '➕ أضف منتجك للبيع',
+                addShort: 'إضافة',
+                marketBtn: 'السوق',
+                searchPlaceholder: '🔍 ابحث عن منتج...',
+                searchBtn: 'بحث',
+                formTitle: 'نموذج إضافة منتج',
+                productName: 'اسم المنتج',
+                namePlaceholder: 'مثال: طماطم عضوية',
+                category: 'الفئة',
+                catVeg: 'خضروات',
+                catFruit: 'فواكه',
+                catGrain: 'حبوب',
+                catDairy: 'مشتقات حيوانية',
+                catEquip: 'معدات فلاحية',
+                catFert: 'أسمدة',
+                catPest: 'مبيدات',
+                catOther: 'أخرى',
+                price: 'السعر (درهم)',
+                quantity: 'الكمية',
+                location: 'الموقع',
+                phone: 'رقم الهاتف',
+                coverImg: 'صورة الغلاف',
+                uploadCover: 'اضغط لرفع صورة الغلاف',
+                extraImgs: 'صور إضافية',
+                uploadExtra: 'اضغط لرفع صور إضافية',
+                desc: 'الوصف',
+                descPlaceholder: 'وصف تفصيلي للمنتج...',
+                submitBtn: 'إضافة المنتج',
+                loading: 'جاري تحميل المنتجات...',
+                feedbackTitle: '💬 إبلاغ عن مشكلة أو اقتراح',
+                feedbackSub: 'نرحب بملاحظاتك لتطوير المنصة',
+                feedbackBtn: 'اكتب ملاحظتك',
+                footer: '© 2026 SONE Marché - جميع الحقوق محفوظة | المنصة المتكاملة للفلاحة الذكية',
+                noProducts: 'لا توجد منتجات',
+                noProductsSub: 'كن أول من يضيف منتجاً!',
+                productAdded: '✅ تم إضافة المنتج، سيتم مراجعته',
+                uploadSuccess: '✅ تم رفع الصورة بنجاح',
+                uploadFailed: 'فشل رفع الصورة',
+                fillFields: 'الرجاء تعبئة جميع الحقول المطلوبة',
+                uploadCoverFirst: '⚠️ الرجاء رفع صورة الغلاف أولاً',
+                errorLoading: 'خطأ في تحميل المنتجات',
+                notFound: 'المنتج غير موجود',
+                errorDetail: 'خطأ في عرض التفاصيل',
+                seller: 'البائع',
+                phoneLabel: 'الهاتف',
+                whatsapp: 'واتساب',
+                close: '✖ إغلاق',
+                categoryLabel: '🏷️ الفئة',
+                priceLabel: '💰 السعر',
+                quantityLabel: '📦 الكمية',
+                locationLabel: '📍 الموقع',
+                phoneDetail: '📞 الهاتف',
+                sellerDetail: '👤 البائع',
+                dateDetail: '📅 تاريخ الإضافة',
+                descDetail: '📝 الوصف',
+                noDesc: 'لا يوجد',
+                extraImagesTitle: '📸 صور إضافية',
+                uploading: 'جاري رفع الصورة...'
+            },
+            fr: {
+                dir: 'ltr',
+                subtitle: 'Marché agricole intelligent',
+                badge: 'Achat & Vente',
+                pageTitle: 'Marché Agricole',
+                pageDesc: 'Plateforme complète pour exposer les produits agricoles et mettre en relation acheteurs et vendeurs',
+                addBtn: '➕ Ajouter votre produit',
+                addShort: 'Ajouter',
+                marketBtn: 'Marché',
+                searchPlaceholder: '🔍 Rechercher un produit...',
+                searchBtn: 'Rechercher',
+                formTitle: 'Formulaire d\'ajout',
+                productName: 'Nom du produit',
+                namePlaceholder: 'Ex: Tomates Bio',
+                category: 'Catégorie',
+                catVeg: 'Légumes',
+                catFruit: 'Fruits',
+                catGrain: 'Céréales',
+                catDairy: 'Produits laitiers',
+                catEquip: 'Équipement agricole',
+                catFert: 'Engrais',
+                catPest: 'Pesticides',
+                catOther: 'Autres',
+                price: 'Prix (DH)',
+                quantity: 'Quantité',
+                location: 'Emplacement',
+                phone: 'Téléphone',
+                coverImg: 'Image de couverture',
+                uploadCover: 'Cliquez pour ajouter une image',
+                extraImgs: 'Images supplémentaires',
+                uploadExtra: 'Ajouter des images',
+                desc: 'Description',
+                descPlaceholder: 'Description détaillée du produit...',
+                submitBtn: 'Ajouter le produit',
+                loading: 'Chargement des produits...',
+                feedbackTitle: '💬 Signaler un problème ou suggestion',
+                feedbackSub: 'Nous accueillons vos commentaires',
+                feedbackBtn: 'Écrire votre avis',
+                footer: '© 2026 SONE Marché - Tous droits réservés | Plateforme agricole intelligente',
+                noProducts: 'Aucun produit',
+                noProductsSub: 'Soyez le premier à ajouter un produit!',
+                productAdded: '✅ Produit ajouté, il sera examiné',
+                uploadSuccess: '✅ Image téléchargée avec succès',
+                uploadFailed: 'Échec du téléchargement',
+                fillFields: 'Veuillez remplir tous les champs obligatoires',
+                uploadCoverFirst: '⚠️ Veuillez d\'abord télécharger une image de couverture',
+                errorLoading: 'Erreur de chargement',
+                notFound: 'Produit non trouvé',
+                errorDetail: 'Erreur',
+                seller: 'Vendeur',
+                phoneLabel: 'Téléphone',
+                whatsapp: 'WhatsApp',
+                close: '✖ Fermer',
+                categoryLabel: '🏷️ Catégorie',
+                priceLabel: '💰 Prix',
+                quantityLabel: '📦 Quantité',
+                locationLabel: '📍 Emplacement',
+                phoneDetail: '📞 Téléphone',
+                sellerDetail: '👤 Vendeur',
+                dateDetail: '📅 Date d\'ajout',
+                descDetail: '📝 Description',
+                noDesc: 'Aucune',
+                extraImagesTitle: '📸 Images supplémentaires',
+                uploading: 'Téléchargement...'
+            },
+            en: {
+                dir: 'ltr',
+                subtitle: 'Smart Agricultural Market',
+                badge: 'Buy & Sell',
+                pageTitle: 'Agricultural Market',
+                pageDesc: 'Complete platform for showcasing agricultural products and connecting buyers and sellers',
+                addBtn: '➕ Add your product',
+                addShort: 'Add',
+                marketBtn: 'Market',
+                searchPlaceholder: '🔍 Search for a product...',
+                searchBtn: 'Search',
+                formTitle: 'Add Product Form',
+                productName: 'Product Name',
+                namePlaceholder: 'Ex: Organic Tomatoes',
+                category: 'Category',
+                catVeg: 'Vegetables',
+                catFruit: 'Fruits',
+                catGrain: 'Grains',
+                catDairy: 'Dairy',
+                catEquip: 'Farm Equipment',
+                catFert: 'Fertilizers',
+                catPest: 'Pesticides',
+                catOther: 'Other',
+                price: 'Price (DH)',
+                quantity: 'Quantity',
+                location: 'Location',
+                phone: 'Phone',
+                coverImg: 'Cover Image',
+                uploadCover: 'Click to upload cover image',
+                extraImgs: 'Additional Images',
+                uploadExtra: 'Add extra images',
+                desc: 'Description',
+                descPlaceholder: 'Detailed product description...',
+                submitBtn: 'Add Product',
+                loading: 'Loading products...',
+                feedbackTitle: '💬 Report an issue or suggestion',
+                feedbackSub: 'We welcome your feedback',
+                feedbackBtn: 'Write your feedback',
+                footer: '© 2026 SONE Marché - All rights reserved | Smart Agricultural Platform',
+                noProducts: 'No products',
+                noProductsSub: 'Be the first to add a product!',
+                productAdded: '✅ Product added, it will be reviewed',
+                uploadSuccess: '✅ Image uploaded successfully',
+                uploadFailed: 'Upload failed',
+                fillFields: 'Please fill in all required fields',
+                uploadCoverFirst: '⚠️ Please upload a cover image first',
+                errorLoading: 'Error loading products',
+                notFound: 'Product not found',
+                errorDetail: 'Error',
+                seller: 'Seller',
+                phoneLabel: 'Phone',
+                whatsapp: 'WhatsApp',
+                close: '✖ Close',
+                categoryLabel: '🏷️ Category',
+                priceLabel: '💰 Price',
+                quantityLabel: '📦 Quantity',
+                locationLabel: '📍 Location',
+                phoneDetail: '📞 Phone',
+                sellerDetail: '👤 Seller',
+                dateDetail: '📅 Date added',
+                descDetail: '📝 Description',
+                noDesc: 'None',
+                extraImagesTitle: '📸 Additional Images',
+                uploading: 'Uploading...'
+            }
+        };
 
-        // ============================================================
-        // إعدادات Supabase
-        // ============================================================
+        let currentLang = 'ar';
+
+        // ===============================
+        // 2. دالة تبديل اللغة
+        // ===============================
+        function switchLanguage(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+            
+            document.documentElement.dir = t.dir;
+            document.body.dir = t.dir;
+            document.documentElement.lang = lang === 'ar' ? 'ar' : (lang === 'fr' ? 'fr' : 'en');
+            
+            document.querySelectorAll('[data-lang-key]').forEach(el => {
+                const key = el.getAttribute('data-lang-key');
+                if (t[key] !== undefined) {
+                    if (el.tagName === 'INPUT' && el.type === 'text') {
+                        el.placeholder = t[key];
+                    } else if (el.tagName === 'TEXTAREA') {
+                        el.placeholder = t[key];
+                    } else {
+                        el.textContent = t[key];
+                    }
+                }
+            });
+            
+            // تحديث خيارات الفئة
+            const catOptions = {
+                'خضروات': t.catVeg,
+                'فواكه': t.catFruit,
+                'حبوب': t.catGrain,
+                'مشتقات حيوانية': t.catDairy,
+                'معدات': t.catEquip,
+                'أسمدة': t.catFert,
+                'مبيدات': t.catPest,
+                'أخرى': t.catOther
+            };
+            const emojiMap = {
+                'خضروات': '🥬',
+                'فواكه': '🍎',
+                'حبوب': '🌾',
+                'مشتقات حيوانية': '🥛',
+                'معدات': '🚜',
+                'أسمدة': '🌱',
+                'مبيدات': '🧪',
+                'أخرى': '📦'
+            };
+            document.querySelectorAll('#productCategory option').forEach(opt => {
+                const val = opt.value;
+                if (catOptions[val]) {
+                    opt.textContent = (emojiMap[val] || '') + ' ' + catOptions[val];
+                }
+            });
+            
+            // تحديث زر العودة: اتجاه السهم
+            const backBtn = document.querySelector('.back-btn i');
+            if (backBtn) {
+                backBtn.style.transform = t.dir === 'rtl' ? 'rotate(180deg)' : 'rotate(0deg)';
+            }
+            
+            document.querySelectorAll('.lang-switcher a').forEach(a => {
+                a.classList.toggle('active', a.getAttribute('data-lang') === lang);
+            });
+            
+            renderApproved();
+        }
+
+        // ===============================
+        // 3. إعدادات Supabase
+        // ===============================
         const SUPABASE_URL = 'https://zpjuhprlcaigmczhqlye.supabase.co';
         const DATA_API_KEY = 'sb_publishable_PVQ61DBLGYjzaXy-XFrWpA_k_94iEvK';
         const STORAGE_API_KEY = 'sb_secret_v88CwWP_kBCh_aZ6RSc6gQ_HSPmSPrY';
@@ -539,12 +1102,12 @@
             'Content-Type': 'application/json'
         };
 
-        let currentCoverImage = null;
+        let uploadedCoverUrl = null;
         let currentExtraImages = [];
 
-        // ============================================================
-        // ✅ دالة رفع الصورة مع رابط صحيح
-        // ============================================================
+        // ===============================
+        // 4. دوال رفع الصور
+        // ===============================
         async function uploadImageToStorage(file, folder = 'products') {
             const fileExt = file.name.split('.').pop();
             const fileName = `${folder}/${Date.now()}_${Math.random().toString(36).substring(2, 8)}.${fileExt}`;
@@ -562,33 +1125,53 @@
 
             if (!response.ok) {
                 const err = await response.text();
-                throw new Error(`فشل رفع الصورة: ${err}`);
+                throw new Error(`${translations[currentLang].uploadFailed}: ${err}`);
             }
 
-            const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/${BUCKET_NAME}/${fileName}`;
-            console.log('✅ تم رفع الصورة:', publicUrl);
-            return publicUrl;
+            return `${SUPABASE_URL}/storage/v1/object/public/${BUCKET_NAME}/${fileName}`;
         }
 
-        // ============================================================
-        // معاينة الصور
-        // ============================================================
-        function previewCoverImage() {
+        async function handleCoverImageUpload() {
             const file = document.getElementById('coverImage').files[0];
-            if (file && file.type.startsWith('image/')) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    currentCoverImage = e.target.result;
-                    document.getElementById('coverPreview').innerHTML = `<div class="image-preview-item"><img src="${currentCoverImage}"><div class="remove-image" onclick="removeCoverImage()">×</div></div>`;
-                };
-                reader.readAsDataURL(file);
+            if (!file || !file.type.startsWith('image/')) return;
+
+            const preview = document.getElementById('coverPreview');
+            const indicator = document.getElementById('uploadIndicator');
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.innerHTML = `<div class="image-preview-item"><img src="${e.target.result}"><div class="remove-image" onclick="removeCoverImage()">×</div></div>`;
+            };
+            reader.readAsDataURL(file);
+
+            indicator.style.display = 'block';
+            document.getElementById('submitProductBtn').disabled = true;
+            document.getElementById('submitProductBtn').style.opacity = '0.6';
+
+            try {
+                uploadedCoverUrl = await uploadImageToStorage(file, 'products');
+                indicator.innerHTML = `<i class="fas fa-check-circle" style="color:#4CAF50;"></i> ${translations[currentLang].uploadSuccess}`;
+                indicator.style.color = '#4CAF50';
+            } catch (error) {
+                indicator.innerHTML = '❌ ' + error.message;
+                indicator.style.color = '#f44336';
+                uploadedCoverUrl = null;
             }
+
+            setTimeout(() => {
+                indicator.style.display = 'none';
+                document.getElementById('submitProductBtn').disabled = false;
+                document.getElementById('submitProductBtn').style.opacity = '1';
+                indicator.innerHTML = `<i class="fas fa-spinner"></i> ${translations[currentLang].uploading}`;
+                indicator.style.color = '#A8842A';
+            }, 3000);
         }
 
         function removeCoverImage() {
-            currentCoverImage = null;
+            uploadedCoverUrl = null;
             document.getElementById('coverPreview').innerHTML = '';
             document.getElementById('coverImage').value = '';
+            document.getElementById('uploadIndicator').style.display = 'none';
         }
 
         function previewExtraImages() {
@@ -615,36 +1198,32 @@
             element.parentElement.remove();
         }
 
-        // ============================================================
-        // التعامل مع قاعدة البيانات
-        // ============================================================
+        // ===============================
+        // 5. دوال المنتجات
+        // ===============================
         async function fetchProducts() {
             const res = await fetch(`${SUPABASE_URL}/rest/v1/products?select=*`, { headers });
-            if (!res.ok) throw new Error(`فشل جلب المنتجات: ${res.status}`);
+            if (!res.ok) throw new Error(`${translations[currentLang].errorLoading}: ${res.status}`);
             return await res.json();
         }
 
-        // ============================================================
-        // ✅ عرض المنتجات المقبولة فقط مع الصور
-        // ============================================================
+        let allProductsCache = [];
+
         async function renderApproved() {
+            const t = translations[currentLang];
             try {
-                const allProducts = await fetchProducts();
-                const approved = allProducts.filter(p => p.status === 'approved');
+                allProductsCache = await fetchProducts();
+                const approved = allProductsCache.filter(p => p.status === 'approved');
                 const grid = document.getElementById('approvedGrid');
                 if (approved.length === 0) {
-                    grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:60px;"><i class="fas fa-store-slash" style="font-size:60px;"></i><h3>لا توجد منتجات</h3><p>كن أول من يضيف منتجاً!</p></div>`;
+                    grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px;"><i class="fas fa-store-slash" style="font-size:40px;"></i><h3>${t.noProducts}</h3><p>${t.noProductsSub}</p></div>`;
                     return;
                 }
                 grid.innerHTML = approved.map(p => {
                     const imageUrl = p.cover_image || '';
                     return `
-                    <div class="product-card" onclick="showProductDetail(${p.id})">
-                        <img class="product-image" 
-                             src="${imageUrl}" 
-                             alt="${p.name}"
-                             loading="lazy"
-                             onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\\'display:flex;align-items:center;justify-content:center;height:220px;background:#1C2A16;color:#666;font-size:60px;\\'>📷</div>';">
+                    <div class="product-card" data-product-id="${p.id}" onclick="showProductDetail(${p.id})">
+                        <img class="product-image" src="${imageUrl}" alt="${p.name}" loading="lazy" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\\'display:flex;align-items:center;justify-content:center;height:200px;background:#1C2A16;color:#666;font-size:50px;\\'>📷</div>';">
                         <div class="product-info">
                             <span class="product-category"><i class="fas fa-tag"></i> ${p.category}</span>
                             <h3 class="product-title">${p.name}</h3>
@@ -653,27 +1232,69 @@
                                 <span class="detail-item"><i class="fas fa-balance-scale"></i> ${p.quantity}</span>
                                 <span class="detail-item"><i class="fas fa-map-marker-alt"></i> ${p.city || p.location || ''}</span>
                             </div>
-                            <div class="product-price">${p.price} درهم</div>
+                            <div class="product-price">${p.price} ${currentLang === 'ar' ? 'درهم' : 'DH'}</div>
                             <div class="seller-info">
-                                <span><i class="fas fa-user"></i> البائع: ${p.seller}</span>
+                                <span><i class="fas fa-user"></i> ${t.seller}: ${p.seller}</span>
                                 <span><i class="fas fa-calendar-alt"></i> ${p.date}</span>
                             </div>
                             <div class="seller-info">
                                 <span><i class="fas fa-phone"></i> ${p.phone}</span>
-                                <a href="https://wa.me/${p.phone}" target="_blank" style="color: #25D366; text-decoration: none;"><i class="fab fa-whatsapp"></i> واتساب</a>
+                                <a href="https://wa.me/${p.phone}" target="_blank" style="color: #25D366; text-decoration: none;"><i class="fab fa-whatsapp"></i> ${t.whatsapp}</a>
                             </div>
                         </div>
                     </div>
                 `}).join('');
             } catch (error) {
-                showToast('خطأ في تحميل المنتجات: ' + error.message, 'error');
+                showToast(t.errorLoading + ': ' + error.message, 'error');
             }
         }
 
-        // ============================================================
-        // إضافة منتج
-        // ============================================================
+        // ===============================
+        // 6. وظيفة البحث
+        // ===============================
+        function filterProducts() {
+            const query = document.getElementById('searchInput').value.trim().toLowerCase();
+            const cards = document.querySelectorAll('.product-card');
+            let visibleCount = 0;
+            cards.forEach(card => {
+                const title = card.querySelector('.product-title')?.textContent?.toLowerCase() || '';
+                const desc = card.querySelector('.product-desc')?.textContent?.toLowerCase() || '';
+                const category = card.querySelector('.product-category')?.textContent?.toLowerCase() || '';
+                const match = title.includes(query) || desc.includes(query) || category.includes(query);
+                card.style.display = match ? '' : 'none';
+                if (match) visibleCount++;
+            });
+            // إذا لم تظهر نتائج
+            const grid = document.getElementById('approvedGrid');
+            const noResult = grid.querySelector('.no-result-msg');
+            if (query && visibleCount === 0) {
+                if (!noResult) {
+                    const msg = document.createElement('div');
+                    msg.className = 'no-result-msg';
+                    msg.style.cssText = 'grid-column:1/-1; text-align:center; padding:40px;';
+                    msg.innerHTML = `<i class="fas fa-search" style="font-size:40px;color:#A8842A;"></i><h3 style="margin-top:10px;">${translations[currentLang].noProducts || 'لا توجد نتائج'}</h3>`;
+                    grid.appendChild(msg);
+                }
+            } else if (noResult) {
+                noResult.remove();
+            }
+        }
+
+        function toggleSearchBar() {
+            const bar = document.getElementById('searchBar');
+            const toggle = document.getElementById('searchToggle');
+            bar.classList.toggle('hidden');
+            toggle.classList.toggle('active');
+            if (!bar.classList.contains('hidden')) {
+                document.getElementById('searchInput').focus();
+            }
+        }
+
+        // ===============================
+        // 7. إضافة منتج
+        // ===============================
         async function addProduct() {
+            const t = translations[currentLang];
             const name = document.getElementById('productName').value.trim();
             const category = document.getElementById('productCategory').value;
             const price = document.getElementById('productPrice').value;
@@ -683,43 +1304,35 @@
             const desc = document.getElementById('productDesc').value.trim();
 
             if (!name || !price || !quantity || !city || !phone) {
-                showToast("الرجاء تعبئة جميع الحقول المطلوبة", "error");
+                showToast(t.fillFields, 'error');
                 return;
             }
 
-            let coverUrl = null;
+            if (!uploadedCoverUrl) {
+                showToast(t.uploadCoverFirst, 'error');
+                return;
+            }
+
             let extraUrls = [];
-
-            try {
-                const coverFile = document.getElementById('coverImage').files[0];
-                if (coverFile) {
-                    coverUrl = await uploadImageToStorage(coverFile, 'products');
-                }
-
-                const extraFiles = document.getElementById('extraImages').files;
-                for (let file of extraFiles) {
-                    if (file.type.startsWith('image/')) {
-                        const url = await uploadImageToStorage(file, 'products');
-                        extraUrls.push(url);
+            const extraFiles = document.getElementById('extraImages').files;
+            for (let file of extraFiles) {
+                if (file.type.startsWith('image/')) {
+                    try {
+                        extraUrls.push(await uploadImageToStorage(file, 'products'));
+                    } catch (e) {
+                        showToast(t.uploadFailed + ': ' + e.message, 'error');
                     }
                 }
-            } catch (uploadError) {
-                showToast('فشل رفع الصور: ' + uploadError.message, 'error');
-                return;
             }
 
+            const sellerNames = { ar: 'زائر', fr: 'Visiteur', en: 'Visitor' };
             const newProduct = {
-                name,
-                category,
-                price: parseFloat(price),
-                quantity,
-                city: city,
-                phone,
-                cover_image: coverUrl || null,
+                name, category, price: parseFloat(price), quantity, city, phone,
+                cover_image: uploadedCoverUrl,
                 extra_images: extraUrls.length > 0 ? extraUrls : null,
                 description: desc || '',
                 status: 'pending',
-                seller: 'زائر',
+                seller: sellerNames[currentLang] || 'Visitor',
                 date: new Date().toISOString().split('T')[0],
                 is_active: true
             };
@@ -730,12 +1343,10 @@
                     headers: { ...headers, 'Prefer': 'return=representation' },
                     body: JSON.stringify(newProduct)
                 });
-                if (!res.ok) {
-                    const err = await res.text();
-                    throw new Error(`فشل إضافة المنتج: ${err}`);
-                }
+                if (!res.ok) throw new Error(await res.text());
 
-                showToast("✅ تم إضافة المنتج، سيتم مراجعته", "success");
+                showToast(t.productAdded, 'success');
+                
                 document.getElementById('productName').value = '';
                 document.getElementById('productPrice').value = '';
                 document.getElementById('productQuantity').value = '';
@@ -746,7 +1357,7 @@
                 document.getElementById('extraImagesPreview').innerHTML = '';
                 document.getElementById('coverImage').value = '';
                 document.getElementById('extraImages').value = '';
-                currentCoverImage = null;
+                uploadedCoverUrl = null;
                 currentExtraImages = [];
                 document.getElementById('addProductForm').classList.remove('show');
                 renderApproved();
@@ -755,49 +1366,47 @@
             }
         }
 
-        // ============================================================
-        // عرض تفاصيل المنتج
-        // ============================================================
+        // ===============================
+        // 8. عرض التفاصيل
+        // ===============================
         async function showProductDetail(id) {
+            const t = translations[currentLang];
             try {
                 const all = await fetchProducts();
                 const p = all.find(item => item.id === id);
                 if (!p) {
-                    showToast('المنتج غير موجود', 'error');
+                    showToast(t.notFound, 'error');
                     return;
                 }
 
                 let extraImagesHtml = '';
                 if (p.extra_images && p.extra_images.length > 0) {
-                    extraImagesHtml = `<div class="detail-section"><h3>📸 صور إضافية</h3><div class="detail-gallery">${p.extra_images.map(img => `<img src="${img}" onclick="window.open('${img}','_blank')" onerror="this.style.display='none'">`).join('')}</div></div>`;
+                    extraImagesHtml = `<div class="detail-section"><h3>${t.extraImagesTitle}</h3><div class="detail-gallery">${p.extra_images.map(img => `<img src="${img}" onclick="window.open('${img}','_blank')" onerror="this.style.display='none'">`).join('')}</div></div>`;
                 }
 
+                const currency = currentLang === 'ar' ? 'درهم' : 'DH';
                 const detailHtml = `
-                    <div class="detail-header">
-                        <h2>${p.name}</h2>
-                    </div>
-                    <img src="${p.cover_image || ''}" 
-                         style="width:100%; border-radius:16px; margin-bottom:15px; background:#1C2A16; min-height:200px; object-fit:cover;"
-                         onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\\'text-align:center;padding:40px;font-size:60px;color:#666;\\'>📷</div>'+this.parentElement.innerHTML;">
+                    <div class="detail-header"><h2>${p.name}</h2></div>
+                    <img src="${p.cover_image || ''}" style="width:100%; border-radius:14px; margin-bottom:12px; background:#1C2A16; min-height:180px; object-fit:cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\\'text-align:center;padding:30px;font-size:50px;color:#666;\\'>📷</div>'+this.parentElement.innerHTML;">
                     ${extraImagesHtml}
                     <div class="detail-section">
-                        <p><strong>🏷️ الفئة:</strong> ${p.category}</p>
-                        <p><strong>💰 السعر:</strong> ${p.price} درهم</p>
-                        <p><strong>📦 الكمية:</strong> ${p.quantity}</p>
-                        <p><strong>📍 الموقع:</strong> ${p.city || p.location || ''}</p>
-                        <p><strong>📞 الهاتف:</strong> ${p.phone}</p>
-                        <p><strong>👤 البائع:</strong> ${p.seller}</p>
-                        <p><strong>📅 تاريخ الإضافة:</strong> ${p.date}</p>
+                        <p><strong>${t.categoryLabel}:</strong> ${p.category}</p>
+                        <p><strong>${t.priceLabel}:</strong> ${p.price} ${currency}</p>
+                        <p><strong>${t.quantityLabel}:</strong> ${p.quantity}</p>
+                        <p><strong>${t.locationLabel}:</strong> ${p.city || p.location || ''}</p>
+                        <p><strong>${t.phoneDetail}:</strong> ${p.phone}</p>
+                        <p><strong>${t.sellerDetail}:</strong> ${p.seller}</p>
+                        <p><strong>${t.dateDetail}:</strong> ${p.date}</p>
                     </div>
                     <div class="detail-section">
-                        <p><strong>📝 الوصف:</strong> ${p.description || 'لا يوجد'}</p>
+                        <p><strong>${t.descDetail}:</strong> ${p.description || t.noDesc}</p>
                     </div>
-                    <button class="close-detail" onclick="closeDetailModal()">✖ إغلاق</button>
+                    <button class="close-detail" onclick="closeDetailModal()">${t.close}</button>
                 `;
                 document.getElementById('detailContent').innerHTML = detailHtml;
                 document.getElementById('detailModal').classList.add('active');
             } catch (error) {
-                showToast('خطأ في عرض التفاصيل: ' + error.message, 'error');
+                showToast(t.errorDetail + ': ' + error.message, 'error');
             }
         }
 
@@ -805,9 +1414,6 @@
             document.getElementById('detailModal').classList.remove('active');
         }
 
-        // ============================================================
-        // دوال مساعدة
-        // ============================================================
         function toggleForm() {
             const form = document.getElementById('addProductForm');
             form.classList.toggle('show');
@@ -824,19 +1430,28 @@
             setTimeout(() => toast.style.display = 'none', 3000);
         }
 
-        // ============================================================
-        // بدء التشغيل
-        // ============================================================
-        window.addEventListener('scroll', () => {
-            document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
-        });
-
+        // ===============================
+        // 9. الأحداث والتشغيل الأولي
+        // ===============================
         document.getElementById('detailModal').addEventListener('click', function(e) {
             if (e.target === this) closeDetailModal();
         });
 
+        window.addEventListener('scroll', () => {
+            document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // البحث عند الضغط على Enter
+        document.getElementById('searchInput').addEventListener('keyup', function(e) {
+            if (e.key === 'Enter') filterProducts();
+        });
+
+        AOS.init({ duration: 800, once: true });
+
+        // تعيين اللغة الافتراضية
+        switchLanguage('ar');
         renderApproved();
-        console.log('🌾 سوق الفلاحة - نسخة نهائية مع إصلاح الصور');
+        console.log('🌾 SONE Marché - Multilingual with Search & Hero Image');
     </script>
 </body>
 </html>

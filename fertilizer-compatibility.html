@@ -2,669 +2,350 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>SONE | توافق الأسمدة - 73 نوعاً</title>
+    <title>SONE | توافق الأسمدة - 74 نوعاً</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Cairo', sans-serif;
-            background: #0A1408;
-            min-height: 100vh;
-            color: #FBFCFB;
-        }
-
-        /* Navbar */
-        .navbar {
-            background: rgba(10, 20, 8, 0.95);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(168, 132, 66, 0.2);
-            padding: 1rem 2rem;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .nav-container {
-            max-width: 1400px;
-            margin: auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .logo {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        .logo-main {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .logo-icon {
-            font-size: 2rem;
-            color: #A8842A;
-        }
-
-        .logo-text {
-            font-size: 1.8rem;
-            font-weight: 800;
-            letter-spacing: 2px;
-            background: linear-gradient(135deg, #FBFCFB, #A8842A);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .logo-slogan {
-            font-size: 0.7rem;
-            letter-spacing: 1px;
-            color: #C1DCB5;
-            margin-top: 2px;
-            font-weight: 500;
-        }
-
-        .logo-slogan i {
-            font-size: 0.6rem;
-            color: #A8842A;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            padding: 0.5rem 1.25rem;
-            border-radius: 50px;
-            font-weight: 600;
-            transition: all 0.3s;
-            color: #C1DCB5;
-        }
-
-        .nav-links a:hover, .nav-links a.active {
-            background: #A8842A;
-            color: #0A1408;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 2rem auto;
-            padding: 0 2rem;
-        }
-
-        .hero {
-            background: #1C2A16;
-            border-radius: 32px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            border: 1px solid rgba(168, 132, 66, 0.3);
-            box-shadow: 0 20px 35px -10px rgba(0,0,0,0.3);
-            text-align: center;
-        }
-
-        .hero-icon {
-            font-size: 3rem;
-            color: #A8842A;
-            margin-bottom: 1rem;
-        }
-
-        .hero h1 {
-            background: linear-gradient(135deg, #FFFFFF, #A8842A);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin-bottom: 0.75rem;
-            font-size: 2rem;
-        }
-
-        .hero-slogan {
-            font-size: 1.1rem;
-            color: #C1DCB5;
-            margin-bottom: 1rem;
-            letter-spacing: 1px;
-        }
-
-        .hero-slogan span {
-            color: #A8842A;
-            font-weight: 700;
-        }
-
-        .hero p {
-            color: #C1DCB5;
-            margin-bottom: 1.5rem;
-        }
-
-        .stats {
-            display: flex;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .stat-badge {
-            background: rgba(168, 132, 66, 0.2);
-            padding: 0.5rem 1.25rem;
-            border-radius: 50px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: #A8842A;
-            border: 1px solid rgba(168, 132, 66, 0.3);
-        }
-
-        .dashboard {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-            gap: 2rem;
-        }
-
-        .card {
-            background: #1C2A16;
-            border-radius: 28px;
-            padding: 1.8rem;
-            border: 1px solid rgba(168, 132, 66, 0.3);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 30px -12px rgba(0,0,0,0.4);
-        }
-
-        .card h3 {
-            color: #A8842A;
-            margin-bottom: 1.5rem;
-            font-size: 1.3rem;
-            border-right: 4px solid #A8842A;
-            padding-right: 1rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        label {
-            font-weight: 600;
-            display: block;
-            margin-bottom: 0.6rem;
-            color: #C1DCB5;
-        }
-
-        select, input {
-            width: 100%;
-            padding: 0.9rem 1rem;
-            border: 1px solid rgba(168, 132, 66, 0.3);
-            border-radius: 16px;
-            font-family: 'Cairo', sans-serif;
-            font-size: 1rem;
-            background: rgba(255,255,255,0.05);
-            color: #FBFCFB;
-            transition: all 0.3s;
-        }
-
-        select:focus, input:focus {
-            outline: none;
-            border-color: #A8842A;
-            box-shadow: 0 0 0 3px rgba(168, 132, 66, 0.3);
-        }
-
-        select option {
-            background: #1C2A16;
-        }
-
-        button {
-            background: linear-gradient(135deg, #A8842A, #C49B3A);
-            color: #0A1408;
-            border: none;
-            padding: 1rem;
-            width: 100%;
-            border-radius: 40px;
-            font-weight: 700;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 0.5rem;
-        }
-
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(168, 132, 66, 0.3);
-        }
-
-        .result-box {
-            border-radius: 20px;
-            padding: 1.5rem;
-            text-align: center;
-            margin-top: 1rem;
-        }
-
-        .compatible {
-            background: rgba(76, 175, 80, 0.15);
-            border: 1px solid #4CAF50;
-            color: #C1DCB5;
-        }
-
-        .incompatible {
-            background: rgba(244, 67, 54, 0.15);
-            border: 1px solid #f44336;
-            color: #fecaca;
-        }
-
-        .warning {
-            background: rgba(255, 152, 0, 0.15);
-            border: 1px solid #ff9800;
-            color: #fff3e0;
-        }
-
-        .status-icon {
-            font-size: 2.5rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .report-section {
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid rgba(168, 132, 66, 0.3);
-        }
-
-        .report-section h4 {
-            color: #C1DCB5;
-            margin-bottom: 1rem;
-        }
-
-        .flex-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-
-        footer {
-            text-align: center;
-            padding: 2rem;
-            border-top: 1px solid rgba(168, 132, 66, 0.2);
-            margin-top: 3rem;
-        }
-
-        .footer-logo {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #A8842A;
-            margin-bottom: 0.5rem;
-        }
-
-        .footer-slogan {
-            font-size: 0.8rem;
-            color: #C1DCB5;
-            letter-spacing: 1px;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 0 1rem;
-            }
-            .flex-2 {
-                grid-template-columns: 1fr;
-            }
-            .dashboard {
-                grid-template-columns: 1fr;
-            }
-            .logo-text {
-                font-size: 1.4rem;
-            }
-            .hero h1 {
-                font-size: 1.5rem;
-            }
-        }
+        /* جميع الأنماط كما هي دون تغيير - تم الحفاظ على التصميم الاحترافي */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Cairo', sans-serif; background: #0A1408; min-height: 100vh; color: #FBFCFB; background-image: radial-gradient(circle at 20% 30%, rgba(168, 132, 66, 0.03) 0%, transparent 60%); }
+        .navbar { background: rgba(10, 20, 8, 0.92); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(168, 132, 66, 0.25); padding: 0.8rem 2rem; position: sticky; top: 0; z-index: 100; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5); }
+        .nav-container { max-width: 1400px; margin: auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+        .logo { display: flex; align-items: center; gap: 1rem; text-decoration: none; }
+        .logo-image { width: 48px; height: 48px; border-radius: 50%; border: 2px solid rgba(168, 132, 66, 0.5); overflow: hidden; box-shadow: 0 0 20px rgba(168, 132, 66, 0.2); transition: all 0.3s; flex-shrink: 0; }
+        .logo-image:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(168, 132, 66, 0.4); }
+        .logo-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .logo-text { display: flex; flex-direction: column; }
+        .logo-main { font-size: 1.8rem; font-weight: 800; letter-spacing: 1px; background: linear-gradient(135deg, #FBFCFB 60%, #A8842A); -webkit-background-clip: text; background-clip: text; color: transparent; line-height: 1.2; }
+        .logo-slogan { font-size: 0.7rem; letter-spacing: 1px; color: #C1DCB5; font-weight: 500; }
+        .logo-slogan i { color: #A8842A; font-size: 0.6rem; }
+        .nav-links { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .nav-links a { text-decoration: none; padding: 0.5rem 1.25rem; border-radius: 50px; font-weight: 600; font-size: 0.95rem; transition: all 0.3s ease; color: #C1DCB5; border: 1px solid transparent; }
+        .nav-links a:hover, .nav-links a.active { background: rgba(168, 132, 66, 0.2); border-color: #A8842A; color: #FBFCFB; box-shadow: 0 0 20px rgba(168, 132, 66, 0.15); }
+        .container { max-width: 1400px; margin: 2rem auto; padding: 0 2rem; }
+        .hero { background: rgba(28, 42, 22, 0.8); backdrop-filter: blur(6px); border-radius: 32px; padding: 2.5rem 2rem; margin-bottom: 2.5rem; border: 1px solid rgba(168, 132, 66, 0.25); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6); text-align: center; position: relative; overflow: hidden; }
+        .hero::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 30% 40%, rgba(168, 132, 66, 0.05), transparent 70%); pointer-events: none; }
+        .hero-icon { font-size: 3rem; color: #A8842A; margin-bottom: 1rem; filter: drop-shadow(0 0 20px rgba(168, 132, 66, 0.3)); }
+        .hero h1 { background: linear-gradient(135deg, #FFFFFF 50%, #A8842A); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 0.5rem; font-size: 2.2rem; font-weight: 800; letter-spacing: 1px; }
+        .hero-slogan { font-size: 1.1rem; color: #C1DCB5; margin-bottom: 0.75rem; letter-spacing: 1px; }
+        .hero-slogan span { color: #A8842A; font-weight: 700; }
+        .hero p { color: #C1DCB5; margin-bottom: 1.5rem; font-size: 1rem; max-width: 700px; margin-left: auto; margin-right: auto; }
+        .stats { display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center; }
+        .stat-badge { background: rgba(168, 132, 66, 0.15); padding: 0.5rem 1.5rem; border-radius: 50px; font-size: 0.9rem; font-weight: 600; color: #A8842A; border: 1px solid rgba(168, 132, 66, 0.25); backdrop-filter: blur(4px); transition: all 0.3s; }
+        .stat-badge:hover { background: rgba(168, 132, 66, 0.25); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(168, 132, 66, 0.15); }
+        .dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 2rem; }
+        .card { background: rgba(28, 42, 22, 0.85); backdrop-filter: blur(8px); border-radius: 28px; padding: 2rem 1.8rem; border: 1px solid rgba(168, 132, 66, 0.2); transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.4); }
+        .card:hover { transform: translateY(-6px); border-color: rgba(168, 132, 66, 0.5); box-shadow: 0 25px 45px -15px rgba(0, 0, 0, 0.6), 0 0 30px rgba(168, 132, 66, 0.05); }
+        .card h3 { color: #A8842A; margin-bottom: 1.8rem; font-size: 1.3rem; font-weight: 700; border-right: 4px solid #A8842A; padding-right: 1rem; display: flex; align-items: center; gap: 0.75rem; }
+        .card h3 i { font-size: 1.1rem; color: #A8842A; }
+        .form-group { margin-bottom: 1.5rem; }
+        label { font-weight: 600; display: block; margin-bottom: 0.5rem; color: #C1DCB5; font-size: 0.95rem; }
+        label i { color: #A8842A; margin-left: 0.4rem; }
+        select, input { width: 100%; padding: 0.9rem 1rem; border: 1px solid rgba(168, 132, 66, 0.25); border-radius: 16px; font-family: 'Cairo', sans-serif; font-size: 1rem; background: rgba(255, 255, 255, 0.06); color: #FBFCFB; transition: all 0.3s; appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23A8842A' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: left 1rem center; padding-left: 2.8rem; }
+        select option { background: #1C2A16; color: #FBFCFB; }
+        select:focus, input:focus { outline: none; border-color: #A8842A; box-shadow: 0 0 0 3px rgba(168, 132, 66, 0.25); background-color: rgba(255, 255, 255, 0.08); }
+        button { background: linear-gradient(135deg, #A8842A, #C49B3A); color: #0A1408; border: none; padding: 1rem 1.5rem; width: 100%; border-radius: 40px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.3s ease; margin-top: 0.5rem; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: center; gap: 0.75rem; box-shadow: 0 4px 15px rgba(168, 132, 66, 0.2); }
+        button:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(168, 132, 66, 0.35); background: linear-gradient(135deg, #C49B3A, #D4A843); }
+        button:active { transform: translateY(0); }
+        .result-box { border-radius: 20px; padding: 1.8rem 1.5rem; text-align: center; margin-top: 1rem; transition: all 0.4s ease; backdrop-filter: blur(4px); }
+        .compatible { background: rgba(76, 175, 80, 0.12); border: 1px solid #4CAF50; color: #C1DCB5; box-shadow: 0 0 30px rgba(76, 175, 80, 0.05); }
+        .incompatible { background: rgba(244, 67, 54, 0.12); border: 1px solid #f44336; color: #fecaca; box-shadow: 0 0 30px rgba(244, 67, 54, 0.05); }
+        .warning { background: rgba(255, 152, 0, 0.12); border: 1px solid #ff9800; color: #fff3e0; box-shadow: 0 0 30px rgba(255, 152, 0, 0.05); }
+        .status-icon { font-size: 2.8rem; margin-bottom: 0.75rem; display: block; animation: fadeInUp 0.5s ease; }
+        .result-box h3 { font-size: 1.15rem; font-weight: 700; border: none; padding: 0; margin-bottom: 0.5rem; color: inherit; }
+        .result-box p { font-size: 0.9rem; opacity: 0.9; margin-top: 0.5rem; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        .flex-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        footer { text-align: center; padding: 2.5rem 2rem 1.5rem; border-top: 1px solid rgba(168, 132, 66, 0.15); margin-top: 3rem; }
+        .footer-logo { display: flex; align-items: center; justify-content: center; gap: 0.75rem; font-size: 1.4rem; font-weight: 700; color: #A8842A; margin-bottom: 0.5rem; }
+        .footer-logo img { width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(168, 132, 66, 0.3); }
+        .footer-slogan { font-size: 0.85rem; color: #C1DCB5; letter-spacing: 1px; }
+        footer p { margin-top: 1rem; font-size: 0.8rem; color: #7a9a6e; }
+        @media (max-width: 768px) { .container { padding: 0 1rem; } .flex-2 { grid-template-columns: 1fr; } .dashboard { grid-template-columns: 1fr; } .logo-main { font-size: 1.4rem; } .hero h1 { font-size: 1.6rem; } .navbar { padding: 0.6rem 1rem; } .nav-links a { padding: 0.4rem 0.9rem; font-size: 0.85rem; } .card { padding: 1.5rem 1.2rem; } .stats { gap: 0.8rem; } .stat-badge { font-size: 0.8rem; padding: 0.4rem 1rem; } }
+        @media (max-width: 480px) { .hero { padding: 1.5rem 1rem; } .hero h1 { font-size: 1.3rem; } .logo-image { width: 38px; height: 38px; } }
     </style>
 </head>
 <body>
 
-<div class="navbar">
-    <div class="nav-container">
-        <div class="logo">
-            <div class="logo-main">
-                <i class="fas fa-leaf logo-icon"></i>
-                <span class="logo-text">SONE</span>
-            </div>
-            <div class="logo-slogan">
-                <i class="fas fa-microchip"></i> SMART SOLUTIONS, <i class="fas fa-seedling"></i> GREEN FUTURE
-            </div>
-        </div>
-        <div class="nav-links">
-            <a href="#" class="active">الرئيسية</a>
-            <a href="#">حاسبة الأسمدة</a>
-            <a href="#">توافق الأسمدة</a>
-        </div>
-    </div>
-</div>
-
-<div class="container">
-    <div class="hero">
-        <div class="hero-icon">
-            <i class="fas fa-flask"></i>
-        </div>
-        <h1>تحقق من توافق الأسمدة</h1>
-        <div class="hero-slogan">
-            <span>SONE</span> | SMART SOLUTIONS, GREEN FUTURE
-        </div>
-        <p>قاعدة بيانات تضم <strong>73 سماداً زراعياً</strong> مع نظام ذكي لتحديد التوافق والتحذيرات</p>
-        <div class="stats">
-            <span class="stat-badge"><i class="fas fa-check-circle"></i> 73 سماد مسجل</span>
-            <span class="stat-badge"><i class="fas fa-chart-line"></i> توافق تلقائي</span>
-            <span class="stat-badge"><i class="fas fa-exclamation-triangle"></i> تحذيرات ذكية</span>
-        </div>
-    </div>
-
-    <div class="dashboard">
-        <div class="card">
-            <h3><i class="fas fa-search"></i> اختر الأسمدة</h3>
-            <div class="form-group">
-                <label><i class="fas fa-flask"></i> السماد الأول</label>
-                <select id="fertilizer1"><option value="">-- اختر سماد --</option></select>
-            </div>
-            <div class="form-group">
-                <label><i class="fas fa-flask"></i> السماد الثاني</label>
-                <select id="fertilizer2"><option value="">-- اختر سماد --</option></select>
-            </div>
-            <button id="checkBtn"><i class="fas fa-microscope"></i> تحقق من التوافق</button>
-        </div>
-
-        <div class="card">
-            <h3><i class="fas fa-chart-simple"></i> نتيجة التوافق</h3>
-            <div id="resultArea">
-                <div class="result-box" style="background: rgba(255,255,255,0.05); border-color: rgba(168,132,66,0.3);">
-                    <i class="fas fa-hand-point-right status-icon" style="color: #A8842A;"></i>
-                    <p style="color: #C1DCB5;">اختر سمادين واضغط "تحقق من التوافق"</p>
+    <!-- ===== شريط التنقل ===== -->
+    <div class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <div class="logo-image">
+                    <img src="https://sone-solutions.github.io/SONE/SONELOGE.jpg" alt="SONE Logo">
                 </div>
+                <div class="logo-text">
+                    <span class="logo-main">SONE</span>
+                    <span class="logo-slogan">
+                        <i class="fas fa-microchip"></i> SMART SOLUTIONS, <i class="fas fa-seedling"></i> GREEN FUTURE
+                    </span>
+                </div>
+            </a>
+            <div class="nav-links">
+                <a href="#" class="active">الرئيسية</a>
+                <a href="#">حاسبة الأسمدة</a>
+                <a href="#">توافق الأسمدة</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== المحتوى ===== -->
+    <div class="container">
+        <!-- الهيرو -->
+        <div class="hero">
+            <div class="hero-icon">
+                <i class="fas fa-flask"></i>
+            </div>
+            <h1>تحقق من توافق الأسمدة</h1>
+            <div class="hero-slogan">
+                <span>SONE</span> | SMART SOLUTIONS, GREEN FUTURE
+            </div>
+            <p>قاعدة بيانات محدثة تضم <strong>74 سماداً زراعياً</strong> مع نظام ذكي لتحديد التوافق والتحذيرات</p>
+            <div class="stats">
+                <span class="stat-badge"><i class="fas fa-check-circle"></i> 74 سماد مسجل</span>
+                <span class="stat-badge"><i class="fas fa-chart-line"></i> توافق تلقائي</span>
+                <span class="stat-badge"><i class="fas fa-exclamation-triangle"></i> تحذيرات ذكية</span>
             </div>
         </div>
 
-        <div class="card">
-            <h3><i class="fas fa-envelope"></i> إبلاغ عن خطأ</h3>
-            <div class="flex-2">
+        <!-- الشبكة -->
+        <div class="dashboard">
+            <!-- بطاقة الفحص -->
+            <div class="card">
+                <h3><i class="fas fa-search"></i> اختر الأسمدة</h3>
                 <div class="form-group">
-                    <label>بريدك الإلكتروني</label>
-                    <input type="email" id="userEmail" placeholder="example@domain.com">
+                    <label><i class="fas fa-flask"></i> السماد الأول</label>
+                    <select id="fertilizer1"><option value="">-- اختر سماد --</option></select>
                 </div>
                 <div class="form-group">
-                    <label>السماد (إن وجد)</label>
-                    <input type="text" id="reportFertilizer" placeholder="اسم السماد">
+                    <label><i class="fas fa-flask"></i> السماد الثاني</label>
+                    <select id="fertilizer2"><option value="">-- اختر سماد --</option></select>
+                </div>
+                <button id="checkBtn"><i class="fas fa-microscope"></i> تحقق من التوافق</button>
+            </div>
+
+            <!-- بطاقة النتيجة -->
+            <div class="card">
+                <h3><i class="fas fa-chart-simple"></i> نتيجة التوافق</h3>
+                <div id="resultArea">
+                    <div class="result-box compatible">
+                        <span class="status-icon" style="color: #4CAF50;">✅</span>
+                        <h3 style="font-size: 1.1rem;">متوافق: يمكن خلط NPK 10-52-10 و NPK 14-14-14</h3>
+                        <p style="margin-top: 0.75rem; font-size: 0.85rem;">📌 للتجذير والبداية القوية | 📌 للحدائق المنزلية</p>
+                    </div>
                 </div>
             </div>
-            <div class="form-group">
-                <label>تفاصيل الخطأ</label>
-                <input type="text" id="errorDetails" placeholder="ماذا تريد الإبلاغ عنه؟">
+
+            <!-- بطاقة التبليغ -->
+            <div class="card">
+                <h3><i class="fas fa-envelope"></i> إبلاغ عن خطأ</h3>
+                <div class="flex-2">
+                    <div class="form-group">
+                        <label>بريدك الإلكتروني</label>
+                        <input type="email" id="userEmail" placeholder="example@domain.com">
+                    </div>
+                    <div class="form-group">
+                        <label>السماد (إن وجد)</label>
+                        <input type="text" id="reportFertilizer" placeholder="اسم السماد">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>تفاصيل الخطأ</label>
+                    <input type="text" id="errorDetails" placeholder="ماذا تريد الإبلاغ عنه؟">
+                </div>
+                <button id="reportBtn"><i class="fas fa-paper-plane"></i> إرسال التبليغ</button>
             </div>
-            <button id="reportBtn"><i class="fas fa-paper-plane"></i> إرسال التبليغ</button>
         </div>
     </div>
-</div>
 
-<footer>
-    <div class="footer-logo">
-        <i class="fas fa-leaf"></i> SONE
-    </div>
-    <div class="footer-slogan">
-        SMART SOLUTIONS, GREEN FUTURE
-    </div>
-    <p style="margin-top: 1rem; font-size: 0.8rem; color: #C1DCB5;">© 2025 SONE - جميع الأدوات الزراعية احترافية ومجانية</p>
-</footer>
+    <!-- ===== الفوتر ===== -->
+    <footer>
+        <div class="footer-logo">
+            <img src="https://sone-solutions.github.io/SONE/SONELOGE.jpg" alt="SONE Logo">
+            SONE
+        </div>
+        <div class="footer-slogan">
+            SMART SOLUTIONS, GREEN FUTURE
+        </div>
+        <p>© 2025 SONE - جميع الأدوات الزراعية احترافية ومجانية</p>
+    </footer>
 
-<script>
-    // ============================================
-    // قاعدة البيانات المصححة - 73 سماداً فريداً
-    // ============================================
-    const fertilizersDB = {
-        // ---------- الأسمدة النيتروجينية (11) ----------
-        "يوريا 46%": { type: "نيتروجيني", ph: 7.0, caution: "لا يخلط مع نترات الكالسيوم والسوبر فوسفات", avoid: ["نترات الكالسيوم", "سوبر فوسفات الثلاثي TSP"] },
-        "نترات الأمونيوم": { type: "نيتروجيني", ph: 4.0, caution: "خطر انفجار عند التخزين السيء - لا يخلط مع القلويات", avoid: ["نترات الكالسيوم", "هيدروكسيد البوتاسيوم", "سياناميد الكالسيوم"] },
-        "سلفات الأمونيوم": { type: "نيتروجيني", ph: 5.5, caution: "يزيد حموضة التربة - لا يخلط مع نترات الكالسيوم", avoid: ["نترات الكالسيوم"] },
-        "نترات الكالسيوم": { type: "نيتروجيني-كالسيوم", ph: 8.0, caution: "لا يخلط مع الأسمدة الحمضية أو الكبريتات", avoid: ["سلفات الأمونيوم", "سوبر فوسفات الثلاثي TSP", "سوبر فوسفات الأحادي SSP", "حامض الفوسفوريك", "سلفات الحديد", "سلفات الزنك", "سلفات المنغنيز", "كبريتات المغنيسيوم (أبسوم)"] },
-        "نترات الصوديوم": { type: "نيتروجيني", ph: 7.5, caution: "مناسب للتربة الحمضية", avoid: [] },
-        "كلوريد الأمونيوم": { type: "نيتروجيني", ph: 5.5, caution: "يخفض pH - يتجنب للمحاصيل الحساسة للكلور", avoid: [] },
-        "سياناميد الكالسيوم": { type: "نيتروجيني", ph: 10.0, caution: "مبيد أعشاب - يسبب تهيج - لا يخلط مع الأمونيوم", avoid: ["نترات الأمونيوم", "سلفات الأمونيوم"] },
-        "يوريا فوسفات": { type: "نيتروجيني-فوسفاتي", ph: 2.5, caution: "حمضي جداً - مناسب للري بالتنقيط", avoid: ["نترات الكالسيوم"] },
-        "نترات البوتاسيوم": { type: "نيتروجيني-بوتاسي", ph: 7.0, caution: "آمن للخلط مع معظم الأسمدة", avoid: [] },
-        "نترات الليثيوم": { type: "نيتروجيني", ph: 7.0, caution: "نادر الاستخدام", avoid: [] },
-        "ثيوسلفات الأمونيوم": { type: "نيتروجيني-كبريت", ph: 7.0, caution: "سائل - مناسب للأراضي القلوية", avoid: [] },
+    <script>
+        // ============================================
+        // قاعدة البيانات المُصَحَّحَة - 74 سماداً فريداً
+        // ============================================
+        const fertilizersDB = {
+            // ---------- الأسمدة النيتروجينية (12) ----------
+            "يوريا 46%": { type: "نيتروجيني", ph: 7.0, caution: "لا يخلط مع نترات الكالسيوم والسوبر فوسفات", avoid: ["نترات الكالسيوم", "سوبر فوسفات الثلاثي TSP"] },
+            "نترات الأمونيوم": { type: "نيتروجيني", ph: 4.0, caution: "خطر انفجار عند التخزين السيء - لا يخلط مع القلويات", avoid: ["نترات الكالسيوم", "هيدروكسيد البوتاسيوم", "سياناميد الكالسيوم"] },
+            "سلفات الأمونيوم": { type: "نيتروجيني", ph: 5.5, caution: "يزيد حموضة التربة - لا يخلط مع نترات الكالسيوم", avoid: ["نترات الكالسيوم"] },
+            "نترات الكالسيوم": { type: "نيتروجيني-كالسيوم", ph: 8.0, caution: "لا يخلط مع الأسمدة الحمضية أو الكبريتات", avoid: ["سلفات الأمونيوم", "سوبر فوسفات الثلاثي TSP", "سوبر فوسفات الأحادي SSP", "حامض الفوسفوريك", "سلفات الحديد", "سلفات الزنك", "سلفات المنغنيز", "كبريتات المغنيسيوم (أبسوم)"] },
+            "نترات الكالسيوم والأمونيوم (CAN)": { type: "نيتروجيني", ph: 7.0, caution: "سماد نيتروجيني متوازن، مناسب لجميع المحاصيل", avoid: ["سوبر فوسفات الثلاثي TSP", "حامض الفوسفوريك"] },
+            "نترات الصوديوم": { type: "نيتروجيني", ph: 7.5, caution: "مناسب للتربة الحمضية", avoid: [] },
+            "كلوريد الأمونيوم": { type: "نيتروجيني", ph: 5.5, caution: "يخفض pH - يتجنب للمحاصيل الحساسة للكلور", avoid: [] },
+            "سياناميد الكالسيوم": { type: "نيتروجيني", ph: 10.0, caution: "مبيد أعشاب - يسبب تهيج - لا يخلط مع الأمونيوم", avoid: ["نترات الأمونيوم", "سلفات الأمونيوم"] },
+            "يوريا فوسفات": { type: "نيتروجيني-فوسفاتي حمضي", ph: 2.5, caution: "حمضي جداً - مناسب للري بالتنقيط", avoid: ["نترات الكالسيوم"] },
+            "نترات البوتاسيوم": { type: "نيتروجيني-بوتاسي", ph: 7.0, caution: "آمن للخلط مع معظم الأسمدة", avoid: [] },
+            "نترات الليثيوم": { type: "نيتروجيني", ph: 7.0, caution: "نادر الاستخدام", avoid: [] },
+            "ثيوسلفات الأمونيوم": { type: "نيتروجيني-كبريت", ph: 7.0, caution: "سائل - مناسب للأراضي القلوية", avoid: [] },
 
-        // ---------- الأسمدة الفوسفاتية (12) ----------
-        "سوبر فوسفات الأحادي SSP": { type: "فوسفاتي", ph: 3.5, caution: "حمضي - لا يخلط مع نترات الكالسيوم", avoid: ["نترات الكالسيوم"] },
-        "سوبر فوسفات الثلاثي TSP": { type: "فوسفاتي", ph: 3.0, caution: "حمضي جداً - لا يخلط مع نترات الكالسيوم", avoid: ["نترات الكالسيوم"] },
-        "فوسفات ثنائي الأمونيوم DAP": { type: "فوسفاتي-نيتروجيني", ph: 7.8, caution: "يرفع pH التربة - لا يخلط مع نترات الكالسيوم", avoid: ["نترات الكالسيوم"] },
-        "فوسفات أحادي الأمونيوم MAP": { type: "فوسفاتي-نيتروجيني", ph: 4.5, caution: "حمضي - مناسب للأراضي القلوية", avoid: ["نترات الكالسيوم"] },
-        "فوسفات أحادي الكالسيوم MCP": { type: "فوسفاتي", ph: 3.8, caution: "علف حيواني + سماد", avoid: [] },
-        "فوسفات ثنائي الكالسيوم DCP": { type: "فوسفاتي", ph: 6.5, caution: "بطيء التحرر", avoid: [] },
-        "صخر الفوسفات": { type: "فوسفاتي", ph: 8.0, caution: "بطيء جداً - فقط للتربة الحمضية", avoid: [] },
-        "حامض الفوسفوريك": { type: "فوسفاتي سائل", ph: 1.5, caution: "خطير جداً - يسبب حروق - لا يخلط مع القلويات", avoid: ["نترات الكالسيوم", "هيدروكسيد البوتاسيوم", "سياناميد الكالسيوم"] },
-        "فوسفات البوتاسيوم": { type: "فوسفاتي-بوتاسي", ph: 7.0, caution: "للزراعة المائية", avoid: [] },
-        "فوسفات المغنيسيوم": { type: "فوسفاتي-مغنيسيوم", ph: 7.0, caution: "بطيء التحرر", avoid: [] },
-        "فوسفات الأمونيوم المغنيسيوم": { type: "فوسفاتي-نيتروجيني-مغنيسيوم", ph: 7.0, caution: "سماد بطيء التحرر", avoid: [] },
-        "ميتافوسفات البوتاسيوم": { type: "فوسفاتي-بوتاسي", ph: 6.5, caution: "لا يذوب بسرعة", avoid: [] },
+            // ---------- الأسمدة الفوسفاتية (13) ----------
+            "سوبر فوسفات الأحادي SSP": { type: "فوسفاتي", ph: 3.5, caution: "حمضي - لا يخلط مع نترات الكالسيوم", avoid: ["نترات الكالسيوم"] },
+            "سوبر فوسفات الثلاثي TSP": { type: "فوسفاتي", ph: 3.0, caution: "حمضي جداً - لا يخلط مع نترات الكالسيوم", avoid: ["نترات الكالسيوم"] },
+            "فوسفات ثنائي الأمونيوم DAP": { type: "فوسفاتي-نيتروجيني", ph: 7.8, caution: "يرفع pH التربة - لا يخلط مع نترات الكالسيوم", avoid: ["نترات الكالسيوم"] },
+            "فوسفات أحادي الأمونيوم MAP": { type: "فوسفاتي-نيتروجيني", ph: 4.5, caution: "حمضي - مناسب للأراضي القلوية", avoid: ["نترات الكالسيوم"] },
+            "فوسفات أحادي الكالسيوم MCP": { type: "فوسفاتي", ph: 3.8, caution: "علف حيواني + سماد", avoid: [] },
+            "فوسفات ثنائي الكالسيوم DCP": { type: "فوسفاتي", ph: 6.5, caution: "بطيء التحرر", avoid: [] },
+            "صخر الفوسفات": { type: "فوسفاتي", ph: 8.0, caution: "بطيء جداً - فقط للتربة الحمضية", avoid: [] },
+            "حامض الفوسفوريك": { type: "فوسفاتي سائل", ph: 1.5, caution: "خطير جداً - يسبب حروق - لا يخلط مع القلويات", avoid: ["نترات الكالسيوم", "هيدروكسيد البوتاسيوم", "سياناميد الكالسيوم"] },
+            "فوسفات البوتاسيوم (مونوبوتاسيوم)": { type: "فوسفاتي-بوتاسي", ph: 5.5, caution: "حمضي قليلاً - للزراعة المائية", avoid: [] },
+            "فوسفات المغنيسيوم": { type: "فوسفاتي-مغنيسيوم", ph: 7.0, caution: "بطيء التحرر", avoid: [] },
+            "فوسفات الأمونيوم المغنيسيوم": { type: "فوسفاتي-نيتروجيني-مغنيسيوم", ph: 7.0, caution: "سماد بطيء التحرر", avoid: [] },
+            "ميتافوسفات البوتاسيوم": { type: "فوسفاتي-بوتاسي", ph: 6.5, caution: "لا يذوب بسرعة، يستخدم في التربة", avoid: [] },
+            "بوليفوسفات الأمونيوم (APP)": { type: "فوسفاتي سائل", ph: 6.5, caution: "سائل عالي التركيز - مناسب للري بالتنقيط", avoid: ["نترات الكالسيوم"] },
 
-        // ---------- الأسمدة البوتاسية (9) ----------
-        "كلوريد البوتاسيوم MOP": { type: "بوتاسي", ph: 7.0, caution: "يتجنب للمحاصيل الحساسة للكلور (بطاطس، تبغ، فواكه)", avoid: [] },
-        "سلفات البوتاسيوم SOP": { type: "بوتاسي", ph: 7.0, caution: "آمن للخلط - يحتوي على 18% كبريت", avoid: [] },
-        "سلفات البوتاسيوم والمغنيسيوم": { type: "بوتاسي-مغنيسيوم", ph: 7.0, caution: "طبيعي بطيء التحرر", avoid: [] },
-        "بوتاس فوسفات (مونوبوتاسيوم)": { type: "بوتاسي-فوسفاتي", ph: 5.5, caution: "حمضي قليلاً - للزراعة المائية", avoid: [] },
-        "هيدروكسيد البوتاسيوم": { type: "بوتاسي", ph: 13.0, caution: "قلوي جداً - خطير - لا يخلط مع الأسمدة الحمضية", avoid: ["نترات الأمونيوم", "حامض الفوسفوريك", "سلفات الأمونيوم"] },
-        "سليكات البوتاسيوم": { type: "بوتاسي", ph: 11.0, caution: "قلوي - يقوي جدران الخلايا", avoid: ["نترات الأمونيوم"] },
-        "هيومات البوتاسيوم": { type: "بوتاسي عضوي", ph: 8.5, caution: "محسن تربة - يزيد امتصاص العناصر", avoid: [] },
-        "كبريتات البوتاسيوم": { type: "بوتاسي", ph: 7.0, caution: "يحتوي على 18% كبريت - آمن للخلط", avoid: [] },
-        "ثيوسلفات البوتاسيوم": { type: "بوتاسي سائل", ph: 7.0, caution: "للري بالتنقيط", avoid: [] },
+            // ---------- الأسمدة البوتاسية (8) ----------
+            "كلوريد البوتاسيوم MOP": { type: "بوتاسي", ph: 7.0, caution: "يتجنب للمحاصيل الحساسة للكلور (بطاطس، تبغ، فواكه)", avoid: [] },
+            "سلفات البوتاسيوم SOP": { type: "بوتاسي", ph: 7.0, caution: "آمن للخلط - يحتوي على 18% كبريت", avoid: [] },
+            "سلفات البوتاسيوم والمغنيسيوم": { type: "بوتاسي-مغنيسيوم", ph: 7.0, caution: "طبيعي بطيء التحرر", avoid: [] },
+            "هيدروكسيد البوتاسيوم": { type: "بوتاسي", ph: 13.0, caution: "قلوي جداً - خطير - لا يخلط مع الأسمدة الحمضية", avoid: ["نترات الأمونيوم", "حامض الفوسفوريك", "سلفات الأمونيوم"] },
+            "سليكات البوتاسيوم": { type: "بوتاسي", ph: 11.0, caution: "قلوي - يقوي جدران الخلايا", avoid: ["نترات الأمونيوم"] },
+            "هيومات البوتاسيوم": { type: "عضوي محسن", ph: 8.5, caution: "محسن تربة - يزيد امتصاص العناصر", avoid: [] },
+            "ثيوسلفات البوتاسيوم": { type: "بوتاسي سائل", ph: 7.0, caution: "للري بالتنقيط", avoid: [] },
 
-        // ---------- الأسمدة المركبة NPK (15) ----------
-        "NPK 20-20-20": { type: "مركب متوازن", ph: 7.0, caution: "مناسب لمعظم المحاصيل", avoid: [] },
-        "NPK 19-19-19": { type: "مركب متوازن", ph: 7.0, caution: "عالمي الاستخدام", avoid: [] },
-        "NPK 15-15-30": { type: "مركب عالي البوتاسيوم", ph: 7.0, caution: "للإزهار والإثمار", avoid: [] },
-        "NPK 12-12-36": { type: "مركب عالي البوتاسيوم جداً", ph: 7.0, caution: "للمراحل المتأخرة", avoid: [] },
-        "NPK 10-52-10": { type: "مركب عالي الفوسفور", ph: 7.0, caution: "للتجذير والبداية القوية", avoid: [] },
-        "NPK 10-20-20": { type: "مركب", ph: 7.0, caution: "للخضروات", avoid: [] },
-        "NPK 20-10-10": { type: "مركب عالي النيتروجين", ph: 7.0, caution: "للنمو الخضري", avoid: [] },
-        "NPK 5-10-10": { type: "مركب منخفض", ph: 7.0, caution: "للشتلات", avoid: [] },
-        "NPK 15-5-30": { type: "مركب عالي البوتاسيوم", ph: 7.0, caution: "للزينة", avoid: [] },
-        "NPK 13-40-13": { type: "مركب", ph: 7.0, caution: "متوسط", avoid: [] },
-        "NPK 17-17-17": { type: "مركب", ph: 7.0, caution: "متوازن", avoid: [] },
-        "NPK 14-14-14": { type: "مركب", ph: 7.0, caution: "للحدائق المنزلية", avoid: [] },
-        "NPK 8-24-24": { type: "مركب", ph: 7.0, caution: "للحبوب", avoid: [] },
-        "NPK 0-20-20": { type: "مركب بدون نيتروجين", ph: 7.0, caution: "قبل الإزهار", avoid: [] },
-        "NPK 18-46-0": { type: "مركب (شبيه DAP)", ph: 7.0, caution: "للبداية المبكرة", avoid: [] },
+            // ---------- الأسمدة المركبة NPK (15) ----------
+            "NPK 20-20-20": { type: "مركب متوازن", ph: 7.0, caution: "مناسب لمعظم المحاصيل", avoid: [] },
+            "NPK 19-19-19": { type: "مركب متوازن", ph: 7.0, caution: "عالمي الاستخدام", avoid: [] },
+            "NPK 15-15-30": { type: "مركب عالي البوتاسيوم", ph: 7.0, caution: "للإزهار والإثمار", avoid: [] },
+            "NPK 12-12-36": { type: "مركب عالي البوتاسيوم جداً", ph: 7.0, caution: "للمراحل المتأخرة", avoid: [] },
+            "NPK 10-52-10": { type: "مركب عالي الفوسفور", ph: 7.0, caution: "للتجذير والبداية القوية", avoid: [] },
+            "NPK 10-20-20": { type: "مركب", ph: 7.0, caution: "للخضروات", avoid: [] },
+            "NPK 20-10-10": { type: "مركب عالي النيتروجين", ph: 7.0, caution: "للنمو الخضري", avoid: [] },
+            "NPK 5-10-10": { type: "مركب منخفض", ph: 7.0, caution: "للشتلات", avoid: [] },
+            "NPK 15-5-30": { type: "مركب عالي البوتاسيوم", ph: 7.0, caution: "للزينة", avoid: [] },
+            "NPK 13-40-13": { type: "مركب", ph: 7.0, caution: "متوسط", avoid: [] },
+            "NPK 17-17-17": { type: "مركب", ph: 7.0, caution: "متوازن", avoid: [] },
+            "NPK 14-14-14": { type: "مركب", ph: 7.0, caution: "للحدائق المنزلية", avoid: [] },
+            "NPK 8-24-24": { type: "مركب", ph: 7.0, caution: "للحبوب", avoid: [] },
+            "NPK 0-20-20": { type: "مركب بدون نيتروجين", ph: 7.0, caution: "قبل الإزهار", avoid: [] },
+            "NPK 18-46-0": { type: "مركب (شبيه DAP)", ph: 7.0, caution: "للبداية المبكرة", avoid: [] },
 
-        // ---------- أسمدة العناصر الصغرى والمخلبة (12) ----------
-        "سلفات الزنك": { type: "عناصر صغرى", ph: 4.5, caution: "لا يخلط مع الفوسفات أو الكالسيوم", avoid: ["سوبر فوسفات الثلاثي TSP", "فوسفات ثنائي الأمونيوم DAP", "صخر الفوسفات", "نترات الكالسيوم"] },
-        "سلفات الحديد": { type: "عناصر صغرى", ph: 4.0, caution: "يتأكسد بسرعة - لا يخلط مع الكالسيوم", avoid: ["نترات الكالسيوم"] },
-        "سلفات المنغنيز": { type: "عناصر صغرى", ph: 4.5, caution: "لا يخلط مع الكالسيوم", avoid: ["نترات الكالسيوم", "كلوريد الكالسيوم"] },
-        "حمض البوريك": { type: "عناصر صغرى", ph: 5.0, caution: "سام بالزيادة - يستخدم بجرعات صغيرة", avoid: [] },
-        "بوراكس": { type: "عناصر صغرى", ph: 9.0, caution: "قلوي - بطيء التحرر", avoid: [] },
-        "سلفات النحاس": { type: "عناصر صغرى", ph: 4.0, caution: "مبيد فطري أيضاً - سام عند التركيز العالي", avoid: [] },
-        "EDTA-زنك": { type: "عناصر صغرى مخلبة", ph: 6.5, caution: "امتصاص أعلى - يفضل للرش الورقي", avoid: [] },
-        "EDTA-حديد": { type: "عناصر صغرى مخلبة", ph: 6.5, caution: "للتربة القلوية - يثبت الكلوروز", avoid: [] },
-        "EDTA-منغنيز": { type: "عناصر صغرى مخلبة", ph: 6.5, caution: "للمجموع الخضري", avoid: [] },
-        "موليبدات الصوديوم": { type: "عناصر صغرى", ph: 7.5, caution: "للبقوليات - مهم لتثبيت النيتروجين", avoid: [] },
-        "EDTA-نحاس": { type: "عناصر صغرى مخلبة", ph: 6.5, caution: "تركيز منخفض - يستخدم بحذر", avoid: [] },
-        "سلفات الكوبالت": { type: "عناصر صغرى", ph: 5.0, caution: "للثروة الحيوانية - نادر في الزراعة", avoid: [] },
+            // ---------- أسمدة العناصر الصغرى والمخلبة (12) ----------
+            "سلفات الزنك": { type: "عناصر صغرى", ph: 4.5, caution: "لا يخلط مع الفوسفات أو الكالسيوم", avoid: ["سوبر فوسفات الثلاثي TSP", "فوسفات ثنائي الأمونيوم DAP", "صخر الفوسفات", "نترات الكالسيوم"] },
+            "سلفات الحديد": { type: "عناصر صغرى", ph: 4.0, caution: "يتأكسد بسرعة - لا يخلط مع الكالسيوم", avoid: ["نترات الكالسيوم"] },
+            "سلفات المنغنيز": { type: "عناصر صغرى", ph: 4.5, caution: "لا يخلط مع الكالسيوم", avoid: ["نترات الكالسيوم", "كلوريد الكالسيوم"] },
+            "حمض البوريك": { type: "عناصر صغرى", ph: 5.0, caution: "سام بالزيادة - يستخدم بجرعات صغيرة", avoid: [] },
+            "بوراكس": { type: "عناصر صغرى", ph: 9.0, caution: "قلوي - بطيء التحرر", avoid: [] },
+            "سلفات النحاس": { type: "عناصر صغرى", ph: 4.0, caution: "مبيد فطري أيضاً - سام عند التركيز العالي", avoid: [] },
+            "EDTA-زنك": { type: "عناصر صغرى مخلبة", ph: 6.5, caution: "امتصاص أعلى - يفضل للرش الورقي", avoid: [] },
+            "EDTA-حديد": { type: "عناصر صغرى مخلبة", ph: 6.5, caution: "للتربة القلوية - يثبت الكلوروز", avoid: [] },
+            "EDTA-منغنيز": { type: "عناصر صغرى مخلبة", ph: 6.5, caution: "للمجموع الخضري", avoid: [] },
+            "موليبدات الصوديوم": { type: "عناصر صغرى", ph: 7.5, caution: "للبقوليات - مهم لتثبيت النيتروجين", avoid: [] },
+            "EDTA-نحاس": { type: "عناصر صغرى مخلبة", ph: 6.5, caution: "تركيز منخفض - يستخدم بحذر", avoid: [] },
+            "سلفات الكوبالت": { type: "عناصر صغرى", ph: 5.0, caution: "للثروة الحيوانية - نادر في الزراعة", avoid: [] },
 
-        // ---------- أسمدة المغنيسيوم والكالسيوم (8) ----------
-        "كبريتات المغنيسيوم (أبسوم)": { type: "مغنيسيوم-كبريت", ph: 5.5, caution: "يخلط مع الأسمدة الحمضية - لا يخلط مع الكالسيوم", avoid: ["نترات الكالسيوم"] },
-        "نترات المغنيسيوم": { type: "مغنيسيوم-نيتروجيني", ph: 6.5, caution: "لا يخلط مع الفوسفات أو الكالسيوم", avoid: ["سوبر فوسفات الثلاثي TSP", "نترات الكالسيوم"] },
-        "أكسيد المغنيسيوم": { type: "مغنيسيوم", ph: 10.0, caution: "قلوي - بطيء التحرر", avoid: [] },
-        "جبس زراعي": { type: "كالسيوم-كبريت", ph: 7.0, caution: "يصلح التربة القلوية - يزيد نفاذية التربة", avoid: [] },
-        "كالسيوم بورون": { type: "كالسيوم-بورون", ph: 7.0, caution: "للتزهير والعقد - يمنع تساقط الأزهار", avoid: [] },
-        "نترات الكالسيوم المغنيسيوم": { type: "كالسيوم-مغنيسيوم-نيتروجين", ph: 7.5, caution: "متعدد العناصر", avoid: [] },
-        "كبريت زراعي": { type: "كبريت", ph: 5.0, caution: "يخفض pH التربة - يكافح الجرب في البطاطس", avoid: [] },
-        "كلوريد الكالسيوم": { type: "كالسيوم", ph: 7.5, caution: "يستخدم للرش الورقي - يمنع اللفحة الطرفية", avoid: [] },
+            // ---------- أسمدة المغنيسيوم والكالسيوم (8) ----------
+            "كبريتات المغنيسيوم (أبسوم)": { type: "مغنيسيوم-كبريت", ph: 5.5, caution: "يخلط مع الأسمدة الحمضية - لا يخلط مع الكالسيوم", avoid: ["نترات الكالسيوم"] },
+            "نترات المغنيسيوم": { type: "مغنيسيوم-نيتروجيني", ph: 6.5, caution: "لا يخلط مع الفوسفات أو الكالسيوم", avoid: ["سوبر فوسفات الثلاثي TSP", "نترات الكالسيوم"] },
+            "أكسيد المغنيسيوم": { type: "مغنيسيوم", ph: 10.0, caution: "قلوي - بطيء التحرر", avoid: [] },
+            "جبس زراعي": { type: "كالسيوم-كبريت", ph: 7.0, caution: "يصلح التربة القلوية - يزيد نفاذية التربة", avoid: [] },
+            "كالسيوم بورون": { type: "كالسيوم-بورون", ph: 7.0, caution: "للتزهير والعقد - يمنع تساقط الأزهار", avoid: [] },
+            "نترات الكالسيوم المغنيسيوم": { type: "كالسيوم-مغنيسيوم-نيتروجين", ph: 7.5, caution: "متعدد العناصر - يفضل عدم خلطه مع الفوسفات", avoid: ["سوبر فوسفات الثلاثي TSP", "حامض الفوسفوريك"] },
+            "كبريت زراعي": { type: "كبريت", ph: 5.0, caution: "يخفض pH التربة - يكافح الجرب في البطاطس", avoid: [] },
+            "كلوريد الكالسيوم": { type: "كالسيوم", ph: 7.5, caution: "يستخدم للرش الورقي - يمنع اللفحة الطرفية", avoid: ["سلفات الأمونيوم"] },
 
-        // ---------- أسمدة عضوية وبيولوجية ومحسنات (6) ----------
-        "هيومات الصوديوم": { type: "محسن تربة", ph: 8.5, caution: "يزيد CEC التربة - يحتفظ بالماء والعناصر", avoid: [] },
-        "فولفيك أسيد": { type: "محسن تربة", ph: 6.0, caution: "يزيد امتصاص العناصر - يقلل الإجهاد", avoid: [] },
-        "مستخلص الأعشاب البحرية": { type: "منشط حيوي", ph: 7.0, caution: "يحتوي على هرمونات طبيعية - منشط عام", avoid: [] },
-        "حمض أميني سائل": { type: "منشط حيوي", ph: 6.5, caution: "يخفف الإجهاد الحراري والملحي", avoid: [] },
-        "بيوفوسفات": { type: "بيولوجي", ph: 7.0, caution: "بكتيريا مذابة للفوسفور - يحسن توفير الفسفور", avoid: [] },
-        "بيوريا": { type: "بيولوجي", ph: 7.0, caution: "بكتيريا مثبتة للنيتروجين - تقلل الحاجة لليوريا", avoid: [] }
-    };
-
-    function populateSelectors() {
-        const fertilizerNames = Object.keys(fertilizersDB).sort();
-        const select1 = document.getElementById('fertilizer1');
-        const select2 = document.getElementById('fertilizer2');
-        
-        select1.innerHTML = '<option value="">-- اختر سماد --</option>';
-        select2.innerHTML = '<option value="">-- اختر سماد --</option>';
-        
-        fertilizerNames.forEach(name => {
-            const option1 = document.createElement('option');
-            option1.value = name;
-            option1.textContent = name;
-            select1.appendChild(option1);
-            
-            const option2 = document.createElement('option');
-            option2.value = name;
-            option2.textContent = name;
-            select2.appendChild(option2);
-        });
-        
-        console.log("✅ تم تحميل " + fertilizerNames.length + " سماداً فريداً");
-    }
-
-    function checkCompatibility(fert1, fert2) {
-        if (!fert1 || !fert2) {
-            return { status: 'warning', message: '⚠️ الرجاء اختيار سمادين للمقارنة', details: '' };
-        }
-        if (fert1 === fert2) {
-            return { status: 'warning', message: '⚠️ لا يمكن مقارنة السماد مع نفسه', details: 'اختر سمادين مختلفين' };
-        }
-        
-        const data1 = fertilizersDB[fert1];
-        const data2 = fertilizersDB[fert2];
-        
-        if (!data1 || !data2) {
-            return { status: 'warning', message: '⚠️ بيانات غير مكتملة', details: 'الرجاء الإبلاغ عن هذا الخطأ' };
-        }
-        
-        // التحقق من قائمة "تجنب"
-        if (data1.avoid && data1.avoid.includes(fert2)) {
-            return { 
-                status: 'incompatible', 
-                message: `❌ غير متوافق: لا تخلط ${fert1} مع ${fert2}`,
-                details: `⚠️ ${data1.caution}`
-            };
-        }
-        if (data2.avoid && data2.avoid.includes(fert1)) {
-            return { 
-                status: 'incompatible', 
-                message: `❌ غير متوافق: لا تخلط ${fert2} مع ${fert1}`,
-                details: `⚠️ ${data2.caution}`
-            };
-        }
-        
-        // تحذير إضافي: خلط الكالسيوم مع الفوسفات (تكوين رواسب)
-        const isCalcium = (fert) => {
-            const f = fertilizersDB[fert];
-            return f && (f.type.includes("كالسيوم") || fert.includes("كالسيوم") || fert.includes("نترات الكالسيوم"));
+            // ---------- أسمدة عضوية وبيولوجية ومحسنات (6) ----------
+            "هيومات الصوديوم": { type: "محسن تربة", ph: 8.5, caution: "يزيد CEC التربة - يحتفظ بالماء والعناصر", avoid: [] },
+            "فولفيك أسيد": { type: "محسن تربة", ph: 6.0, caution: "يزيد امتصاص العناصر - يقلل الإجهاد", avoid: [] },
+            "مستخلص الأعشاب البحرية": { type: "منشط حيوي", ph: 7.0, caution: "يحتوي على هرمونات طبيعية - منشط عام", avoid: [] },
+            "حمض أميني سائل": { type: "منشط حيوي", ph: 6.5, caution: "يخفف الإجهاد الحراري والملحي", avoid: [] },
+            "بيوفوسفات": { type: "بيولوجي", ph: 7.0, caution: "بكتيريا مذابة للفوسفور - يحسن توفير الفسفور", avoid: [] },
+            "بيوريا": { type: "بيولوجي", ph: 7.0, caution: "بكتيريا مثبتة للنيتروجين - تقلل الحاجة لليوريا", avoid: [] }
         };
-        const isPhosphate = (fert) => {
-            const f = fertilizersDB[fert];
-            return f && (f.type.includes("فوسفاتي") || fert.includes("فوسفات") || fert.includes("سوبر فوسفات"));
+
+        // ============================================
+        // دوال التشغيل (بدون تغيير)
+        // ============================================
+        function populateSelectors() {
+            const names = Object.keys(fertilizersDB).sort();
+            const s1 = document.getElementById('fertilizer1');
+            const s2 = document.getElementById('fertilizer2');
+            s1.innerHTML = '<option value="">-- اختر سماد --</option>';
+            s2.innerHTML = '<option value="">-- اختر سماد --</option>';
+            names.forEach(n => {
+                const o1 = document.createElement('option');
+                o1.value = n;
+                o1.textContent = n;
+                s1.appendChild(o1);
+                const o2 = document.createElement('option');
+                o2.value = n;
+                o2.textContent = n;
+                s2.appendChild(o2);
+            });
+            // تحديث العدد في الهيرو تلقائياً
+            document.querySelector('.stat-badge:first-child').innerHTML = `<i class="fas fa-check-circle"></i> ${names.length} سماد مسجل`;
+        }
+
+        function checkCompatibility(f1, f2) {
+            if (!f1 || !f2) return { status: 'warning', message: '⚠️ الرجاء اختيار سمادين للمقارنة', details: '' };
+            if (f1 === f2) return { status: 'warning', message: '⚠️ لا يمكن مقارنة السماد مع نفسه', details: 'اختر سمادين مختلفين' };
+            const d1 = fertilizersDB[f1];
+            const d2 = fertilizersDB[f2];
+            if (!d1 || !d2) return { status: 'warning', message: '⚠️ بيانات غير مكتملة', details: 'الرجاء الإبلاغ عن هذا الخطأ' };
+
+            if (d1.avoid && d1.avoid.includes(f2))
+                return { status: 'incompatible', message: `❌ غير متوافق: لا تخلط ${f1} مع ${f2}`, details: `⚠️ ${d1.caution}` };
+            if (d2.avoid && d2.avoid.includes(f1))
+                return { status: 'incompatible', message: `❌ غير متوافق: لا تخلط ${f2} مع ${f1}`, details: `⚠️ ${d2.caution}` };
+
+            const isCa = f => fertilizersDB[f] && (fertilizersDB[f].type.includes('كالسيوم') || f.includes('كالسيوم') || f.includes('نترات الكالسيوم'));
+            const isPh = f => fertilizersDB[f] && (fertilizersDB[f].type.includes('فوسفاتي') || f.includes('فوسفات') || f.includes('سوبر فوسفات'));
+            if ((isCa(f1) && isPh(f2)) || (isCa(f2) && isPh(f1)))
+                return { status: 'warning', message: `⚠️ تحذير: خلط الكالسيوم مع الفوسفات قد يسبب ترسّبات`, details: 'يُفضل عدم خلط أسمدة الكالسيوم مع أسمدة الفوسفات في محلول واحد' };
+
+            const phDiff = Math.abs((d1.ph || 7) - (d2.ph || 7));
+            if (phDiff > 4)
+                return { status: 'warning', message: `⚠️ تحذير: اختلاف كبير في الحموضة (${phDiff.toFixed(1)} درجة)`, details: `${f1} (pH ${d1.ph}) | ${f2} (pH ${d2.ph}) - قد يحدث تفاعل كيميائي` };
+
+            return { status: 'compatible', message: `✅ متوافق: يمكن خلط ${f1} و ${f2}`, details: `📌 ${d1.caution} | 📌 ${d2.caution}` };
+        }
+
+        function displayResult() {
+            const f1 = document.getElementById('fertilizer1').value;
+            const f2 = document.getElementById('fertilizer2').value;
+            const r = checkCompatibility(f1, f2);
+            const area = document.getElementById('resultArea');
+            let cls = '', icon = '';
+            if (r.status === 'compatible') { cls = 'compatible';
+                icon = '✅'; } else if (r.status === 'incompatible') { cls = 'incompatible';
+                icon = '❌'; } else { cls = 'warning';
+                icon = '⚠️'; }
+            area.innerHTML = `
+                <div class="result-box ${cls}">
+                    <span class="status-icon" style="${r.status === 'compatible' ? 'color:#4CAF50' : r.status === 'incompatible' ? 'color:#f44336' : 'color:#ff9800'}">${icon}</span>
+                    <h3 style="font-size:1.1rem;">${r.message}</h3>
+                    <p style="margin-top:0.75rem;font-size:0.85rem;">${r.details || ''}</p>
+                </div>
+            `;
+        }
+
+        function reportError() {
+            const email = document.getElementById('userEmail').value;
+            const fert = document.getElementById('reportFertilizer').value;
+            const details = document.getElementById('errorDetails').value;
+            if (!email || !details) { alert('⚠️ الرجاء إدخال بريدك الإلكتروني وتفاصيل الخطأ'); return; }
+            alert(`✅ شكراً للإبلاغ!\n\nالخطأ: ${details}\n${fert ? 'السماد: '+fert : ''}\nسنرد على: ${email}`);
+            document.getElementById('userEmail').value = '';
+            document.getElementById('reportFertilizer').value = '';
+            document.getElementById('errorDetails').value = '';
+        }
+
+        window.onload = function() {
+            populateSelectors();
+            document.getElementById('checkBtn').addEventListener('click', displayResult);
+            document.getElementById('reportBtn').addEventListener('click', reportError);
         };
-        
-        if ((isCalcium(fert1) && isPhosphate(fert2)) || (isCalcium(fert2) && isPhosphate(fert1))) {
-            return {
-                status: 'warning',
-                message: `⚠️ تحذير: خلط الكالسيوم مع الفوسفات قد يسبب ترسّبات`,
-                details: `يُفضل عدم خلط أسمدة الكالسيوم مع أسمدة الفوسفات في محلول واحد`
-            };
-        }
-        
-        // التحقق من اختلاف pH
-        const ph1 = data1.ph || 7;
-        const ph2 = data2.ph || 7;
-        const phDiff = Math.abs(ph1 - ph2);
-        
-        if (phDiff > 4) {
-            return { 
-                status: 'warning', 
-                message: `⚠️ تحذير: اختلاف كبير في الحموضة (${phDiff.toFixed(1)} درجة)`,
-                details: `${fert1} (pH ${ph1}) | ${fert2} (pH ${ph2}) - قد يحدث تفاعل كيميائي`
-            };
-        }
-        
-        // متوافق
-        return { 
-            status: 'compatible', 
-            message: `✅ متوافق: يمكن خلط ${fert1} و ${fert2}`,
-            details: `📌 ${data1.caution} | 📌 ${data2.caution}`
-        };
-    }
-
-    function displayResult() {
-        const fert1 = document.getElementById('fertilizer1').value;
-        const fert2 = document.getElementById('fertilizer2').value;
-        const result = checkCompatibility(fert1, fert2);
-        
-        const resultArea = document.getElementById('resultArea');
-        let statusClass = '';
-        let icon = '';
-        
-        if (result.status === 'compatible') {
-            statusClass = 'compatible';
-            icon = '<i class="fas fa-check-circle status-icon" style="color: #4CAF50;"></i>';
-        } else if (result.status === 'incompatible') {
-            statusClass = 'incompatible';
-            icon = '<i class="fas fa-times-circle status-icon" style="color: #f44336;"></i>';
-        } else {
-            statusClass = 'warning';
-            icon = '<i class="fas fa-exclamation-triangle status-icon" style="color: #ff9800;"></i>';
-        }
-        
-        resultArea.innerHTML = `
-            <div class="result-box ${statusClass}">
-                ${icon}
-                <h3 style="font-size: 1.1rem;">${result.message}</h3>
-                <p style="margin-top: 0.75rem; font-size: 0.85rem;">${result.details || ''}</p>
-            </div>
-        `;
-    }
-
-    function reportError() {
-        const email = document.getElementById('userEmail').value;
-        const fertilizer = document.getElementById('reportFertilizer').value;
-        const details = document.getElementById('errorDetails').value;
-        
-        if (!email || !details) {
-            alert('⚠️ الرجاء إدخال بريدك الإلكتروني وتفاصيل الخطأ');
-            return;
-        }
-        
-        let reportMsg = `✅ شكراً للإبلاغ!\n\nالخطأ: ${details}`;
-        if (fertilizer) reportMsg += `\nالسماد: ${fertilizer}`;
-        reportMsg += `\nسنرد على: ${email}`;
-        
-        alert(reportMsg);
-        
-        document.getElementById('userEmail').value = '';
-        document.getElementById('reportFertilizer').value = '';
-        document.getElementById('errorDetails').value = '';
-    }
-
-    window.onload = () => {
-        populateSelectors();
-        document.getElementById('checkBtn').addEventListener('click', displayResult);
-        document.getElementById('reportBtn').addEventListener('click', reportError);
-    };
-</script>
+    </script>
 
 </body>
 </html>

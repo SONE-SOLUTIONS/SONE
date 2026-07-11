@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>SONE | Smart Weather Stations</title>
+    <script src="https://cdn.tailwindcss.com/3.4.17">
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js">
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Noto Sans Arabic', 'Inter', sans-serif;
+            background: #f8fafc;
+            color: #0f1a0f;
+            direction: rtl;
+            text-align: right;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        body.lang-fr {
+            font-family: 'Inter', 'Noto Sans Arabic', sans-serif;
+        }
+        body.lang-en {
+            font-family: 'Inter', 'Noto Sans Arabic', sans-serif;
+        }
+
+        .glass-header {
+            background: rgba(255, 255, 255, 0.82);
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        .glass-header.scrolled {
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+        }
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.2, 0.9, 0.3, 1), transform 0.8s cubic-bezier(0.2, 0.9, 0.3, 1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .device-card {
+            background: #ffffff;
+            border-radius: 1.75rem;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            transition: all 0.4s cubic-bezier(0.2, 0.9, 0.3, 1);
+            border: 1px solid rgba(0, 0, 0, 0.02);
+            position: relative;
+        }
+        .device-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 30px 60px rgba(46, 125, 50, 0.12);
+            border-color: rgba(76, 175, 80, 0.15);
+        }
+        .device-card .img-wrap {
+            overflow: hidden;
+            position: relative;
+            background: #f1f5f9;
+            height: 230px;
+        }
+        .device-card .img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s cubic-bezier(0.2, 0.9, 0.3, 1);
+        }
+        .device-card:hover .img-wrap img {
+            transform: scale(1.06);
+        }
+        .device-card .img-wrap .badge-float {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(8px);
+            padding: 0.3rem 1rem;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #1e3a1e;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        .device-card .content {
+            padding: 1.5rem 1.5rem 2rem;
+        }
+        .device-card .content .icon-title {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 0.6rem;
+        }
+        .device-card .content .icon-title .icon-box {
+            width: 2.4rem;
+            height: 2.4rem;
+            background: #e8f5e9;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2e7d32;
+        }
+        .device-card .content h3 {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #0f1a0f;
+        }
+        .device-card .content p {
+            color: #4a5a4a;
+            font-size: 0.9rem;
+            line-height: 1.8;
+            margin: 0.5rem 0 1rem;
+        }
+        .device-card .content .specs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-bottom: 1.2rem;
+        }
+        .device-card .content .specs span {
+            background: #f3f6f3;
+            padding: 0.2rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #2a4a2a;
+        }
+        .btn-outline-green {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.5rem 1.4rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            color: #2e7d32;
+            background: transparent;
+            border: 1.5px solid #2e7d32;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        .btn-outline-green:hover {
+            background: #2e7d32;
+            color: #fff;
+            box-shadow: 0 8px 24px rgba(46, 125, 50, 0.25);
+            transform: translateX(-4px);
+        }
+        .hero-gradient {
+            background: radial-gradient(circle at 20% 30%, rgba(46, 125, 50, 0.03) 0%, transparent 70%),
+                radial-gradient(circle at 80% 70%, rgba(76, 175, 80, 0.05) 0%, transparent 60%),
+                #f8fafc;
+        }
+        .floating-shapes {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .floating-shapes span {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(76, 175, 80, 0.03);
+            animation: floatShape 20s infinite ease-in-out;
+        }
+        @keyframes floatShape {
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+            33% {
+                transform: translate(30px, -30px) scale(1.1);
+            }
+            66% {
+                transform: translate(-20px, 20px) scale(0.9);
+            }
+        }
+        .stat-card {
+            background: #ffffff;
+            padding: 1.5rem;
+            border-radius: 1.25rem;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.02);
+            border: 1px solid #f0f4f0;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        .stat-card:hover {
+            border-color: #4CAF50;
+            box-shadow: 0 8px 24px rgba(76, 175, 80, 0.06);
+        }
+        .stat-card .number {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: #1e3a1e;
+            direction: ltr;
+        }
+        .footer-gradient {
+            background: linear-gradient(145deg, #0f1a0f, #182818);
+        }
+
+        /* Language switcher */
+        .lang-btn {
+            padding: 0.4rem 0.9rem;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            background: transparent;
+            border: 1.5px solid #d1d9d1;
+            color: #4a5a4a;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.3px;
+        }
+        .lang-btn:hover {
+            border-color: #2e7d32;
+            color: #2e7d32;
+        }
+        .lang-btn.active {
+            background: #2e7d32;
+            border-color: #2e7d32;
+            color: #fff;
+        }
+        .lang-group {
+            display: flex;
+            gap: 0.3rem;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 0.25rem;
+            border-radius: 50px;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+        /* RTL / LTR overrides per language */
+        body.lang-en,
+        body.lang-fr {
+            direction: ltr;
+            text-align: left;
+        }
+        body.lang-en .device-card .img-wrap .badge-float,
+        body.lang-fr .device-card .img-wrap .badge-float {
+            right: auto;
+            left: 1rem;
+        }
+        body.lang-en .icon-title,
+        body.lang-fr .icon-title {
+            flex-direction: row;
+        }
+        body.lang-en .btn-outline-green:hover,
+        body.lang-fr .btn-outline-green:hover {
+            transform: translateX(4px);
+        }
+
+        @media (max-width: 640px) {
+            .lang-btn {
+                padding: 0.25rem 0.6rem;
+                font-size: 0.6rem;
+            }
+            .lang-group {
+                gap: 0.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================ -->
+    <!-- HEADER -->
+    <!-- ============================================================ -->
+    <header id="mainHeader" class="fixed top-0 left-0 right-0 z-50 glass-header py-3">
+        <div class="max-w-6xl mx-auto px-4 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-2 no-underline">
+                <div class="w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden border-2 border-green-400/50 shadow-md shadow-green-100">
+                    <img src="SONELOGE.jpg" alt="SONE Logo" class="w-full h-full object-cover" />
+                </div>
+                <span class="font-extrabold text-xl md:text-2xl text-gray-800 tracking-tight">S O N E</span>
+            </a>
+
+            <div class="flex items-center gap-3">
+                <!-- Language Switcher -->
+                <div class="lang-group">
+                    <button class="lang-btn" data-lang="ar" aria-label="Arabic">عربي</button>
+                    <button class="lang-btn active" data-lang="fr" aria-label="Français">FR</button>
+                    <button class="lang-btn" data-lang="en" aria-label="English">EN</button>
+                </div>
+
+                <a href="#" class="hidden sm:inline-flex items-center gap-2 px-5 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-bold rounded-full transition shadow-md shadow-green-200" data-key="backHome">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    <span>Retour à l'accueil</span>
+                </a>
+                <a href="#" class="sm:hidden p-2 bg-green-50 text-green-700 rounded-full hover:bg-green-100 transition">
+                    <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============================================================ -->
+    <!-- HERO -->
+    <!-- ============================================================ -->
+    <section class="relative hero-gradient pt-32 pb-16 md:pt-40 md:pb-24 overflow-hidden">
+        <div class="floating-shapes">
+            <span style="width:300px;height:300px;top:-80px;right:-80px;animation-delay:0s;"></span>
+            <span style="width:200px;height:200px;bottom:-40px;left:-40px;animation-delay:-5s;"></span>
+            <span style="width:150px;height:150px;top:40%;left:20%;animation-delay:-10s;"></span>
+        </div>
+
+        <div class="relative max-w-5xl mx-auto px-4 text-center">
+            <div class="inline-flex items-center gap-2 bg-green-100/70 backdrop-blur-sm px-4 py-1.5 rounded-full text-green-800 text-sm font-bold mb-4 border border-green-200/50">
+                <i data-lucide="cpu" class="w-4 h-4"></i>
+                <span data-key="heroBadge">Appareils IoT agricoles</span>
+            </div>
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight tracking-tight">
+                <span data-key="heroTitle1">Stations météo</span><br />
+                <span class="bg-gradient-to-l from-green-600 to-emerald-500 bg-clip-text text-transparent" data-key="heroTitle2">intelligentes par SONE</span>
+            </h1>
+            <p class="text-gray-600 max-w-2xl mx-auto mt-4 text-lg md:text-xl leading-relaxed" data-key="heroDesc">
+                Surveillez le climat de votre exploitation avec une précision exceptionnelle. Trois stations spécialisées conçues pour différents types de plantes et arbres, vous fournissant des données en temps réel et des analyses prédictives.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 mt-8">
+                <a href="#devices" class="inline-flex items-center gap-2 px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-full transition shadow-lg shadow-green-200">
+                    <span data-key="heroCta1">Explorer les appareils</span>
+                    <i data-lucide="arrow-down" class="w-5 h-5"></i>
+                </a>
+                <a href="#features" class="inline-flex items-center gap-2 px-8 py-3 bg-white hover:bg-gray-50 text-gray-700 font-bold rounded-full transition shadow-md border border-gray-200">
+                    <span data-key="heroCta2">Caractéristiques</span>
+                    <i data-lucide="sparkles" class="w-5 h-5"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- DEVICES -->
+    <!-- ============================================================ -->
+    <section id="devices" class="py-16 md:py-24 bg-white">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="text-center mb-12 md:mb-16 reveal">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900">
+                    <span data-key="devicesTitle1">Nos appareils</span>
+                    <span class="text-green-600" data-key="devicesTitle2">avancés</span>
+                </h2>
+                <div class="w-20 h-1 bg-green-500 mx-auto mt-3 rounded-full"></div>
+                <p class="text-gray-500 max-w-xl mx-auto mt-4 text-lg" data-key="devicesSub">Des solutions intelligentes pour chaque environnement agricole</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6 md:gap-8">
+
+                <!-- Card 1 -->
+                <div class="device-card reveal">
+                    <div class="img-wrap">
+                        <img src="https://sone-solutions.github.io/SONE/1.webp" alt="Fruit trees station" loading="lazy" />
+                        <span class="badge-float" data-key="badge1">Spécialisé</span>
+                    </div>
+                    <div class="content">
+                        <div class="icon-title">
+                            <span class="icon-box"><i data-lucide="apple" class="w-5 h-5"></i></span>
+                            <h3 data-key="device1Title">Station vergers</h3>
+                        </div>
+                        <p data-key="device1Desc">Conçue spécialement pour les arbres fruitiers. Détecte avec précision les risques de gel, l'humidité excessive et les maladies fongiques menaçant la récolte.</p>
+                        <div class="specs">
+                            <span data-key="spec1a">Température / Humidité</span>
+                            <span data-key="spec1b">Vitesse du vent</span>
+                            <span data-key="spec1c">Précipitations</span>
+                            <span data-key="spec1d">Alerte précoce</span>
+                        </div>
+                        <a href="#" class="btn-outline-green">
+                            <span data-key="deviceCta">Détails de l'appareil</span>
+                            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="device-card reveal" style="transition-delay:0.1s;">
+                    <div class="img-wrap">
+                        <img src="https://sone-solutions.github.io/SONE/2.webp" alt="Field crops station" loading="lazy" />
+                        <span class="badge-float" data-key="badge2">Intelligent</span>
+                    </div>
+                    <div class="content">
+                        <div class="icon-title">
+                            <span class="icon-box"><i data-lucide="wheat" class="w-5 h-5"></i></span>
+                            <h3 data-key="device2Title">Station champs</h3>
+                        </div>
+                        <p data-key="device2Desc">Idéale pour les cultures de plein champ. Fournit des données en temps réel sur le sol et l'air pour programmer l'irrigation et la fertilisation avec une grande précision, augmentant ainsi la productivité.</p>
+                        <div class="specs">
+                            <span data-key="spec2a">Contrôle à distance</span>
+                            <span data-key="spec2b">Énergie solaire</span>
+                            <span data-key="spec2c">Analyses avancées</span>
+                            <span data-key="spec2d">Prévisions locales</span>
+                        </div>
+                        <a href="#" class="btn-outline-green">
+                            <span data-key="deviceCta">Détails de l'appareil</span>
+                            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="device-card reveal" style="transition-delay:0.2s;">
+                    <div class="img-wrap">
+                        <img src="https://sone-solutions.github.io/SONE/3.webp" alt="Forest trees station" loading="lazy" />
+                        <span class="badge-float" data-key="badge3">Durable</span>
+                    </div>
+                    <div class="content">
+                        <div class="icon-title">
+                            <span class="icon-box"><i data-lucide="tree-pine" class="w-5 h-5"></i></span>
+                            <h3 data-key="device3Title">Station forêts</h3>
+                        </div>
+                        <p data-key="device3Desc">Dédiée aux zones forestières et aux projets environnementaux. Surveille les indices de sécheresse, les risques d'incendie et aide à évaluer les changements climatiques.</p>
+                        <div class="specs">
+                            <span data-key="spec3a">Connexion satellite</span>
+                            <span data-key="spec3b">Surveillance environnementale</span>
+                            <span data-key="spec3c">Rapports périodiques</span>
+                            <span data-key="spec3d">Détection d'incendies</span>
+                        </div>
+                        <a href="#" class="btn-outline-green">
+                            <span data-key="deviceCta">Détails de l'appareil</span>
+                            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- STATS / FEATURES -->
+    <!-- ============================================================ -->
+    <section id="features" class="py-16 md:py-20 bg-gray-50/70">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="text-center mb-12 reveal">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900">
+                    <span data-key="featuresTitle1">Pourquoi</span>
+                    <span class="text-green-600" data-key="featuresTitle2">les stations SONE</span>
+                    <span data-key="featuresTitle3">?</span>
+                </h2>
+                <div class="w-20 h-1 bg-green-500 mx-auto mt-3 rounded-full"></div>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="stat-card reveal">
+                    <span class="number">95%</span>
+                    <p class="font-bold text-gray-800 mt-1" data-key="stat1Title">Précision des mesures</p>
+                    <p class="text-gray-500 text-sm" data-key="stat1Desc">Capteurs calibrés avec une précision de laboratoire</p>
+                </div>
+                <div class="stat-card reveal" style="transition-delay:0.1s;">
+                    <span class="number">24/7</span>
+                    <p class="font-bold text-gray-800 mt-1" data-key="stat2Title">Surveillance continue</p>
+                    <p class="text-gray-500 text-sm" data-key="stat2Desc">Données en direct mises à jour 24h/24</p>
+                </div>
+                <div class="stat-card reveal" style="transition-delay:0.2s;">
+                    <span class="number">+40%</span>
+                    <p class="font-bold text-gray-800 mt-1" data-key="stat3Title">Économie d'eau</p>
+                    <p class="text-gray-500 text-sm" data-key="stat3Desc">Planification de l'irrigation basée sur les besoins réels des plantes</p>
+                </div>
+                <div class="stat-card reveal" style="transition-delay:0.3s;">
+                    <span class="number">+</span>
+                    <p class="font-bold text-gray-800 mt-1" data-key="stat4Title">Meilleure santé</p>
+                    <p class="text-gray-500 text-sm" data-key="stat4Desc">Détection des maladies avant leur propagation</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- CTA -->
+    <!-- ============================================================ -->
+    <section class="py-16 md:py-20 bg-green-700 relative overflow-hidden">
+        <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDM0djItSDI0di0yaDEyek0zNiAyNHYySDI0di0yaDEyeiIvPjwvZz48L2c+PC9zdmc+')] opacity-30"></div>
+        <div class="relative max-w-4xl mx-auto px-4 text-center text-white">
+            <h2 class="text-3xl md:text-4xl font-extrabold" data-key="ctaTitle">Prêt à faire évoluer votre exploitation ?</h2>
+            <p class="text-green-100/90 text-lg md:text-xl mt-3 max-w-2xl mx-auto" data-key="ctaDesc">Contactez notre équipe dès aujourd'hui pour une consultation gratuite et choisissez la station adaptée à vos besoins.</p>
+            <div class="flex flex-wrap justify-center gap-4 mt-8">
+                <a href="#" class="inline-flex items-center gap-2 px-8 py-3 bg-white text-green-700 hover:bg-gray-100 font-bold rounded-full transition shadow-lg shadow-green-900/20">
+                    <i data-lucide="phone-call" class="w-5 h-5"></i>
+                    <span data-key="ctaBtn1">Contactez-nous</span>
+                </a>
+                <a href="#" class="inline-flex items-center gap-2 px-8 py-3 bg-green-600 hover:bg-green-500 text-white font-bold rounded-full transition border-2 border-white/30">
+                    <i data-lucide="mail" class="w-5 h-5"></i>
+                    <span data-key="ctaBtn2">Demander un devis</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- FOOTER -->
+    <!-- ============================================================ -->
+    <footer class="footer-gradient py-10 text-gray-400 border-t border-green-800/30">
+        <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4 text-sm">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-green-700/30 flex items-center justify-center">
+                    <span class="text-green-400 font-bold text-xs">S</span>
+                </div>
+                <span class="text-white font-bold tracking-wider">SONE</span>
+                <span class="hidden sm:inline text-gray-500">|</span>
+                <span class="text-gray-500 text-xs" data-key="footerRights">© 2026 Tous droits réservés</span>
+            </div>
+            <div class="flex items-center gap-6">
+                <a href="#" class="text-gray-400 hover:text-white transition flex items-center gap-1">
+                    <i data-lucide="home" class="w-4 h-4"></i>
+                    <span data-key="footerHome">Accueil</span>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-white transition" data-key="footerPrivacy">Politique de confidentialité</a>
+                <a href="#" class="text-gray-400 hover:text-white transition" data-key="footerTerms">Conditions générales</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================================ -->
+    <!-- TRANSLATIONS & SCRIPTS -->
+    <!-- ============================================================ -->
+    <script>
+        // ----------------------------------------------
+        // TRANSLATION DICTIONARY
+        // ----------------------------------------------
+        const translations = {
+            ar: {
+                backHome: 'العودة للرئيسية',
+                heroBadge: 'أجهزة إنترنت الأشياء الزراعية',
+                heroTitle1: 'محطات الطقس',
+                heroTitle2: 'الذكية من SONE',
+                heroDesc: 'راقب مناخ مزرعتك بدقة متناهية. ثلاث محطات متخصصة صُممت خصيصاً لأنواع مختلفة من النباتات والأشجار، لتزويدك ببيانات لحظية وتحليلات تنبؤية.',
+                heroCta1: 'استكشف الأجهزة',
+                heroCta2: 'المميزات',
+                devicesTitle1: 'أجهزتنا',
+                devicesTitle2: 'المتقدمة',
+                devicesSub: 'حلول ذكية تلبي احتياجات كل بيئة زراعية',
+                badge1: 'متخصص',
+                badge2: 'ذكي',
+                badge3: 'استدامة',
+                device1Title: 'محطة البساتين',
+                device1Desc: 'مصممة خصيصاً لأشجار الفاكهة. ترصد بدقة مخاطر الصقيع، الرطوبة الزائدة، والأمراض الفطرية التي تهدد المحصول.',
+                spec1a: 'حرارة / رطوبة',
+                spec1b: 'سرعة الرياح',
+                spec1c: 'كمية الأمطار',
+                spec1d: 'إنذار مبكر',
+                device2Title: 'محطة الحقول',
+                device2Desc: 'مثالية للمحاصيل الحقلية. توفر بيانات لحظية عن التربة والجو لجدولة الري والتسميد بدقة متناهية، مما يزيد الإنتاجية.',
+                spec2a: 'تحكم عن بعد',
+                spec2b: 'طاقة شمسية',
+                spec2c: 'تحليلات متقدمة',
+                spec2d: 'تنبؤات محلية',
+                device3Title: 'محطة الغابات',
+                device3Desc: 'مخصصة للمناطق الغابية والمشاريع البيئية. ترصد مؤشرات الجفاف، مخاطر الحرائق، وتساعد في تقييم التغيرات المناخية.',
+                spec3a: 'اتصال بالأقمار',
+                spec3b: 'مراقبة بيئية',
+                spec3c: 'تقارير دورية',
+                spec3d: 'كشف الحرائق',
+                deviceCta: 'تفاصيل الجهاز',
+                featuresTitle1: 'لماذا',
+                featuresTitle2: 'محطات SONE',
+                featuresTitle3: '؟',
+                stat1Title: 'دقة القياسات',
+                stat1Desc: 'أجهزة استشعار معايرة بدقة مخبرية',
+                stat2Title: 'مراقبة مستمرة',
+                stat2Desc: 'بيانات حية محدثة على مدار الساعة',
+                stat3Title: 'ترشيد المياه',
+                stat3Desc: 'جدولة الري بناءً على احتياجات النبات الفعلية',
+                stat4Title: 'صحة أفضل',
+                stat4Desc: 'اكتشاف الأمراض قبل انتشارها',
+                ctaTitle: 'هل أنت مستعد لتطوير مزرعتك؟',
+                ctaDesc: 'تواصل مع فريقنا اليوم للحصول على استشارة مجانية واختيار المحطة المناسبة لك.',
+                ctaBtn1: 'اتصل بنا',
+                ctaBtn2: 'طلب عرض سعر',
+                footerRights: '© 2026 جميع الحقوق محفوظة',
+                footerHome: 'الرئيسية',
+                footerPrivacy: 'سياسة الخصوصية',
+                footerTerms: 'الشروط والأحكام',
+            },
+            fr: {
+                backHome: 'Retour à l\'accueil',
+                heroBadge: 'Appareils IoT agricoles',
+                heroTitle1: 'Stations météo',
+                heroTitle2: 'intelligentes par SONE',
+                heroDesc: 'Surveillez le climat de votre exploitation avec une précision exceptionnelle. Trois stations spécialisées conçues pour différents types de plantes et arbres, vous fournissant des données en temps réel et des analyses prédictives.',
+                heroCta1: 'Explorer les appareils',
+                heroCta2: 'Caractéristiques',
+                devicesTitle1: 'Nos appareils',
+                devicesTitle2: 'avancés',
+                devicesSub: 'Des solutions intelligentes pour chaque environnement agricole',
+                badge1: 'Spécialisé',
+                badge2: 'Intelligent',
+                badge3: 'Durable',
+                device1Title: 'Station vergers',
+                device1Desc: 'Conçue spécialement pour les arbres fruitiers. Détecte avec précision les risques de gel, l\'humidité excessive et les maladies fongiques menaçant la récolte.',
+                spec1a: 'Température / Humidité',
+                spec1b: 'Vitesse du vent',
+                spec1c: 'Précipitations',
+                spec1d: 'Alerte précoce',
+                device2Title: 'Station champs',
+                device2Desc: 'Idéale pour les cultures de plein champ. Fournit des données en temps réel sur le sol et l\'air pour programmer l\'irrigation et la fertilisation avec une grande précision, augmentant ainsi la productivité.',
+                spec2a: 'Contrôle à distance',
+                spec2b: 'Énergie solaire',
+                spec2c: 'Analyses avancées',
+                spec2d: 'Prévisions locales',
+                device3Title: 'Station forêts',
+                device3Desc: 'Dédiée aux zones forestières et aux projets environnementaux. Surveille les indices de sécheresse, les risques d\'incendie et aide à évaluer les changements climatiques.',
+                spec3a: 'Connexion satellite',
+                spec3b: 'Surveillance environnementale',
+                spec3c: 'Rapports périodiques',
+                spec3d: 'Détection d\'incendies',
+                deviceCta: 'Détails de l\'appareil',
+                featuresTitle1: 'Pourquoi',
+                featuresTitle2: 'les stations SONE',
+                featuresTitle3: '?',
+                stat1Title: 'Précision des mesures',
+                stat1Desc: 'Capteurs calibrés avec une précision de laboratoire',
+                stat2Title: 'Surveillance continue',
+                stat2Desc: 'Données en direct mises à jour 24h/24',
+                stat3Title: 'Économie d\'eau',
+                stat3Desc: 'Planification de l\'irrigation basée sur les besoins réels des plantes',
+                stat4Title: 'Meilleure santé',
+                stat4Desc: 'Détection des maladies avant leur propagation',
+                ctaTitle: 'Prêt à faire évoluer votre exploitation ?',
+                ctaDesc: 'Contactez notre équipe dès aujourd\'hui pour une consultation gratuite et choisissez la station adaptée à vos besoins.',
+                ctaBtn1: 'Contactez-nous',
+                ctaBtn2: 'Demander un devis',
+                footerRights: '© 2026 Tous droits réservés',
+                footerHome: 'Accueil',
+                footerPrivacy: 'Politique de confidentialité',
+                footerTerms: 'Conditions générales',
+            },
+            en: {
+                backHome: 'Back to Home',
+                heroBadge: 'Agricultural IoT Devices',
+                heroTitle1: 'Weather Stations',
+                heroTitle2: 'by SONE',
+                heroDesc: 'Monitor your farm\'s climate with exceptional precision. Three specialized stations designed for different types of plants and trees, providing real-time data and predictive analytics.',
+                heroCta1: 'Explore Devices',
+                heroCta2: 'Features',
+                devicesTitle1: 'Our',
+                devicesTitle2: 'Advanced Devices',
+                devicesSub: 'Smart solutions for every agricultural environment',
+                badge1: 'Specialized',
+                badge2: 'Smart',
+                badge3: 'Sustainable',
+                device1Title: 'Orchard Station',
+                device1Desc: 'Specifically designed for fruit trees. Accurately monitors frost risks, excess humidity, and fungal diseases that threaten your harvest.',
+                spec1a: 'Temp / Humidity',
+                spec1b: 'Wind Speed',
+                spec1c: 'Rainfall',
+                spec1d: 'Early Warning',
+                device2Title: 'Field Station',
+                device2Desc: 'Ideal for row crops. Provides real-time soil and weather data to schedule irrigation and fertilization with pinpoint accuracy, boosting productivity.',
+                spec2a: 'Remote Control',
+                spec2b: 'Solar Powered',
+                spec2c: 'Advanced Analytics',
+                spec2d: 'Local Forecasts',
+                device3Title: 'Forest Station',
+                device3Desc: 'Dedicated to forest areas and environmental projects. Monitors drought indicators, fire risks, and helps assess climate change impacts.',
+                spec3a: 'Satellite Link',
+                spec3b: 'Environmental Monitoring',
+                spec3c: 'Periodic Reports',
+                spec3d: 'Fire Detection',
+                deviceCta: 'Device Details',
+                featuresTitle1: 'Why',
+                featuresTitle2: 'SONE Stations',
+                featuresTitle3: '?',
+                stat1Title: 'Measurement Accuracy',
+                stat1Desc: 'Sensors calibrated to laboratory precision',
+                stat2Title: 'Continuous Monitoring',
+                stat2Desc: 'Live data updated around the clock',
+                stat3Title: 'Water Optimization',
+                stat3Desc: 'Irrigation scheduling based on actual plant needs',
+                stat4Title: 'Better Health',
+                stat4Desc: 'Disease detection before it spreads',
+                ctaTitle: 'Ready to upgrade your farm?',
+                ctaDesc: 'Contact our team today for a free consultation and choose the right station for you.',
+                ctaBtn1: 'Contact Us',
+                ctaBtn2: 'Request a Quote',
+                footerRights: '© 2026 All rights reserved',
+                footerHome: 'Home',
+                footerPrivacy: 'Privacy Policy',
+                footerTerms: 'Terms & Conditions',
+            }
+        };
+
+        // ----------------------------------------------
+        // LANGUAGE SWITCHING
+        // ----------------------------------------------
+        let currentLang = 'fr';
+
+        function setLanguage(lang) {
+            if (!translations[lang]) return;
+            currentLang = lang;
+
+            // Update HTML lang and direction
+            document.documentElement.lang = lang;
+            document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
+            document.body.className = 'lang-' + lang;
+
+            // Update active button
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === lang);
+            });
+
+            // Apply translations to all elements with data-key
+            const t = translations[lang];
+            document.querySelectorAll('[data-key]').forEach(el => {
+                const key = el.dataset.key;
+                if (t[key] !== undefined) {
+                    if (key === 'heroTitle2' || key === 'heroTitle1' || key === 'devicesTitle1' || key === 'devicesTitle2' || key === 'featuresTitle1' || key === 'featuresTitle2' || key === 'featuresTitle3') {
+                        el.textContent = t[key];
+                    } else {
+                        el.textContent = t[key];
+                    }
+                }
+            });
+
+            lucide.createIcons();
+
+            const backHomeEl = document.querySelector('[data-key="backHome"]');
+            if (backHomeEl) {
+                const span = backHomeEl.querySelector('span');
+                if (span) span.textContent = t.backHome;
+            }
+        }
+
+        // ----------------------------------------------
+        // EVENT LISTENERS FOR LANGUAGE BUTTONS
+        // ----------------------------------------------
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const lang = this.dataset.lang;
+                setLanguage(lang);
+            });
+        });
+
+        // ----------------------------------------------
+        // HEADER SCROLL EFFECT
+        // ----------------------------------------------
+        const header = document.getElementById('mainHeader');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 40) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // ----------------------------------------------
+        // REVEAL ON SCROLL
+        // ----------------------------------------------
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // ----------------------------------------------
+        // SMOOTH SCROLL FOR ANCHOR LINKS
+        // ----------------------------------------------
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && href.startsWith('#')) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            });
+        });
+
+        // ----------------------------------------------
+        // INIT: set default language to French
+        // ----------------------------------------------
+        setLanguage('fr');
+    </script>
+
+</body>
+</html>

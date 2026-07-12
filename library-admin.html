@@ -1,0 +1,684 @@
+<html lang="ar" dir="rtl"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>لوحة تحكم المكتبة | SONE Marché</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: #0F1E0C;
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1C2A16; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #A8842A; border-radius: 10px; }
+
+        .admin-wrapper { max-width: 800px; margin: 0 auto; }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 2px solid rgba(168, 132, 66, 0.3);
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .admin-header h1 {
+            font-size: 28px;
+            background: linear-gradient(135deg, #fff, #A8842A);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .admin-header .badge {
+            background: rgba(168,132,66,0.2);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 14px;
+            border: 1px solid rgba(168,132,66,0.5);
+        }
+        .refresh-btn {
+            background: #2196f3;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 50px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .refresh-btn:hover { background: #1976d2; transform: scale(1.02); }
+
+        .admin-form-group { margin-bottom: 15px; }
+        .admin-form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #C1DCB5;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        .admin-form-group input, .admin-form-group select, .admin-form-group textarea {
+            width: 100%;
+            padding: 10px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(168,132,66,0.3);
+            border-radius: 8px;
+            color: #fff;
+            font-family: 'Cairo', sans-serif;
+        }
+        .admin-form-group textarea { resize: vertical; }
+
+        .file-upload-area {
+            background: rgba(168, 132, 66, 0.1);
+            border: 2px dashed rgba(168, 132, 66, 0.4);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .file-upload-area:hover {
+            background: rgba(168, 132, 66, 0.2);
+            border-color: #A8842A;
+        }
+        .file-upload-area i { font-size: 28px; margin-bottom: 5px; display: block; color: #A8842A; }
+        .file-upload-area .upload-text { color: #C1DCB5; font-size: 14px; }
+        .file-upload-area .upload-types { color: #7f8c8d; font-size: 11px; margin-top: 3px; }
+
+        .progress-container {
+            margin-top: 10px;
+            display: none;
+            width: 100%;
+            background: rgba(255,255,255,0.1);
+            border-radius: 30px;
+            height: 24px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(168,132,66,0.2);
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #A8842A, #C49B3A);
+            border-radius: 30px;
+            width: 0%;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: #000;
+        }
+        .progress-status {
+            display: none;
+            font-size: 13px;
+            color: #C1DCB5;
+            margin-top: 5px;
+        }
+        .progress-status .status-success { color: #4CAF50; }
+        .progress-status .status-error { color: #f44336; }
+
+        .file-preview {
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            display: none;
+            align-items: center;
+            gap: 12px;
+        }
+        .file-preview i { font-size: 24px; color: #A8842A; }
+        .file-preview .file-name { color: #C1DCB5; flex: 1; }
+        .file-preview .file-size { color: #7f8c8d; font-size: 12px; }
+        .file-preview .remove-file {
+            color: #f44336;
+            cursor: pointer;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+        .file-preview .remove-file:hover { transform: scale(1.2); }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #A8842A, #C49B3A);
+            color: #000;
+            border: none;
+            padding: 12px;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(168,132,66,0.3); }
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .content-list {
+            margin-top: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .content-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .content-item .item-info { flex: 1; }
+        .content-item .item-info strong { color: #fff; }
+        .content-item .item-info .item-type { font-size: 11px; color: #A8842A; }
+        .content-item-actions button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            margin: 0 5px;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        .content-item-actions button:hover { transform: scale(1.15); }
+        .edit-content { color: #2196f3; }
+        .delete-content { color: #f44336; }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #4CAF50;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            z-index: 6000;
+            display: none;
+            font-size: 14px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+            max-width: 90%;
+            text-align: center;
+        }
+
+        hr { border-color: rgba(168,132,66,0.3); margin: 20px 0; }
+
+        @media (max-width: 600px) {
+            .admin-header h1 { font-size: 20px; }
+            .content-item { flex-direction: column; align-items: stretch; }
+            .content-item-actions { text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="adminContent" style="display:block;">
+        <div class="admin-wrapper">
+            <div class="admin-header">
+                <div>
+                    <h1><i class="fas fa-cog"></i> لوحة تحكم المكتبة</h1>
+                    <span class="badge"><i class="fas fa-book"></i> إدارة المحتوى</span>
+                </div>
+                <button class="refresh-btn" onclick="loadData()"><i class="fas fa-sync-alt"></i> تحديث</button>
+            </div>
+
+            <div class="admin-form-group">
+                <label>نوع المحتوى</label>
+                <select id="contentType">
+                    <option value="book">📚 كتاب PDF</option>
+                    <option value="article">📄 مقال/نص</option>
+                    <option value="video">🎥 فيديو</option>
+                    <option value="report">📊 تقارير</option>
+                    <option value="training">🎓 عروض وتقارير متدربين</option>
+                </select>
+            </div>
+            <div class="admin-form-group">
+                <label>العنوان</label>
+                <input type="text" id="contentTitle" placeholder="عنوان المحتوى">
+            </div>
+            <div class="admin-form-group">
+                <label>الوصف</label>
+                <textarea id="contentDesc" rows="2" placeholder="وصف المحتوى"></textarea>
+            </div>
+            <div class="admin-form-group" id="articleContentGroup" style="display:none;">
+                <label>محتوى المقال (نص كامل)</label>
+                <textarea id="articleFullContent" rows="5" placeholder="المحتوى الكامل للمقال..."></textarea>
+            </div>
+            <div class="admin-form-group">
+                <label>الأيقونة (إيموجي)</label>
+                <input type="text" id="contentIcon" placeholder="مثال: 📘" value="📘">
+            </div>
+            <div class="admin-form-group">
+                <label>تاريخ النشر</label>
+                <input type="date" id="contentDate">
+            </div>
+
+            <!-- ===== رفع الملف ===== -->
+            <div class="admin-form-group" id="fileUploadGroup">
+                <label>رفع الملف</label>
+                <div class="file-upload-area" id="fileUploadArea" onclick="document.getElementById('contentFile').click()">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <span class="upload-text">اضغط لرفع الملف</span>
+                    <div class="upload-types">PDF, PPT, PPTX, DOC, DOCX, MP4, MOV, AVI, ZIP, RAR</div>
+                </div>
+                <input type="file" id="contentFile" accept=".pdf,.ppt,.pptx,.odp,.doc,.docx,.mp4,.mov,.avi,.mkv,.zip,.rar" style="display:none" onchange="handleFileSelect(event)">
+
+                <!-- شريط التقدم -->
+                <div class="progress-container" id="progressContainer">
+                    <div class="progress-bar" id="progressBar">0%</div>
+                </div>
+                <div class="progress-status" id="progressStatus"></div>
+
+                <!-- معاينة الملف -->
+                <div class="file-preview" id="filePreview">
+                    <i id="filePreviewIcon" class="fas fa-file"></i>
+                    <span class="file-name" id="filePreviewName">ملف</span>
+                    <span class="file-size" id="filePreviewSize"></span>
+                    <span class="remove-file" onclick="removeFile()"><i class="fas fa-times-circle"></i></span>
+                </div>
+            </div>
+
+            <div class="admin-form-group" id="videoLinkGroup" style="display:none;">
+                <label>رابط فيديو (YouTube - اختياري)</label>
+                <input type="text" id="videoLink" placeholder="https://youtube.com/...">
+            </div>
+
+            <button class="btn-primary" id="submitBtn" onclick="addContent()"><i class="fas fa-plus"></i> نشر المحتوى</button>
+
+            <hr>
+            <h4 style="color: #A8842A; margin-bottom: 10px;">📋 المحتوى المنشور</h4>
+            <div id="contentList" class="content-list">
+                <div class="content-item">
+                    <div class="item-info">
+                        <strong>Encadré Par bahija.pptx</strong>
+                        <span class="item-type">📚 كتاب | ١٢&rlm;/٧&rlm;/٢٠٢٦</span>
+                    </div>
+                    <div class="content-item-actions">
+                        <button class="edit-content" onclick="editContent(78, 'book')" title="تعديل"><i class="fas fa-edit"></i></button>
+                        <button class="delete-content" onclick="deleteContent(78, 'book')" title="حذف"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            
+                <div class="content-item">
+                    <div class="item-info">
+                        <strong>تلخيص الاجتماعيات.pdf</strong>
+                        <span class="item-type">📚 كتاب | ١٢&rlm;/٧&rlm;/٢٠٢٦</span>
+                    </div>
+                    <div class="content-item-actions">
+                        <button class="edit-content" onclick="editContent(66, 'book')" title="تعديل"><i class="fas fa-edit"></i></button>
+                        <button class="delete-content" onclick="deleteContent(66, 'book')" title="حذف"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // ============================================================
+        // إعدادات Supabase
+        // ============================================================
+        const SUPABASE_URL = 'https://zpjuhprlcaigmczhqlye.supabase.co';
+        const DATA_API_KEY = 'sb_publishable_PVQ61DBLGYjzaXy-XFrWpA_k_94iEvK';
+        const STORAGE_API_KEY = 'sb_secret_oBHsaPFwZ1GsL9ChphaovA_KWkPYDfn';
+        const BUCKET_NAME = 'product-images';
+
+        const headers = {
+            'apikey': DATA_API_KEY,
+            'Authorization': `Bearer ${DATA_API_KEY}`,
+            'Content-Type': 'application/json'
+        };
+
+        let allItems = [];
+        let editingId = null;
+        let editingType = null;
+
+        // متغيرات الملف
+        let selectedFile = null;
+        let uploadedFileUrl = null;
+        let uploadedFileName = null;
+
+        // ============================================================
+        // معالجة اختيار الملف
+        // ============================================================
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            selectedFile = file;
+            uploadedFileUrl = null;
+            uploadedFileName = file.name;
+
+            // عرض معاينة الملف
+            const preview = document.getElementById('filePreview');
+            const previewIcon = document.getElementById('filePreviewIcon');
+            const previewName = document.getElementById('filePreviewName');
+            const previewSize = document.getElementById('filePreviewSize');
+
+            // تحديد أيقونة حسب النوع
+            const ext = file.name.split('.').pop().toLowerCase();
+            const iconMap = {
+                pdf: 'fa-file-pdf',
+                ppt: 'fa-file-powerpoint',
+                pptx: 'fa-file-powerpoint',
+                odp: 'fa-file-powerpoint',
+                doc: 'fa-file-word',
+                docx: 'fa-file-word',
+                mp4: 'fa-file-video',
+                mov: 'fa-file-video',
+                avi: 'fa-file-video',
+                zip: 'fa-file-archive',
+                rar: 'fa-file-archive',
+                jpg: 'fa-file-image',
+                jpeg: 'fa-file-image',
+                png: 'fa-file-image',
+                gif: 'fa-file-image'
+            };
+            previewIcon.className = `fas ${iconMap[ext] || 'fa-file'}`;
+
+            previewName.textContent = file.name;
+            previewSize.textContent = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
+            preview.style.display = 'flex';
+
+            // بدء رفع الملف فوراً
+            uploadFile(file);
+        }
+
+        // ============================================================
+        // رفع الملف مع شريط تقدم (بدون مهلة زمنية)
+        // ============================================================
+        function uploadFile(file) {
+            const progressContainer = document.getElementById('progressContainer');
+            const progressBar = document.getElementById('progressBar');
+            const progressStatus = document.getElementById('progressStatus');
+            const submitBtn = document.getElementById('submitBtn');
+
+            progressContainer.style.display = 'block';
+            progressBar.style.width = '0%';
+            progressBar.textContent = '0%';
+            progressStatus.style.display = 'block';
+            progressStatus.innerHTML = '<span style="color:#A8842A;"><i class="fas fa-spinner fa-spin"></i> جاري رفع الملف...</span>';
+            submitBtn.disabled = true;
+
+            const fileExt = file.name.split('.').pop();
+            const fileName = `library/${Date.now()}_${Math.random().toString(36).substring(2, 8)}.${fileExt}`;
+            const storageUrl = `${SUPABASE_URL}/storage/v1/object/${BUCKET_NAME}/${fileName}`;
+
+            const xhr = new XMLHttpRequest();
+
+            // تتبع التقدم
+            xhr.upload.addEventListener('progress', function(e) {
+                if (e.lengthComputable) {
+                    const percent = Math.round((e.loaded / e.total) * 100);
+                    progressBar.style.width = percent + '%';
+                    progressBar.textContent = percent + '%';
+                }
+            });
+
+            // عند الانتهاء
+            xhr.addEventListener('load', function() {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/${BUCKET_NAME}/${fileName}`;
+                    uploadedFileUrl = publicUrl;
+                    uploadedFileName = file.name;
+
+                    progressBar.style.width = '100%';
+                    progressBar.textContent = '100%';
+                    progressStatus.innerHTML = '<span class="status-success"><i class="fas fa-check-circle"></i> ✅ تم رفع الملف بنجاح</span>';
+                    submitBtn.disabled = false;
+                    console.log('✅ تم رفع الملف:', publicUrl);
+                } else {
+                    let errorMsg = `فشل الرفع (الرمز ${xhr.status})`;
+                    try {
+                        const err = JSON.parse(xhr.responseText);
+                        if (err.message) errorMsg = err.message;
+                    } catch(e) {}
+                    progressStatus.innerHTML = `<span class="status-error"><i class="fas fa-exclamation-circle"></i> ❌ ${errorMsg}</span>`;
+                    submitBtn.disabled = false;
+                    uploadedFileUrl = null;
+                    showToast('❌ ' + errorMsg, 'error');
+                }
+            });
+
+            // عند حدوث خطأ في الشبكة
+            xhr.addEventListener('error', function() {
+                progressStatus.innerHTML = '<span class="status-error"><i class="fas fa-exclamation-circle"></i> ❌ فشل الاتصال بالخادم</span>';
+                submitBtn.disabled = false;
+                uploadedFileUrl = null;
+                showToast('❌ فشل الاتصال بالخادم', 'error');
+            });
+
+            // إعداد الطلب (بدون مهلة زمنية)
+            xhr.open('POST', storageUrl, true);
+            xhr.setRequestHeader('apikey', STORAGE_API_KEY);
+            xhr.setRequestHeader('Authorization', `Bearer ${STORAGE_API_KEY}`);
+            xhr.setRequestHeader('Content-Type', file.type || 'application/octet-stream');
+
+            // إرسال الملف
+            xhr.send(file);
+        }
+
+        // ============================================================
+        // إزالة الملف المرفوع
+        // ============================================================
+        function removeFile() {
+            selectedFile = null;
+            uploadedFileUrl = null;
+            uploadedFileName = null;
+            document.getElementById('contentFile').value = '';
+            document.getElementById('filePreview').style.display = 'none';
+            document.getElementById('progressContainer').style.display = 'none';
+            document.getElementById('progressStatus').style.display = 'none';
+            document.getElementById('progressBar').style.width = '0%';
+            document.getElementById('progressBar').textContent = '0%';
+            document.getElementById('submitBtn').disabled = false;
+        }
+
+        // ============================================================
+        // جلب البيانات من Supabase
+        // ============================================================
+        async function fetchLibraryItems() {
+            const res = await fetch(`${SUPABASE_URL}/rest/v1/library_items?select=*`, { headers });
+            if (!res.ok) throw new Error(`فشل جلب المحتوى: ${res.status}`);
+            return await res.json();
+        }
+
+        async function loadData() {
+            try {
+                allItems = await fetchLibraryItems();
+                renderContentList();
+            } catch (error) {
+                document.getElementById('contentList').innerHTML = `<p style="color:#f44336;">❌ ${error.message}</p>`;
+                showToast('خطأ في تحميل البيانات: ' + error.message, 'error');
+            }
+        }
+
+        function renderContentList() {
+            const container = document.getElementById('contentList');
+            if (allItems.length === 0) {
+                container.innerHTML = '<p style="color:#C1DCB5;">📭 لا يوجد محتوى منشور</p>';
+                return;
+            }
+            const sorted = [...allItems].sort((a, b) => b.id - a.id);
+            container.innerHTML = sorted.map(item => `
+                <div class="content-item">
+                    <div class="item-info">
+                        <strong>${escapeHtml(item.title)}</strong>
+                        <span class="item-type">${getTypeName(item.type)} | ${formatDate(item.date)}</span>
+                    </div>
+                    <div class="content-item-actions">
+                        <button class="edit-content" onclick="editContent(${item.id}, '${item.type}')" title="تعديل"><i class="fas fa-edit"></i></button>
+                        <button class="delete-content" onclick="deleteContent(${item.id}, '${item.type}')" title="حذف"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getTypeName(type) {
+            const map = { book: '📚 كتاب', article: '📄 مقال', video: '🎥 فيديو', report: '📊 تقرير', training: '🎓 عروض وتقارير متدربين' };
+            return map[type] || type;
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return 'تاريخ غير محدد';
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('ar-EG');
+        }
+
+        function escapeHtml(text) { if (!text) return ''; const div = document.createElement('div'); div.textContent = text; return div.innerHTML; }
+
+        // ============================================================
+        // إضافة محتوى جديد
+        // ============================================================
+        async function addContent() {
+            const type = document.getElementById('contentType').value;
+            const title = document.getElementById('contentTitle').value.trim();
+            const description = document.getElementById('contentDesc').value.trim();
+            const icon = document.getElementById('contentIcon').value.trim() || '📘';
+            const date = document.getElementById('contentDate').value || new Date().toISOString().split('T')[0];
+            const fullContent = document.getElementById('articleFullContent').value.trim();
+            const videoLink = document.getElementById('videoLink').value.trim();
+
+            if (!title) {
+                showToast("⚠️ الرجاء إدخال عنوان المحتوى", "error");
+                return;
+            }
+
+            if (type !== 'article' && !uploadedFileUrl) {
+                showToast("⚠️ الرجاء رفع ملف أولاً", "error");
+                return;
+            }
+
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = '⏳ جاري النشر...';
+
+            const newItem = {
+                type,
+                title,
+                description,
+                icon,
+                date,
+                full_content: type === 'article' ? fullContent : null,
+                video_url: type === 'video' ? videoLink : null,
+                file_url: uploadedFileUrl || null,
+                file_name: uploadedFileName || null
+            };
+
+            try {
+                const res = await fetch(`${SUPABASE_URL}/rest/v1/library_items`, {
+                    method: 'POST',
+                    headers: { ...headers, 'Prefer': 'return=representation' },
+                    body: JSON.stringify(newItem)
+                });
+                if (!res.ok) throw new Error(await res.text());
+
+                showToast("✅ تم نشر المحتوى بنجاح", "success");
+                clearAdminForm();
+                loadData();
+            } catch (error) {
+                showToast('❌ ' + error.message, 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = '<i class="fas fa-plus"></i> نشر المحتوى';
+            }
+        }
+
+        // ============================================================
+        // حذف محتوى
+        // ============================================================
+        async function deleteContent(id) {
+            if (!confirm("هل أنت متأكد من حذف هذا المحتوى؟")) return;
+            try {
+                const res = await fetch(`${SUPABASE_URL}/rest/v1/library_items?id=eq.${id}`, {
+                    method: 'DELETE',
+                    headers
+                });
+                if (!res.ok) throw new Error('فشل الحذف');
+                showToast("🗑️ تم حذف المحتوى", "success");
+                loadData();
+            } catch (error) {
+                showToast('❌ ' + error.message, 'error');
+            }
+        }
+
+        // ============================================================
+        // تعديل محتوى
+        // ============================================================
+        function editContent(id, type) {
+            const item = allItems.find(i => i.id === id && i.type === type);
+            if (!item) return;
+
+            editingId = id;
+            editingType = type;
+            document.getElementById('contentType').value = type;
+            document.getElementById('contentTitle').value = item.title;
+            document.getElementById('contentDesc').value = item.description || '';
+            document.getElementById('contentIcon').value = item.icon || '📘';
+            document.getElementById('contentDate').value = item.date || '';
+            document.getElementById('articleFullContent').value = item.full_content || '';
+            document.getElementById('videoLink').value = item.video_url || '';
+            removeFile();
+
+            toggleFormFields(type);
+            showToast("✏️ عدل البيانات ثم اضغط نشر (سيتم استبدال الملف القديم برفع ملف جديد)", "info");
+        }
+
+        // ============================================================
+        // دوال مساعدة للنموذج
+        // ============================================================
+        function toggleFormFields(type) {
+            document.getElementById('articleContentGroup').style.display = type === 'article' ? 'block' : 'none';
+            document.getElementById('videoLinkGroup').style.display = type === 'video' ? 'block' : 'none';
+            document.getElementById('fileUploadGroup').style.display = (type !== 'article') ? 'block' : 'none';
+        }
+
+        document.getElementById('contentType').addEventListener('change', function() {
+            toggleFormFields(this.value);
+            removeFile();
+        });
+
+        function clearAdminForm() {
+            document.getElementById('contentTitle').value = '';
+            document.getElementById('contentDesc').value = '';
+            document.getElementById('contentIcon').value = '📘';
+            document.getElementById('contentDate').value = '';
+            document.getElementById('articleFullContent').value = '';
+            document.getElementById('videoLink').value = '';
+            removeFile();
+            editingId = null;
+            editingType = null;
+            toggleFormFields('book');
+        }
+
+        // ============================================================
+        // Toast
+        // ============================================================
+        function showToast(msg, type) {
+            const toast = document.getElementById('toast');
+            toast.style.background = type === 'success' ? '#4CAF50' : (type === 'error' ? '#f44336' : '#2196f3');
+            toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : (type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle')}"></i> ${msg}`;
+            toast.style.display = 'block';
+            setTimeout(() => toast.style.display = 'none', 5000);
+        }
+
+        // ============================================================
+        // بدء التشغيل
+        // ============================================================
+        loadData();
+        console.log('📚 لوحة تحكم المكتبة - رفع الملفات بدون مهلة زمنية');
+    </script>
+
+</body></html>

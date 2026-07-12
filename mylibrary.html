@@ -1,44 +1,66 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>مكتبتي | Agri Maroc Précis</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>SONE LIBRARY</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* --- RESET & BASE --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Cairo', sans-serif;
-            background: linear-gradient(135deg, #0A1408 0%, #0F1E0C 50%, #1A2A14 100%);
+            background: #0A1408;
             color: #fff;
             min-height: 100vh;
         }
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #1C2A16; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: #A8842A; border-radius: 10px; }
 
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1C2A16;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #A8842A;
+            border-radius: 10px;
+        }
+
+        /* --- HEADER FIXE (NAV) --- */
         .header {
-            position: fixed;
+            position: sticky;
             top: 0;
-            left: 0;
-            right: 0;
             z-index: 1000;
-            padding: 15px 5%;
+            padding: 12px 5%;
             background: rgba(10, 20, 8, 0.95);
             backdrop-filter: blur(15px);
             border-bottom: 1px solid rgba(168, 132, 66, 0.3);
             transition: all 0.3s ease;
         }
-        .header.scrolled { padding: 10px 5%; background: rgba(10, 20, 8, 0.98); }
+        .header.scrolled {
+            padding: 8px 5%;
+            background: rgba(10, 20, 8, 0.98);
+        }
         .header-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
             max-width: 1400px;
             margin: 0 auto;
+            flex-wrap: wrap;
+            gap: 10px;
         }
+
+        /* --- LOGO --- */
         .logo {
             display: flex;
             align-items: center;
@@ -46,35 +68,87 @@
             text-decoration: none;
             transition: transform 0.3s;
         }
-        .logo:hover { transform: scale(1.02); }
+        .logo:hover {
+            transform: scale(1.02);
+        }
         .logo-icon {
             width: 45px;
             height: 45px;
-            background: linear-gradient(135deg, #A8842A, #D4A843);
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            box-shadow: 0 0 20px rgba(168, 132, 66, 0.3);
-            animation: pulse 2s infinite;
+            overflow: hidden;
+            flex-shrink: 0;
+            border: 2px solid rgba(168, 132, 66, 0.4);
+            box-shadow: 0 0 20px rgba(168, 132, 66, 0.2);
         }
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(168, 132, 66, 0.4); }
-            50% { box-shadow: 0 0 0 10px rgba(168, 132, 66, 0); }
+        .logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .logo-text {
+            display: flex;
+            flex-direction: column;
         }
         .logo-text h1 {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 800;
             background: linear-gradient(135deg, #fff, #A8842A);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            letter-spacing: 0.5px;
+            line-height: 1.2;
         }
-        .logo-text p { font-size: 10px; color: #C1DCB5; }
+        .logo-text p {
+            font-size: 10px;
+            color: #C1DCB5;
+            letter-spacing: 0.3px;
+        }
+
+        /* --- ACTIONS HEADER --- */
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        /* --- LANG SELECTOR --- */
+        .lang-selector {
+            display: flex;
+            gap: 5px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 30px;
+            padding: 4px;
+            border: 1px solid rgba(168, 132, 66, 0.25);
+        }
+        .lang-btn {
+            background: transparent;
+            border: none;
+            color: #aaa;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.25s ease;
+            font-family: inherit;
+        }
+        .lang-btn.active {
+            background: #A8842A;
+            color: #000;
+            box-shadow: 0 2px 10px rgba(168, 132, 66, 0.3);
+        }
+        .lang-btn:hover:not(.active) {
+            color: #fff;
+            background: rgba(168, 132, 66, 0.15);
+        }
+
+        /* --- BACK BUTTON --- */
         .back-btn {
             background: rgba(168, 132, 66, 0.15);
             border: 1px solid rgba(168, 132, 66, 0.5);
-            padding: 10px 25px;
+            padding: 8px 18px;
             border-radius: 50px;
             color: #A8842A;
             text-decoration: none;
@@ -82,7 +156,9 @@
             transition: all 0.3s;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
+            font-size: 14px;
+            white-space: nowrap;
         }
         .back-btn:hover {
             background: #A8842A;
@@ -91,52 +167,149 @@
             box-shadow: 0 5px 20px rgba(168, 132, 66, 0.3);
         }
 
-        .container { max-width: 1400px; margin: 0 auto; padding: 130px 20px 60px; }
-
-        .page-header { text-align: center; margin-bottom: 40px; }
-        .page-header .badge {
-            display: inline-block;
-            background: rgba(168, 132, 66, 0.2);
-            padding: 8px 20px;
-            border-radius: 50px;
-            font-size: 14px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(168, 132, 66, 0.5);
+        /* --- COVER SECTION --- */
+        .header-cover {
+            position: relative;
+            width: 100%;
+            min-height: 60vh;
+            background: url('https://sone-solutions.github.io/SONE/library%20IMAGE1.png') no-repeat center center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 0;
         }
-        .page-header h1 {
-            font-size: 48px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #fff, #A8842A, #C1DCB5);
+        .header-cover::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 20, 8, 0.65);
+            backdrop-filter: blur(3px);
+        }
+        .header-cover .cover-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            padding: 20px;
+        }
+        .header-cover h1 {
+            font-size: 4.2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #fff, #A8842A);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 30px rgba(168, 132, 66, 0.3);
         }
-        .page-header p { color: #C1DCB5; font-size: 18px; max-width: 600px; margin: 0 auto; }
+        .header-cover p {
+            font-size: 1.6rem;
+            color: #E0E0E0;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        .header-cover .cover-btn {
+            display: inline-block;
+            padding: 15px 45px;
+            background: linear-gradient(135deg, #A8842A, #D4A843);
+            color: #000;
+            font-weight: 700;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: 0.3s;
+            box-shadow: 0 5px 25px rgba(168, 132, 66, 0.4);
+        }
+        .header-cover .cover-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 35px rgba(168, 132, 66, 0.6);
+        }
 
-        .stats-library {
+        /* --- MAIN CONTAINER --- */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px 60px;
+        }
+
+        /* --- SEARCH --- */
+        .search-container {
             display: flex;
             justify-content: center;
-            gap: 30px;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
+            margin-bottom: 30px;
         }
-        .stat-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 20px 35px;
-            text-align: center;
-            border: 1px solid rgba(168, 132, 66, 0.2);
-            transition: all 0.3s;
-            min-width: 150px;
+        .search-box {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(168, 132, 66, 0.3);
+            border-radius: 60px;
+            padding: 5px;
+            transition: all 0.3s ease;
         }
-        .stat-card:hover {
-            transform: translateY(-3px);
+        .search-box:focus-within {
             border-color: #A8842A;
+            box-shadow: 0 0 20px rgba(168, 132, 66, 0.15);
+            background: rgba(255, 255, 255, 0.08);
         }
-        .stat-number { font-size: 32px; font-weight: 800; color: #A8842A; }
-        .stat-label { font-size: 14px; color: #C1DCB5; margin-top: 5px; }
+        .search-box input {
+            flex: 1;
+            padding: 14px 20px;
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 16px;
+            font-family: 'Cairo', sans-serif;
+            outline: none;
+        }
+        .search-box input::placeholder {
+            color: #7f8c8d;
+        }
+        .search-box .search-icon {
+            padding: 12px 18px;
+            color: #A8842A;
+            font-size: 18px;
+        }
+        .search-box .clear-btn {
+            padding: 12px 18px;
+            color: #7f8c8d;
+            cursor: pointer;
+            font-size: 18px;
+            display: none;
+            transition: 0.3s;
+        }
+        .search-box .clear-btn:hover {
+            color: #f44336;
+            transform: scale(1.2);
+        }
+        .search-box .search-count {
+            padding: 8px 15px;
+            color: #C1DCB5;
+            font-size: 13px;
+            background: rgba(168, 132, 66, 0.15);
+            border-radius: 30px;
+            display: none;
+            white-space: nowrap;
+        }
 
+        .search-results-info {
+            text-align: center;
+            color: #C1DCB5;
+            font-size: 14px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        .search-results-info .highlight {
+            color: #A8842A;
+            font-weight: bold;
+        }
+
+        /* --- TABS --- */
         .tabs {
             display: flex;
             justify-content: center;
@@ -156,17 +329,35 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            color: #fff;
+            font-family: inherit;
         }
-        .tab-btn.active, .tab-btn:hover {
+        .tab-btn.active,
+        .tab-btn:hover {
             background: #A8842A;
             color: #000;
             border-color: #A8842A;
             transform: translateY(-2px);
         }
-        .content-panel { display: none; animation: fadeIn 0.3s ease; }
-        .content-panel.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .content-panel {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        .content-panel.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
+        /* --- GRID --- */
         .library-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -195,28 +386,88 @@
             transform: scaleY(0);
             transition: transform 0.3s;
         }
-        .library-card:hover::before { transform: scaleY(1); }
+        .library-card:hover::before {
+            transform: scaleY(1);
+        }
         .library-card:hover {
             transform: translateY(-5px);
             border-color: #A8842A;
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
         }
+
         .card-icon {
-            width: 65px;
-            height: 65px;
+            width: 100px;
+            height: 100px;
             background: linear-gradient(135deg, rgba(168, 132, 66, 0.2), rgba(168, 132, 66, 0.05));
             border-radius: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 32px;
+            font-size: 40px;
             flex-shrink: 0;
+            overflow: hidden;
+            border: 2px solid rgba(168, 132, 66, 0.2);
+            position: relative;
         }
-        .card-info { flex: 1; }
-        .card-info h4 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
-        .card-info p { font-size: 13px; color: #C1DCB5; line-height: 1.5; margin-bottom: 10px; }
-        .card-meta { display: flex; align-items: center; gap: 15px; font-size: 11px; color: #A8842A; }
-        .card-actions { display: flex; flex-direction: column; gap: 8px; }
+        .card-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .card-icon .file-icon {
+            font-size: 45px;
+            color: #A8842A;
+        }
+        .card-icon .pdf-loading {
+            font-size: 30px;
+            color: #A8842A;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .card-info {
+            flex: 1;
+        }
+        .card-info h4 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+        .card-info p {
+            font-size: 13px;
+            color: #C1DCB5;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+        .card-meta {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 11px;
+            color: #A8842A;
+            flex-wrap: wrap;
+        }
+        .card-meta .file-badge {
+            background: rgba(168, 132, 66, 0.2);
+            padding: 2px 10px;
+            border-radius: 30px;
+            font-size: 10px;
+            color: #C1DCB5;
+        }
+        .card-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
         .action-btn {
             background: rgba(255, 255, 255, 0.05);
             border: none;
@@ -227,9 +478,15 @@
             transition: all 0.3s;
             color: #C1DCB5;
             font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .action-btn:hover { background: rgba(168, 132, 66, 0.3); color: #A8842A; transform: scale(1.1); }
-        .action-btn.delete-btn:hover { background: rgba(244, 67, 54, 0.2); color: #f44336; }
+        .action-btn:hover {
+            background: rgba(168, 132, 66, 0.3);
+            color: #A8842A;
+            transform: scale(1.1);
+        }
 
         .empty-library {
             text-align: center;
@@ -239,10 +496,22 @@
             border: 1px dashed rgba(168, 132, 66, 0.3);
             grid-column: 1/-1;
         }
-        .empty-library i { font-size: 70px; margin-bottom: 20px; color: #A8842A; opacity: 0.5; }
-        .empty-library h3 { font-size: 24px; margin-bottom: 10px; }
-        .empty-library p { color: #C1DCB5; margin-bottom: 25px; }
+        .empty-library i {
+            font-size: 70px;
+            margin-bottom: 20px;
+            color: #A8842A;
+            opacity: 0.5;
+        }
+        .empty-library h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .empty-library p {
+            color: #C1DCB5;
+            margin-bottom: 25px;
+        }
 
+        /* --- FOOTER --- */
         .footer {
             background: rgba(10, 20, 8, 0.95);
             padding: 40px 5% 20px;
@@ -250,167 +519,31 @@
             text-align: center;
             margin-top: 60px;
         }
-        .footer p { color: #C1DCB5; font-size: 14px; }
-
-        /* نقطة التحكم الحمراء */
-        .admin-trigger {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 14px;
-            height: 14px;
-            background: #f44336;
-            border-radius: 50%;
-            z-index: 10002;
-            cursor: pointer;
-            opacity: 0.5;
-            transition: all 0.3s;
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-        .admin-trigger:hover {
-            opacity: 1;
-            transform: scale(1.3);
-            box-shadow: 0 0 10px #f44336;
-        }
-
-        .password-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 15000;
-            justify-content: center;
-            align-items: center;
-        }
-        .password-modal.show { display: flex; }
-        .password-content {
-            background: #1C2A16;
-            border-radius: 20px;
-            padding: 30px;
-            width: 90%;
-            max-width: 350px;
-            text-align: center;
-            border: 2px solid #A8842A;
-        }
-        .password-content input {
-            width: 100%;
-            padding: 12px;
-            margin: 15px 0;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid #A8842A;
-            border-radius: 10px;
-            color: white;
-            font-family: 'Cairo', sans-serif;
-            text-align: center;
-        }
-
-        .admin-panel {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 20000;
-            justify-content: center;
-            align-items: center;
-        }
-        .admin-panel.show { display: flex; }
-        .admin-content {
-            background: #1C2A16;
-            border-radius: 20px;
-            width: 95%;
-            max-width: 800px;
-            max-height: 90vh;
-            overflow-y: auto;
-            padding: 25px;
-            border: 2px solid #A8842A;
-        }
-        .admin-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(168,132,66,0.3);
-        }
-        .admin-header h3 { color: #A8842A; font-size: 20px; }
-        .close-admin {
-            background: #f44336;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 50px;
-            color: white;
-            cursor: pointer;
-        }
-        .admin-form-group { margin-bottom: 15px; }
-        .admin-form-group label {
-            display: block;
-            margin-bottom: 5px;
+        .footer p {
             color: #C1DCB5;
-            font-size: 13px;
-            font-weight: 500;
+            font-size: 14px;
+            margin-bottom: 15px;
         }
-        .admin-form-group input, .admin-form-group select, .admin-form-group textarea {
-            width: 100%;
-            padding: 10px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(168,132,66,0.3);
-            border-radius: 8px;
-            color: #fff;
-            font-family: 'Cairo', sans-serif;
-        }
-        .admin-form-group textarea { resize: vertical; }
-        .file-upload {
-            background: rgba(168, 132, 66, 0.1);
-            border: 1px dashed rgba(168, 132, 66, 0.5);
-            border-radius: 16px;
-            padding: 15px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .file-upload:hover { background: rgba(168, 132, 66, 0.2); }
-        .file-upload i { font-size: 24px; margin-bottom: 5px; display: block; }
-        .btn-primary {
-            background: linear-gradient(135deg, #A8842A, #C49B3A);
-            color: #000;
-            border: none;
-            padding: 10px;
+        .footer .report-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: rgba(168, 132, 66, 0.15);
+            border: 1px solid rgba(168, 132, 66, 0.5);
             border-radius: 50px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 10px;
-        }
-        .content-list {
-            margin-top: 20px;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-        .content-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 10px;
-            margin-bottom: 8px;
-        }
-        .content-item-actions button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            margin: 0 5px;
+            color: #A8842A;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
             font-size: 14px;
         }
-        .edit-content { color: #2196f3; }
-        .delete-content { color: #f44336; }
+        .footer .report-btn:hover {
+            background: #A8842A;
+            color: #000;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(168, 132, 66, 0.3);
+        }
 
+        /* --- MODAL --- */
         .detail-modal {
             display: none;
             position: fixed;
@@ -423,15 +556,18 @@
             align-items: center;
             justify-content: center;
             backdrop-filter: blur(10px);
+            padding: 20px;
         }
-        .detail-modal.active { display: flex; }
+        .detail-modal.active {
+            display: flex;
+        }
         .detail-content {
             background: #1C2A16;
             border-radius: 32px;
             padding: 30px;
-            max-width: 700px;
-            width: 90%;
-            max-height: 85vh;
+            max-width: 900px;
+            width: 95%;
+            max-height: 90vh;
             overflow-y: auto;
             border: 1px solid #A8842A;
         }
@@ -447,6 +583,83 @@
             margin-top: 20px;
             width: 100%;
         }
+        .detail-section {
+            margin: 12px 0;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 14px;
+        }
+        .detail-header {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .detail-header h2 {
+            color: #A8842A;
+            font-size: 22px;
+        }
+        .detail-file-preview {
+            max-width: 100%;
+            border-radius: 12px;
+            margin: 10px 0;
+            max-height: 500px;
+            object-fit: contain;
+        }
+        .file-embed-pdf {
+            width: 100%;
+            height: 600px;
+            border: none;
+            border-radius: 12px;
+        }
+        .file-embed-text {
+            width: 100%;
+            max-height: 400px;
+            overflow-y: auto;
+            background: #0F1E0C;
+            padding: 15px;
+            border-radius: 12px;
+            color: #C1DCB5;
+            font-size: 14px;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            direction: ltr;
+            text-align: left;
+        }
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        .btn-group .btn-action {
+            flex: 1;
+            min-width: 120px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-family: inherit;
+        }
+        .btn-group .btn-open {
+            background: linear-gradient(135deg, #A8842A, #C49B3A);
+            color: #000;
+        }
+        .btn-group .btn-open:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(168, 132, 66, 0.3);
+        }
+        .btn-group .btn-download {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(168, 132, 66, 0.3);
+        }
+        .btn-group .btn-download:hover {
+            background: rgba(168, 132, 66, 0.2);
+        }
 
         .toast {
             position: fixed;
@@ -460,448 +673,801 @@
             z-index: 3000;
             display: none;
             font-size: 13px;
+            font-family: 'Cairo', sans-serif;
         }
 
+        /* --- RESPONSIVE --- */
         @media (max-width: 768px) {
-            .page-header h1 { font-size: 32px; }
-            .library-card { flex-direction: column; text-align: center; }
-            .card-icon { margin: 0 auto; }
-            .card-actions { flex-direction: row; justify-content: center; margin-top: 10px; }
-            .stats-library { gap: 15px; }
-            .stat-card { padding: 15px 25px; }
-            .stat-number { font-size: 24px; }
+            .header-cover {
+                min-height: 50vh;
+            }
+            .header-cover h1 {
+                font-size: 2.8rem;
+            }
+            .header-cover p {
+                font-size: 1.2rem;
+            }
+            .header-content {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+            .header-actions {
+                justify-content: center;
+            }
+            .logo {
+                justify-content: center;
+            }
+            .back-btn {
+                justify-content: center;
+            }
+            .lang-selector {
+                justify-content: center;
+            }
+            .container {
+                padding-top: 20px;
+            }
+            .library-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            .card-icon {
+                margin: 0 auto;
+                width: 80px;
+                height: 80px;
+            }
+            .card-actions {
+                flex-direction: row;
+                justify-content: center;
+                margin-top: 10px;
+            }
+            .file-embed-pdf {
+                height: 350px;
+            }
+            .search-box input {
+                font-size: 14px;
+                padding: 10px 15px;
+            }
+            .search-box .search-count {
+                font-size: 11px;
+                padding: 5px 10px;
+            }
+            .logo-icon {
+                width: 40px;
+                height: 40px;
+            }
+            .logo-text h1 {
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-cover h1 {
+                font-size: 2rem;
+            }
+            .header-cover p {
+                font-size: 1rem;
+            }
+            .lang-btn {
+                padding: 4px 10px;
+                font-size: 11px;
+            }
+            .back-btn {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+            .logo-icon {
+                width: 35px;
+                height: 35px;
+            }
+            .logo-text h1 {
+                font-size: 16px;
+            }
         }
     </style>
 </head>
 <body>
 
+    <!-- ============================================================ -->
+    <!-- HEADER FIXE (NAV)                                             -->
+    <!-- ============================================================ -->
     <header class="header" id="header">
         <div class="header-content">
-            <a href="index.html" class="logo">
-                <div class="logo-icon"><i class="fas fa-leaf"></i></div>
+            <!-- LOGO -->
+            <a href="library.html" class="logo">
+                <div class="logo-icon">
+                    <img src="https://sone-solutions.github.io/SONE/SONELOGE.jpg" alt="SONE LIBRARY Logo" />
+                </div>
                 <div class="logo-text">
-                    <h1>Agri Maroc Précis</h1>
-                    <p>المنصة المتكاملة للفلاحة الذكية</p>
+                    <h1>SONE LIBRARY</h1>
+                    <p data-i18n="subtitle">المنصة المتكاملة للفلاحة الذكية</p>
                 </div>
             </a>
-            <a href="index.html" class="back-btn"><i class="fas fa-arrow-right"></i> <span>العودة للرئيسية</span></a>
+
+            <!-- ACTIONS -->
+            <div class="header-actions">
+                <!-- Langues -->
+                <div class="lang-selector">
+                    <button class="lang-btn active" data-lang="ar" onclick="setLang('ar')">عربي</button>
+                    <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
+                    <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+                </div>
+                <!-- Retour -->
+                <a href="https://sone-solutions.github.io/SONE/service.html" class="back-btn">
+                    <i class="fas fa-arrow-right"></i>
+                    <span data-i18n="back">العودة للرئيسية</span>
+                </a>
+            </div>
         </div>
     </header>
 
-    <div class="container">
-        <div class="page-header" data-aos="fade-up">
-            <span class="badge"><i class="fas fa-book"></i> مكتبتك الشخصية</span>
-            <h1><i class="fas fa-book"></i> مكتبتي</h1>
-            <p>تخزين وحفظ المحتوى الزراعي المفضل لديك: كتب، مقالات، فيديوهات، تقارير، عروض تدريبية</p>
+    <!-- ============================================================ -->
+    <!-- COVER SECTION                                                 -->
+    <!-- ============================================================ -->
+    <section class="header-cover">
+        <div class="cover-content" data-aos="fade-up">
+            <h1 data-i18n="coverTitle">SONE LIBRARY</h1>
+            <p data-i18n="coverDesc">La connaissance au service de l’agriculture</p>
+            <a href="#library-content" class="cover-btn" data-i18n="coverBtn">Explorez, apprenez, partagez</a>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- MAIN CONTENT                                                  -->
+    <!-- ============================================================ -->
+    <div class="container" id="library-content">
+
+        <!-- Recherche -->
+        <div class="search-container" data-aos="fade-up" data-aos-delay="150">
+            <div class="search-box">
+                <span class="search-icon"><i class="fas fa-search"></i></span>
+                <input type="text" id="searchInput" placeholder="🔍 ابحث عن أي شيء (عنوان، وصف، نوع، اسم ملف...)" oninput="handleSearch(this.value)" />
+                <span class="clear-btn" id="clearSearchBtn" onclick="clearSearch()"><i class="fas fa-times-circle"></i></span>
+                <span class="search-count" id="searchCount">0 résultat</span>
+            </div>
         </div>
 
-        <div class="stats-library" data-aos="fade-up" data-aos-delay="100">
-            <div class="stat-card"><div class="stat-number" id="booksCount">0</div><div class="stat-label"><i class="fas fa-book"></i> كتب PDF</div></div>
-            <div class="stat-card"><div class="stat-number" id="articlesCount">0</div><div class="stat-label"><i class="fas fa-file-alt"></i> مقالات</div></div>
-            <div class="stat-card"><div class="stat-number" id="videosCount">0</div><div class="stat-label"><i class="fas fa-video"></i> فيديوهات</div></div>
-            <div class="stat-card"><div class="stat-number" id="reportsCount">0</div><div class="stat-label"><i class="fas fa-chart-line"></i> تقارير</div></div>
-            <div class="stat-card"><div class="stat-number" id="trainingsCount">0</div><div class="stat-label"><i class="fas fa-chalkboard-user"></i> عروض تدريب</div></div>
-            <div class="stat-card"><div class="stat-number" id="totalCount">0</div><div class="stat-label"><i class="fas fa-layer-group"></i> إجمالي</div></div>
+        <!-- Infos résultats -->
+        <div class="search-results-info" id="searchResultsInfo">
+            <span data-i18n="showing">عرض</span>
+            <span class="highlight" id="resultCount">0</span>
+            <span data-i18n="of">من</span>
+            <span class="highlight" id="totalCountDisplay">0</span>
         </div>
 
-        <div class="tabs" data-aos="fade-up" data-aos-delay="150">
-            <button class="tab-btn active" data-tab="books"><i class="fas fa-book"></i> الكتب PDF</button>
-            <button class="tab-btn" data-tab="articles"><i class="fas fa-file-alt"></i> المقالات</button>
-            <button class="tab-btn" data-tab="videos"><i class="fas fa-video"></i> الفيديوهات</button>
-            <button class="tab-btn" data-tab="reports"><i class="fas fa-chart-line"></i> التقارير</button>
-            <button class="tab-btn" data-tab="trainings"><i class="fas fa-chalkboard-user"></i> عروض تدريب</button>
+        <!-- Onglets -->
+        <div class="tabs" data-aos="fade-up" data-aos-delay="200">
+            <button class="tab-btn active" data-tab="books"><i class="fas fa-book"></i> <span data-i18n="tabBooks">الكتب PDF</span></button>
+            <button class="tab-btn" data-tab="articles"><i class="fas fa-file-alt"></i> <span data-i18n="tabArticles">المقالات</span></button>
+            <button class="tab-btn" data-tab="videos"><i class="fas fa-video"></i> <span data-i18n="tabVideos">الفيديوهات</span></button>
+            <button class="tab-btn" data-tab="reports"><i class="fas fa-chart-line"></i> <span data-i18n="tabReports">التقارير</span></button>
+            <button class="tab-btn" data-tab="trainings"><i class="fas fa-chalkboard-user"></i> <span data-i18n="tabTrainings">عروض تدريب</span></button>
         </div>
 
+        <!-- Panels -->
         <div id="books-panel" class="content-panel active"><div class="library-grid" id="booksGrid"></div></div>
         <div id="articles-panel" class="content-panel"><div class="library-grid" id="articlesGrid"></div></div>
         <div id="videos-panel" class="content-panel"><div class="library-grid" id="videosGrid"></div></div>
         <div id="reports-panel" class="content-panel"><div class="library-grid" id="reportsGrid"></div></div>
         <div id="trainings-panel" class="content-panel"><div class="library-grid" id="trainingsGrid"></div></div>
+
     </div>
 
+    <!-- ============================================================ -->
+    <!-- FOOTER                                                        -->
+    <!-- ============================================================ -->
     <footer class="footer">
-        <p>© 2026 Agri Maroc Précis - جميع الحقوق محفوظة | المنصة المتكاملة للفلاحة الذكية</p>
+        <p>© 2026 SONE LIBRARY - <span data-i18n="footer">جميع الحقوق محفوظة | المنصة المتكاملة للفلاحة الذكية</span></p>
+        <a href="https://chatgpt.com/s/m_6a53b6d5d01c81919bc35018c657c091" target="_blank" class="report-btn">
+            <i class="fas fa-flag"></i> <span data-i18n="reportBtn">الإبلاغ عن مشكلة أو اقتراح</span>
+        </a>
     </footer>
 
-    <!-- نقطة التحكم الحمراء -->
-    <div class="admin-trigger" onclick="showAdminPassword()"></div>
-
-    <!-- نافذة كلمة المرور -->
-    <div id="passwordModal" class="password-modal">
-        <div class="password-content">
-            <i class="fas fa-lock" style="font-size: 40px; color: #A8842A;"></i>
-            <h3 style="margin: 10px 0;">لوحة التحكم</h3>
-            <input type="password" id="adminPassword" placeholder="أدخل كلمة المرور" onkeypress="if(event.keyCode==13) checkAdminPassword()">
-            <div style="display: flex; gap: 10px;">
-                <button class="btn-primary" onclick="checkAdminPassword()" style="flex:1; margin:0;">دخول</button>
-                <button class="btn-primary" onclick="closePasswordModal()" style="flex:1; margin:0; background:#333;">إلغاء</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- لوحة التحكم -->
-    <div id="adminPanel" class="admin-panel">
-        <div class="admin-content">
-            <div class="admin-header">
-                <h3><i class="fas fa-cog"></i> لوحة التحكم - إدارة المكتبة</h3>
-                <button class="close-admin" onclick="closeAdminPanel()">✖ إغلاق</button>
-            </div>
-            
-            <div class="admin-form-group">
-                <label>نوع المحتوى</label>
-                <select id="contentType">
-                    <option value="book">📚 كتاب PDF</option>
-                    <option value="article">📄 مقال/نص</option>
-                    <option value="video">🎥 فيديو</option>
-                    <option value="report">📊 تقرير تدريب</option>
-                    <option value="training">🎓 عرض تدريب (بوربونت)</option>
-                </select>
-            </div>
-            <div class="admin-form-group">
-                <label>العنوان</label>
-                <input type="text" id="contentTitle" placeholder="عنوان المحتوى">
-            </div>
-            <div class="admin-form-group">
-                <label>الوصف</label>
-                <textarea id="contentDesc" rows="2" placeholder="وصف المحتوى"></textarea>
-            </div>
-            <div class="admin-form-group" id="articleContentGroup" style="display:none;">
-                <label>محتوى المقال (نص كامل)</label>
-                <textarea id="articleFullContent" rows="5" placeholder="المحتوى الكامل للمقال..."></textarea>
-            </div>
-            <div class="admin-form-group">
-                <label>الأيقونة (إيموجي)</label>
-                <input type="text" id="contentIcon" placeholder="مثال: 📘" value="📘">
-            </div>
-            <div class="admin-form-group">
-                <label>تاريخ النشر</label>
-                <input type="date" id="contentDate">
-            </div>
-            <div class="admin-form-group" id="fileUploadGroup">
-                <label>رفع الملف (PDF / فيديو / PPT)</label>
-                <div class="file-upload" onclick="document.getElementById('contentFile').click()">
-                    <i class="fas fa-cloud-upload-alt"></i>
-                    <span>اضغط لرفع الملف</span>
-                </div>
-                <input type="file" id="contentFile" accept=".pdf,.mp4,.mov,.ppt,.pptx" style="display:none" onchange="previewFile()">
-                <div id="filePreview" class="file-preview" style="margin-top:10px; display:none;"></div>
-            </div>
-            <div class="admin-form-group" id="videoLinkGroup" style="display:none;">
-                <label>رابط فيديو (YouTube - اختياري)</label>
-                <input type="text" id="videoLink" placeholder="https://youtube.com/...">
-            </div>
-            <button class="btn-primary" onclick="addContent()"><i class="fas fa-plus"></i> نشر المحتوى</button>
-            
-            <hr style="border-color: rgba(168,132,66,0.3); margin: 20px 0;">
-            <h4 style="color: #A8842A; margin-bottom: 10px;">📋 المحتوى المنشور</h4>
-            <div id="contentList" class="content-list"></div>
-        </div>
-    </div>
-
-    <!-- نافذة عرض التفاصيل -->
+    <!-- ============================================================ -->
+    <!-- MODAL                                                         -->
+    <!-- ============================================================ -->
     <div id="detailModal" class="detail-modal">
-        <div class="detail-content" id="detailContent"></div>
+        <div class="detail-content" id="detailContent">
+            <button class="close-detail" onclick="closeDetailModal()">✖ <span data-i18n="close">إغلاق</span></button>
+        </div>
     </div>
 
+    <!-- Toast -->
     <div class="toast" id="toast"></div>
 
+    <!-- ============================================================ -->
+    <!-- SCRIPTS                                                       -->
+    <!-- ============================================================ -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
+        // ============================================================
+        // 1. AOS
+        // ============================================================
         AOS.init({ duration: 800, once: true });
 
-        const ADMIN_PASSWORD = "admin@2005@1234";
-        let books = [], articles = [], videos = [], reports = [], trainings = [];
-        let editingId = null;
-        let editingType = null;
-        let currentFileData = null;
-        let currentFileName = "";
+        // ============================================================
+        // 2. Supabase config
+        // ============================================================
+        const SUPABASE_URL = 'https://zpjuhprlcaigmczhqlye.supabase.co';
+        const API_KEY = 'sb_publishable_PVQ61DBLGYjzaXy-XFrWpA_k_94iEvK';
 
-        // تحميل البيانات
-        function loadData() {
-            books = JSON.parse(localStorage.getItem('library_books')) || [];
-            articles = JSON.parse(localStorage.getItem('library_articles')) || [];
-            videos = JSON.parse(localStorage.getItem('library_videos')) || [];
-            reports = JSON.parse(localStorage.getItem('library_reports')) || [];
-            trainings = JSON.parse(localStorage.getItem('library_trainings')) || [];
+        let allItems = [];
+        let currentSearchTerm = '';
 
-            if (books.length === 0) {
-                books = [{ id: 1, title: "دليل الزراعة العضوية", desc: "دليل شامل للزراعة العضوية", icon: "📘", date: "2026-04-10", fileData: null, fileName: "organic_farming.pdf" }];
-                localStorage.setItem('library_books', JSON.stringify(books));
+        // ============================================================
+        // 3. Traductions (FR/AR/EN)
+        // ============================================================
+        const translations = {
+            ar: {
+                subtitle: 'المنصة المتكاملة للفلاحة الذكية',
+                back: 'العودة للرئيسية',
+                badge: 'مكتبتك الشخصية',
+                pageTitle: 'مكتبتي',
+                pageDesc: 'تخزين وحفظ المحتوى الزراعي المفضل لديك: كتب، مقالات، فيديوهات، تقارير، عروض تدريبية',
+                statBooks: 'كتب PDF',
+                statArticles: 'مقالات',
+                statVideos: 'فيديوهات',
+                statReports: 'تقارير',
+                statTrainings: 'عروض تدريب',
+                statTotal: 'إجمالي',
+                showing: 'عرض',
+                of: 'من',
+                tabBooks: 'الكتب PDF',
+                tabArticles: 'المقالات',
+                tabVideos: 'الفيديوهات',
+                tabReports: 'التقارير',
+                tabTrainings: 'عروض تدريب',
+                close: 'إغلاق',
+                footer: 'جميع الحقوق محفوظة | المنصة المتكاملة للفلاحة الذكية',
+                reportBtn: 'الإبلاغ عن مشكلة أو اقتراح',
+                coverTitle: 'SONE LIBRARY',
+                coverDesc: 'المعرفة في خدمة الفلاحة',
+                coverBtn: 'استكشف، تعلم، شارك',
+                emptyBooks: 'لا توجد كتب',
+                emptyArticles: 'لا توجد مقالات',
+                emptyVideos: 'لا توجد فيديوهات',
+                emptyReports: 'لا توجد تقارير',
+                emptyTrainings: 'لا توجد عروض تدريب',
+                addBooks: 'أضف كتباً إلى مكتبتك',
+                addArticles: 'أضف مقالات إلى مكتبتك',
+                addVideos: 'أضف فيديوهات إلى مكتبتك',
+                addReports: 'أضف تقارير إلى مكتبتك',
+                addTrainings: 'أضف عروضاً تدريبية إلى مكتبتك',
+                noResults: 'لا توجد نتائج',
+                searchPlaceholder: '🔍 ابحث عن أي شيء (عنوان، وصف، نوع، اسم ملف...)',
+                viewDetails: 'عرض التفاصيل',
+                openRead: 'فتح وقراءة',
+                download: 'تحميل',
+                description: 'الوصف',
+                noDesc: 'لا يوجد',
+                date: 'التاريخ',
+                fileName: 'اسم الملف',
+                loading: 'جاري تحميل النص...',
+                errorLoading: '⚠️ فشل تحميل النص'
+            },
+            fr: {
+                subtitle: 'La plateforme intégrée pour une agriculture intelligente',
+                back: 'Retour à l\'accueil',
+                badge: 'Votre bibliothèque personnelle',
+                pageTitle: 'Ma Bibliothèque',
+                pageDesc: 'Stockez et sauvegardez votre contenu agricole préféré : livres, articles, vidéos, rapports, présentations de formation',
+                statBooks: 'Livres PDF',
+                statArticles: 'Articles',
+                statVideos: 'Vidéos',
+                statReports: 'Rapports',
+                statTrainings: 'Présentations',
+                statTotal: 'Total',
+                showing: 'Affichage de',
+                of: 'sur',
+                tabBooks: 'Livres PDF',
+                tabArticles: 'Articles',
+                tabVideos: 'Vidéos',
+                tabReports: 'Rapports',
+                tabTrainings: 'Présentations',
+                close: 'Fermer',
+                footer: 'Tous droits réservés | La plateforme intégrée pour une agriculture intelligente',
+                reportBtn: 'Signaler un problème ou suggérer',
+                coverTitle: 'SONE LIBRARY',
+                coverDesc: 'La connaissance au service de l\'agriculture',
+                coverBtn: 'Explorez, apprenez, partagez',
+                emptyBooks: 'Aucun livre',
+                emptyArticles: 'Aucun article',
+                emptyVideos: 'Aucune vidéo',
+                emptyReports: 'Aucun rapport',
+                emptyTrainings: 'Aucune présentation',
+                addBooks: 'Ajoutez des livres à votre bibliothèque',
+                addArticles: 'Ajoutez des articles à votre bibliothèque',
+                addVideos: 'Ajoutez des vidéos à votre bibliothèque',
+                addReports: 'Ajoutez des rapports à votre bibliothèque',
+                addTrainings: 'Ajoutez des présentations à votre bibliothèque',
+                noResults: 'Aucun résultat',
+                searchPlaceholder: '🔍 Rechercher (titre, description, type, nom de fichier...)',
+                viewDetails: 'Voir les détails',
+                openRead: 'Ouvrir et lire',
+                download: 'Télécharger',
+                description: 'Description',
+                noDesc: 'Aucune',
+                date: 'Date',
+                fileName: 'Nom du fichier',
+                loading: 'Chargement du texte...',
+                errorLoading: '⚠️ Échec du chargement du texte'
+            },
+            en: {
+                subtitle: 'The integrated platform for smart agriculture',
+                back: 'Back to home',
+                badge: 'Your personal library',
+                pageTitle: 'My Library',
+                pageDesc: 'Store and save your favorite agricultural content: books, articles, videos, reports, training presentations',
+                statBooks: 'PDF Books',
+                statArticles: 'Articles',
+                statVideos: 'Videos',
+                statReports: 'Reports',
+                statTrainings: 'Trainings',
+                statTotal: 'Total',
+                showing: 'Showing',
+                of: 'of',
+                tabBooks: 'PDF Books',
+                tabArticles: 'Articles',
+                tabVideos: 'Videos',
+                tabReports: 'Reports',
+                tabTrainings: 'Trainings',
+                close: 'Close',
+                footer: 'All rights reserved | The integrated platform for smart agriculture',
+                reportBtn: 'Report a problem or suggest',
+                coverTitle: 'SONE LIBRARY',
+                coverDesc: 'Knowledge at the service of agriculture',
+                coverBtn: 'Explore, learn, share',
+                emptyBooks: 'No books',
+                emptyArticles: 'No articles',
+                emptyVideos: 'No videos',
+                emptyReports: 'No reports',
+                emptyTrainings: 'No trainings',
+                addBooks: 'Add books to your library',
+                addArticles: 'Add articles to your library',
+                addVideos: 'Add videos to your library',
+                addReports: 'Add reports to your library',
+                addTrainings: 'Add trainings to your library',
+                noResults: 'No results found',
+                searchPlaceholder: '🔍 Search (title, description, type, file name...)',
+                viewDetails: 'View details',
+                openRead: 'Open & read',
+                download: 'Download',
+                description: 'Description',
+                noDesc: 'None',
+                date: 'Date',
+                fileName: 'File name',
+                loading: 'Loading text...',
+                errorLoading: '⚠️ Failed to load text'
             }
-            if (articles.length === 0) {
-                articles = [{ id: 1, title: "طرق الري الحديثة", desc: "أحدث تقنيات الري", icon: "💧", date: "2026-04-08", fullContent: "محتوى المقال الكامل..." }];
-                localStorage.setItem('library_articles', JSON.stringify(articles));
+        };
+
+        let currentLang = 'ar';
+
+        function setLang(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === lang);
+            });
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.dataset.i18n;
+                if (translations[lang] && translations[lang][key] !== undefined) {
+                    el.textContent = translations[lang][key];
+                }
+            });
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.placeholder = translations[lang].searchPlaceholder || searchInput.placeholder;
             }
-            if (videos.length === 0) {
-                videos = [{ id: 1, title: "تقليم أشجار الزيتون", desc: "فيديو تعليمي", icon: "🌳", date: "2026-04-05", videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ", fileData: null }];
-                localStorage.setItem('library_videos', JSON.stringify(videos));
-            }
-            if (reports.length === 0) {
-                reports = [{ id: 1, title: "تقرير المحاصيل 2025", desc: "تقرير سنوي عن المحاصيل", icon: "📊", date: "2026-03-15", fileData: null, fileName: "report_2025.pdf" }];
-                localStorage.setItem('library_reports', JSON.stringify(reports));
-            }
-            if (trainings.length === 0) {
-                trainings = [{ id: 1, title: "إدارة المزارع الحديثة", desc: "عرض تدريبي", icon: "🎓", date: "2026-03-20", fileData: null, fileName: "farm_management.pptx" }];
-                localStorage.setItem('library_trainings', JSON.stringify(trainings));
-            }
+            document.querySelectorAll('.tab-btn span[data-i18n]').forEach(el => {
+                const key = el.dataset.i18n;
+                if (translations[lang] && translations[lang][key] !== undefined) {
+                    el.textContent = translations[lang][key];
+                }
+            });
             renderAll();
         }
 
-        function saveData() {
-            localStorage.setItem('library_books', JSON.stringify(books));
-            localStorage.setItem('library_articles', JSON.stringify(articles));
-            localStorage.setItem('library_videos', JSON.stringify(videos));
-            localStorage.setItem('library_reports', JSON.stringify(reports));
-            localStorage.setItem('library_trainings', JSON.stringify(trainings));
-            renderAll();
-            if (document.getElementById('adminPanel').classList.contains('show')) renderContentList();
+        // ============================================================
+        // 4. Fonctions de rendu
+        // ============================================================
+        async function fetchLibraryItems() {
+            const url = `${SUPABASE_URL}/rest/v1/library_items?select=*`;
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'apikey': API_KEY,
+                    'Authorization': `Bearer ${API_KEY}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`Échec du chargement : ${response.status} - ${errorText}`);
+            }
+            return await response.json();
         }
 
-        function renderAll() {
-            renderBooks();
-            renderArticles();
-            renderVideos();
-            renderReports();
-            renderTrainings();
-            updateStats();
+        function isPDFFile(fileName) {
+            if (!fileName) return false;
+            const ext = fileName.split('.').pop().toLowerCase();
+            return ext === 'pdf';
         }
 
-        function renderBooks() {
-            const grid = document.getElementById('booksGrid');
-            if (books.length === 0) { grid.innerHTML = emptyHtml("📚", "لا توجد كتب", "أضف كتباً إلى مكتبتك"); return; }
-            grid.innerHTML = books.map(item => cardHtml(item.id, item.title, item.desc, item.icon, item.date, 'book', '📖')).join('');
-        }
-        function renderArticles() {
-            const grid = document.getElementById('articlesGrid');
-            if (articles.length === 0) { grid.innerHTML = emptyHtml("📄", "لا توجد مقالات", "أضف مقالات إلى مكتبتك"); return; }
-            grid.innerHTML = articles.map(item => cardHtml(item.id, item.title, item.desc, item.icon, item.date, 'article', '📄')).join('');
-        }
-        function renderVideos() {
-            const grid = document.getElementById('videosGrid');
-            if (videos.length === 0) { grid.innerHTML = emptyHtml("🎥", "لا توجد فيديوهات", "أضف فيديوهات إلى مكتبتك"); return; }
-            grid.innerHTML = videos.map(item => cardHtml(item.id, item.title, item.desc, item.icon, item.date, 'video', '🎬')).join('');
-        }
-        function renderReports() {
-            const grid = document.getElementById('reportsGrid');
-            if (reports.length === 0) { grid.innerHTML = emptyHtml("📊", "لا توجد تقارير", "أضف تقارير إلى مكتبتك"); return; }
-            grid.innerHTML = reports.map(item => cardHtml(item.id, item.title, item.desc, item.icon, item.date, 'report', '📈')).join('');
-        }
-        function renderTrainings() {
-            const grid = document.getElementById('trainingsGrid');
-            if (trainings.length === 0) { grid.innerHTML = emptyHtml("🎓", "لا توجد عروض تدريب", "أضف عروضاً تدريبية إلى مكتبتك"); return; }
-            grid.innerHTML = trainings.map(item => cardHtml(item.id, item.title, item.desc, item.icon, item.date, 'training', '📊')).join('');
+        function isImageFile(fileName) {
+            if (!fileName) return false;
+            const ext = fileName.split('.').pop().toLowerCase();
+            return ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp', 'ico'].includes(ext);
         }
 
-        function cardHtml(id, title, desc, icon, date, type, defaultIcon) {
-            return `
-                <div class="library-card">
-                    <div class="card-icon">${icon || defaultIcon}</div>
-                    <div class="card-info">
-                        <h4>${escapeHtml(title)}</h4>
-                        <p>${escapeHtml(desc.substring(0, 80))}...</p>
-                        <div class="card-meta"><span><i class="fas fa-calendar-alt"></i> ${formatDate(date)}</span></div>
+        function isTextFile(fileName) {
+            if (!fileName) return false;
+            const ext = fileName.split('.').pop().toLowerCase();
+            return ['txt', 'md', 'csv', 'log', 'json', 'xml', 'html', 'css', 'js'].includes(ext);
+        }
+
+        function getFileIcon(fileName) {
+            if (!fileName) return '📄';
+            const ext = fileName.split('.').pop().toLowerCase();
+            const icons = {
+                pdf: '📄',
+                ppt: '📊',
+                pptx: '📊',
+                mp4: '🎥',
+                mov: '🎥',
+                avi: '🎥',
+                mkv: '🎥',
+                doc: '📝',
+                docx: '📝',
+                xls: '📊',
+                xlsx: '📊',
+                zip: '📦',
+                rar: '📦',
+                txt: '📃',
+                md: '📃'
+            };
+            return icons[ext] || '📄';
+        }
+
+        async function extractPDFCover(pdfUrl) {
+            try {
+                const loadingTask = pdfjsLib.getDocument(pdfUrl);
+                const pdf = await loadingTask.promise;
+                const page = await pdf.getPage(1);
+                const scale = 1.5;
+                const viewport = page.getViewport({ scale });
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
+                const renderContext = { viewport, canvasContext: context };
+                await page.render(renderContext).promise;
+                return canvas.toDataURL('image/jpeg', 0.8);
+            } catch (error) {
+                console.error('❌ PDF cover error:', error);
+                return null;
+            }
+        }
+
+        function renderGrid(gridId, items, type) {
+            const grid = document.getElementById(gridId);
+            if (!grid) return;
+
+            const emptyMessages = {
+                book: { icon: '📚', titleKey: 'emptyBooks', msgKey: 'addBooks' },
+                article: { icon: '📄', titleKey: 'emptyArticles', msgKey: 'addArticles' },
+                video: { icon: '🎥', titleKey: 'emptyVideos', msgKey: 'addVideos' },
+                report: { icon: '📊', titleKey: 'emptyReports', msgKey: 'addReports' },
+                training: { icon: '🎓', titleKey: 'emptyTrainings', msgKey: 'addTrainings' }
+            };
+
+            if (items.length === 0) {
+                const info = emptyMessages[type] || { icon: '📦', titleKey: 'emptyBooks', msgKey: 'addBooks' };
+                const title = translations[currentLang][info.titleKey] || info.titleKey;
+                const msg = translations[currentLang][info.msgKey] || info.msgKey;
+                grid.innerHTML = `
+                    <div class="empty-library">
+                        <i class="fas ${info.icon}"></i>
+                        <h3>${title}</h3>
+                        <p>${msg}</p>
                     </div>
-                    <div class="card-actions">
-                        <button class="action-btn" onclick="viewItem(${id}, '${type}')"><i class="fas fa-eye"></i></button>
+                `;
+                return;
+            }
+
+            grid.innerHTML = items.map(item => {
+                let iconHtml = '';
+                if (item.file_url && isPDFFile(item.file_name)) {
+                    iconHtml = `<span class="pdf-loading"><i class="fas fa-spinner"></i></span>`;
+                } else if (item.file_url && isImageFile(item.file_name)) {
+                    iconHtml =
+                        `<img src="${item.file_url}" alt="${item.title}" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\\'file-icon\\'>🖼️</span>';">`;
+                } else if (item.file_url) {
+                    iconHtml = `<span class="file-icon">${getFileIcon(item.file_name)}</span>`;
+                } else if (item.video_url) {
+                    iconHtml = `<span class="file-icon">🎥</span>`;
+                } else {
+                    const typeIcons = { book: '📖', article: '📄', video: '🎬', report: '📈', training: '📊' };
+                    iconHtml = `<span class="file-icon">${item.icon || typeIcons[type] || '📄'}</span>`;
+                }
+
+                const fileNameDisplay = item.file_name ?
+                    (item.file_name.length > 20 ? item.file_name.substring(0, 20) + '...' : item.file_name) : '';
+
+                return `
+                    <div class="library-card" data-id="${item.id}" data-pdfurl="${item.file_url || ''}" data-filename="${item.file_name || ''}">
+                        <div class="card-icon" id="icon-${item.id}">${iconHtml}</div>
+                        <div class="card-info">
+                            <h4>${escapeHtml(item.title)}</h4>
+                            <p>${escapeHtml((item.description || '').substring(0, 80))}...</p>
+                            <div class="card-meta">
+                                <span><i class="fas fa-calendar-alt"></i> ${formatDate(item.date)}</span>
+                                ${item.file_name ? `<span class="file-badge"><i class="fas fa-paperclip"></i> ${escapeHtml(fileNameDisplay)}</span>` : ''}
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="action-btn" onclick="viewItem(${item.id}, '${type}')" title="${translations[currentLang].viewDetails || 'Voir détails'}"><i class="fas fa-eye"></i></button>
+                            ${item.file_url ? `<a href="${item.file_url}" target="_blank" class="action-btn" style="text-decoration:none;" title="Ouvrir"><i class="fas fa-external-link-alt"></i></a>` : ''}
+                        </div>
                     </div>
-                </div>
-            `;
+                `;
+            }).join('');
+
+            document.querySelectorAll(`#${gridId} .library-card`).forEach(async (card) => {
+                const pdfUrl = card.dataset.pdfurl;
+                const fileName = card.dataset.filename;
+                const id = card.dataset.id;
+                if (pdfUrl && isPDFFile(fileName)) {
+                    const iconContainer = document.getElementById(`icon-${id}`);
+                    if (iconContainer) {
+                        const cover = await extractPDFCover(pdfUrl);
+                        if (cover) {
+                            iconContainer.innerHTML = `<img src="${cover}" alt="Couverture PDF">`;
+                        } else {
+                            iconContainer.innerHTML = `<span class="file-icon">📄</span>`;
+                        }
+                    }
+                }
+            });
         }
 
-        function emptyHtml(icon, title, msg) {
-            return `<div class="empty-library"><i class="fas ${icon}"></i><h3>${title}</h3><p>${msg}</p></div>`;
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
         }
 
         function formatDate(dateStr) {
-            if (!dateStr) return 'تاريخ غير محدد';
+            if (!dateStr) return 'Date inconnue';
             const date = new Date(dateStr);
-            return date.toLocaleDateString('ar-EG');
+            return date.toLocaleDateString('fr-FR');
         }
 
-        function viewItem(id, type) {
-            let item, html = '';
-            if (type === 'book') item = books.find(i => i.id === id);
-            else if (type === 'article') item = articles.find(i => i.id === id);
-            else if (type === 'video') item = videos.find(i => i.id === id);
-            else if (type === 'report') item = reports.find(i => i.id === id);
-            else if (type === 'training') item = trainings.find(i => i.id === id);
-            if (!item) return;
+        function renderAll() {
+            const books = allItems.filter(i => i.type === 'book');
+            const articles = allItems.filter(i => i.type === 'article');
+            const videos = allItems.filter(i => i.type === 'video');
+            const reports = allItems.filter(i => i.type === 'report');
+            const trainings = allItems.filter(i => i.type === 'training');
 
-            if (type === 'book' || type === 'report' || type === 'training') {
-                html = `<div class="detail-header"><h2>${item.title}</h2></div>
-                        <div class="detail-section"><p><strong>📝 الوصف:</strong> ${item.desc}</p></div>
-                        <div class="detail-section"><p><strong>📅 التاريخ:</strong> ${formatDate(item.date)}</p></div>
-                        ${item.fileData ? `<div class="detail-section"><button class="btn-primary" onclick="downloadFile('${type}', ${id})" style="margin-top:0;"><i class="fas fa-download"></i> تحميل الملف (${item.fileName || 'PDF'})</button></div>` : ''}
-                        <button class="close-detail" onclick="closeDetailModal()">✖ إغلاق</button>`;
-            } else if (type === 'article') {
-                html = `<div class="detail-header"><h2>${item.title}</h2></div>
-                        <div class="detail-section"><p><strong>📝 الوصف:</strong> ${item.desc}</p></div>
-                        <div class="detail-section"><p><strong>📄 المحتوى:</strong> ${item.fullContent || 'لا يوجد محتوى'}</p></div>
-                        <div class="detail-section"><p><strong>📅 التاريخ:</strong> ${formatDate(item.date)}</p></div>
-                        <button class="close-detail" onclick="closeDetailModal()">✖ إغلاق</button>`;
-            } else if (type === 'video') {
-                html = `<div class="detail-header"><h2>${item.title}</h2></div>
-                        <div class="detail-section"><p>${item.desc}</p></div>
-                        ${item.videoUrl ? `<div class="detail-section"><iframe width="100%" height="250" src="${item.videoUrl}" frameborder="0" allowfullscreen></iframe></div>` : ''}
-                        ${item.fileData ? `<div class="detail-section"><button class="btn-primary" onclick="downloadFile('video', ${id})" style="margin-top:0;"><i class="fas fa-download"></i> تحميل الفيديو</button></div>` : ''}
-                        <button class="close-detail" onclick="closeDetailModal()">✖ إغلاق</button>`;
+            renderGrid('booksGrid', books, 'book');
+            renderGrid('articlesGrid', articles, 'article');
+            renderGrid('videosGrid', videos, 'video');
+            renderGrid('reportsGrid', reports, 'report');
+            renderGrid('trainingsGrid', trainings, 'training');
+
+            updateSearchInfo();
+        }
+
+        // ============================================================
+        // 5. Recherche
+        // ============================================================
+        function handleSearch(term) {
+            currentSearchTerm = term.trim().toLowerCase();
+            const clearBtn = document.getElementById('clearSearchBtn');
+            const searchCount = document.getElementById('searchCount');
+
+            if (currentSearchTerm) {
+                clearBtn.style.display = 'inline-block';
+            } else {
+                clearBtn.style.display = 'none';
             }
+
+            if (!currentSearchTerm) {
+                renderAll();
+                searchCount.style.display = 'none';
+                document.getElementById('searchResultsInfo').style.display = 'none';
+                return;
+            }
+
+            const filtered = allItems.filter(item => {
+                const searchIn = [
+                    item.title,
+                    item.description,
+                    item.type,
+                    item.file_name,
+                    item.icon
+                ].filter(Boolean).map(field => field.toLowerCase());
+                return searchIn.some(field => field.includes(currentSearchTerm));
+            });
+
+            const types = ['book', 'article', 'video', 'report', 'training'];
+            const gridIds = ['booksGrid', 'articlesGrid', 'videosGrid', 'reportsGrid', 'trainingsGrid'];
+
+            types.forEach((type, index) => {
+                const filteredItems = filtered.filter(i => i.type === type);
+                renderGrid(gridIds[index], filteredItems, type);
+            });
+
+            searchCount.style.display = 'inline-block';
+            searchCount.textContent = `${filtered.length} résultat${filtered.length > 1 ? 's' : ''}`;
+            document.getElementById('searchResultsInfo').style.display = 'block';
+            document.getElementById('resultCount').textContent = filtered.length;
+            document.getElementById('totalCountDisplay').textContent = allItems.length;
+
+            if (filtered.length === 0) {
+                const noResMsg = translations[currentLang].noResults || 'Aucun résultat';
+                ['booksGrid', 'articlesGrid', 'videosGrid', 'reportsGrid', 'trainingsGrid'].forEach(id => {
+                    const grid = document.getElementById(id);
+                    if (grid && grid.children.length === 0) {
+                        grid.innerHTML = `
+                            <div class="empty-library" style="border-color:rgba(168,132,66,0.3);">
+                                <i class="fas fa-search" style="color:#A8842A; opacity:0.5;"></i>
+                                <h3>🔍 ${noResMsg}</h3>
+                                <p style="color:#C1DCB5;">"<strong style="color:#A8842A;">${escapeHtml(currentSearchTerm)}</strong>"</p>
+                            </div>
+                        `;
+                    }
+                });
+            }
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('clearSearchBtn').style.display = 'none';
+            document.getElementById('searchCount').style.display = 'none';
+            document.getElementById('searchResultsInfo').style.display = 'none';
+            currentSearchTerm = '';
+            renderAll();
+        }
+
+        function updateSearchInfo() {
+            if (currentSearchTerm) {
+                const filtered = allItems.filter(item => {
+                    const searchIn = [
+                        item.title,
+                        item.description,
+                        item.type,
+                        item.file_name,
+                        item.icon
+                    ].filter(Boolean).map(field => field.toLowerCase());
+                    return searchIn.some(field => field.includes(currentSearchTerm));
+                });
+                document.getElementById('searchCount').textContent = `${filtered.length} résultat${filtered.length > 1 ? 's' : ''}`;
+                document.getElementById('resultCount').textContent = filtered.length;
+                document.getElementById('totalCountDisplay').textContent = allItems.length;
+            }
+        }
+
+        // ============================================================
+        // 6. Détails
+        // ============================================================
+        async function viewItem(id, type) {
+            const item = allItems.find(i => i.id === id && i.type === type);
+            if (!item) {
+                showToast('⚠️ Élément introuvable', 'error');
+                return;
+            }
+
+            const lang = currentLang;
+            const t = translations[lang];
+
+            let html = `<div class="detail-header"><h2>${escapeHtml(item.title)}</h2></div>`;
+
+            let previewHtml = '';
+
+            if (item.file_url && isPDFFile(item.file_name)) {
+                previewHtml = `
+                    <div class="detail-section">
+                        <iframe src="${item.file_url}" class="file-embed-pdf" allowfullscreen></iframe>
+                    </div>
+                `;
+            } else if (item.file_url && isImageFile(item.file_name)) {
+                previewHtml = `
+                    <div class="detail-section" style="text-align:center;">
+                        <img src="${item.file_url}" alt="${item.title}" class="detail-file-preview"
+                             onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\\'font-size:80px;color:#666;\\'>🖼️</span><br><span style=\\'color:#C1DCB5;\\'>${item.file_name || 'Image'}</span>';">
+                    </div>
+                `;
+            } else if (item.file_url && isTextFile(item.file_name)) {
+                previewHtml = `
+                    <div class="detail-section" id="textContentContainer">
+                        <div style="text-align:center;padding:20px;color:#C1DCB5;">
+                            <i class="fas fa-spinner fa-spin"></i> ${t.loading || 'Chargement...'}
+                        </div>
+                    </div>
+                `;
+                setTimeout(async () => {
+                    try {
+                        const resp = await fetch(item.file_url);
+                        if (!resp.ok) throw new Error('Erreur');
+                        const text = await resp.text();
+                        const container = document.getElementById('textContentContainer');
+                        if (container) {
+                            container.innerHTML = `
+                                <div class="file-embed-text">${escapeHtml(text)}</div>
+                                <div style="margin-top:8px;font-size:12px;color:#888;">📄 ${item.file_name}</div>
+                            `;
+                        }
+                    } catch (err) {
+                        const container = document.getElementById('textContentContainer');
+                        if (container) {
+                            container.innerHTML = `<div style="color:#f44336;">${t.errorLoading || '⚠️ Erreur'}</div>`;
+                        }
+                    }
+                }, 100);
+            } else if (item.file_url) {
+                const fileIcon = getFileIcon(item.file_name);
+                previewHtml = `
+                    <div class="detail-section" style="text-align:center;font-size:60px;padding:30px;">
+                        ${fileIcon}
+                        <br><span style="font-size:14px;color:#C1DCB5;">${item.file_name || 'Fichier'}</span>
+                    </div>
+                `;
+            } else if (item.video_url) {
+                previewHtml = `
+                    <div class="detail-section">
+                        <iframe width="100%" height="280" src="${item.video_url}" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                `;
+            }
+
+            html += previewHtml;
+
+            html += `
+                <div class="detail-section">
+                    <p><strong>📝 ${t.description || 'Description'} :</strong> ${item.description || t.noDesc || 'Aucune'}</p>
+                </div>
+                <div class="detail-section">
+                    <p><strong>📅 ${t.date || 'Date'} :</strong> ${formatDate(item.date)}</p>
+                    ${item.file_name ? `<p><strong>📎 ${t.fileName || 'Fichier'} :</strong> ${item.file_name}</p>` : ''}
+                </div>
+            `;
+
+            if (item.file_url) {
+                html += `
+                    <div class="btn-group">
+                        <a href="${item.file_url}" target="_blank" class="btn-action btn-open">
+                            <i class="fas fa-external-link-alt"></i> ${t.openRead || 'Ouvrir'}
+                        </a>
+                        <a href="${item.file_url}" download class="btn-action btn-download">
+                            <i class="fas fa-download"></i> ${t.download || 'Télécharger'}
+                        </a>
+                    </div>
+                `;
+            }
+
+            html += `<button class="close-detail" onclick="closeDetailModal()">✖ ${t.close || 'Fermer'}</button>`;
+
             document.getElementById('detailContent').innerHTML = html;
             document.getElementById('detailModal').classList.add('active');
         }
 
-        function downloadFile(type, id) {
-            let item;
-            if (type === 'book') item = books.find(i => i.id === id);
-            else if (type === 'report') item = reports.find(i => i.id === id);
-            else if (type === 'training') item = trainings.find(i => i.id === id);
-            else if (type === 'video') item = videos.find(i => i.id === id);
-            if (item && item.fileData) {
-                const link = document.createElement('a');
-                link.href = item.fileData;
-                link.download = item.fileName || 'file';
-                link.click();
-                showToast("✅ جاري تحميل الملف", "success");
-            }
+        function closeDetailModal() {
+            document.getElementById('detailModal').classList.remove('active');
         }
 
-        function closeDetailModal() { document.getElementById('detailModal').classList.remove('active'); }
-
-        // إدارة المحتوى في لوحة التحكم
-        function renderContentList() {
-            const container = document.getElementById('contentList');
-            let allContent = [
-                ...books.map(c => ({ ...c, type: 'book', typeName: '📚 كتاب' })),
-                ...articles.map(c => ({ ...c, type: 'article', typeName: '📄 مقال' })),
-                ...videos.map(c => ({ ...c, type: 'video', typeName: '🎥 فيديو' })),
-                ...reports.map(c => ({ ...c, type: 'report', typeName: '📊 تقرير' })),
-                ...trainings.map(c => ({ ...c, type: 'training', typeName: '🎓 عرض تدريب' }))
-            ];
-            allContent.sort((a, b) => b.id - a.id);
-            container.innerHTML = allContent.map(c => `
-                <div class="content-item">
-                    <div><strong>${escapeHtml(c.title)}</strong><br><span style="font-size:11px;">${c.typeName} | ${formatDate(c.date)}</span></div>
-                    <div class="content-item-actions">
-                        <button class="edit-content" onclick="editContent(${c.id}, '${c.type}')"><i class="fas fa-edit"></i></button>
-                        <button class="delete-content" onclick="deleteContent(${c.id}, '${c.type}')"><i class="fas fa-trash"></i></button>
-                    </div>
-                </div>
-            `).join('');
+        function showToast(msg, type) {
+            const toast = document.getElementById('toast');
+            toast.style.background = type === 'success' ? '#4CAF50' : (type === 'error' ? '#f44336' : '#2196f3');
+            toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : (type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle')}"></i> ${msg}`;
+            toast.style.display = 'block';
+            setTimeout(() => toast.style.display = 'none', 4000);
         }
 
-        function addContent() {
-            const type = document.getElementById('contentType').value;
-            const title = document.getElementById('contentTitle').value.trim();
-            const desc = document.getElementById('contentDesc').value.trim();
-            const icon = document.getElementById('contentIcon').value.trim() || '📘';
-            const date = document.getElementById('contentDate').value || new Date().toISOString().split('T')[0];
-            const fullContent = document.getElementById('articleFullContent').value.trim();
-            const videoLink = document.getElementById('videoLink').value.trim();
-
-            if (!title) { showToast("الرجاء إدخال عنوان المحتوى", "error"); return; }
-
-            const newItem = { id: Date.now(), title, desc, icon, date };
-            if (type === 'article') newItem.fullContent = fullContent;
-            if (type === 'video') newItem.videoUrl = videoLink;
-            if (currentFileData) { newItem.fileData = currentFileData; newItem.fileName = currentFileName; }
-
-            if (type === 'book') books.unshift(newItem);
-            else if (type === 'article') articles.unshift(newItem);
-            else if (type === 'video') videos.unshift(newItem);
-            else if (type === 'report') reports.unshift(newItem);
-            else if (type === 'training') trainings.unshift(newItem);
-
-            saveData();
-            clearAdminForm();
-            showToast("✅ تم نشر المحتوى بنجاح", "success");
-        }
-
-        function editContent(id, type) {
-            let item;
-            if (type === 'book') item = books.find(i => i.id === id);
-            else if (type === 'article') item = articles.find(i => i.id === id);
-            else if (type === 'video') item = videos.find(i => i.id === id);
-            else if (type === 'report') item = reports.find(i => i.id === id);
-            else if (type === 'training') item = trainings.find(i => i.id === id);
-            if (!item) return;
-
-            editingId = id;
-            editingType = type;
-            document.getElementById('contentType').value = type;
-            document.getElementById('contentTitle').value = item.title;
-            document.getElementById('contentDesc').value = item.desc;
-            document.getElementById('contentIcon').value = item.icon || '📘';
-            document.getElementById('contentDate').value = item.date || '';
-            document.getElementById('articleFullContent').value = item.fullContent || '';
-            document.getElementById('videoLink').value = item.videoUrl || '';
-            showToast("يمكنك تعديل البيانات ثم إعادة النشر", "info");
-        }
-
-        function deleteContent(id, type) {
-            if (confirm("هل أنت متأكد من حذف هذا المحتوى؟")) {
-                if (type === 'book') books = books.filter(i => i.id !== id);
-                else if (type === 'article') articles = articles.filter(i => i.id !== id);
-                else if (type === 'video') videos = videos.filter(i => i.id !== id);
-                else if (type === 'report') reports = reports.filter(i => i.id !== id);
-                else if (type === 'training') trainings = trainings.filter(i => i.id !== id);
-                saveData();
-                showToast("🗑️ تم حذف المحتوى", "success");
-            }
-        }
-
-        function clearAdminForm() {
-            document.getElementById('contentTitle').value = '';
-            document.getElementById('contentDesc').value = '';
-            document.getElementById('contentIcon').value = '📘';
-            document.getElementById('contentDate').value = '';
-            document.getElementById('articleFullContent').value = '';
-            document.getElementById('videoLink').value = '';
-            document.getElementById('filePreview').innerHTML = '';
-            document.getElementById('filePreview').style.display = 'none';
-            currentFileData = null;
-            currentFileName = "";
-            editingId = null;
-        }
-
-        function previewFile() {
-            const file = document.getElementById('contentFile').files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    currentFileData = e.target.result;
-                    currentFileName = file.name;
-                    document.getElementById('filePreview').innerHTML = `<i class="fas fa-file"></i> ${file.name} <i class="fas fa-times" onclick="clearFile()" style="cursor:pointer; margin-right:10px;"></i>`;
-                    document.getElementById('filePreview').style.display = 'block';
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function clearFile() {
-            currentFileData = null;
-            currentFileName = "";
-            document.getElementById('filePreview').innerHTML = '';
-            document.getElementById('filePreview').style.display = 'none';
-            document.getElementById('contentFile').value = '';
-        }
-
-        document.getElementById('contentType').addEventListener('change', function() {
-            const val = this.value;
-            document.getElementById('articleContentGroup').style.display = val === 'article' ? 'block' : 'none';
-            document.getElementById('videoLinkGroup').style.display = val === 'video' ? 'block' : 'none';
-            document.getElementById('fileUploadGroup').style.display = (val !== 'article') ? 'block' : 'none';
-        });
-
-        function updateStats() {
-            document.getElementById('booksCount').innerText = books.length;
-            document.getElementById('articlesCount').innerText = articles.length;
-            document.getElementById('videosCount').innerText = videos.length;
-            document.getElementById('reportsCount').innerText = reports.length;
-            document.getElementById('trainingsCount').innerText = trainings.length;
-            document.getElementById('totalCount').innerText = books.length + articles.length + videos.length + reports.length + trainings.length;
-        }
-
-        // التبويبات
+        // ============================================================
+        // 7. Événements
+        // ============================================================
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -911,35 +1477,44 @@
             });
         });
 
-        // لوحة التحكم
-        function showAdminPassword() { document.getElementById('passwordModal').classList.add('show'); }
-        function closePasswordModal() { document.getElementById('passwordModal').classList.remove('show'); }
-        function checkAdminPassword() {
-            const pwd = document.getElementById('adminPassword').value;
-            if (pwd === ADMIN_PASSWORD) {
-                closePasswordModal();
-                document.getElementById('adminPanel').classList.add('show');
-                renderContentList();
-                document.getElementById('adminPassword').value = '';
-            } else { showToast("كلمة المرور غير صحيحة", "error"); }
-        }
-        function closeAdminPanel() { document.getElementById('adminPanel').classList.remove('show'); clearAdminForm(); }
-
-        function showToast(msg, type) {
-            const toast = document.getElementById('toast');
-            toast.style.background = type === 'success' ? '#4CAF50' : (type === 'error' ? '#f44336' : '#2196f3');
-            toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : (type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle')}"></i> ${msg}`;
-            toast.style.display = 'block';
-            setTimeout(() => toast.style.display = 'none', 3000);
-        }
-
-        function escapeHtml(text) { if (!text) return ''; const div = document.createElement('div'); div.textContent = text; return div.innerHTML; }
-
         window.addEventListener('scroll', () => {
             document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
         });
 
+        document.getElementById('detailModal').addEventListener('click', function(e) {
+            if (e.target === this) closeDetailModal();
+        });
+
+        // ============================================================
+        // 8. Chargement initial
+        // ============================================================
+        async function loadData() {
+            try {
+                allItems = await fetchLibraryItems();
+                renderAll();
+                setLang('ar');
+            } catch (error) {
+                console.error('❌ Erreur:', error);
+                showToast('❌ ' + error.message, 'error');
+                ['booksGrid', 'articlesGrid', 'videosGrid', 'reportsGrid', 'trainingsGrid'].forEach(id => {
+                    const grid = document.getElementById(id);
+                    if (grid) {
+                        grid.innerHTML = `
+                            <div class="empty-library" style="border-color:#f44336;">
+                                <i class="fas fa-exclamation-triangle" style="color:#f44336;"></i>
+                                <h3 style="color:#f44336;">⚠️ Erreur de chargement</h3>
+                                <p style="color:#C1DCB5;">${error.message}</p>
+                                <button onclick="loadData()" style="margin-top:15px;padding:10px 25px;background:#A8842A;border:none;border-radius:30px;color:#000;font-weight:bold;cursor:pointer;">Réessayer</button>
+                            </div>
+                        `;
+                    }
+                });
+            }
+        }
+
         loadData();
+
+        console.log('📚 SONE LIBRARY - Multilingue (FR/AR/EN)');
     </script>
 </body>
 </html>

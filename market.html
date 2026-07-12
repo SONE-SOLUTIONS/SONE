@@ -290,34 +290,20 @@
             justify-content: center;
             text-align: center;
             padding: 25px;
-            background: rgba(0, 0, 0, 0.30);
-            backdrop-filter: blur(3px);
+            /* خلفية شفافة بدون تأثير ضباب */
+            background: rgba(0, 0, 0, 0.15);
             direction: ltr;
         }
         body[dir="rtl"] .hero-overlay { direction: rtl; }
 
-        .hero-overlay .badge {
-            display: inline-block;
-            background: rgba(168, 132, 66, 0.30);
-            padding: 8px 24px;
-            border-radius: 50px;
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 16px;
-            border: 1px solid rgba(168, 132, 66, 0.6);
-            color: #fff;
-            backdrop-filter: blur(4px);
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
         .hero-overlay h1 {
             font-size: clamp(2.2rem, 8vw, 4.8rem);
             font-weight: 900;
             background: linear-gradient(135deg, #ffffff, #f5d77b, #C49B3A);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 4px 40px rgba(0,0,0,0.6);
-            margin-bottom: 10px;
+            text-shadow: 0 4px 40px rgba(0,0,0,0.8);
+            margin-bottom: 12px;
             line-height: 1.2;
             letter-spacing: -0.5px;
         }
@@ -326,13 +312,13 @@
             font-size: clamp(1rem, 2.2vw, 1.5rem);
             max-width: 650px;
             font-weight: 400;
-            text-shadow: 0 2px 25px rgba(0,0,0,0.7);
-            background: rgba(0,0,0,0.25);
+            text-shadow: 0 2px 30px rgba(0,0,0,0.9);
+            background: rgba(0,0,0,0.15);
             padding: 10px 28px;
             border-radius: 60px;
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.06);
             line-height: 1.6;
+            backdrop-filter: none; /* إزالة أي تأثير ضباب */
         }
         .hero-overlay .hero-icon {
             font-size: 2rem;
@@ -341,14 +327,14 @@
             display: block;
         }
 
+        /* تم إزالة .badge بالكامل */
+
         @media (max-width: 768px) {
             .hero-section { height: 45vh; min-height: 220px; margin-top: 85px; }
-            .hero-overlay .badge { font-size: 13px; padding: 5px 16px; }
             .hero-overlay p { padding: 6px 16px; }
         }
         @media (max-width: 500px) {
             .hero-section { height: 38vh; margin-top: 75px; }
-            .hero-overlay .badge { font-size: 11px; padding: 4px 12px; }
         }
 
         /* ===== MAIN CONTENT ===== */
@@ -773,7 +759,7 @@
     <div class="hero-section">
         <img src="https://sone-solutions.github.io/SONE/market.png" alt="SONE Marché - Marché Agricole" loading="lazy" onerror="this.style.display='none'">
         <div class="hero-overlay">
-            <span class="badge"><i class="fas fa-store"></i> <span data-lang-key="badge">Achat &amp; Vente</span></span>
+            <!-- تم إزالة شارة Achat & Vente -->
             <h1><i class="fas fa-store" style="font-size:0.8em; margin-right:8px;"></i> <span data-lang-key="pageTitle">Marché Agricole</span></h1>
             <p data-lang-key="pageDesc">Plateforme complète pour exposer les produits agricoles et mettre en relation acheteurs et vendeurs</p>
         </div>
@@ -890,7 +876,7 @@
             ar: {
                 dir: 'rtl',
                 subtitle: 'سوق الفلاحة الذكي',
-                badge: 'بيع وشراء',
+                badge: 'بيع وشراء', // لا يُستخدم حالياً
                 pageTitle: 'سوق الفلاحة',
                 pageDesc: 'منصة متكاملة لعرض المنتجات الزراعية والتواصل بين البائعين والمشترين',
                 addBtn: '➕ أضف منتجك للبيع',
@@ -955,7 +941,7 @@
             fr: {
                 dir: 'ltr',
                 subtitle: 'Marché agricole intelligent',
-                badge: 'Achat & Vente',
+                badge: 'Achat & Vente', // non utilisé
                 pageTitle: 'Marché Agricole',
                 pageDesc: 'Plateforme complète pour exposer les produits agricoles et mettre en relation acheteurs et vendeurs',
                 addBtn: '➕ Ajouter votre produit',
@@ -1020,7 +1006,7 @@
             en: {
                 dir: 'ltr',
                 subtitle: 'Smart Agricultural Market',
-                badge: 'Buy & Sell',
+                badge: 'Buy & Sell', // non utilisé
                 pageTitle: 'Agricultural Market',
                 pageDesc: 'Complete platform for showcasing agricultural products and connecting buyers and sellers',
                 addBtn: '➕ Add your product',
@@ -1084,7 +1070,7 @@
             }
         };
 
-        let currentLang = 'fr'; // 👈 Défini sur français
+        let currentLang = 'fr';
 
         // ===============================
         // 2. SWITCH LANGUAGE
@@ -1506,7 +1492,7 @@
         // === Démarrage en français ===
         switchLanguage('fr');
         renderApproved();
-        console.log('🌾 SONE Marché - Version française par défaut');
+        console.log('🌾 SONE Marché - Version française (badge et flou supprimés)');
     </script>
 </body>
 </html>

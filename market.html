@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="fr" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>SONE Marché | سوق الفلاحة</title>
+    <title>SONE Marché | Marché Agricole</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
-        /* جميع الأنماط الخاصة بالتصميم الأساسي */
+        /* ===== RESET & BASE ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Cairo', sans-serif;
@@ -23,7 +23,7 @@
         ::-webkit-scrollbar-track { background: #1C2A16; border-radius: 10px; }
         ::-webkit-scrollbar-thumb { background: #A8842A; border-radius: 10px; }
 
-        /* ===== شريط اللغة ===== */
+        /* ===== LANGUAGE SWITCHER ===== */
         .lang-switcher {
             background: rgba(10, 20, 8, 0.98);
             padding: 8px 5%;
@@ -74,7 +74,7 @@
             .lang-switcher a .flag-text { display: inline; }
         }
 
-        /* ===== الهيدر ===== */
+        /* ===== HEADER ===== */
         .header {
             position: fixed;
             top: 55px;
@@ -129,7 +129,7 @@
         }
         .logo-text p { font-size: 10px; color: #C1DCB5; letter-spacing: 1px; }
 
-        /* ===== شريط البحث ===== */
+        /* ===== SEARCH BAR ===== */
         .search-bar {
             display: flex;
             align-items: center;
@@ -197,7 +197,7 @@
             border-color: #A8842A;
         }
 
-        /* ===== الأزرار الإضافية ===== */
+        /* ===== HEADER BUTTONS ===== */
         .header-actions {
             display: flex;
             align-items: center;
@@ -260,15 +260,16 @@
             .header-btn { padding: 4px 10px; font-size: 11px; }
         }
 
-        /* ===== صورة الغلاف - Full Width ===== */
+        /* ===== HERO SECTION ===== */
         .hero-section {
-            margin-top: 95px; /* ارتفاع الهيدر + شريط اللغة */
+            margin-top: 95px;
             width: 100%;
-            height: 60vh; /* ارتفاع مناسب للشاشة */
-            min-height: 300px;
-            max-height: 600px;
-            overflow: hidden;
+            height: 65vh;
+            min-height: 320px;
+            max-height: 650px;
             position: relative;
+            overflow: hidden;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.6);
         }
         .hero-section img {
             width: 100%;
@@ -277,49 +278,87 @@
             display: block;
             background: #1C2A16;
         }
-        /* في الشاشات الصغيرة نخفض الارتفاع */
-        @media (max-width: 768px) {
-            .hero-section { height: 40vh; min-height: 200px; margin-top: 85px; }
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 25px;
+            background: rgba(0, 0, 0, 0.30);
+            backdrop-filter: blur(3px);
+            direction: ltr;
         }
-        @media (max-width: 500px) {
-            .hero-section { height: 35vh; margin-top: 75px; }
+        body[dir="rtl"] .hero-overlay { direction: rtl; }
+
+        .hero-overlay .badge {
+            display: inline-block;
+            background: rgba(168, 132, 66, 0.30);
+            padding: 8px 24px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            border: 1px solid rgba(168, 132, 66, 0.6);
+            color: #fff;
+            backdrop-filter: blur(4px);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .hero-overlay h1 {
+            font-size: clamp(2.2rem, 8vw, 4.8rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffffff, #f5d77b, #C49B3A);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 4px 40px rgba(0,0,0,0.6);
+            margin-bottom: 10px;
+            line-height: 1.2;
+            letter-spacing: -0.5px;
+        }
+        .hero-overlay p {
+            color: #fff;
+            font-size: clamp(1rem, 2.2vw, 1.5rem);
+            max-width: 650px;
+            font-weight: 400;
+            text-shadow: 0 2px 25px rgba(0,0,0,0.7);
+            background: rgba(0,0,0,0.25);
+            padding: 10px 28px;
+            border-radius: 60px;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.08);
+            line-height: 1.6;
+        }
+        .hero-overlay .hero-icon {
+            font-size: 2rem;
+            color: #A8842A;
+            margin-bottom: 6px;
+            display: block;
         }
 
-        /* ===== المحتوى الرئيسي ===== */
+        @media (max-width: 768px) {
+            .hero-section { height: 45vh; min-height: 220px; margin-top: 85px; }
+            .hero-overlay .badge { font-size: 13px; padding: 5px 16px; }
+            .hero-overlay p { padding: 6px 16px; }
+        }
+        @media (max-width: 500px) {
+            .hero-section { height: 38vh; margin-top: 75px; }
+            .hero-overlay .badge { font-size: 11px; padding: 4px 12px; }
+        }
+
+        /* ===== MAIN CONTENT ===== */
         .container {
             max-width: 1400px;
             margin: 0 auto;
             padding: 30px 20px 60px;
         }
-        .page-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        .page-header .badge {
-            display: inline-block;
-            background: rgba(168, 132, 66, 0.2);
-            padding: 6px 18px;
-            border-radius: 50px;
-            font-size: 13px;
-            margin-bottom: 15px;
-            border: 1px solid rgba(168, 132, 66, 0.5);
-        }
-        .page-header h1 {
-            font-size: 42px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #fff, #A8842A, #C1DCB5);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 12px;
-        }
-        .page-header p {
-            color: #C1DCB5;
-            font-size: 17px;
-            max-width: 600px;
-            margin: 0 auto;
-        }
 
-        /* ===== زر إضافة المنتج ===== */
+        /* ===== ADD BUTTON ===== */
         .show-form-btn {
             background: linear-gradient(135deg, #A8842A, #C49B3A);
             color: #000;
@@ -343,7 +382,7 @@
             box-shadow: 0 10px 30px rgba(168, 132, 66, 0.4);
         }
 
-        /* ===== نموذج الإضافة ===== */
+        /* ===== FORM ===== */
         .form-section {
             background: rgba(255, 255, 255, 0.04);
             backdrop-filter: blur(10px);
@@ -381,8 +420,8 @@
             font-size: 13px;
             color: #C1DCB5;
         }
-        .form-group label i { margin-left: 6px; color: #A8842A; }
-        body[dir="ltr"] .form-group label i { margin-left: 0; margin-right: 6px; }
+        .form-group label i { margin-right: 6px; color: #A8842A; }
+        body[dir="rtl"] .form-group label i { margin-right: 0; margin-left: 6px; }
         .form-group input, .form-group select, .form-group textarea {
             width: 100%;
             padding: 10px 14px;
@@ -453,7 +492,7 @@
         }
         .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(168, 132, 66, 0.3); }
 
-        /* ===== شبكة المنتجات ===== */
+        /* ===== PRODUCTS GRID ===== */
         .products-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
@@ -536,7 +575,7 @@
             margin-top: 8px;
         }
 
-        /* ===== قسم التغذية الراجعة ===== */
+        /* ===== FEEDBACK ===== */
         .feedback-section {
             background: rgba(255, 255, 255, 0.04);
             backdrop-filter: blur(10px);
@@ -579,7 +618,7 @@
             box-shadow: 0 8px 30px rgba(168, 132, 66, 0.5);
         }
 
-        /* ===== الفوتر ===== */
+        /* ===== FOOTER ===== */
         .footer {
             background: rgba(10, 20, 8, 0.95);
             padding: 30px 5% 15px;
@@ -589,7 +628,7 @@
         }
         .footer p { color: #C1DCB5; font-size: 13px; }
 
-        /* ===== مودال التفاصيل ===== */
+        /* ===== DETAIL MODAL ===== */
         .detail-modal {
             display: none;
             position: fixed;
@@ -649,7 +688,7 @@
             width: 100%;
         }
 
-        /* ===== الإشعارات ===== */
+        /* ===== TOAST ===== */
         .toast {
             position: fixed;
             bottom: 25px;
@@ -676,8 +715,8 @@
             100% { transform: rotate(360deg); }
         }
 
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
-            .page-header h1 { font-size: 30px; }
             .products-grid { grid-template-columns: 1fr; }
             .form-grid { grid-template-columns: 1fr; }
             .container { padding: 20px 15px 40px; }
@@ -685,12 +724,12 @@
     </style>
 </head>
 <body>
-    <!-- ===== شريط تبديل اللغة ===== -->
+    <!-- ===== LANGUAGE SWITCHER ===== -->
     <div class="lang-switcher">
-        <a href="#" data-lang="ar" class="active" onclick="switchLanguage('ar'); return false;">
+        <a href="#" data-lang="ar" onclick="switchLanguage('ar'); return false;">
             <img src="https://flagcdn.com/w40/ma.png" alt="المغرب"> <span>🇲🇦 العربية</span> <span class="flag-text">ع</span>
         </a>
-        <a href="#" data-lang="fr" onclick="switchLanguage('fr'); return false;">
+        <a href="#" data-lang="fr" class="active" onclick="switchLanguage('fr'); return false;">
             <img src="https://flagcdn.com/w40/fr.png" alt="France"> <span>🇫🇷 Français</span> <span class="flag-text">ف</span>
         </a>
         <a href="#" data-lang="en" onclick="switchLanguage('en'); return false;">
@@ -698,156 +737,154 @@
         </a>
     </div>
 
-    <!-- ===== الهيدر ===== -->
+    <!-- ===== HEADER ===== -->
     <header class="header scrolled" id="header">
         <div class="header-content">
             <a href="#" class="logo">
                 <div class="logo-icon"><img src="https://sone-solutions.github.io/SONE/SONELOGE.jpg" alt="SONE Marché"></div>
                 <div class="logo-text">
                     <h1>SONE Marché</h1>
-                    <p data-lang-key="subtitle">سوق الفلاحة الذكي</p>
+                    <p data-lang-key="subtitle">Marché agricole intelligent</p>
                 </div>
             </a>
 
-            <!-- شريط البحث -->
+            <!-- Search Bar -->
             <div class="search-bar" id="searchBar">
-                <input type="text" id="searchInput" data-lang-key="searchPlaceholder" placeholder="🔍 ابحث عن منتج..." oninput="filterProducts()">
-                <button onclick="filterProducts()"><i class="fas fa-search"></i> <span data-lang-key="searchBtn">بحث</span></button>
+                <input type="text" id="searchInput" data-lang-key="searchPlaceholder" placeholder="🔍 Rechercher un produit..." oninput="filterProducts()">
+                <button onclick="filterProducts()"><i class="fas fa-search"></i> <span data-lang-key="searchBtn">Rechercher</span></button>
             </div>
 
-            <!-- الأزرار الإضافية -->
+            <!-- Header Actions -->
             <div class="header-actions">
-                <button class="search-toggle" id="searchToggle" onclick="toggleSearchBar()" title="بحث">
+                <button class="search-toggle" id="searchToggle" onclick="toggleSearchBar()" title="Rechercher">
                     <i class="fas fa-search"></i>
                 </button>
                 <a href="#" class="header-btn" onclick="toggleForm(); return false;">
-                    <i class="fas fa-plus-circle"></i> <span data-lang-key="addShort">إضافة</span>
+                    <i class="fas fa-plus-circle"></i> <span data-lang-key="addShort">Ajouter</span>
                 </a>
                 <a href="#" class="header-btn primary" onclick="document.querySelector('.products-grid').scrollIntoView({behavior:'smooth'}); return false;">
-                    <i class="fas fa-store"></i> <span data-lang-key="marketBtn">السوق</span>
+                    <i class="fas fa-store"></i> <span data-lang-key="marketBtn">Marché</span>
                 </a>
             </div>
         </div>
     </header>
 
-    <!-- ===== صورة الغلاف Full Width ===== -->
+    <!-- ===== HERO SECTION ===== -->
     <div class="hero-section">
-        <img src="https://sone-solutions.github.io/SONE/market.png" alt="SONE Marché - سوق الفلاحة" loading="lazy" onerror="this.style.display='none'">
+        <img src="https://sone-solutions.github.io/SONE/market.png" alt="SONE Marché - Marché Agricole" loading="lazy" onerror="this.style.display='none'">
+        <div class="hero-overlay">
+            <span class="badge"><i class="fas fa-store"></i> <span data-lang-key="badge">Achat &amp; Vente</span></span>
+            <h1><i class="fas fa-store" style="font-size:0.8em; margin-right:8px;"></i> <span data-lang-key="pageTitle">Marché Agricole</span></h1>
+            <p data-lang-key="pageDesc">Plateforme complète pour exposer les produits agricoles et mettre en relation acheteurs et vendeurs</p>
+        </div>
     </div>
 
     <div class="container">
-        <!-- ===== رأس الصفحة ===== -->
-        <div class="page-header" data-aos="fade-up">
-            <span class="badge"><i class="fas fa-store"></i> <span data-lang-key="badge">بيع وشراء</span></span>
-            <h1><i class="fas fa-store"></i> <span data-lang-key="pageTitle">سوق الفلاحة</span></h1>
-            <p data-lang-key="pageDesc">منصة متكاملة لعرض المنتجات الزراعية والتواصل بين البائعين والمشترين</p>
-        </div>
-
-        <!-- ===== زر إضافة المنتج ===== -->
+        <!-- ===== ADD BUTTON ===== -->
         <button class="show-form-btn" onclick="toggleForm()">
-            <i class="fas fa-plus-circle"></i> <span data-lang-key="addBtn">➕ أضف منتجك للبيع</span>
+            <i class="fas fa-plus-circle"></i> <span data-lang-key="addBtn">➕ Ajouter votre produit</span>
         </button>
 
-        <!-- ===== نموذج إضافة المنتج ===== -->
+        <!-- ===== ADD PRODUCT FORM ===== -->
         <div class="form-section" id="addProductForm" data-aos="fade-up">
-            <h2><i class="fas fa-plus-circle"></i> <span data-lang-key="formTitle">نموذج إضافة منتج</span></h2>
+            <h2><i class="fas fa-plus-circle"></i> <span data-lang-key="formTitle">Formulaire d'ajout</span></h2>
             <div class="form-grid">
                 <div class="form-group">
-                    <label><i class="fas fa-tag"></i> <span data-lang-key="productName">اسم المنتج</span></label>
-                    <input type="text" id="productName" data-lang-key="namePlaceholder" placeholder="مثال: طماطم عضوية">
+                    <label><i class="fas fa-tag"></i> <span data-lang-key="productName">Nom du produit</span></label>
+                    <input type="text" id="productName" data-lang-key="namePlaceholder" placeholder="Ex: Tomates Bio">
                 </div>
                 <div class="form-group">
-                    <label><i class="fas fa-list"></i> <span data-lang-key="category">الفئة</span></label>
+                    <label><i class="fas fa-list"></i> <span data-lang-key="category">Catégorie</span></label>
                     <select id="productCategory">
-                        <option value="خضروات">🥬 <span data-lang-key="catVeg">خضروات</span></option>
-                        <option value="فواكه">🍎 <span data-lang-key="catFruit">فواكه</span></option>
-                        <option value="حبوب">🌾 <span data-lang-key="catGrain">حبوب</span></option>
-                        <option value="مشتقات حيوانية">🥛 <span data-lang-key="catDairy">مشتقات حيوانية</span></option>
-                        <option value="معدات">🚜 <span data-lang-key="catEquip">معدات فلاحية</span></option>
-                        <option value="أسمدة">🌱 <span data-lang-key="catFert">أسمدة</span></option>
-                        <option value="مبيدات">🧪 <span data-lang-key="catPest">مبيدات</span></option>
-                        <option value="أخرى">📦 <span data-lang-key="catOther">أخرى</span></option>
+                        <option value="خضروات">🥬 <span data-lang-key="catVeg">Légumes</span></option>
+                        <option value="فواكه">🍎 <span data-lang-key="catFruit">Fruits</span></option>
+                        <option value="حبوب">🌾 <span data-lang-key="catGrain">Céréales</span></option>
+                        <option value="مشتقات حيوانية">🥛 <span data-lang-key="catDairy">Produits laitiers</span></option>
+                        <option value="معدات">🚜 <span data-lang-key="catEquip">Équipement agricole</span></option>
+                        <option value="أسمدة">🌱 <span data-lang-key="catFert">Engrais</span></option>
+                        <option value="مبيدات">🧪 <span data-lang-key="catPest">Pesticides</span></option>
+                        <option value="أخرى">📦 <span data-lang-key="catOther">Autres</span></option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label><i class="fas fa-dollar-sign"></i> <span data-lang-key="price">السعر (درهم)</span></label>
-                    <input type="number" id="productPrice" placeholder="مثال: 150">
+                    <label><i class="fas fa-dollar-sign"></i> <span data-lang-key="price">Prix (DH)</span></label>
+                    <input type="number" id="productPrice" placeholder="Ex: 150">
                 </div>
                 <div class="form-group">
-                    <label><i class="fas fa-balance-scale"></i> <span data-lang-key="quantity">الكمية</span></label>
-                    <input type="text" id="productQuantity" placeholder="مثال: 50 كغ">
+                    <label><i class="fas fa-balance-scale"></i> <span data-lang-key="quantity">Quantité</span></label>
+                    <input type="text" id="productQuantity" placeholder="Ex: 50 kg">
                 </div>
                 <div class="form-group">
-                    <label><i class="fas fa-map-marker-alt"></i> <span data-lang-key="location">الموقع</span></label>
-                    <input type="text" id="productLocation" placeholder="مثال: الدار البيضاء">
+                    <label><i class="fas fa-map-marker-alt"></i> <span data-lang-key="location">Emplacement</span></label>
+                    <input type="text" id="productLocation" placeholder="Ex: Casablanca">
                 </div>
                 <div class="form-group">
-                    <label><i class="fas fa-phone"></i> <span data-lang-key="phone">رقم الهاتف</span></label>
-                    <input type="tel" id="productPhone" placeholder="مثال: 06XXXXXXXX">
+                    <label><i class="fas fa-phone"></i> <span data-lang-key="phone">Téléphone</span></label>
+                    <input type="tel" id="productPhone" placeholder="Ex: 06XXXXXXXX">
                 </div>
                 <div class="form-group">
-                    <label><i class="fas fa-image"></i> <span data-lang-key="coverImg">صورة الغلاف</span></label>
+                    <label><i class="fas fa-image"></i> <span data-lang-key="coverImg">Image de couverture</span></label>
                     <div class="file-upload" onclick="document.getElementById('coverImage').click()">
-                        <i class="fas fa-cloud-upload-alt"></i> <span data-lang-key="uploadCover">اضغط لرفع صورة الغلاف</span>
+                        <i class="fas fa-cloud-upload-alt"></i> <span data-lang-key="uploadCover">Cliquez pour ajouter une image</span>
                     </div>
                     <input type="file" id="coverImage" accept="image/*" style="display:none" onchange="handleCoverImageUpload()">
                     <div class="image-preview" id="coverPreview"></div>
-                    <div class="uploading-indicator" id="uploadIndicator"><i class="fas fa-spinner"></i> <span data-lang-key="uploading">جاري رفع الصورة...</span></div>
+                    <div class="uploading-indicator" id="uploadIndicator"><i class="fas fa-spinner"></i> <span data-lang-key="uploading">Téléchargement...</span></div>
                 </div>
                 <div class="form-group">
-                    <label><i class="fas fa-images"></i> <span data-lang-key="extraImgs">صور إضافية</span></label>
+                    <label><i class="fas fa-images"></i> <span data-lang-key="extraImgs">Images supplémentaires</span></label>
                     <div class="file-upload" onclick="document.getElementById('extraImages').click()">
-                        <i class="fas fa-cloud-upload-alt"></i> <span data-lang-key="uploadExtra">اضغط لرفع صور إضافية</span>
+                        <i class="fas fa-cloud-upload-alt"></i> <span data-lang-key="uploadExtra">Ajouter des images</span>
                     </div>
                     <input type="file" id="extraImages" accept="image/*" multiple style="display:none" onchange="previewExtraImages()">
                     <div class="image-preview" id="extraImagesPreview"></div>
                 </div>
                 <div class="form-group">
-                    <label><i class="fas fa-align-left"></i> <span data-lang-key="desc">الوصف</span></label>
-                    <textarea id="productDesc" rows="2" data-lang-key="descPlaceholder" placeholder="وصف تفصيلي للمنتج..."></textarea>
+                    <label><i class="fas fa-align-left"></i> <span data-lang-key="desc">Description</span></label>
+                    <textarea id="productDesc" rows="2" data-lang-key="descPlaceholder" placeholder="Description détaillée du produit..."></textarea>
                 </div>
             </div>
             <button class="submit-btn" id="submitProductBtn" onclick="addProduct()">
-                <i class="fas fa-cloud-upload-alt"></i> <span data-lang-key="submitBtn">إضافة المنتج</span>
+                <i class="fas fa-cloud-upload-alt"></i> <span data-lang-key="submitBtn">Ajouter le produit</span>
             </button>
         </div>
 
-        <!-- ===== شبكة المنتجات ===== -->
+        <!-- ===== PRODUCTS GRID ===== -->
         <div class="products-grid" id="approvedGrid">
             <div style="grid-column:1/-1; text-align:center; padding:40px;">
                 <i class="fas fa-spinner fa-spin" style="font-size:35px;"></i>
-                <h3 data-lang-key="loading">جاري تحميل المنتجات...</h3>
+                <h3 data-lang-key="loading">Chargement des produits...</h3>
             </div>
         </div>
 
-        <!-- ===== قسم التغذية الراجعة ===== -->
+        <!-- ===== FEEDBACK ===== -->
         <div class="feedback-section" data-aos="fade-up">
             <div class="feedback-inner">
                 <div class="feedback-icon"><i class="fas fa-comment-dots"></i></div>
                 <div>
-                    <div class="feedback-title" data-lang-key="feedbackTitle">💬 إبلاغ عن مشكلة أو اقتراح</div>
-                    <div class="feedback-sub" data-lang-key="feedbackSub">نرحب بملاحظاتك لتطوير المنصة</div>
+                    <div class="feedback-title" data-lang-key="feedbackTitle">💬 Signaler un problème ou suggestion</div>
+                    <div class="feedback-sub" data-lang-key="feedbackSub">Nous accueillons vos commentaires</div>
                 </div>
                 <a href="https://docs.google.com/forms/d/e/1FAIpQLSeXPpvcl-CUd4EUesdfL0HgaXFtOD8k-Ug7kfA7M-uickgwXQ/viewform?usp=header" target="_blank" class="feedback-btn">
-                    <i class="fas fa-pen"></i> <span data-lang-key="feedbackBtn">اكتب ملاحظتك</span> <i class="fas fa-arrow-left" style="font-size:13px;"></i>
+                    <i class="fas fa-pen"></i> <span data-lang-key="feedbackBtn">Écrire votre avis</span> <i class="fas fa-arrow-right" style="font-size:13px;"></i>
                 </a>
             </div>
         </div>
     </div>
 
-    <!-- ===== فوتر ===== -->
+    <!-- ===== FOOTER ===== -->
     <footer class="footer">
-        <p data-lang-key="footer">© 2026 SONE Marché - جميع الحقوق محفوظة | المنصة المتكاملة للفلاحة الذكية</p>
+        <p data-lang-key="footer">© 2026 SONE Marché - Tous droits réservés | Plateforme agricole intelligente</p>
     </footer>
 
-    <!-- ===== مودال التفاصيل ===== -->
+    <!-- ===== MODALS ===== -->
     <div id="detailModal" class="detail-modal"><div class="detail-content" id="detailContent"></div></div>
     <div class="toast" id="toast"></div>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         // ===============================
-        // 1. بيانات الترجمة
+        // 1. TRANSLATIONS
         // ===============================
         const translations = {
             ar: {
@@ -1047,19 +1084,19 @@
             }
         };
 
-        let currentLang = 'ar';
+        let currentLang = 'fr'; // 👈 Défini sur français
 
         // ===============================
-        // 2. دالة تبديل اللغة
+        // 2. SWITCH LANGUAGE
         // ===============================
         function switchLanguage(lang) {
             currentLang = lang;
             const t = translations[lang];
-            
+
             document.documentElement.dir = t.dir;
             document.body.dir = t.dir;
             document.documentElement.lang = lang === 'ar' ? 'ar' : (lang === 'fr' ? 'fr' : 'en');
-            
+
             document.querySelectorAll('[data-lang-key]').forEach(el => {
                 const key = el.getAttribute('data-lang-key');
                 if (t[key] !== undefined) {
@@ -1072,8 +1109,8 @@
                     }
                 }
             });
-            
-            // تحديث خيارات الفئة
+
+            // Update category options
             const catOptions = {
                 'خضروات': t.catVeg,
                 'فواكه': t.catFruit,
@@ -1100,22 +1137,16 @@
                     opt.textContent = (emojiMap[val] || '') + ' ' + catOptions[val];
                 }
             });
-            
-            // تحديث زر العودة: اتجاه السهم
-            const backBtn = document.querySelector('.back-btn i');
-            if (backBtn) {
-                backBtn.style.transform = t.dir === 'rtl' ? 'rotate(180deg)' : 'rotate(0deg)';
-            }
-            
+
             document.querySelectorAll('.lang-switcher a').forEach(a => {
                 a.classList.toggle('active', a.getAttribute('data-lang') === lang);
             });
-            
+
             renderApproved();
         }
 
         // ===============================
-        // 3. إعدادات Supabase
+        // 3. SUPABASE SETUP
         // ===============================
         const SUPABASE_URL = 'https://zpjuhprlcaigmczhqlye.supabase.co';
         const DATA_API_KEY = 'sb_publishable_PVQ61DBLGYjzaXy-XFrWpA_k_94iEvK';
@@ -1132,7 +1163,7 @@
         let currentExtraImages = [];
 
         // ===============================
-        // 4. دوال رفع الصور
+        // 4. IMAGE UPLOAD
         // ===============================
         async function uploadImageToStorage(file, folder = 'products') {
             const fileExt = file.name.split('.').pop();
@@ -1225,7 +1256,7 @@
         }
 
         // ===============================
-        // 5. دوال المنتجات
+        // 5. PRODUCT FUNCTIONS
         // ===============================
         async function fetchProducts() {
             const res = await fetch(`${SUPABASE_URL}/rest/v1/products?select=*`, { headers });
@@ -1276,7 +1307,7 @@
         }
 
         // ===============================
-        // 6. وظيفة البحث
+        // 6. SEARCH
         // ===============================
         function filterProducts() {
             const query = document.getElementById('searchInput').value.trim().toLowerCase();
@@ -1290,7 +1321,6 @@
                 card.style.display = match ? '' : 'none';
                 if (match) visibleCount++;
             });
-            // إذا لم تظهر نتائج
             const grid = document.getElementById('approvedGrid');
             const noResult = grid.querySelector('.no-result-msg');
             if (query && visibleCount === 0) {
@@ -1298,7 +1328,7 @@
                     const msg = document.createElement('div');
                     msg.className = 'no-result-msg';
                     msg.style.cssText = 'grid-column:1/-1; text-align:center; padding:40px;';
-                    msg.innerHTML = `<i class="fas fa-search" style="font-size:40px;color:#A8842A;"></i><h3 style="margin-top:10px;">${translations[currentLang].noProducts || 'لا توجد نتائج'}</h3>`;
+                    msg.innerHTML = `<i class="fas fa-search" style="font-size:40px;color:#A8842A;"></i><h3 style="margin-top:10px;">${translations[currentLang].noProducts || 'Aucun résultat'}</h3>`;
                     grid.appendChild(msg);
                 }
             } else if (noResult) {
@@ -1317,7 +1347,7 @@
         }
 
         // ===============================
-        // 7. إضافة منتج
+        // 7. ADD PRODUCT
         // ===============================
         async function addProduct() {
             const t = translations[currentLang];
@@ -1372,7 +1402,7 @@
                 if (!res.ok) throw new Error(await res.text());
 
                 showToast(t.productAdded, 'success');
-                
+
                 document.getElementById('productName').value = '';
                 document.getElementById('productPrice').value = '';
                 document.getElementById('productQuantity').value = '';
@@ -1393,7 +1423,7 @@
         }
 
         // ===============================
-        // 8. عرض التفاصيل
+        // 8. PRODUCT DETAIL
         // ===============================
         async function showProductDetail(id) {
             const t = translations[currentLang];
@@ -1457,7 +1487,7 @@
         }
 
         // ===============================
-        // 9. الأحداث والتشغيل الأولي
+        // 9. EVENTS & INIT
         // ===============================
         document.getElementById('detailModal').addEventListener('click', function(e) {
             if (e.target === this) closeDetailModal();
@@ -1467,17 +1497,16 @@
             document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
         });
 
-        // البحث عند الضغط على Enter
         document.getElementById('searchInput').addEventListener('keyup', function(e) {
             if (e.key === 'Enter') filterProducts();
         });
 
         AOS.init({ duration: 800, once: true });
 
-        // تعيين اللغة الافتراضية
-        switchLanguage('ar');
+        // === Démarrage en français ===
+        switchLanguage('fr');
         renderApproved();
-        console.log('🌾 SONE Marché - Full Width Hero Image');
+        console.log('🌾 SONE Marché - Version française par défaut');
     </script>
 </body>
 </html>

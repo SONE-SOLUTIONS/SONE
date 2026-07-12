@@ -1,11 +1,9 @@
-<!DOCTYPE html>
-<html lang="fr" dir="ltr">
-<head>
+<html lang="fr" dir="ltr"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>SONE Marché | Marché Agricole</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
         /* ===== RESET & BASE ===== */
@@ -709,7 +707,7 @@
         }
     </style>
 </head>
-<body>
+<body data-aos-easing="ease" data-aos-duration="800" data-aos-delay="0" dir="ltr">
     <!-- ===== LANGUAGE SWITCHER ===== -->
     <div class="lang-switcher">
         <a href="#" data-lang="ar" onclick="switchLanguage('ar'); return false;">
@@ -772,7 +770,7 @@
         </button>
 
         <!-- ===== ADD PRODUCT FORM ===== -->
-        <div class="form-section" id="addProductForm" data-aos="fade-up">
+        <div class="form-section aos-init aos-animate" id="addProductForm" data-aos="fade-up">
             <h2><i class="fas fa-plus-circle"></i> <span data-lang-key="formTitle">Formulaire d'ajout</span></h2>
             <div class="form-grid">
                 <div class="form-group">
@@ -782,14 +780,14 @@
                 <div class="form-group">
                     <label><i class="fas fa-list"></i> <span data-lang-key="category">Catégorie</span></label>
                     <select id="productCategory">
-                        <option value="خضروات">🥬 <span data-lang-key="catVeg">Légumes</span></option>
-                        <option value="فواكه">🍎 <span data-lang-key="catFruit">Fruits</span></option>
-                        <option value="حبوب">🌾 <span data-lang-key="catGrain">Céréales</span></option>
-                        <option value="مشتقات حيوانية">🥛 <span data-lang-key="catDairy">Produits laitiers</span></option>
-                        <option value="معدات">🚜 <span data-lang-key="catEquip">Équipement agricole</span></option>
-                        <option value="أسمدة">🌱 <span data-lang-key="catFert">Engrais</span></option>
-                        <option value="مبيدات">🧪 <span data-lang-key="catPest">Pesticides</span></option>
-                        <option value="أخرى">📦 <span data-lang-key="catOther">Autres</span></option>
+                        <option value="خضروات">🥬 Légumes</option>
+                        <option value="فواكه">🍎 Fruits</option>
+                        <option value="حبوب">🌾 Céréales</option>
+                        <option value="مشتقات حيوانية">🥛 Produits laitiers</option>
+                        <option value="معدات">🚜 Équipement agricole</option>
+                        <option value="أسمدة">🌱 Engrais</option>
+                        <option value="مبيدات">🧪 Pesticides</option>
+                        <option value="أخرى">📦 Autres</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -815,14 +813,14 @@
                     </div>
                     <input type="file" id="coverImage" accept="image/*" style="display:none" onchange="handleCoverImageUpload()">
                     <div class="image-preview" id="coverPreview"></div>
-                    <div class="uploading-indicator" id="uploadIndicator"><i class="fas fa-spinner"></i> <span data-lang-key="uploading">Téléchargement...</span></div>
+                    <div class="uploading-indicator" id="uploadIndicator" style="display: none; color: rgb(168, 132, 42);"><i class="fas fa-spinner"></i> Téléchargement...</div>
                 </div>
                 <div class="form-group">
                     <label><i class="fas fa-images"></i> <span data-lang-key="extraImgs">Images supplémentaires</span></label>
                     <div class="file-upload" onclick="document.getElementById('extraImages').click()">
                         <i class="fas fa-cloud-upload-alt"></i> <span data-lang-key="uploadExtra">Ajouter des images</span>
                     </div>
-                    <input type="file" id="extraImages" accept="image/*" multiple style="display:none" onchange="previewExtraImages()">
+                    <input type="file" id="extraImages" accept="image/*" multiple="" style="display:none" onchange="previewExtraImages()">
                     <div class="image-preview" id="extraImagesPreview"></div>
                 </div>
                 <div class="form-group">
@@ -830,21 +828,60 @@
                     <textarea id="productDesc" rows="2" data-lang-key="descPlaceholder" placeholder="Description détaillée du produit..."></textarea>
                 </div>
             </div>
-            <button class="submit-btn" id="submitProductBtn" onclick="addProduct()">
+            <button class="submit-btn" id="submitProductBtn" onclick="addProduct()" style="opacity: 1;">
                 <i class="fas fa-cloud-upload-alt"></i> <span data-lang-key="submitBtn">Ajouter le produit</span>
             </button>
         </div>
 
         <!-- ===== PRODUCTS GRID ===== -->
         <div class="products-grid" id="approvedGrid">
-            <div style="grid-column:1/-1; text-align:center; padding:40px;">
-                <i class="fas fa-spinner fa-spin" style="font-size:35px;"></i>
-                <h3 data-lang-key="loading">Chargement des produits...</h3>
-            </div>
-        </div>
+                    <div class="product-card" data-product-id="71" onclick="showProductDetail(71)">
+                        <img class="product-image" src="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/products/1783801965922_o9nz8t.jpg" alt="'ث" loading="lazy" onerror="this.style.display='none'; this.parentElement.innerHTML='&lt;div style=\'display:flex;align-items:center;justify-content:center;height:200px;background:#1C2A16;color:#666;font-size:50px;\'&gt;📷&lt;/div&gt;';">
+                        <div class="product-info">
+                            <span class="product-category"><i class="fas fa-tag"></i> خضروات</span>
+                            <h3 class="product-title">'ث</h3>
+                            <p class="product-desc">ثقثق...</p>
+                            <div class="product-details">
+                                <span class="detail-item"><i class="fas fa-balance-scale"></i> 55</span>
+                                <span class="detail-item"><i class="fas fa-map-marker-alt"></i> '('('(</span>
+                            </div>
+                            <div class="product-price">22 DH</div>
+                            <div class="seller-info">
+                                <span><i class="fas fa-user"></i> Vendeur: زائر</span>
+                                <span><i class="fas fa-calendar-alt"></i> 2026-07-11</span>
+                            </div>
+                            <div class="seller-info">
+                                <span><i class="fas fa-phone"></i> ('('</span>
+                                <a href="https://wa.me/('('" target="_blank" style="color: #25D366; text-decoration: none;"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="product-card" data-product-id="70" onclick="showProductDetail(70)">
+                        <img class="product-image" src="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/products/1783801858706_r0soy8.jpg" alt="خ_خèخ" loading="lazy" onerror="this.style.display='none'; this.parentElement.innerHTML='&lt;div style=\'display:flex;align-items:center;justify-content:center;height:200px;background:#1C2A16;color:#666;font-size:50px;\'&gt;📷&lt;/div&gt;';">
+                        <div class="product-info">
+                            <span class="product-category"><i class="fas fa-tag"></i> خضروات</span>
+                            <h3 class="product-title">خ_خèخ</h3>
+                            <p class="product-desc">5725758787287...</p>
+                            <div class="product-details">
+                                <span class="detail-item"><i class="fas fa-balance-scale"></i> 22</span>
+                                <span class="detail-item"><i class="fas fa-map-marker-alt"></i> ((</span>
+                            </div>
+                            <div class="product-price">222 DH</div>
+                            <div class="seller-info">
+                                <span><i class="fas fa-user"></i> Vendeur: زائر</span>
+                                <span><i class="fas fa-calendar-alt"></i> 2026-07-11</span>
+                            </div>
+                            <div class="seller-info">
+                                <span><i class="fas fa-phone"></i> 75757587587587</span>
+                                <a href="https://wa.me/75757587587587" target="_blank" style="color: #25D366; text-decoration: none;"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
         <!-- ===== FEEDBACK ===== -->
-        <div class="feedback-section" data-aos="fade-up">
+        <div class="feedback-section aos-init aos-animate" data-aos="fade-up">
             <div class="feedback-inner">
                 <div class="feedback-icon"><i class="fas fa-comment-dots"></i></div>
                 <div>
@@ -865,7 +902,7 @@
 
     <!-- ===== MODALS ===== -->
     <div id="detailModal" class="detail-modal"><div class="detail-content" id="detailContent"></div></div>
-    <div class="toast" id="toast"></div>
+    <div class="toast" id="toast" style="background: rgb(76, 175, 80); display: none;"><i class="fas fa-check-circle"></i> ✅ Produit ajouté, il sera examiné</div>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
@@ -1136,7 +1173,7 @@
         // ===============================
         const SUPABASE_URL = 'https://zpjuhprlcaigmczhqlye.supabase.co';
         const DATA_API_KEY = 'sb_publishable_PVQ61DBLGYjzaXy-XFrWpA_k_94iEvK';
-        const STORAGE_API_KEY = 'sb_secret_v88CwWP_kBCh_aZ6RSc6gQ_HSPmSPrY';
+        const STORAGE_API_KEY = 'sb_secret_oBHsaPFwZ1GsL9ChphaovA_KWkPYDfn';
         const BUCKET_NAME = 'product-images';
 
         const headers = {
@@ -1494,5 +1531,6 @@
         renderApproved();
         console.log('🌾 SONE Marché - Version française (badge et flou supprimés)');
     </script>
-</body>
-</html>
+
+
+</body></html>

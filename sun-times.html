@@ -1,690 +1,778 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>أوقات شروق وغروب الشمس | Agri Maroc Précis</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SunTimes Morocco | أوقات الشروق والغروب</title>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ===== CORE VARIABLES (SONE LIBRARY STYLE) ===== */
+:root {
+    --primary: #b8860b;
+    --primary-dark: #966e08;
+    --primary-light: #fdf6e3;
+    --bg: #f8f9fa;
+    --surface: #ffffff;
+    --text: #1d1d1f;
+    --text-secondary: #6c757d;
+    --border: #e9ecef;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+    --radius: 10px;
+    --radius-sm: 6px;
+    --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-        body {
-            font-family: 'Cairo', sans-serif;
-            background: linear-gradient(135deg, #0A1408 0%, #0F1E0C 50%, #1A2A14 100%);
-            color: #fff;
-            min-height: 100vh;
-        }
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+    font-family: 'Cairo', 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+html[dir="ltr"] body { font-family: 'Inter', 'Cairo', sans-serif; }
 
-        /* تخصيص شريط التمرير */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #1C2A16; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: #A8842A; border-radius: 10px; }
+/* ===== HEADER ===== */
+.top-nav {
+    background: rgba(255,255,255,0.95);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    backdrop-filter: blur(12px);
+}
+.top-nav .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+}
+.top-nav .logo-img {
+    height: 38px;
+    width: 38px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 1px solid var(--border);
+}
+.top-nav .logo-text span {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.3px;
+}
+.top-nav .logo-text small {
+    font-weight: 500;
+    font-size: 11px;
+    color: var(--text-secondary);
+    display: block;
+    margin-top: -2px;
+}
 
-        /* الهيدر */
-        .header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            padding: 15px 5%;
-            background: rgba(10, 20, 8, 0.95);
-            backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(168, 132, 66, 0.3);
-            transition: all 0.3s ease;
-        }
+.nav-actions { display: flex; align-items: center; gap: 12px; }
 
-        .header.scrolled {
-            padding: 10px 5%;
-            background: rgba(10, 20, 8, 0.98);
-        }
+.search-box {
+    background: var(--bg);
+    border-radius: 8px;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    border: 1px solid transparent;
+    transition: var(--transition);
+    height: 38px;
+}
+.search-box:focus-within {
+    border-color: var(--primary);
+    background: var(--surface);
+    box-shadow: 0 0 0 3px rgba(184, 134, 11, 0.1);
+}
+.search-box input {
+    border: none;
+    background: transparent;
+    padding: 0 8px;
+    font-family: inherit;
+    outline: none;
+    width: 180px;
+    color: var(--text);
+    font-size: 14px;
+}
+.search-box i { color: var(--text-secondary); font-size: 14px; }
 
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
+.gps-btn {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    border: 1px solid rgba(184, 134, 11, 0.2);
+    height: 38px;
+    padding: 0 14px;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: var(--transition);
+    white-space: nowrap;
+}
+.gps-btn:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+.gps-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.gps-btn .fa-spinner { animation: spin 1s linear infinite; }
 
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            transition: transform 0.3s;
-        }
+.lang-switcher {
+    display: flex;
+    background: var(--bg);
+    border-radius: 8px;
+    padding: 3px;
+    gap: 2px;
+}
+.lang-btn {
+    background: transparent;
+    border: none;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition);
+    font-family: inherit;
+}
+.lang-btn.active { background: var(--surface); color: var(--text); box-shadow: var(--shadow-sm); }
 
-        .logo:hover {
-            transform: scale(1.02);
-        }
+/* ===== MAIN CONTAINER ===== */
+.container { max-width: 1200px; margin: 0 auto; padding: 32px 20px; }
 
-        .logo-icon {
-            width: 45px;
-            height: 45px;
-            background: linear-gradient(135deg, #A8842A, #D4A843);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            box-shadow: 0 0 20px rgba(168, 132, 66, 0.3);
-            animation: pulse 2s infinite;
-        }
+.page-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+.page-header h1 {
+    font-size: 26px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    color: var(--text);
+}
+.page-header p {
+    font-size: 15px;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+}
 
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(168, 132, 66, 0.4); }
-            50% { box-shadow: 0 0 0 10px rgba(168, 132, 66, 0); }
-        }
+/* ===== GRID & CARDS ===== */
+.cities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+}
 
-        .logo-text h1 {
-            font-size: 20px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #fff, #A8842A);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+.city-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 20px;
+    transition: var(--transition);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.city-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary);
+}
 
-        .logo-text p {
-            font-size: 10px;
-            color: #C1DCB5;
-        }
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.card-header i {
+    color: var(--primary);
+    font-size: 18px;
+}
+.card-header h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+}
+.card-header .coords {
+    font-size: 11px;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
 
-        .back-btn {
-            background: rgba(168, 132, 66, 0.15);
-            border: 1px solid rgba(168, 132, 66, 0.5);
-            padding: 10px 25px;
-            border-radius: 50px;
-            color: #A8842A;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+.times-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+.time-box {
+    background: var(--bg);
+    padding: 12px;
+    border-radius: var(--radius-sm);
+    text-align: center;
+}
+.time-box .label {
+    font-size: 11px;
+    color: var(--text-secondary);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+.time-box .value {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text);
+}
+.time-box.sunrise .value { color: #d97706; }
+.time-box.sunset .value { color: #dc2626; }
 
-        .back-btn:hover {
-            background: #A8842A;
-            color: #000;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(168, 132, 66, 0.3);
-        }
+.card-footer {
+    border-top: 1px solid var(--border);
+    padding-top: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+.card-footer .day-length {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600;
+}
+.card-footer .day-length i { color: var(--primary); }
 
-        /* المحتوى الرئيسي */
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 130px 20px 60px;
-        }
+/* ===== EMPTY & LOADING STATES ===== */
+.loading-state, .empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px dashed var(--border);
+}
+.loading-spinner {
+    width: 40px; height: 40px;
+    border: 3px solid var(--border);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 16px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
 
-        /* عنوان الصفحة */
-        .page-header {
-            text-align: center;
-            margin-bottom: 50px;
-        }
+/* ===== MODAL ===== */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(4px);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+.modal-overlay.active { display: flex; opacity: 1; }
+.modal-content {
+    background: var(--surface);
+    border-radius: 12px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    position: relative;
+    transform: scale(0.95);
+    transition: transform 0.2s ease;
+}
+.modal-overlay.active .modal-content { transform: scale(1); }
 
-        .page-header .badge {
-            display: inline-block;
-            background: rgba(168, 132, 66, 0.2);
-            padding: 8px 20px;
-            border-radius: 50px;
-            font-size: 14px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(168, 132, 66, 0.5);
-        }
+.modal-header {
+    padding: 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.modal-header h2 { font-size: 20px; font-weight: 800; }
+.modal-header p { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
+.modal-close {
+    background: var(--bg);
+    border: none;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    color: var(--text-secondary);
+    display: flex; align-items: center; justify-content: center;
+    transition: var(--transition);
+}
+.modal-close:hover { background: var(--border); color: var(--text); }
 
-        .page-header h1 {
-            font-size: 48px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #fff, #A8842A, #C1DCB5);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 15px;
-        }
+.modal-body { padding: 24px; }
+.detail-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+.detail-item {
+    background: var(--bg);
+    padding: 16px;
+    border-radius: var(--radius-sm);
+    border-right: 3px solid var(--primary);
+}
+html[dir="ltr"] .detail-item { border-right: none; border-left: 3px solid var(--primary); }
+.detail-item .label { font-size: 12px; color: var(--text-secondary); margin-bottom: 6px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+.detail-item .value { font-size: 18px; font-weight: 800; color: var(--text); }
 
-        .page-header p {
-            color: #C1DCB5;
-            font-size: 18px;
-            max-width: 600px;
-            margin: 0 auto;
-        }
+/* ===== FOOTER ===== */
+footer {
+    text-align: center;
+    padding: 32px 20px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    margin-top: 48px;
+}
+.report-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--surface);
+    color: var(--text-secondary);
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    border: 1px solid var(--border);
+    transition: var(--transition);
+}
+.report-btn:hover { border-color: var(--primary); color: var(--primary); }
 
-        /* تاريخ اليوم */
-        .date-info {
-            text-align: center;
-            margin-bottom: 30px;
-            padding: 12px 25px;
-            background: rgba(168, 132, 66, 0.1);
-            border-radius: 50px;
-            display: inline-block;
-            width: auto;
-            margin-left: auto;
-            margin-right: auto;
-            font-size: 16px;
-            color: #A8842A;
-            border: 1px solid rgba(168, 132, 66, 0.2);
-        }
-
-        /* اختيار المدينة */
-        .city-section {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .city-label {
-            display: block;
-            margin-bottom: 15px;
-            font-size: 16px;
-            color: #C1DCB5;
-        }
-
-        .city-selector {
-            max-width: 350px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        .city-selector select {
-            width: 100%;
-            padding: 15px 20px;
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(168, 132, 66, 0.4);
-            border-radius: 60px;
-            color: #fff;
-            font-family: 'Cairo', sans-serif;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            appearance: none;
-            transition: all 0.3s;
-        }
-
-        .city-selector select:focus {
-            outline: none;
-            border-color: #A8842A;
-            box-shadow: 0 0 15px rgba(168, 132, 66, 0.2);
-        }
-
-        .city-selector::after {
-            content: '\f0d7';
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #A8842A;
-            pointer-events: none;
-        }
-
-        /* البطاقة الرئيسية */
-        .sun-card {
-            background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(15px);
-            border-radius: 48px;
-            padding: 45px 35px;
-            border: 1px solid rgba(168, 132, 66, 0.25);
-            text-align: center;
-            transition: all 0.4s ease;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        }
-
-        .sun-card:hover {
-            border-color: #A8842A;
-            transform: translateY(-5px);
-        }
-
-        /* رسم الشمس المتحرك */
-        .sun-animation {
-            margin-bottom: 30px;
-            position: relative;
-        }
-
-        .sun-circle {
-            width: 100px;
-            height: 100px;
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            border-radius: 50%;
-            margin: 0 auto;
-            position: relative;
-            animation: rotate 20s linear infinite;
-            box-shadow: 0 0 40px rgba(255, 215, 0, 0.5);
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .sun-circle::before {
-            content: '';
-            position: absolute;
-            top: -15px;
-            left: -15px;
-            right: -15px;
-            bottom: -15px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(255, 215, 0, 0.2), transparent);
-            animation: pulse-sun 2s infinite;
-        }
-
-        @keyframes pulse-sun {
-            0%, 100% { opacity: 0.5; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.1); }
-        }
-
-        .sun-icon {
-            font-size: 60px;
-            margin-bottom: 20px;
-            color: #FFD700;
-            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
-        }
-
-        .city-name {
-            font-size: 28px;
-            font-weight: 800;
-            margin-bottom: 30px;
-            color: #A8842A;
-        }
-
-        /* شبكة الأوقات */
-        .times-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 30px;
-            margin: 30px 0;
-        }
-
-        .time-box {
-            background: linear-gradient(135deg, rgba(168, 132, 66, 0.15), rgba(168, 132, 66, 0.05));
-            border-radius: 28px;
-            padding: 25px 20px;
-            transition: all 0.3s;
-            border: 1px solid rgba(168, 132, 66, 0.15);
-        }
-
-        .time-box:hover {
-            transform: scale(1.02);
-            border-color: rgba(168, 132, 66, 0.4);
-        }
-
-        .time-label {
-            font-size: 16px;
-            color: #C1DCB5;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .time-label i {
-            font-size: 20px;
-            color: #A8842A;
-        }
-
-        .time-value {
-            font-size: 48px;
-            font-weight: 800;
-            color: #A8842A;
-            letter-spacing: 2px;
-        }
-
-        /* مدة النهار */
-        .day-duration {
-            margin-top: 25px;
-            padding-top: 25px;
-            border-top: 1px dashed rgba(168, 132, 66, 0.3);
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .day-duration i {
-            font-size: 22px;
-            color: #A8842A;
-        }
-
-        .day-duration span {
-            color: #A8842A;
-            font-weight: 800;
-            font-size: 20px;
-            margin: 0 5px;
-        }
-
-        /* نصائح */
-        .tips-section {
-            margin-top: 50px;
-            background: rgba(168, 132, 66, 0.08);
-            border-radius: 24px;
-            padding: 30px;
-            border: 1px solid rgba(168, 132, 66, 0.15);
-        }
-
-        .tips-title {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            text-align: center;
-            color: #A8842A;
-        }
-
-        .tips-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 15px;
-        }
-
-        .tip-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 15px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 16px;
-            transition: all 0.3s;
-        }
-
-        .tip-item:hover {
-            background: rgba(168, 132, 66, 0.1);
-            transform: translateX(-5px);
-        }
-
-        .tip-item i {
-            font-size: 20px;
-            color: #A8842A;
-        }
-
-        .tip-item p {
-            font-size: 13px;
-            color: #C1DCB5;
-        }
-
-        /* الفوتر */
-        .footer {
-            background: rgba(10, 20, 8, 0.95);
-            padding: 40px 5% 20px;
-            border-top: 1px solid rgba(168, 132, 66, 0.2);
-            text-align: center;
-            margin-top: 60px;
-        }
-
-        .footer p {
-            color: #C1DCB5;
-            font-size: 14px;
-        }
-
-        /* التوافق مع الجوال */
-        @media (max-width: 768px) {
-            .page-header h1 {
-                font-size: 32px;
-            }
-
-            .times-grid {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-
-            .time-value {
-                font-size: 36px;
-            }
-
-            .sun-card {
-                padding: 30px 20px;
-            }
-
-            .city-name {
-                font-size: 22px;
-            }
-
-            .tips-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .time-value {
-                font-size: 28px;
-            }
-
-            .back-btn span {
-                display: none;
-            }
-
-            .back-btn i {
-                margin: 0;
-            }
-
-            .back-btn {
-                padding: 10px 15px;
-            }
-        }
-    </style>
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .top-nav { padding: 0 16px; }
+    .search-box input { width: 120px; }
+    .gps-btn span { display: none; } /* Show only icon on mobile */
+    .gps-btn { padding: 0 12px; }
+    .cities-grid { grid-template-columns: 1fr; }
+    .detail-grid { grid-template-columns: 1fr; }
+}
+</style>
 </head>
 <body>
 
-    <header class="header" id="header">
-        <div class="header-content">
-            <a href="index.html" class="logo">
-                <div class="logo-icon"><i class="fas fa-leaf"></i></div>
-                <div class="logo-text">
-                    <h1>Agri Maroc Précis</h1>
-                    <p>المنصة المتكاملة للفلاحة الذكية</p>
-                </div>
-            </a>
-            <a href="index.html" class="back-btn">
-                <i class="fas fa-arrow-right"></i>
-                <span>العودة للرئيسية</span>
-            </a>
+<!-- HEADER -->
+<header class="top-nav">
+    <a href="#" class="logo">
+        <img src="https://sone-solutions.github.io/SONE/SONELOGE.jpg" alt="Logo" class="logo-img">
+        <div class="logo-text">
+            <span data-i18n="siteTitle">SunTimes Morocco</span>
+            <small data-i18n="subtitle">بيانات فلكية دقيقة</small>
         </div>
-    </header>
-
-    <div class="container">
-        <div class="page-header" data-aos="fade-up">
-            <span class="badge">
-                <i class="fas fa-sun"></i> مواعيد دقيقة
-            </span>
-            <h1><i class="fas fa-sun"></i> أوقات شروق وغروب الشمس</h1>
-            <p>تعرف على مواعيد شروق وغروب الشمس حسب منطقتك لتنظيم مواعيد الري والعمل الزراعي</p>
+    </a>
+    <div class="nav-actions">
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" data-i18n-placeholder="searchPlaceholder" placeholder="ابحث عن مدينة..." autocomplete="off">
         </div>
-
-        <div style="text-align: center;" data-aos="fade-up" data-aos-delay="100">
-            <div class="date-info" id="currentDate">
-                <i class="fas fa-calendar-alt"></i> جاري التحميل...
-            </div>
-        </div>
-
-        <div class="city-section" data-aos="fade-up" data-aos-delay="150">
-            <div class="city-label">
-                <i class="fas fa-map-marker-alt"></i> اختر مدينتك
-            </div>
-            <div class="city-selector">
-                <select id="citySelect">
-                    <option value="casablanca">🌆 الدار البيضاء</option>
-                    <option value="rabat">🏛️ الرباط</option>
-                    <option value="marrakech">🌴 مراكش</option>
-                    <option value="fes">🏰 فاس</option>
-                    <option value="tangier">🌊 طنجة</option>
-                    <option value="agadir">🏖️ أكادير</option>
-                    <option value="oujda">🌅 وجدة</option>
-                    <option value="meknes">🏯 مكناس</option>
-                    <option value="tetouan">⛰️ تطوان</option>
-                    <option value="essaouira">🎨 الصويرة</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="sun-card" data-aos="fade-up" data-aos-delay="200">
-            <div class="sun-animation">
-                <div class="sun-circle"></div>
-            </div>
-            <div class="city-name" id="cityName">
-                الدار البيضاء
-            </div>
-
-            <div class="times-grid">
-                <div class="time-box">
-                    <div class="time-label">
-                        <i class="fas fa-arrow-up"></i>
-                        <span>وقت الشروق</span>
-                    </div>
-                    <div class="time-value" id="sunriseTime">--:--</div>
-                </div>
-                <div class="time-box">
-                    <div class="time-label">
-                        <i class="fas fa-arrow-down"></i>
-                        <span>وقت الغروب</span>
-                    </div>
-                    <div class="time-value" id="sunsetTime">--:--</div>
-                </div>
-            </div>
-
-            <div class="day-duration">
-                <i class="fas fa-hourglass-half"></i>
-                <span>مدة النهار:</span>
-                <span id="dayDuration">--</span>
-            </div>
-        </div>
-
-        <!-- نصائح زراعية -->
-        <div class="tips-section" data-aos="fade-up" data-aos-delay="250">
-            <div class="tips-title">
-                <i class="fas fa-lightbulb"></i> نصائح زراعية حسب الوقت
-            </div>
-            <div class="tips-grid">
-                <div class="tip-item">
-                    <i class="fas fa-tint"></i>
-                    <p>🌅 أفضل وقت للري هو بعد شروق الشمس مباشرة أو قبل الغروب لتقليل التبخر</p>
-                </div>
-                <div class="tip-item">
-                    <i class="fas fa-leaf"></i>
-                    <p>☀️ تجنب رش المبيدات في منتصف النهار لتجنب حرق النباتات</p>
-                </div>
-                <div class="tip-item">
-                    <i class="fas fa-tractor"></i>
-                    <p>🚜 أنسب وقت للعمل في الحقول هو الصباح الباكر أو بعد العصر</p>
-                </div>
-                <div class="tip-item">
-                    <i class="fas fa-cloud-sun"></i>
-                    <p>🌿 مراقبة ساعات النهار تساعد في تحديد مواعيد الزراعة المناسبة لكل محصول</p>
-                </div>
-            </div>
+        <button class="gps-btn" id="gpsBtn" onclick="getUserLocation()">
+            <i class="fas fa-location-crosshairs"></i>
+            <span data-i18n="gpsBtn">موقعي</span>
+        </button>
+        <div class="lang-switcher">
+            <button class="lang-btn active" data-lang="ar">AR</button>
+            <button class="lang-btn" data-lang="fr">FR</button>
+            <button class="lang-btn" data-lang="en">EN</button>
         </div>
     </div>
+</header>
 
-    <footer class="footer">
-        <p>© 2026 Agri Maroc Précis - جميع الحقوق محفوظة | المنصة المتكاملة للفلاحة الذكية</p>
-    </footer>
+<!-- MAIN -->
+<div class="container">
+    <div class="page-header">
+        <h1 data-i18n="heroTitle">أوقات الشروق والغروب في المغرب</h1>
+        <p data-i18n="heroSubtitle">بيانات فلكية حقيقية ومحدثة يومياً لأكثر من 60 مدينة ومنطقة في المملكة</p>
+    </div>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        AOS.init({ duration: 800, once: true });
+    <div class="cities-grid" id="citiesGrid">
+        <div class="loading-state">
+            <div class="loading-spinner"></div>
+            <p data-i18n="loading">جاري تحميل البيانات...</p>
+        </div>
+    </div>
+</div>
 
-        // بيانات أوقات الشروق والغروب (تقريبية لكل مدينة)
-        const sunTimes = {
-            casablanca: { name: "الدار البيضاء", sunrise: "06:45", sunset: "20:15" },
-            rabat: { name: "الرباط", sunrise: "06:42", sunset: "20:18" },
-            marrakech: { name: "مراكش", sunrise: "06:55", sunset: "20:05" },
-            fes: { name: "فاس", sunrise: "06:38", sunset: "20:22" },
-            tangier: { name: "طنجة", sunrise: "06:35", sunset: "20:25" },
-            agadir: { name: "أكادير", sunrise: "07:05", sunset: "19:58" },
-            oujda: { name: "وجدة", sunrise: "06:30", sunset: "20:20" },
-            meknes: { name: "مكناس", sunrise: "06:40", sunset: "20:20" },
-            tetouan: { name: "تطوان", sunrise: "06:33", sunset: "20:27" },
-            essaouira: { name: "الصويرة", sunrise: "07:10", sunset: "19:55" }
-        };
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div>
+                <h2 id="modalTitle">المدينة</h2>
+                <p id="modalCoords">الإحداثيات</p>
+            </div>
+            <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body" id="modalBody"></div>
+    </div>
+</div>
 
-        // تنسيق التاريخ بالعربية
-        function formatDate() {
-            const date = new Date();
-            const options = { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-            };
-            return date.toLocaleDateString('ar-EG', options);
-        }
+<!-- FOOTER -->
+<footer>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSeXPpvcl-CUd4EUesdfL0HgaXFtOD8k-Ug7kfA7M-uickgwXQ/viewform?usp=header" target="_blank" class="report-btn">
+        <i class="fas fa-flag"></i> <span data-i18n="reportBtn">نموذج إبلاغ</span>
+    </a>
+</footer>
 
-        // حساب مدة النهار
-        function calculateDayDuration(sunrise, sunset) {
-            const [sunriseHour, sunriseMin] = sunrise.split(':').map(Number);
-            const [sunsetHour, sunsetMin] = sunset.split(':').map(Number);
+<script>
+// ===== TRANSLATIONS =====
+const translations = {
+    ar: {
+        siteTitle: "SunTimes Morocco",
+        subtitle: "بيانات فلكية دقيقة",
+        searchPlaceholder: "ابحث عن مدينة...",
+        gpsBtn: "موقعي",
+        heroTitle: "أوقات الشروق والغروب في المغرب",
+        heroSubtitle: "بيانات فلكية حقيقية ومحدثة يومياً لأكثر من 60 مدينة ومنطقة في المملكة",
+        loading: "جاري تحميل البيانات...",
+        noResults: "لا توجد نتائج للبحث",
+        sunrise: "الشروق",
+        sunset: "الغروب",
+        dawn: "الفجر",
+        dusk: "العشاء",
+        dayLength: "طول النهار",
+        solarNoon: "منتصف النهار",
+        goldenHour: "الساعة الذهبية",
+        moonPhase: "طور القمر",
+        timezone: "المنطقة الزمنية",
+        reportBtn: "نموذج إبلاغ"
+    },
+    en: {
+        siteTitle: "SunTimes Morocco",
+        subtitle: "Accurate Astronomical Data",
+        searchPlaceholder: "Search for a city...",
+        gpsBtn: "My Location",
+        heroTitle: "Sunrise & Sunset Times in Morocco",
+        heroSubtitle: "Real, daily-updated astronomical data for over 60 cities and regions in the Kingdom",
+        loading: "Loading data...",
+        noResults: "No results found",
+        sunrise: "Sunrise",
+        sunset: "Sunset",
+        dawn: "Dawn",
+        dusk: "Dusk",
+        dayLength: "Day Length",
+        solarNoon: "Solar Noon",
+        goldenHour: "Golden Hour",
+        moonPhase: "Moon Phase",
+        timezone: "Timezone",
+        reportBtn: "Report an Issue"
+    },
+    fr: {
+        siteTitle: "SunTimes Morocco",
+        subtitle: "Données Astronomiques Précises",
+        searchPlaceholder: "Rechercher une ville...",
+        gpsBtn: "Ma Position",
+        heroTitle: "Lever et Coucher du Soleil au Maroc",
+        heroSubtitle: "Données astronomiques réelles et mises à jour quotidiennement pour plus de 60 villes et régions",
+        loading: "Chargement des données...",
+        noResults: "Aucun résultat trouvé",
+        sunrise: "Lever du soleil",
+        sunset: "Coucher du soleil",
+        dawn: "Aube",
+        dusk: "Crépuscule",
+        dayLength: "Durée du jour",
+        solarNoon: "Midi solaire",
+        goldenHour: "Heure dorée",
+        moonPhase: "Phase de la lune",
+        timezone: "Fuseau horaire",
+        reportBtn: "Signaler un problème"
+    }
+};
+
+let currentLang = localStorage.getItem('preferredLang') || 'ar';
+let citiesData = [];
+
+// ===== COMPREHENSIVE MOROCCAN CITIES DATABASE =====
+const moroccanCities = [
+    { name: {ar:"الرباط", en:"Rabat", fr:"Rabat"}, lat: 34.0209, lng: -6.8416 },
+    { name: {ar:"الدار البيضاء", en:"Casablanca", fr:"Casablanca"}, lat: 33.5731, lng: -7.5898 },
+    { name: {ar:"مراكش", en:"Marrakech", fr:"Marrakech"}, lat: 31.6295, lng: -7.9811 },
+    { name: {ar:"فاس", en:"Fes", fr:"Fès"}, lat: 34.0181, lng: -5.0078 },
+    { name: {ar:"طنجة", en:"Tangier", fr:"Tanger"}, lat: 35.7595, lng: -5.8340 },
+    { name: {ar:"أكادير", en:"Agadir", fr:"Agadir"}, lat: 30.4278, lng: -9.5981 },
+    { name: {ar:"مكناس", en:"Meknes", fr:"Meknès"}, lat: 33.8935, lng: -5.5473 },
+    { name: {ar:"وجدة", en:"Oujda", fr:"Oujda"}, lat: 34.6814, lng: -1.9086 },
+    { name: {ar:"القنيطرة", en:"Kenitra", fr:"Kénitra"}, lat: 34.2610, lng: -6.5802 },
+    { name: {ar:"تطوان", en:"Tetouan", fr:"Tétouan"}, lat: 35.5889, lng: -5.3626 },
+    { name: {ar:"آسفي", en:"Safi", fr:"Safi"}, lat: 32.2994, lng: -9.2372 },
+    { name: {ar:"بني ملال", en:"Beni Mellal", fr:"Béni Mellal"}, lat: 32.3373, lng: -6.3498 },
+    { name: {ar:"الجديدة", en:"El Jadida", fr:"El Jadida"}, lat: 33.2316, lng: -8.5007 },
+    { name: {ar:"خريبكة", en:"Khouribga", fr:"Khouribga"}, lat: 32.8911, lng: -6.9063 },
+    { name: {ar:"الرشيدية", en:"Errachidia", fr:"Errachidia"}, lat: 31.9314, lng: -4.4244 },
+    { name: {ar:"الحسيمة", en:"Al Hoceima", fr:"Al Hoceïma"}, lat: 35.2517, lng: -3.9372 },
+    { name: {ar:"تازة", en:"Taza", fr:"Taza"}, lat: 34.2133, lng: -4.0103 },
+    { name: {ar:"العيون", en:"Laayoune", fr:"Laâyoune"}, lat: 27.1536, lng: -13.1994 },
+    { name: {ar:"كلميم", en:"Guelmim", fr:"Guelmim"}, lat: 28.9800, lng: -9.5780 },
+    { name: {ar:"الداخلة", en:"Dakhla", fr:"Dakhla"}, lat: 23.7185, lng: -15.9581 },
+    { name: {ar:"سطات", en:"Settat", fr:"Settat"}, lat: 33.0013, lng: -7.6164 },
+    { name: {ar:"برشيد", en:"Berrechid", fr:"Berrechid"}, lat: 33.2653, lng: -7.5884 },
+    { name: {ar:"خميسات", en:"Khemisset", fr:"Khémisset"}, lat: 33.8236, lng: -6.0661 },
+    { name: {ar:"شفشاون", en:"Chefchaouen", fr:"Chefchaouen"}, lat: 35.1689, lng: -5.2636 },
+    { name: {ar:"وزان", en:"Ouezzane", fr:"Ouezzane"}, lat: 34.7977, lng: -5.5756 },
+    { name: {ar:"الحاجب", en:"El Hajeb", fr:"El Hajeb"}, lat: 33.6877, lng: -5.3706 },
+    { name: {ar:"إفران", en:"Ifrane", fr:"Ifrane"}, lat: 33.5228, lng: -5.1107 },
+    { name: {ar:"أزرو", en:"Azrou", fr:"Azrou"}, lat: 33.4342, lng: -5.2214 },
+    { name: {ar:"صفرو", en:"Sefrou", fr:"Sefrou"}, lat: 33.8307, lng: -4.8373 },
+    { name: {ar:"تاونات", en:"Taounate", fr:"Taounate"}, lat: 34.5333, lng: -4.6333 },
+    { name: {ar:"الناظور", en:"Nador", fr:"Nador"}, lat: 35.1681, lng: -2.9287 },
+    { name: {ar:"بركان", en:"Berkane", fr:"Berkane"}, lat: 34.9167, lng: -2.3167 },
+    { name: {ar:"تارودانت", en:"Taroudant", fr:"Taroudant"}, lat: 30.4667, lng: -8.9167 },
+    { name: {ar:"ورزازات", en:"Ouarzazate", fr:"Ouarzazate"}, lat: 30.9335, lng: -6.9370 },
+    { name: {ar:"زاكورة", en:"Zagora", fr:"Zagora"}, lat: 30.3333, lng: -5.8333 },
+    { name: {ar:"تنغير", en:"Tinghir", fr:"Tinghir"}, lat: 31.5167, lng: -5.5333 },
+    { name: {ar:"ميدلت", en:"Midelt", fr:"Midelt"}, lat: 32.6850, lng: -4.7333 },
+    { name: {ar:"تزنيت", en:"Tiznit", fr:"Tiznit"}, lat: 29.6974, lng: -9.7316 },
+    { name: {ar:"الصويرة", en:"Essaouira", fr:"Essaouira"}, lat: 31.5085, lng: -9.7595 },
+    { name: {ar:"فكيك", en:"Figuig", fr:"Figuig"}, lat: 32.0667, lng: -1.2167 },
+    { name: {ar:"تاوريرت", en:"Taourirt", fr:"Taourirt"}, lat: 34.4069, lng: -2.8897 },
+    { name: {ar:"الدريوش", en:"Driouch", fr:"Driouch"}, lat: 34.9667, lng: -3.3833 },
+    { name: {ar:"جرسيف", en:"Guercif", fr:"Guercif"}, lat: 34.2769, lng: -2.7333 },
+    { name: {ar:"بولمان", en:"Boulemane", fr:"Boulemane"}, lat: 33.4167, lng: -4.2333 },
+    { name: {ar:"سيدي بنور", en:"Sidi Bennour", fr:"Sidi Bennour"}, lat: 32.6500, lng: -8.4333 },
+    { name: {ar:"اليوسفية", en:"Youssoufia", fr:"Youssoufia"}, lat: 32.2500, lng: -8.5333 },
+    { name: {ar:"شيشاوة", en:"Chichaoua", fr:"Chichaoua"}, lat: 31.5333, lng: -8.7667 },
+    { name: {ar:"الفقيه بن صالح", en:"Fquih Ben Salah", fr:"Fquih Ben Salah"}, lat: 32.5000, lng: -6.6833 },
+    { name: {ar:"سيدي سليمان", en:"Sidi Slimane", fr:"Sidi Slimane"}, lat: 34.2667, lng: -5.9333 },
+    { name: {ar:"سيدي قاسم", en:"Sidi Kacem", fr:"Sidi Kacem"}, lat: 34.2167, lng: -5.7000 },
+    { name: {ar:"العرائش", en:"Larache", fr:"Larache"}, lat: 35.1933, lng: -6.1567 },
+    { name: {ar:"القصر الكبير", en:"Ksar El Kebir", fr:"Ksar El Kebir"}, lat: 35.0000, lng: -5.9000 },
+    { name: {ar:"المضيق", en:"M'diq", fr:"M'diq"}, lat: 35.6833, lng: -5.3833 },
+    { name: {ar:"فنيدق", en:"Fnideq", fr:"Fnideq"}, lat: 35.8500, lng: -5.3500 },
+    { name: {ar:"بوجدور", en:"Boujdour", fr:"Boujdour"}, lat: 26.1333, lng: -14.5000 },
+    { name: {ar:"السمارة", en:"Smara", fr:"Smara"}, lat: 26.7333, lng: -11.6667 },
+    { name: {ar:"طانطان", en:"Tan-Tan", fr:"Tan-Tan"}, lat: 28.4378, lng: -11.1031 },
+    { name: {ar:"سيدي إفني", en:"Sidi Ifni", fr:"Sidi Ifni"}, lat: 29.3797, lng: -10.1731 },
+    { name: {ar:"اشتوكة آيت باها", en:"Chtouka Ait Baha", fr:"Chtouka Ait Baha"}, lat: 30.2167, lng: -9.2833 }
+];
+
+// ===== HELPER FUNCTIONS =====
+function t(key) { return translations[currentLang][key] || key; }
+
+function getCityName(city) { return city.name[currentLang] || city.name.en; }
+
+function updateLanguage(lang) {
+    currentLang = lang;
+    localStorage.setItem('preferredLang', lang);
+    document.documentElement.lang = lang;
+    document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
+    
+    document.querySelectorAll('[data-i18n]').forEach(el => el.textContent = t(el.getAttribute('data-i18n')));
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => el.placeholder = t(el.getAttribute('data-i18n-placeholder')));
+    document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.lang === lang));
+    
+    if (citiesData.length > 0) displayCities(citiesData);
+}
+
+// Haversine formula to find nearest city from GPS
+function getDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371; // Earth radius in km
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+              Math.sin(dLon/2) * Math.sin(dLon/2);
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+// ===== GPS FUNCTIONALITY =====
+function getUserLocation() {
+    const btn = document.getElementById('gpsBtn');
+    const originalText = btn.innerHTML;
+    
+    if (!navigator.geolocation) {
+        alert("متصفحك لا يدعم تحديد الموقع الجغرافي.");
+        return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner"></i> <span>جاري التحديد...</span>';
+
+    navigator.geolocation.getCurrentPosition(
+        async (position) => {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
             
-            let durationHours = sunsetHour - sunriseHour;
-            let durationMins = sunsetMin - sunriseMin;
+            // Find nearest city
+            let nearestCity = moroccanCities[0];
+            let minDistance = Infinity;
             
-            if (durationMins < 0) {
-                durationHours--;
-                durationMins += 60;
-            }
-            
-            return `${durationHours} ساعة و ${durationMins} دقيقة`;
-        }
+            moroccanCities.forEach(city => {
+                const dist = getDistance(lat, lng, city.lat, city.lng);
+                if (dist < minDistance) {
+                    minDistance = dist;
+                    nearestCity = city;
+                }
+            });
 
-        // تحديث الأوقات عند تغيير المدينة
-        function updateTimes() {
-            const city = document.getElementById('citySelect').value;
-            const data = sunTimes[city];
-            
+            // Fetch data for the nearest city
+            const data = await fetchSunData(nearestCity);
             if (data) {
-                document.getElementById('cityName').innerText = data.name;
-                document.getElementById('sunriseTime').innerText = data.sunrise;
-                document.getElementById('sunsetTime').innerText = data.sunset;
-                const duration = calculateDayDuration(data.sunrise, data.sunset);
-                document.getElementById('dayDuration').innerHTML = duration;
+                // Override name to indicate it's based on GPS
+                data.name = { 
+                    ar: `موقعك الحالي (قريب من ${nearestCity.name.ar})`, 
+                    en: `Your Location (Near ${nearestCity.name.en})`, 
+                    fr: `Votre position (Près de ${nearestCity.name.fr})` 
+                };
+                data.lat = lat; // Keep actual GPS coords for display
+                data.lng = lng;
+                
+                citiesData = [data]; // Show only this result
+                displayCities(citiesData);
             }
-        }
-
-        // تغيير الخلفية حسب الوقت
-        function updateBackgroundByTime() {
-            const now = new Date();
-            const hour = now.getHours();
-            const body = document.body;
             
-            if (hour >= 5 && hour < 8) {
-                // وقت الشروق
-                body.style.background = "linear-gradient(135deg, #FF7E5F, #FEB47B)";
-            } else if (hour >= 8 && hour < 18) {
-                // وقت النهار
-                body.style.background = "linear-gradient(135deg, #0A1408 0%, #0F1E0C 50%, #1A2A14 100%)";
-            } else if (hour >= 18 && hour < 20) {
-                // وقت الغروب
-                body.style.background = "linear-gradient(135deg, #FF512F, #DD2475)";
-            } else {
-                // وقت الليل
-                body.style.background = "linear-gradient(135deg, #0F0C29, #302B63, #24243E)";
-            }
-        }
+            btn.disabled = false;
+            btn.innerHTML = originalText;
+        },
+        (error) => {
+            alert("تعذر تحديد الموقع. يرجى التأكد من تفعيل خدمات الموقع في جهازك.");
+            btn.disabled = false;
+            btn.innerHTML = originalText;
+        },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+    );
+}
 
-        // عرض التاريخ
-        document.getElementById('currentDate').innerHTML = `<i class="fas fa-calendar-alt"></i> ${formatDate()}`;
-        
-        // تعيين المستمع لتغيير المدينة
-        document.getElementById('citySelect').addEventListener('change', updateTimes);
-        
-        // التحديث الأولي
-        updateTimes();
-        
-        // تأثير التمرير على الهيدر
-        window.addEventListener('scroll', () => {
-            const header = document.getElementById('header');
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-    </script>
+// ===== API FETCHING =====
+async function fetchSunData(city) {
+    try {
+        const url = `https://api.sunrisesunset.io/json?lat=${city.lat}&lng=${city.lng}`;
+        const response = await fetch(url);
+        const data = await response.json();
+        if (data.status === 'OK') return { ...city, ...data.results };
+    } catch (error) {
+        console.error(`Error fetching data for ${getCityName(city)}:`, error);
+    }
+    return null;
+}
+
+// ===== RENDERING =====
+function createCityCard(cityData) {
+    const card = document.createElement('div');
+    card.className = 'city-card';
+    card.onclick = () => showDetails(cityData);
+    
+    card.innerHTML = `
+        <div class="card-header">
+            <i class="fas fa-map-marker-alt"></i>
+            <div>
+                <h3>${getCityName(cityData)}</h3>
+                <div class="coords">${cityData.lat.toFixed(4)}°, ${Math.abs(cityData.lng).toFixed(4)}°</div>
+            </div>
+        </div>
+        <div class="times-row">
+            <div class="time-box sunrise">
+                <div class="label">${t('sunrise')}</div>
+                <div class="value">${cityData.sunrise}</div>
+            </div>
+            <div class="time-box sunset">
+                <div class="label">${t('sunset')}</div>
+                <div class="value">${cityData.sunset}</div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="day-length"><i class="fas fa-hourglass-half"></i> ${cityData.day_length}</div>
+            <i class="fas fa-chevron-left" style="color:var(--text-secondary); font-size:12px;"></i>
+        </div>
+    `;
+    return card;
+}
+
+function displayCities(data) {
+    const grid = document.getElementById('citiesGrid');
+    grid.innerHTML = '';
+    
+    if (data.length === 0) {
+        grid.innerHTML = `<div class="empty-state"><i class="fas fa-search" style="font-size:32px; color:var(--primary); margin-bottom:12px;"></i><h3>${t('noResults')}</h3></div>`;
+        return;
+    }
+    
+    data.forEach(cityData => grid.appendChild(createCityCard(cityData)));
+}
+
+function showDetails(cityData) {
+    document.getElementById('modalTitle').textContent = getCityName(cityData);
+    document.getElementById('modalCoords').textContent = `${cityData.lat.toFixed(4)}°, ${Math.abs(cityData.lng).toFixed(4)}°`;
+    
+    document.getElementById('modalBody').innerHTML = `
+        <div class="detail-grid">
+            <div class="detail-item"><div class="label"><i class="fas fa-cloud-sun"></i> ${t('dawn')}</div><div class="value">${cityData.dawn}</div></div>
+            <div class="detail-item"><div class="label"><i class="fas fa-sun"></i> ${t('sunrise')}</div><div class="value">${cityData.sunrise}</div></div>
+            <div class="detail-item"><div class="label"><i class="fas fa-sun"></i> ${t('solarNoon')}</div><div class="value">${cityData.solar_noon}</div></div>
+            <div class="detail-item"><div class="label"><i class="fas fa-star"></i> ${t('goldenHour')}</div><div class="value">${cityData.golden_hour}</div></div>
+            <div class="detail-item"><div class="label"><i class="fas fa-moon"></i> ${t('sunset')}</div><div class="value">${cityData.sunset}</div></div>
+            <div class="detail-item"><div class="label"><i class="fas fa-cloud-moon"></i> ${t('dusk')}</div><div class="value">${cityData.dusk}</div></div>
+            <div class="detail-item"><div class="label"><i class="fas fa-hourglass-half"></i> ${t('dayLength')}</div><div class="value">${cityData.day_length}</div></div>
+            <div class="detail-item"><div class="label"><i class="fas fa-moon"></i> ${t('moonPhase')}</div><div class="value">${cityData.moon_phase}</div></div>
+        </div>
+    `;
+    document.getElementById('modal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+    document.getElementById('modal').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+// ===== INITIALIZATION =====
+async function loadData() {
+    const promises = moroccanCities.map(city => fetchSunData(city));
+    const results = await Promise.all(promises);
+    citiesData = results.filter(data => data !== null);
+    displayCities(citiesData);
+}
+
+document.getElementById('searchInput').addEventListener('input', (e) => {
+    const query = e.target.value.toLowerCase();
+    const filtered = citiesData.filter(city => getCityName(city).toLowerCase().includes(query));
+    displayCities(filtered);
+});
+
+document.getElementById('modal').addEventListener('click', (e) => {
+    if (e.target.id === 'modal') closeModal();
+});
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+});
+
+document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => updateLanguage(btn.dataset.lang));
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+    updateLanguage(currentLang);
+    loadData();
+});
+</script>
 </body>
 </html>

@@ -1,4 +1,6 @@
-<html lang="ar" dir="rtl"><head>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SONE LIBRARY - منصة المعرفة</title>
@@ -6,17 +8,21 @@
     <!-- Preconnect للروابط الخارجية -->
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://unpkg.com">
 
     <!-- Font Awesome - نسخة محسّنة -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
+          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" 
+          crossorigin="anonymous" referrerpolicy="no-referrer">
 
     <!-- Google Fonts - Cairo فقط -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" 
+          rel="stylesheet">
 
     <!-- AOS - lazy load -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" media="all" onload="this.media='all'">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" media="print" 
+          onload="this.media='all'">
 
     <style>
         /* ===== CSS RESET & BASE ===== */
@@ -872,9 +878,43 @@
                 transition-duration: 0.01ms !important;
             }
         }
-    </style>
+    
+        /* ===== PDF THUMBNAIL STYLES ===== */
+        .pdf-thumb-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            transition: opacity 0.3s ease;
+        }
+        .pdf-thumb-loaded {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        .pdf-thumb-loaded img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+            animation: fadeInThumb 0.4s ease;
+        }
+        @keyframes fadeInThumb {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+</style>
+
+    <!-- PDF.js for thumbnail generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    </script>
+<base target="_blank">
 </head>
-<body data-aos-easing="ease" data-aos-duration="800" data-aos-delay="0" style="">
+<body>
 
     <!-- HEADER -->
     <header class="top-nav">
@@ -890,7 +930,7 @@
             <div class="search-box">
                 <i class="fas fa-search"></i>
                 <input type="text" id="searchInput" placeholder="ابحث عن أي شيء..." autocomplete="off">
-                <i class="fas fa-times-circle" id="clearSearchBtn" style="display: none; cursor: pointer; color: var(--primary);"></i>
+                <i class="fas fa-times-circle" id="clearSearchBtn" style="display:none; cursor:pointer; color:var(--primary);"></i>
             </div>
             <div>
                 <button class="lang-btn active" data-lang="ar">عربي</button>
@@ -908,19 +948,19 @@
         <a href="#" data-tab="books"><i class="fas fa-book"></i> الكتب PDF</a>
         <a href="#" data-tab="articles"><i class="fas fa-file-alt"></i> المقالات</a>
         <a href="#" data-tab="videos"><i class="fas fa-video"></i> الفيديوهات</a>
-        <a href="#" data-tab="reports" class=""><i class="fas fa-chart-line"></i> التقارير</a>
-        <a href="#" data-tab="trainings" class="active"><i class="fas fa-chalkboard-user"></i> عروض تدريب</a>
+        <a href="#" data-tab="reports" class="active"><i class="fas fa-chart-line"></i> التقارير</a>
+        <a href="#" data-tab="trainings"><i class="fas fa-chalkboard-user"></i> عروض تدريب</a>
     </nav>
 
     <!-- MAIN CONTENT -->
     <div class="container">
         <!-- Tabs -->
         <div class="tabs" id="tabsContainer">
-            <button class="tab-btn" data-panel="books-panel"><i class="fas fa-book"></i> الكتب PDF</button>
+            <button class="tab-btn active" data-panel="books-panel"><i class="fas fa-book"></i> الكتب PDF</button>
             <button class="tab-btn" data-panel="articles-panel"><i class="fas fa-file-alt"></i> المقالات</button>
             <button class="tab-btn" data-panel="videos-panel"><i class="fas fa-video"></i> الفيديوهات</button>
             <button class="tab-btn" data-panel="reports-panel"><i class="fas fa-chart-line"></i> التقارير</button>
-            <button class="tab-btn active" data-panel="trainings-panel"><i class="fas fa-chalkboard-user"></i> عروض تدريب</button>
+            <button class="tab-btn" data-panel="trainings-panel"><i class="fas fa-chalkboard-user"></i> عروض تدريب</button>
         </div>
 
         <!-- Panels -->
@@ -937,763 +977,7 @@
             <div class="library-grid" id="reportsGrid"></div>
         </div>
         <div id="trainings-panel" class="content-panel active">
-            <div class="library-grid" id="trainingsGrid"><div class="library-card" data-id="83" data-pdfurl="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783897257248_rnn3gh.docx" data-filename="Exposé de fraisier.docx" data-type="training">
-            <div class="card-thumbnail" id="thumb-83"><img alt="DOCX" loading="lazy" src="https://sone-solutions.github.io/SONE/images%20docx.png"></div>
-            <div class="card-body">
-                <h4>Exposé de fraisier.docx</h4>
-                <p>...</p>
-                <div class="card-footer">
-                    <span class="meta">
-                        <span><i class="fas fa-calendar-alt"></i> ١٢&rlm;/٧&rlm;/٢٠٢٦</span>
-                        <span><i class="fas fa-paperclip"></i> Exposé de fraisier.docx</span>
-                    </span>
-                    <div class="actions">
-                        <button onclick="viewItem(83, 'training')" title="عرض التفاصيل"><i class="fas fa-eye"></i></button>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783897257248_rnn3gh.docx" target="_blank" style="text-decoration:none;color:inherit;">
-                            <button title="فتح"><i class="fas fa-external-link-alt"></i></button>
-                        </a>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783897257248_rnn3gh.docx" download="Exposé de fraisier.docx" class="btn-action download-btn" title="تحميل">
-                            <i class="fas fa-download"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div><div class="library-card" data-id="84" data-pdfurl="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783897308980_0u9vi6.pptx" data-filename="L'oignon.pptx" data-type="training">
-            <div class="card-thumbnail" id="thumb-84"><img alt="PPTX" loading="lazy" src="https://sone-solutions.github.io/SONE/pptx.png"></div>
-            <div class="card-body">
-                <h4>L'oignon.pptx</h4>
-                <p>...</p>
-                <div class="card-footer">
-                    <span class="meta">
-                        <span><i class="fas fa-calendar-alt"></i> ١٢&rlm;/٧&rlm;/٢٠٢٦</span>
-                        <span><i class="fas fa-paperclip"></i> L'oignon.pptx</span>
-                    </span>
-                    <div class="actions">
-                        <button onclick="viewItem(84, 'training')" title="عرض التفاصيل"><i class="fas fa-eye"></i></button>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783897308980_0u9vi6.pptx" target="_blank" style="text-decoration:none;color:inherit;">
-                            <button title="فتح"><i class="fas fa-external-link-alt"></i></button>
-                        </a>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783897308980_0u9vi6.pptx" download="L'oignon.pptx" class="btn-action download-btn" title="تحميل">
-                            <i class="fas fa-download"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div><div class="library-card" data-id="85" data-pdfurl="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783897452938_r3kgww.pptx" data-filename="L'oignon expése correction.pptx" data-type="training">
-            <div class="card-thumbnail" id="thumb-85"><img alt="PPTX" loading="lazy" src="https://sone-solutions.github.io/SONE/pptx.png"></div>
-            <div class="card-body">
-                <h4>L'oignon expése correction.pptx</h4>
-                <p>...</p>
-                <div class="card-footer">
-                    <span class="meta">
-                        <span><i class="fas fa-calendar-alt"></i> ١٢&rlm;/٧&rlm;/٢٠٢٦</span>
-                        <span><i class="fas fa-paperclip"></i> L'oignon expése corre...</span>
-                    </span>
-                    <div class="actions">
-                        <button onclick="viewItem(85, 'training')" title="عرض التفاصيل"><i class="fas fa-eye"></i></button>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783897452938_r3kgww.pptx" target="_blank" style="text-decoration:none;color:inherit;">
-                            <button title="فتح"><i class="fas fa-external-link-alt"></i></button>
-                        </a>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783897452938_r3kgww.pptx" download="L'oignon expése correction.pptx" class="btn-action download-btn" title="تحميل">
-                            <i class="fas fa-download"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div><div class="library-card" data-id="86" data-pdfurl="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783944933607_uo2qe7.pdf" data-filename="Rapport-Framboise-Soema-avaryl.pdf" data-type="training">
-            <div class="card-thumbnail" id="thumb-86"><div class="file-icon"><i class="fas fa-file-pdf" style="color:#dc3545"></i></div></div>
-            <div class="card-body">
-                <h4>Rapport-Framboise-Soema-avaryl.pdf</h4>
-                <p>...</p>
-                <div class="card-footer">
-                    <span class="meta">
-                        <span><i class="fas fa-calendar-alt"></i> ١٣&rlm;/٧&rlm;/٢٠٢٦</span>
-                        <span><i class="fas fa-paperclip"></i> Rapport-Framboise-Soem...</span>
-                    </span>
-                    <div class="actions">
-                        <button onclick="viewItem(86, 'training')" title="عرض التفاصيل"><i class="fas fa-eye"></i></button>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783944933607_uo2qe7.pdf" target="_blank" style="text-decoration:none;color:inherit;">
-                            <button title="فتح"><i class="fas fa-external-link-alt"></i></button>
-                        </a>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783944933607_uo2qe7.pdf" download="Rapport-Framboise-Soema-avaryl.pdf" class="btn-action download-btn" title="تحميل">
-                            <i class="fas fa-download"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div><div class="library-card" data-id="87" data-pdfurl="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783945106191_43r32e.pdf" data-filename="rapport tomate.pdf" data-type="training">
-            <div class="card-thumbnail" id="thumb-87"><div class="file-icon"><i class="fas fa-file-pdf" style="color:#dc3545"></i></div></div>
-            <div class="card-body">
-                <h4>rapport tomate.pdf</h4>
-                <p>...</p>
-                <div class="card-footer">
-                    <span class="meta">
-                        <span><i class="fas fa-calendar-alt"></i> ١٣&rlm;/٧&rlm;/٢٠٢٦</span>
-                        <span><i class="fas fa-paperclip"></i> rapport tomate.pdf</span>
-                    </span>
-                    <div class="actions">
-                        <button onclick="viewItem(87, 'training')" title="عرض التفاصيل"><i class="fas fa-eye"></i></button>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783945106191_43r32e.pdf" target="_blank" style="text-decoration:none;color:inherit;">
-                            <button title="فتح"><i class="fas fa-external-link-alt"></i></button>
-                        </a>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783945106191_43r32e.pdf" download="rapport tomate.pdf" class="btn-action download-btn" title="تحميل">
-                            <i class="fas fa-download"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div><div class="library-card" data-id="88" data-pdfurl="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783945202945_2e5l9s.docx" data-filename="Exposé de fraisier.docx" data-type="training">
-            <div class="card-thumbnail" id="thumb-88"><img alt="DOCX" loading="lazy" src="https://sone-solutions.github.io/SONE/images%20docx.png"></div>
-            <div class="card-body">
-                <h4>Exposé de fraisier.docx</h4>
-                <p>...</p>
-                <div class="card-footer">
-                    <span class="meta">
-                        <span><i class="fas fa-calendar-alt"></i> ١٣&rlm;/٧&rlm;/٢٠٢٦</span>
-                        <span><i class="fas fa-paperclip"></i> Exposé de fraisier.docx</span>
-                    </span>
-                    <div class="actions">
-                        <button onclick="viewItem(88, 'training')" title="عرض التفاصيل"><i class="fas fa-eye"></i></button>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783945202945_2e5l9s.docx" target="_blank" style="text-decoration:none;color:inherit;">
-                            <button title="فتح"><i class="fas fa-external-link-alt"></i></button>
-                        </a>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783945202945_2e5l9s.docx" download="Exposé de fraisier.docx" class="btn-action download-btn" title="تحميل">
-                            <i class="fas fa-download"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div><div class="library-card" data-id="89" data-pdfurl="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783945296653_npfcd1.pdf" data-filename="Rapport fraise.pdf" data-type="training">
-            <div class="card-thumbnail" id="thumb-89"><div class="file-icon"><i class="fas fa-file-pdf" style="color:#dc3545"></i></div></div>
-            <div class="card-body">
-                <h4>Rapport fraise.pdf</h4>
-                <p>...</p>
-                <div class="card-footer">
-                    <span class="meta">
-                        <span><i class="fas fa-calendar-alt"></i> ١٣&rlm;/٧&rlm;/٢٠٢٦</span>
-                        <span><i class="fas fa-paperclip"></i> Rapport fraise.pdf</span>
-                    </span>
-                    <div class="actions">
-                        <button onclick="viewItem(89, 'training')" title="عرض التفاصيل"><i class="fas fa-eye"></i></button>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783945296653_npfcd1.pdf" target="_blank" style="text-decoration:none;color:inherit;">
-                            <button title="فتح"><i class="fas fa-external-link-alt"></i></button>
-                        </a>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783945296653_npfcd1.pdf" download="Rapport fraise.pdf" class="btn-action download-btn" title="تحميل">
-                            <i class="fas fa-download"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div><div class="library-card" data-id="90" data-pdfurl="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783945432558_llshul.docx" data-filename="rapport-framboise-palmagrii.docx" data-type="training">
-            <div class="card-thumbnail" id="thumb-90"><img alt="DOCX" loading="lazy" src="https://sone-solutions.github.io/SONE/images%20docx.png"></div>
-            <div class="card-body">
-                <h4>rapport-framboise-palmagrii.docx</h4>
-                <p>...</p>
-                <div class="card-footer">
-                    <span class="meta">
-                        <span><i class="fas fa-calendar-alt"></i> ١٣&rlm;/٧&rlm;/٢٠٢٦</span>
-                        <span><i class="fas fa-paperclip"></i> rapport-framboise-palm...</span>
-                    </span>
-                    <div class="actions">
-                        <button onclick="viewItem(90, 'training')" title="عرض التفاصيل"><i class="fas fa-eye"></i></button>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783945432558_llshul.docx" target="_blank" style="text-decoration:none;color:inherit;">
-                            <button title="فتح"><i class="fas fa-external-link-alt"></i></button>
-                        </a>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783945432558_llshul.docx" download="rapport-framboise-palmagrii.docx" class="btn-action download-btn" title="تحميل">
-                            <i class="fas fa-download"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div><div class="library-card" data-id="91" data-pdfurl="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783945617141_tr7cgh.docx" data-filename="Rapport_framboise_domaine_brahim_znibier_.docx" data-type="training">
-            <div class="card-thumbnail" id="thumb-91"><img alt="DOCX" loading="lazy" src="https://sone-solutions.github.io/SONE/images%20docx.png"></div>
-            <div class="card-body">
-                <h4>Rapport_framboise_domaine_brahim_znibier_.docx</h4>
-                <p>...</p>
-                <div class="card-footer">
-                    <span class="meta">
-                        <span><i class="fas fa-calendar-alt"></i> ١٣&rlm;/٧&rlm;/٢٠٢٦</span>
-                        <span><i class="fas fa-paperclip"></i> Rapport_framboise_doma...</span>
-                    </span>
-                    <div class="actions">
-                        <button onclick="viewItem(91, 'training')" title="عرض التفاصيل"><i class="fas fa-eye"></i></button>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783945617141_tr7cgh.docx" target="_blank" style="text-decoration:none;color:inherit;">
-                            <button title="فتح"><i class="fas fa-external-link-alt"></i></button>
-                        </a>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783945617141_tr7cgh.docx" download="Rapport_framboise_domaine_brahim_znibier_.docx" class="btn-action download-btn" title="تحميل">
-                            <i class="fas fa-download"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div><div class="library-card" data-id="92" data-pdfurl="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783945681170_vv6ozz.docx" data-filename="RAPPORT NAIMA MHAMDI.docx" data-type="training">
-            <div class="card-thumbnail" id="thumb-92"><img alt="DOCX" loading="lazy" src="https://sone-solutions.github.io/SONE/images%20docx.png"></div>
-            <div class="card-body">
-                <h4>RAPPORT NAIMA MHAMDI.docx</h4>
-                <p>...</p>
-                <div class="card-footer">
-                    <span class="meta">
-                        <span><i class="fas fa-calendar-alt"></i> ١٣&rlm;/٧&rlm;/٢٠٢٦</span>
-                        <span><i class="fas fa-paperclip"></i> RAPPORT NAIMA MHAMDI.docx</span>
-                    </span>
-                    <div class="actions">
-                        <button onclick="viewItem(92, 'training')" title="عرض التفاصيل"><i class="fas fa-eye"></i></button>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783945681170_vv6ozz.docx" target="_blank" style="text-decoration:none;color:inherit;">
-                            <button title="فتح"><i class="fas fa-external-link-alt"></i></button>
-                        </a>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783945681170_vv6ozz.docx" download="RAPPORT NAIMA MHAMDI.docx" class="btn-action download-btn" title="تحميل">
-                            <i class="fas fa-download"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div><div class="library-card" data-id="93" data-pdfurl="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783945998822_bembw5.pdf" data-filename="Rapport_Pommes_de_terre.pdf" data-type="training">
-            <div class="card-thumbnail" id="thumb-93"><div class="file-icon"><i class="fas fa-file-pdf" style="color:#dc3545"></i></div></div>
-            <div class="card-body">
-                <h4>Rapport_Pommes_de_terre.pdf</h4>
-                <p>...</p>
-                <div class="card-footer">
-                    <span class="meta">
-                        <span><i class="fas fa-calendar-alt"></i> ١٣&rlm;/٧&rlm;/٢٠٢٦</span>
-                        <span><i class="fas fa-paperclip"></i> Rapport_Pommes_de_terr...</span>
-                    </span>
-                    <div class="actions">
-                        <button onclick="viewItem(93, 'training')" title="عرض التفاصيل"><i class="fas fa-eye"></i></button>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783945998822_bembw5.pdf" target="_blank" style="text-decoration:none;color:inherit;">
-                            <button title="فتح"><i class="fas fa-external-link-alt"></i></button>
-                        </a>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783945998822_bembw5.pdf" download="Rapport_Pommes_de_terre.pdf" class="btn-action download-btn" title="تحميل">
-                            <i class="fas fa-download"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div><div class="library-card" data-id="94" data-pdfurl="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783946042222_a2yl2e.pptx" data-filename="Potits pois.pptx" data-type="training">
-            <div class="card-thumbnail" id="thumb-94"><img alt="PPTX" loading="lazy" src="https://sone-solutions.github.io/SONE/pptx.png"></div>
-            <div class="card-body">
-                <h4>Potits pois.pptx</h4>
-                <p>...</p>
-                <div class="card-footer">
-                    <span class="meta">
-                        <span><i class="fas fa-calendar-alt"></i> ١٣&rlm;/٧&rlm;/٢٠٢٦</span>
-                        <span><i class="fas fa-paperclip"></i> Potits pois.pptx</span>
-                    </span>
-                    <div class="actions">
-                        <button onclick="viewItem(94, 'training')" title="عرض التفاصيل"><i class="fas fa-eye"></i></button>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783946042222_a2yl2e.pptx" target="_blank" style="text-decoration:none;color:inherit;">
-                            <button title="فتح"><i class="fas fa-external-link-alt"></i></button>
-                        </a>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783946042222_a2yl2e.pptx" download="Potits pois.pptx" class="btn-action download-btn" title="تحميل">
-                            <i class="fas fa-download"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div><div class="library-card" data-id="95" data-pdfurl="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783946097004_kiba3c.docx" data-filename="rapport etude economique olivier.docx" data-type="training">
-            <div class="card-thumbnail" id="thumb-95"><img alt="DOCX" loading="lazy" src="https://sone-solutions.github.io/SONE/images%20docx.png"></div>
-            <div class="card-body">
-                <h4>rapport etude economique olivier.docx</h4>
-                <p>...</p>
-                <div class="card-footer">
-                    <span class="meta">
-                        <span><i class="fas fa-calendar-alt"></i> ١٣&rlm;/٧&rlm;/٢٠٢٦</span>
-                        <span><i class="fas fa-paperclip"></i> rapport etude economiq...</span>
-                    </span>
-                    <div class="actions">
-                        <button onclick="viewItem(95, 'training')" title="عرض التفاصيل"><i class="fas fa-eye"></i></button>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783946097004_kiba3c.docx" target="_blank" style="text-decoration:none;color:inherit;">
-                            <button title="فتح"><i class="fas fa-external-link-alt"></i></button>
-                        </a>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783946097004_kiba3c.docx" download="rapport etude economique olivier.docx" class="btn-action download-btn" title="تحميل">
-                            <i class="fas fa-download"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div><div class="library-card" data-id="96" data-pdfurl="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783946157587_hlplmu.pptx" data-filename="CONCOMBRE 212.pptx" data-type="training">
-            <div class="card-thumbnail" id="thumb-96"><img alt="PPTX" loading="lazy" src="https://sone-solutions.github.io/SONE/pptx.png"></div>
-            <div class="card-body">
-                <h4>CONCOMBRE 212.pptx</h4>
-                <p>...</p>
-                <div class="card-footer">
-                    <span class="meta">
-                        <span><i class="fas fa-calendar-alt"></i> ١٣&rlm;/٧&rlm;/٢٠٢٦</span>
-                        <span><i class="fas fa-paperclip"></i> CONCOMBRE 212.pptx</span>
-                    </span>
-                    <div class="actions">
-                        <button onclick="viewItem(96, 'training')" title="عرض التفاصيل"><i class="fas fa-eye"></i></button>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783946157587_hlplmu.pptx" target="_blank" style="text-decoration:none;color:inherit;">
-                            <button title="فتح"><i class="fas fa-external-link-alt"></i></button>
-                        </a>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783946157587_hlplmu.pptx" download="CONCOMBRE 212.pptx" class="btn-action download-btn" title="تحميل">
-                            <i class="fas fa-download"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div><div class="library-card" data-id="97" data-pdfurl="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783946225481_iwjpdh.pptx" data-filename="Exposé tomate ronde-1.pptx" data-type="training">
-            <div class="card-thumbnail" id="thumb-97"><img alt="PPTX" loading="lazy" src="https://sone-solutions.github.io/SONE/pptx.png"></div>
-            <div class="card-body">
-                <h4>Exposé tomate ronde-1.pptx</h4>
-                <p>...</p>
-                <div class="card-footer">
-                    <span class="meta">
-                        <span><i class="fas fa-calendar-alt"></i> ١٣&rlm;/٧&rlm;/٢٠٢٦</span>
-                        <span><i class="fas fa-paperclip"></i> Exposé tomate ronde-1....</span>
-                    </span>
-                    <div class="actions">
-                        <button onclick="viewItem(97, 'training')" title="عرض التفاصيل"><i class="fas fa-eye"></i></button>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783946225481_iwjpdh.pptx" target="_blank" style="text-decoration:none;color:inherit;">
-                            <button title="فتح"><i class="fas fa-external-link-alt"></i></button>
-                        </a>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783946225481_iwjpdh.pptx" download="Exposé tomate ronde-1.pptx" class="btn-action download-btn" title="تحميل">
-                            <i class="fas fa-download"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div><div class="library-card" data-id="98" data-pdfurl="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783946297627_dfjj4r.pptx" data-filename="TOMATE SERISE HORS SOL.pptx" data-type="training">
-            <div class="card-thumbnail" id="thumb-98"><img alt="PPTX" loading="lazy" src="https://sone-solutions.github.io/SONE/pptx.png"></div>
-            <div class="card-body">
-                <h4>TOMATE SERISE HORS SOL.pptx</h4>
-                <p>...</p>
-                <div class="card-footer">
-                    <span class="meta">
-                        <span><i class="fas fa-calendar-alt"></i> ١٣&rlm;/٧&rlm;/٢٠٢٦</span>
-                        <span><i class="fas fa-paperclip"></i> TOMATE SERISE HORS SOL...</span>
-                    </span>
-                    <div class="actions">
-                        <button onclick="viewItem(98, 'training')" title="عرض التفاصيل"><i class="fas fa-eye"></i></button>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783946297627_dfjj4r.pptx" target="_blank" style="text-decoration:none;color:inherit;">
-                            <button title="فتح"><i class="fas fa-external-link-alt"></i></button>
-                        </a>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783946297627_dfjj4r.pptx" download="TOMATE SERISE HORS SOL.pptx" class="btn-action download-btn" title="تحميل">
-                            <i class="fas fa-download"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div><div class="library-card" data-id="99" data-pdfurl="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783946505640_ujuapm.pptx" data-filename="Tomate.pptx" data-type="training">
-            <div class="card-thumbnail" id="thumb-99"><img alt="PPTX" loading="lazy" src="https://sone-solutions.github.io/SONE/pptx.png"></div>
-            <div class="card-body">
-                <h4>Tomate.pptx</h4>
-                <p>...</p>
-                <div class="card-footer">
-                    <span class="meta">
-                        <span><i class="fas fa-calendar-alt"></i> ١٣&rlm;/٧&rlm;/٢٠٢٦</span>
-                        <span><i class="fas fa-paperclip"></i> Tomate.pptx</span>
-                    </span>
-                    <div class="actions">
-                        <button onclick="viewItem(99, 'training')" title="عرض التفاصيل"><i class="fas fa-eye"></i></button>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783946505640_ujuapm.pptx" target="_blank" style="text-decoration:none;color:inherit;">
-                            <button title="فتح"><i class="fas fa-external-link-alt"></i></button>
-                        </a>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783946505640_ujuapm.pptx" download="Tomate.pptx" class="btn-action download-btn" title="تحميل">
-                            <i class="fas fa-download"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div><div class="library-card" data-id="100" data-pdfurl="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783946622649_36pl52.docx" data-filename="rapport final Myrtille(0).docx" data-type="training">
-            <div class="card-thumbnail" id="thumb-100"><img alt="DOCX" loading="lazy" src="https://sone-solutions.github.io/SONE/images%20docx.png"></div>
-            <div class="card-body">
-                <h4>rapport final Myrtille(0).docx</h4>
-                <p>...</p>
-                <div class="card-footer">
-                    <span class="meta">
-                        <span><i class="fas fa-calendar-alt"></i> ١٣&rlm;/٧&rlm;/٢٠٢٦</span>
-                        <span><i class="fas fa-paperclip"></i> rapport final Myrtille...</span>
-                    </span>
-                    <div class="actions">
-                        <button onclick="viewItem(100, 'training')" title="عرض التفاصيل"><i class="fas fa-eye"></i></button>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783946622649_36pl52.docx" target="_blank" style="text-decoration:none;color:inherit;">
-                            <button title="فتح"><i class="fas fa-external-link-alt"></i></button>
-                        </a>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783946622649_36pl52.docx" download="rapport final Myrtille(0).docx" class="btn-action download-btn" title="تحميل">
-                            <i class="fas fa-download"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div><div class="library-card" data-id="101" data-pdfurl="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783946756100_ypj073.docx" data-filename="Rapport palmier datteir _.docx" data-type="training">
-            <div class="card-thumbnail" id="thumb-101"><img alt="DOCX" loading="lazy" src="https://sone-solutions.github.io/SONE/images%20docx.png"></div>
-            <div class="card-body">
-                <h4>Rapport palmier datteir _.docx</h4>
-                <p>...</p>
-                <div class="card-footer">
-                    <span class="meta">
-                        <span><i class="fas fa-calendar-alt"></i> ١٣&rlm;/٧&rlm;/٢٠٢٦</span>
-                        <span><i class="fas fa-paperclip"></i> Rapport palmier dattei...</span>
-                    </span>
-                    <div class="actions">
-                        <button onclick="viewItem(101, 'training')" title="عرض التفاصيل"><i class="fas fa-eye"></i></button>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783946756100_ypj073.docx" target="_blank" style="text-decoration:none;color:inherit;">
-                            <button title="فتح"><i class="fas fa-external-link-alt"></i></button>
-                        </a>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783946756100_ypj073.docx" download="Rapport palmier datteir _.docx" class="btn-action download-btn" title="تحميل">
-                            <i class="fas fa-download"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div><div class="library-card" data-id="102" data-pdfurl="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783946899177_h9rkax.pptx" data-filename="expose ilham.pptx" data-type="training">
-            <div class="card-thumbnail" id="thumb-102"><img alt="PPTX" loading="lazy" src="https://sone-solutions.github.io/SONE/pptx.png"></div>
-            <div class="card-body">
-                <h4>expose ilham.pptx</h4>
-                <p>...</p>
-                <div class="card-footer">
-                    <span class="meta">
-                        <span><i class="fas fa-calendar-alt"></i> ١٣&rlm;/٧&rlm;/٢٠٢٦</span>
-                        <span><i class="fas fa-paperclip"></i> expose ilham.pptx</span>
-                    </span>
-                    <div class="actions">
-                        <button onclick="viewItem(102, 'training')" title="عرض التفاصيل"><i class="fas fa-eye"></i></button>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783946899177_h9rkax.pptx" target="_blank" style="text-decoration:none;color:inherit;">
-                            <button title="فتح"><i class="fas fa-external-link-alt"></i></button>
-                        </a>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783946899177_h9rkax.pptx" download="expose ilham.pptx" class="btn-action download-btn" title="تحميل">
-                            <i class="fas fa-download"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div><div class="library-card" data-id="103" data-pdfurl="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783947097276_sd4yvi.pptx" data-filename="Exposé framboisier  marzi.pptx" data-type="training">
-            <div class="card-thumbnail" id="thumb-103"><img alt="PPTX" loading="lazy" src="https://sone-solutions.github.io/SONE/pptx.png"></div>
-            <div class="card-body">
-                <h4>Exposé framboisier  marzi.pptx</h4>
-                <p>...</p>
-                <div class="card-footer">
-                    <span class="meta">
-                        <span><i class="fas fa-calendar-alt"></i> ١٣&rlm;/٧&rlm;/٢٠٢٦</span>
-                        <span><i class="fas fa-paperclip"></i> Exposé framboisier  ma...</span>
-                    </span>
-                    <div class="actions">
-                        <button onclick="viewItem(103, 'training')" title="عرض التفاصيل"><i class="fas fa-eye"></i></button>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783947097276_sd4yvi.pptx" target="_blank" style="text-decoration:none;color:inherit;">
-                            <button title="فتح"><i class="fas fa-external-link-alt"></i></button>
-                        </a>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783947097276_sd4yvi.pptx" download="Exposé framboisier  marzi.pptx" class="btn-action download-btn" title="تحميل">
-                            <i class="fas fa-download"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div><div class="library-card" data-id="104" data-pdfurl="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783947230135_cgedbe.docx" data-filename="RAPPORT DE Myrtille.docx" data-type="training">
-            <div class="card-thumbnail" id="thumb-104"><img alt="DOCX" loading="lazy" src="https://sone-solutions.github.io/SONE/images%20docx.png"></div>
-            <div class="card-body">
-                <h4>RAPPORT DE Myrtille.docx</h4>
-                <p>...</p>
-                <div class="card-footer">
-                    <span class="meta">
-                        <span><i class="fas fa-calendar-alt"></i> ١٣&rlm;/٧&rlm;/٢٠٢٦</span>
-                        <span><i class="fas fa-paperclip"></i> RAPPORT DE Myrtille.docx</span>
-                    </span>
-                    <div class="actions">
-                        <button onclick="viewItem(104, 'training')" title="عرض التفاصيل"><i class="fas fa-eye"></i></button>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783947230135_cgedbe.docx" target="_blank" style="text-decoration:none;color:inherit;">
-                            <button title="فتح"><i class="fas fa-external-link-alt"></i></button>
-                        </a>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783947230135_cgedbe.docx" download="RAPPORT DE Myrtille.docx" class="btn-action download-btn" title="تحميل">
-                            <i class="fas fa-download"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div><div class="library-card" data-id="105" data-pdfurl="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783947396730_b0qfim.pdf" data-filename="rapport final framboisier.pdf" data-type="training">
-            <div class="card-thumbnail" id="thumb-105"><div class="file-icon"><i class="fas fa-file-pdf" style="color:#dc3545"></i></div></div>
-            <div class="card-body">
-                <h4>rapport final framboisier.pdf</h4>
-                <p>...</p>
-                <div class="card-footer">
-                    <span class="meta">
-                        <span><i class="fas fa-calendar-alt"></i> ١٣&rlm;/٧&rlm;/٢٠٢٦</span>
-                        <span><i class="fas fa-paperclip"></i> rapport final frambois...</span>
-                    </span>
-                    <div class="actions">
-                        <button onclick="viewItem(105, 'training')" title="عرض التفاصيل"><i class="fas fa-eye"></i></button>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783947396730_b0qfim.pdf" target="_blank" style="text-decoration:none;color:inherit;">
-                            <button title="فتح"><i class="fas fa-external-link-alt"></i></button>
-                        </a>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783947396730_b0qfim.pdf" download="rapport final framboisier.pdf" class="btn-action download-btn" title="تحميل">
-                            <i class="fas fa-download"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div><div class="library-card" data-id="106" data-pdfurl="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783947459429_bvgusm.pdf" data-filename="Rapport pomme de terre.pdf" data-type="training">
-            <div class="card-thumbnail" id="thumb-106"><div class="file-icon"><i class="fas fa-file-pdf" style="color:#dc3545"></i></div></div>
-            <div class="card-body">
-                <h4>Rapport pomme de terre.pdf</h4>
-                <p>...</p>
-                <div class="card-footer">
-                    <span class="meta">
-                        <span><i class="fas fa-calendar-alt"></i> ١٣&rlm;/٧&rlm;/٢٠٢٦</span>
-                        <span><i class="fas fa-paperclip"></i> Rapport pomme de terre...</span>
-                    </span>
-                    <div class="actions">
-                        <button onclick="viewItem(106, 'training')" title="عرض التفاصيل"><i class="fas fa-eye"></i></button>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783947459429_bvgusm.pdf" target="_blank" style="text-decoration:none;color:inherit;">
-                            <button title="فتح"><i class="fas fa-external-link-alt"></i></button>
-                        </a>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783947459429_bvgusm.pdf" download="Rapport pomme de terre.pdf" class="btn-action download-btn" title="تحميل">
-                            <i class="fas fa-download"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div><div class="library-card" data-id="107" data-pdfurl="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783947560484_0trsuf.pptx" data-filename="culture tomate sous serre.pptx" data-type="training">
-            <div class="card-thumbnail" id="thumb-107"><img alt="PPTX" loading="lazy" src="https://sone-solutions.github.io/SONE/pptx.png"></div>
-            <div class="card-body">
-                <h4>culture tomate sous serre.pptx</h4>
-                <p>...</p>
-                <div class="card-footer">
-                    <span class="meta">
-                        <span><i class="fas fa-calendar-alt"></i> ١٣&rlm;/٧&rlm;/٢٠٢٦</span>
-                        <span><i class="fas fa-paperclip"></i> culture tomate sous se...</span>
-                    </span>
-                    <div class="actions">
-                        <button onclick="viewItem(107, 'training')" title="عرض التفاصيل"><i class="fas fa-eye"></i></button>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783947560484_0trsuf.pptx" target="_blank" style="text-decoration:none;color:inherit;">
-                            <button title="فتح"><i class="fas fa-external-link-alt"></i></button>
-                        </a>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783947560484_0trsuf.pptx" download="culture tomate sous serre.pptx" class="btn-action download-btn" title="تحميل">
-                            <i class="fas fa-download"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div><div class="library-card" data-id="108" data-pdfurl="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783947906421_yittpk.pdf" data-filename="Rapport Myrtille.pdf" data-type="training">
-            <div class="card-thumbnail" id="thumb-108"><div class="file-icon"><i class="fas fa-file-pdf" style="color:#dc3545"></i></div></div>
-            <div class="card-body">
-                <h4>Rapport Myrtille.pdf</h4>
-                <p>...</p>
-                <div class="card-footer">
-                    <span class="meta">
-                        <span><i class="fas fa-calendar-alt"></i> ١٣&rlm;/٧&rlm;/٢٠٢٦</span>
-                        <span><i class="fas fa-paperclip"></i> Rapport Myrtille.pdf</span>
-                    </span>
-                    <div class="actions">
-                        <button onclick="viewItem(108, 'training')" title="عرض التفاصيل"><i class="fas fa-eye"></i></button>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783947906421_yittpk.pdf" target="_blank" style="text-decoration:none;color:inherit;">
-                            <button title="فتح"><i class="fas fa-external-link-alt"></i></button>
-                        </a>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783947906421_yittpk.pdf" download="Rapport Myrtille.pdf" class="btn-action download-btn" title="تحميل">
-                            <i class="fas fa-download"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div><div class="library-card" data-id="109" data-pdfurl="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783948011773_kolyp5.docx" data-filename="rapport de myrtille driss.docx" data-type="training">
-            <div class="card-thumbnail" id="thumb-109"><img alt="DOCX" loading="lazy" src="https://sone-solutions.github.io/SONE/images%20docx.png"></div>
-            <div class="card-body">
-                <h4>rapport de myrtille driss.docx</h4>
-                <p>...</p>
-                <div class="card-footer">
-                    <span class="meta">
-                        <span><i class="fas fa-calendar-alt"></i> ١٣&rlm;/٧&rlm;/٢٠٢٦</span>
-                        <span><i class="fas fa-paperclip"></i> rapport de myrtille dr...</span>
-                    </span>
-                    <div class="actions">
-                        <button onclick="viewItem(109, 'training')" title="عرض التفاصيل"><i class="fas fa-eye"></i></button>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783948011773_kolyp5.docx" target="_blank" style="text-decoration:none;color:inherit;">
-                            <button title="فتح"><i class="fas fa-external-link-alt"></i></button>
-                        </a>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783948011773_kolyp5.docx" download="rapport de myrtille driss.docx" class="btn-action download-btn" title="تحميل">
-                            <i class="fas fa-download"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div><div class="library-card" data-id="110" data-pdfurl="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783948156986_l3volt.pdf" data-filename="Rapport Myrtille les maladie et ravageurs -1.pdf" data-type="training">
-            <div class="card-thumbnail" id="thumb-110"><div class="file-icon"><i class="fas fa-file-pdf" style="color:#dc3545"></i></div></div>
-            <div class="card-body">
-                <h4>Rapport Myrtille les maladie et ravageurs -1.pdf</h4>
-                <p>...</p>
-                <div class="card-footer">
-                    <span class="meta">
-                        <span><i class="fas fa-calendar-alt"></i> ١٣&rlm;/٧&rlm;/٢٠٢٦</span>
-                        <span><i class="fas fa-paperclip"></i> Rapport Myrtille les m...</span>
-                    </span>
-                    <div class="actions">
-                        <button onclick="viewItem(110, 'training')" title="عرض التفاصيل"><i class="fas fa-eye"></i></button>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783948156986_l3volt.pdf" target="_blank" style="text-decoration:none;color:inherit;">
-                            <button title="فتح"><i class="fas fa-external-link-alt"></i></button>
-                        </a>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783948156986_l3volt.pdf" download="Rapport Myrtille les maladie et ravageurs -1.pdf" class="btn-action download-btn" title="تحميل">
-                            <i class="fas fa-download"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div><div class="library-card" data-id="111" data-pdfurl="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783948254485_qc6v4y.pdf" data-filename="rapport_tomate.pdf" data-type="training">
-            <div class="card-thumbnail" id="thumb-111"><div class="file-icon"><i class="fas fa-file-pdf" style="color:#dc3545"></i></div></div>
-            <div class="card-body">
-                <h4>rapport_tomate.pdf</h4>
-                <p>...</p>
-                <div class="card-footer">
-                    <span class="meta">
-                        <span><i class="fas fa-calendar-alt"></i> ١٣&rlm;/٧&rlm;/٢٠٢٦</span>
-                        <span><i class="fas fa-paperclip"></i> rapport_tomate.pdf</span>
-                    </span>
-                    <div class="actions">
-                        <button onclick="viewItem(111, 'training')" title="عرض التفاصيل"><i class="fas fa-eye"></i></button>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783948254485_qc6v4y.pdf" target="_blank" style="text-decoration:none;color:inherit;">
-                            <button title="فتح"><i class="fas fa-external-link-alt"></i></button>
-                        </a>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783948254485_qc6v4y.pdf" download="rapport_tomate.pdf" class="btn-action download-btn" title="تحميل">
-                            <i class="fas fa-download"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div><div class="library-card" data-id="112" data-pdfurl="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783948391044_hzfo4e.pdf" data-filename="Rapport_de_tomate duroc 14.pdf" data-type="training">
-            <div class="card-thumbnail" id="thumb-112"><div class="file-icon"><i class="fas fa-file-pdf" style="color:#dc3545"></i></div></div>
-            <div class="card-body">
-                <h4>Rapport_de_tomate duroc 14.pdf</h4>
-                <p>...</p>
-                <div class="card-footer">
-                    <span class="meta">
-                        <span><i class="fas fa-calendar-alt"></i> ١٣&rlm;/٧&rlm;/٢٠٢٦</span>
-                        <span><i class="fas fa-paperclip"></i> Rapport_de_tomate duro...</span>
-                    </span>
-                    <div class="actions">
-                        <button onclick="viewItem(112, 'training')" title="عرض التفاصيل"><i class="fas fa-eye"></i></button>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783948391044_hzfo4e.pdf" target="_blank" style="text-decoration:none;color:inherit;">
-                            <button title="فتح"><i class="fas fa-external-link-alt"></i></button>
-                        </a>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783948391044_hzfo4e.pdf" download="Rapport_de_tomate duroc 14.pdf" class="btn-action download-btn" title="تحميل">
-                            <i class="fas fa-download"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div><div class="library-card" data-id="113" data-pdfurl="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783948640851_2gj1ea.pdf" data-filename="RAPPORE tomate L’exploitation  KARAM 05.pdf" data-type="training">
-            <div class="card-thumbnail" id="thumb-113"><div class="file-icon"><i class="fas fa-file-pdf" style="color:#dc3545"></i></div></div>
-            <div class="card-body">
-                <h4>RAPPORE tomate L’exploitation  KARAM 05.pdf</h4>
-                <p>...</p>
-                <div class="card-footer">
-                    <span class="meta">
-                        <span><i class="fas fa-calendar-alt"></i> ١٣&rlm;/٧&rlm;/٢٠٢٦</span>
-                        <span><i class="fas fa-paperclip"></i> RAPPORE tomate L’explo...</span>
-                    </span>
-                    <div class="actions">
-                        <button onclick="viewItem(113, 'training')" title="عرض التفاصيل"><i class="fas fa-eye"></i></button>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783948640851_2gj1ea.pdf" target="_blank" style="text-decoration:none;color:inherit;">
-                            <button title="فتح"><i class="fas fa-external-link-alt"></i></button>
-                        </a>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783948640851_2gj1ea.pdf" download="RAPPORE tomate L’exploitation  KARAM 05.pdf" class="btn-action download-btn" title="تحميل">
-                            <i class="fas fa-download"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div><div class="library-card" data-id="114" data-pdfurl="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783948972126_c316iv.pdf" data-filename="Rapport  myrtille Techniciens Spécialisés en Gestion Et Commerce Agricole.pdf" data-type="training">
-            <div class="card-thumbnail" id="thumb-114"><div class="file-icon"><i class="fas fa-file-pdf" style="color:#dc3545"></i></div></div>
-            <div class="card-body">
-                <h4>Rapport  myrtille Techniciens Spécialisés en Gestion Et Commerce Agricole.pdf</h4>
-                <p>...</p>
-                <div class="card-footer">
-                    <span class="meta">
-                        <span><i class="fas fa-calendar-alt"></i> ١٣&rlm;/٧&rlm;/٢٠٢٦</span>
-                        <span><i class="fas fa-paperclip"></i> Rapport  myrtille Tech...</span>
-                    </span>
-                    <div class="actions">
-                        <button onclick="viewItem(114, 'training')" title="عرض التفاصيل"><i class="fas fa-eye"></i></button>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783948972126_c316iv.pdf" target="_blank" style="text-decoration:none;color:inherit;">
-                            <button title="فتح"><i class="fas fa-external-link-alt"></i></button>
-                        </a>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783948972126_c316iv.pdf" download="Rapport  myrtille Techniciens Spécialisés en Gestion Et Commerce Agricole.pdf" class="btn-action download-btn" title="تحميل">
-                            <i class="fas fa-download"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div><div class="library-card" data-id="115" data-pdfurl="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783949150876_5jl3j7.docx" data-filename="rapport de myrtille 3.docx" data-type="training">
-            <div class="card-thumbnail" id="thumb-115"><img alt="DOCX" loading="lazy" src="https://sone-solutions.github.io/SONE/images%20docx.png"></div>
-            <div class="card-body">
-                <h4>rapport de myrtille 3.docx</h4>
-                <p>...</p>
-                <div class="card-footer">
-                    <span class="meta">
-                        <span><i class="fas fa-calendar-alt"></i> ١٣&rlm;/٧&rlm;/٢٠٢٦</span>
-                        <span><i class="fas fa-paperclip"></i> rapport de myrtille 3....</span>
-                    </span>
-                    <div class="actions">
-                        <button onclick="viewItem(115, 'training')" title="عرض التفاصيل"><i class="fas fa-eye"></i></button>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783949150876_5jl3j7.docx" target="_blank" style="text-decoration:none;color:inherit;">
-                            <button title="فتح"><i class="fas fa-external-link-alt"></i></button>
-                        </a>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783949150876_5jl3j7.docx" download="rapport de myrtille 3.docx" class="btn-action download-btn" title="تحميل">
-                            <i class="fas fa-download"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div><div class="library-card" data-id="116" data-pdfurl="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783949255699_p34q6q.pptx" data-filename="EXPOSER DE TOMATE-1(0).pptx" data-type="training">
-            <div class="card-thumbnail" id="thumb-116"><img alt="PPTX" loading="lazy" src="https://sone-solutions.github.io/SONE/pptx.png"></div>
-            <div class="card-body">
-                <h4>EXPOSER DE TOMATE-1(0).pptx</h4>
-                <p>...</p>
-                <div class="card-footer">
-                    <span class="meta">
-                        <span><i class="fas fa-calendar-alt"></i> ١٣&rlm;/٧&rlm;/٢٠٢٦</span>
-                        <span><i class="fas fa-paperclip"></i> EXPOSER DE TOMATE-1(0)...</span>
-                    </span>
-                    <div class="actions">
-                        <button onclick="viewItem(116, 'training')" title="عرض التفاصيل"><i class="fas fa-eye"></i></button>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783949255699_p34q6q.pptx" target="_blank" style="text-decoration:none;color:inherit;">
-                            <button title="فتح"><i class="fas fa-external-link-alt"></i></button>
-                        </a>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783949255699_p34q6q.pptx" download="EXPOSER DE TOMATE-1(0).pptx" class="btn-action download-btn" title="تحميل">
-                            <i class="fas fa-download"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div><div class="library-card" data-id="117" data-pdfurl="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783949391780_iu14am.ppt" data-filename="TARIK BOUIH RAPPOR__KARAM_5[1] [Lecture seule][Compatibility Mode].ppt" data-type="training">
-            <div class="card-thumbnail" id="thumb-117"><img alt="PPTX" loading="lazy" src="https://sone-solutions.github.io/SONE/pptx.png"></div>
-            <div class="card-body">
-                <h4>TARIK BOUIH RAPPOR__KARAM_5[1] [Lecture seule][Compatibility Mode].ppt</h4>
-                <p>...</p>
-                <div class="card-footer">
-                    <span class="meta">
-                        <span><i class="fas fa-calendar-alt"></i> ١٣&rlm;/٧&rlm;/٢٠٢٦</span>
-                        <span><i class="fas fa-paperclip"></i> TARIK BOUIH RAPPOR__KA...</span>
-                    </span>
-                    <div class="actions">
-                        <button onclick="viewItem(117, 'training')" title="عرض التفاصيل"><i class="fas fa-eye"></i></button>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783949391780_iu14am.ppt" target="_blank" style="text-decoration:none;color:inherit;">
-                            <button title="فتح"><i class="fas fa-external-link-alt"></i></button>
-                        </a>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783949391780_iu14am.ppt" download="TARIK BOUIH RAPPOR__KARAM_5[1] [Lecture seule][Compatibility Mode].ppt" class="btn-action download-btn" title="تحميل">
-                            <i class="fas fa-download"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div><div class="library-card" data-id="118" data-pdfurl="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783949663176_c3ql8s.pdf" data-filename="rapport de stage duroc tomate cerise (1).pdf" data-type="training">
-            <div class="card-thumbnail" id="thumb-118"><div class="file-icon"><i class="fas fa-file-pdf" style="color:#dc3545"></i></div></div>
-            <div class="card-body">
-                <h4>rapport de stage duroc tomate cerise (1).pdf</h4>
-                <p>...</p>
-                <div class="card-footer">
-                    <span class="meta">
-                        <span><i class="fas fa-calendar-alt"></i> ١٣&rlm;/٧&rlm;/٢٠٢٦</span>
-                        <span><i class="fas fa-paperclip"></i> rapport de stage duroc...</span>
-                    </span>
-                    <div class="actions">
-                        <button onclick="viewItem(118, 'training')" title="عرض التفاصيل"><i class="fas fa-eye"></i></button>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783949663176_c3ql8s.pdf" target="_blank" style="text-decoration:none;color:inherit;">
-                            <button title="فتح"><i class="fas fa-external-link-alt"></i></button>
-                        </a>
-                        <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783949663176_c3ql8s.pdf" download="rapport de stage duroc tomate cerise (1).pdf" class="btn-action download-btn" title="تحميل">
-                            <i class="fas fa-download"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div></div>
+            <div class="library-grid" id="trainingsGrid"></div>
         </div>
     </div>
 
@@ -1701,17 +985,10 @@
     <div class="modal-overlay" id="detailModal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeModal()">إغلاق</button>
-            <h2 id="modalTitle">Exposé de fraisier.docx</h2>
-            <div class="detail-meta" id="modalMeta">
-            <span><i class="fas fa-calendar-alt"></i> ١٣&rlm;/٧&rlm;/٢٠٢٦</span>
-            <span><i class="fas fa-file"></i> training</span>
-        </div>
-            <div class="detail-viewer" id="modalViewer"><div class="no-preview"><i class="fas fa-file"></i><p>لا يتوفر معاينة لهذا النوع</p></div></div>
-            <div class="action-buttons" id="modalActions">
-            <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783945202945_2e5l9s.docx" download="Exposé de fraisier.docx" class="btn-primary"><i class="fas fa-download"></i> تحميل</a>
-            <a href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783945202945_2e5l9s.docx" target="_blank" class="btn-secondary"><i class="fas fa-external-link-alt"></i> فتح</a>
-            <button onclick="closeModal()" class="btn-secondary">إغلاق</button>
-        </div>
+            <h2 id="modalTitle">العنوان</h2>
+            <div class="detail-meta" id="modalMeta"></div>
+            <div class="detail-viewer" id="modalViewer"></div>
+            <div class="action-buttons" id="modalActions"></div>
         </div>
     </div>
 
@@ -1721,7 +998,7 @@
             <div class="pdf-preview-header">
                 <h3><i class="fas fa-file-pdf"></i> <span id="pdfPreviewTitle">معاينة الملف</span></h3>
                 <div class="header-actions">
-                    <a href="#" id="pdfDownloadLink" download=""><i class="fas fa-download"></i> تحميل</a>
+                    <a href="#" id="pdfDownloadLink" download><i class="fas fa-download"></i> تحميل</a>
                     <button class="close-preview" onclick="closePdfPreview()" title="إغلاق"><i class="fas fa-times"></i></button>
                 </div>
             </div>
@@ -1736,7 +1013,7 @@
 
 
     <!-- AOS Script - lazy loaded -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer=""></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
 
     <script>
     // ===== CONFIGURATION =====
@@ -2079,7 +1356,7 @@
     const state = {
         currentTab: 'trainings',
         searchQuery: '',
-        activePanels: new Set(['trainings-panel']),
+        activePanels: new Set(),
         renderedCards: new Set()
     };
 
@@ -2125,16 +1402,48 @@
     };
 
     // ===== CARD CREATION =====
+    
+    // ===== PDF THUMBNAIL GENERATOR =====
+    const pdfThumbnailCache = new Map();
+
+    const generatePdfThumbnail = async (pdfUrl, maxWidth = 200) => {
+        if (pdfThumbnailCache.has(pdfUrl)) {
+            return pdfThumbnailCache.get(pdfUrl);
+        }
+
+        try {
+            const loadingTask = pdfjsLib.getDocument(pdfUrl);
+            const pdf = await loadingTask.promise;
+            const page = await pdf.getPage(1);
+
+            const viewport = page.getViewport({ scale: 1 });
+            const scale = maxWidth / viewport.width;
+            const scaledViewport = page.getViewport({ scale });
+
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            canvas.width = scaledViewport.width;
+            canvas.height = scaledViewport.height;
+
+            await page.render({
+                canvasContext: context,
+                viewport: scaledViewport
+            }).promise;
+
+            const base64 = canvas.toDataURL('image/jpeg', 0.85);
+            pdfThumbnailCache.set(pdfUrl, base64);
+            return base64;
+        } catch (err) {
+            console.error('PDF thumbnail error:', err);
+            return null;
+        }
+    };
+
+    // ===== CARD CREATION (with PDF base64 thumbnails) =====
     const createCard = (item) => {
         const info = getFileInfo(item.filename);
         const shortName = item.filename.length > 25 ? item.filename.substring(0, 22) + '...' : item.filename;
-
-        let thumbHTML;
-        if (item.thumb) {
-            thumbHTML = `<img data-src="${item.thumb}" alt="${item.thumbAlt || ''}" loading="lazy">`;
-        } else {
-            thumbHTML = `<div class="file-icon"><i class="fas ${info.icon}" style="color:${info.color}"></i></div>`;
-        }
+        const isPdf = item.filename.toLowerCase().endsWith('.pdf');
 
         const div = document.createElement('div');
         div.className = 'library-card';
@@ -2142,6 +1451,19 @@
         div.dataset.pdfurl = item.pdfurl;
         div.dataset.filename = item.filename;
         div.dataset.type = item.type;
+
+        // Build thumbnail HTML
+        let thumbHTML;
+        if (item.thumb) {
+            thumbHTML = `<img data-src="${item.thumb}" alt="${item.thumbAlt || ''}" loading="lazy">`;
+        } else if (isPdf) {
+            thumbHTML = `<div class="pdf-thumb-placeholder" id="pdf-thumb-${item.id}">
+                <i class="fas fa-file-pdf" style="font-size:48px;color:#dc3545;"></i>
+            </div>`;
+        } else {
+            thumbHTML = `<div class="file-icon"><i class="fas ${info.icon}" style="color:${info.color}"></i></div>`;
+        }
+
         div.innerHTML = `
             <div class="card-thumbnail" id="thumb-${item.id}">${thumbHTML}</div>
             <div class="card-body">
@@ -2153,7 +1475,7 @@
                         <span><i class="fas fa-paperclip"></i> ${shortName}</span>
                     </span>
                     <div class="actions">
-                        <button onclick="viewItem(${item.id}, '${item.type}')" title="عرض التفاصيل"><i class="fas fa-eye"></i></button>
+                        <button onclick="${isPdf ? `openPdfPreview(${item.id})` : `viewItem(${item.id}, '${item.type}')`}" title="${isPdf ? 'معاينة PDF' : 'عرض التفاصيل'}"><i class="fas fa-eye"></i></button>
                         <a href="${item.pdfurl}" target="_blank" style="text-decoration:none;color:inherit;">
                             <button title="فتح"><i class="fas fa-external-link-alt"></i></button>
                         </a>
@@ -2164,10 +1486,24 @@
                 </div>
             </div>
         `;
+
+        // Generate PDF thumbnail asynchronously
+        if (isPdf && !item.thumb) {
+            requestIdleCallback(() => {
+                generatePdfThumbnail(item.pdfurl, 200).then(base64 => {
+                    const container = document.getElementById(`pdf-thumb-${item.id}`);
+                    if (container && base64) {
+                        container.innerHTML = `<img src="${base64}" alt="صفحة أولى" style="width:100%;height:100%;object-fit:cover;">`;
+                        container.classList.remove('pdf-thumb-placeholder');
+                        container.classList.add('pdf-thumb-loaded');
+                    }
+                });
+            }, { timeout: 500 });
+        }
+
         return div;
     };
-
-    // ===== BATCH RENDERING =====
+// ===== BATCH RENDERING =====
     const renderBatch = (items, containerId, startIndex = 0) => {
         const container = getEl(containerId);
         if (!container) return;
@@ -2323,6 +1659,25 @@
         document.body.style.overflow = '';
     };
 
+    const openPdfPreview = (id) => {
+        const item = libraryData.find(i => i.id === id);
+        if (!item) return;
+
+        getEl('pdfPreviewTitle').textContent = item.filename;
+
+        const downloadLink = getEl('pdfDownloadLink');
+        downloadLink.href = item.pdfurl;
+        downloadLink.download = item.filename;
+
+        getEl('pdfPreviewBody').innerHTML = `
+            <iframe src="${item.pdfurl}" style="width:100%;height:100%;min-height:500px;border:none;" loading="lazy"></iframe>
+        `;
+
+        getEl('pdfPreviewModal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    };
+
+
     // ===== EVENT LISTENERS =====
     const init = () => {
         // Tabs
@@ -2373,6 +1728,5 @@
         ? document.addEventListener('DOMContentLoaded', init) 
         : init();
     </script>
-
-
-</body></html>
+</body>
+</html>

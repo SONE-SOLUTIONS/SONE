@@ -1410,26 +1410,18 @@
         if (pdfThumbnailCache.has(pdfUrl)) {
             return pdfThumbnailCache.get(pdfUrl);
         }
-
         try {
             const loadingTask = pdfjsLib.getDocument(pdfUrl);
             const pdf = await loadingTask.promise;
             const page = await pdf.getPage(1);
-
             const viewport = page.getViewport({ scale: 1 });
             const scale = maxWidth / viewport.width;
             const scaledViewport = page.getViewport({ scale });
-
             const canvas = document.createElement('canvas');
             const context = canvas.getContext('2d');
             canvas.width = scaledViewport.width;
             canvas.height = scaledViewport.height;
-
-            await page.render({
-                canvasContext: context,
-                viewport: scaledViewport
-            }).promise;
-
+            await page.render({ canvasContext: context, viewport: scaledViewport }).promise;
             const base64 = canvas.toDataURL('image/jpeg', 0.85);
             pdfThumbnailCache.set(pdfUrl, base64);
             return base64;
@@ -1439,11 +1431,14 @@
         }
     };
 
-    // ===== CARD CREATION (with PDF base64 thumbnails) =====
+    // ===== CARD CREATION (PDF base64 thumbs + Office preview) =====
     const createCard = (item) => {
         const info = getFileInfo(item.filename);
         const shortName = item.filename.length > 25 ? item.filename.substring(0, 22) + '...' : item.filename;
-        const isPdf = item.filename.toLowerCase().endsWith('.pdf');
+        const ext = item.filename.split('.').pop().toLowerCase();
+        const isPdf = ext === 'pdf';
+        const isOffice = ['docx', 'doc', 'pptx', 'ppt'].includes(ext);
+        const hasPreview = isPdf || isOffice;
 
         const div = document.createElement('div');
         div.className = 'library-card';
@@ -1452,7 +1447,6 @@
         div.dataset.filename = item.filename;
         div.dataset.type = item.type;
 
-        // Build thumbnail HTML
         let thumbHTML;
         if (item.thumb) {
             thumbHTML = `<img data-src="${item.thumb}" alt="${item.thumbAlt || ''}" loading="lazy">`;
@@ -1475,7 +1469,7 @@
                         <span><i class="fas fa-paperclip"></i> ${shortName}</span>
                     </span>
                     <div class="actions">
-                        <button onclick="${isPdf ? `openPdfPreview(${item.id})` : `viewItem(${item.id}, '${item.type}')`}" title="${isPdf ? 'معاينة PDF' : 'عرض التفاصيل'}"><i class="fas fa-eye"></i></button>
+                        <button onclick="${hasPreview ? `openPreview(${item.id})` : `viewItem(${item.id}, '${item.type}')`}" title="${hasPreview ? 'معاينة الملف' : 'عرض التفاصيل'}"><i class="fas fa-eye"></i></button>
                         <a href="${item.pdfurl}" target="_blank" style="text-decoration:none;color:inherit;">
                             <button title="فتح"><i class="fas fa-external-link-alt"></i></button>
                         </a>
@@ -1487,7 +1481,6 @@
             </div>
         `;
 
-        // Generate PDF thumbnail asynchronously
         if (isPdf && !item.thumb) {
             requestIdleCallback(() => {
                 generatePdfThumbnail(item.pdfurl, 200).then(base64 => {
@@ -1628,19 +1621,31 @@
         const item = libraryData.find(i => i.id === id);
         if (!item) return;
 
+        const ext = item.filename.split('.').pop().toLowerCase();
+        const isPdf = ext === 'pdf';
+        const isOffice = ['docx', 'doc', 'pptx', 'ppt'].includes(ext);
+        const hasPreview = isPdf || isOffice;
+
         getEl('modalTitle').textContent = item.filename;
         getEl('modalMeta').innerHTML = `
             <span><i class="fas fa-calendar-alt"></i> ${item.date || 'غير محدد'}</span>
             <span><i class="fas fa-file"></i> ${item.type}</span>
         `;
 
-        const isPdf = item.filename.toLowerCase().endsWith('.pdf');
-        getEl('modalViewer').innerHTML = isPdf 
-            ? `<iframe src="${item.pdfurl}" loading="lazy" style="width:100%;height:500px;border:none;"></iframe>`
-            : `<div class="no-preview"><i class="fas fa-file"></i><p>لا يتوفر معاينة لهذا النوع</p></div>`;
+        let viewerHTML;
+        if (isPdf) {
+            viewerHTML = `<iframe src="${item.pdfurl}" loading="lazy" style="width:100%;height:500px;border:none;"></iframe>`;
+        } else if (isOffice) {
+            const officeUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(item.pdfurl)}`;
+            viewerHTML = `<iframe src="${officeUrl}" loading="lazy" style="width:100%;height:500px;border:none;" allowfullscreen></iframe>`;
+        } else {
+            viewerHTML = `<div class="no-preview"><i class="fas fa-file"></i><p>لا يتوفر معاينة لهذا النوع</p></div>`;
+        }
+        getEl('modalViewer').innerHTML = viewerHTML;
 
         getEl('modalActions').innerHTML = `
             <a href="${item.pdfurl}" download="${item.filename}" class="btn-primary"><i class="fas fa-download"></i> تحميل</a>
+            ${hasPreview ? `<button onclick="closeModal(); openPreview(${item.id});" class="btn-secondary"><i class="fas fa-expand"></i> معاينة كاملة</button>` : ''}
             <a href="${item.pdfurl}" target="_blank" class="btn-secondary"><i class="fas fa-external-link-alt"></i> فتح</a>
             <button onclick="closeModal()" class="btn-secondary">إغلاق</button>
         `;
@@ -1648,8 +1653,7 @@
         getEl('detailModal').classList.add('active');
         document.body.style.overflow = 'hidden';
     };
-
-    const closeModal = () => {
+const closeModal = () => {
         getEl('detailModal').classList.remove('active');
         document.body.style.overflow = '';
     };
@@ -1659,9 +1663,13 @@
         document.body.style.overflow = '';
     };
 
-    const openPdfPreview = (id) => {
+    const openPreview = (id) => {
         const item = libraryData.find(i => i.id === id);
         if (!item) return;
+
+        const ext = item.filename.split('.').pop().toLowerCase();
+        const isPdf = ext === 'pdf';
+        const isOffice = ['docx', 'doc', 'pptx', 'ppt'].includes(ext);
 
         getEl('pdfPreviewTitle').textContent = item.filename;
 
@@ -1669,9 +1677,30 @@
         downloadLink.href = item.pdfurl;
         downloadLink.download = item.filename;
 
-        getEl('pdfPreviewBody').innerHTML = `
-            <iframe src="${item.pdfurl}" style="width:100%;height:100%;min-height:500px;border:none;" loading="lazy"></iframe>
-        `;
+        let viewerUrl;
+        if (isPdf) {
+            viewerUrl = item.pdfurl;
+        } else if (isOffice) {
+            viewerUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(item.pdfurl)}`;
+        } else {
+            viewerUrl = null;
+        }
+
+        if (viewerUrl) {
+            getEl('pdfPreviewBody').innerHTML = `
+                <iframe src="${viewerUrl}" style="width:100%;height:100%;min-height:600px;border:none;" loading="lazy" allowfullscreen></iframe>
+            `;
+        } else {
+            getEl('pdfPreviewBody').innerHTML = `
+                <div class="no-preview" style="padding:60px 20px;">
+                    <i class="fas fa-file" style="font-size:48px;color:var(--primary);"></i>
+                    <p style="margin-top:16px;">لا يتوفر معاينة لهذا النوع من الملفات</p>
+                    <a href="${item.pdfurl}" download="${item.filename}" class="btn-primary" style="margin-top:16px;display:inline-block;">
+                        <i class="fas fa-download"></i> تحميل الملف
+                    </a>
+                </div>
+            `;
+        }
 
         getEl('pdfPreviewModal').classList.add('active');
         document.body.style.overflow = 'hidden';

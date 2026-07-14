@@ -2,380 +2,382 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SunTimes Morocco | أوقات الشروق والغروب</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta name="theme-color" content="#0a2f45">
+<title>SunTimes Morocco</title>
 <link rel="preconnect" href="https://cdnjs.cloudflare.com">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&amp;family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&amp;family=Cairo:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <style>
-/* ===== CORE VARIABLES (SONE LIBRARY STYLE) ===== */
+/* =========================================================
+   DESIGN TOKENS — "Dawn over the Atlantic"
+========================================================= */
 :root {
-    --primary: #b8860b;
-    --primary-dark: #966e08;
-    --primary-light: #fdf6e3;
-    --bg: #f8f9fa;
-    --surface: #ffffff;
-    --text: #1d1d1f;
-    --text-secondary: #6c757d;
-    --border: #e9ecef;
-    --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
-    --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
-    --radius: 10px;
-    --radius-sm: 6px;
-    --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --sea-deep: #0a2f45;
+    --sea-mid: #17607a;
+    --sea-light: #2c8ba3;
+    --dawn-coral: #ef8354;
+    --dawn-gold: #eeae53;
+    --dusk-plum: #7c5a8e;
+    --sand: #fdf6ec;
+    --sand-dim: #f4ead9;
+    --foam: #f3f7f6;
+    --text: #1b2e35;
+    --text-secondary: #5b7480;
+    --border: #e2e8e4;
+    --shadow-sm: 0 1px 3px rgba(10,47,69,0.06);
+    --shadow-md: 0 8px 20px rgba(10,47,69,0.08);
+    --shadow-lg: 0 20px 40px rgba(10,47,69,0.14);
+    --radius: 16px;
+    --radius-sm: 10px;
+    --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
-/* ===== RESET & BASE ===== */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 body {
     font-family: 'Cairo', 'Inter', sans-serif;
-    background: var(--bg);
+    background: var(--foam);
     color: var(--text);
     min-height: 100vh;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
 }
 html[dir="ltr"] body { font-family: 'Inter', 'Cairo', sans-serif; }
+.serif-ar { font-family: 'Amiri', 'Cairo', serif; }
+html[dir="ltr"] .serif-ar { font-family: 'Fraunces', 'Inter', serif; }
 
 /* ===== HEADER ===== */
 .top-nav {
-    background: rgba(255,255,255,0.95);
+    background: rgba(253, 246, 236, 0.92);
     border-bottom: 1px solid var(--border);
     padding: 0 24px;
-    height: 64px;
+    height: 66px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     position: sticky;
     top: 0;
     z-index: 1000;
-    backdrop-filter: blur(12px);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
 }
-.top-nav .logo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    text-decoration: none;
+.top-nav .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.logo-img {
+    height: 40px; width: 40px; border-radius: 10px;
+    object-fit: cover; border: 1px solid var(--border);
+    flex-shrink: 0; box-shadow: var(--shadow-sm);
 }
-.top-nav .logo-img {
-    height: 38px;
-    width: 38px;
-    border-radius: 8px;
-    object-fit: cover;
-    border: 1px solid var(--border);
-}
-.top-nav .logo-text span {
-    font-size: 17px;
-    font-weight: 800;
-    color: var(--text);
-    letter-spacing: -0.3px;
-}
-.top-nav .logo-text small {
-    font-weight: 500;
-    font-size: 11px;
-    color: var(--text-secondary);
-    display: block;
-    margin-top: -2px;
-}
+.top-nav .logo-text span { font-size: 17px; font-weight: 800; color: var(--sea-deep); letter-spacing: -0.2px; }
+.top-nav .logo-text small { font-weight: 500; font-size: 11px; color: var(--text-secondary); display: block; margin-top: -2px; }
 
 .nav-actions { display: flex; align-items: center; gap: 12px; }
 
 .search-box {
-    background: var(--bg);
-    border-radius: 8px;
-    padding: 0 12px;
+    background: var(--sand-dim);
+    border-radius: 10px;
+    padding: 0 10px;
     display: flex;
     align-items: center;
     border: 1px solid transparent;
     transition: var(--transition);
-    height: 38px;
+    height: 40px;
+    gap: 6px;
 }
-.search-box:focus-within {
-    border-color: var(--primary);
-    background: var(--surface);
-    box-shadow: 0 0 0 3px rgba(184, 134, 11, 0.1);
-}
+.search-box:focus-within { border-color: var(--sea-light); background: var(--sand); box-shadow: 0 0 0 3px rgba(44, 139, 163, 0.12); }
 .search-box input {
-    border: none;
-    background: transparent;
-    padding: 0 8px;
-    font-family: inherit;
-    outline: none;
-    width: 180px;
-    color: var(--text);
-    font-size: 14px;
+    border: none; background: transparent; padding: 0 4px;
+    font-family: inherit; outline: none; width: 100%; flex: 1;
+    color: var(--text); font-size: 14px;
 }
-.search-box i { color: var(--text-secondary); font-size: 14px; }
+html[dir="ltr"] .search-box input { text-align: left; }
+.search-box i { color: var(--text-secondary); font-size: 14px; flex-shrink: 0; }
+
+.clear-search {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 4px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: var(--transition);
+    flex-shrink: 0;
+}
+.clear-search.visible { display: flex; }
+.clear-search:hover { color: var(--dawn-coral); }
 
 .gps-btn {
-    background: var(--primary-light);
-    color: var(--primary-dark);
-    border: 1px solid rgba(184, 134, 11, 0.2);
-    height: 38px;
-    padding: 0 14px;
-    border-radius: 8px;
-    font-family: inherit;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    transition: var(--transition);
-    white-space: nowrap;
+    background: linear-gradient(135deg, rgba(238,131,84,0.14), rgba(238,174,83,0.14));
+    color: #a3521f;
+    border: 1px solid rgba(238,131,84,0.25);
+    height: 40px; padding: 0 14px; border-radius: 10px;
+    font-family: inherit; font-size: 13px; font-weight: 700;
+    cursor: pointer; display: flex; align-items: center; gap: 6px;
+    transition: var(--transition); white-space: nowrap;
 }
-.gps-btn:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+.gps-btn:hover { background: linear-gradient(135deg, var(--dawn-coral), var(--dawn-gold)); color: #fff; border-color: transparent; }
 .gps-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 .gps-btn .fa-spinner { animation: spin 1s linear infinite; }
 
-.lang-switcher {
-    display: flex;
-    background: var(--bg);
-    border-radius: 8px;
-    padding: 3px;
-    gap: 2px;
-}
+.lang-switcher { display: flex; background: var(--sand-dim); border-radius: 10px; padding: 3px; gap: 2px; }
 .lang-btn {
-    background: transparent;
-    border: none;
-    padding: 4px 10px;
-    border-radius: 6px;
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text-secondary);
-    cursor: pointer;
-    transition: var(--transition);
-    font-family: inherit;
+    background: transparent; border: none; padding: 4px 10px; border-radius: 7px;
+    font-size: 12px; font-weight: 700; color: var(--text-secondary);
+    cursor: pointer; transition: var(--transition); font-family: inherit;
 }
-.lang-btn.active { background: var(--surface); color: var(--text); box-shadow: var(--shadow-sm); }
+.lang-btn.active { background: var(--sea-deep); color: #fff; box-shadow: var(--shadow-sm); }
+
+/* ===== HAMBURGER MENU ===== */
+.menu-toggle {
+    display: none; background: none; border: none; width: 40px; height: 40px;
+    cursor: pointer; color: var(--sea-deep); font-size: 20px;
+    border-radius: 10px; transition: var(--transition);
+}
+.menu-toggle:hover { background: var(--sand-dim); }
+
+.mobile-menu {
+    display: none; position: fixed; top: 66px; left: 0; right: 0;
+    background: var(--sand); border-bottom: 1px solid var(--border);
+    padding: 16px; box-shadow: var(--shadow-lg); z-index: 999;
+    flex-direction: column; gap: 12px; animation: slideDown 0.3s ease;
+}
+.mobile-menu.active { display: flex; }
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.mobile-menu .search-box { width: 100%; height: 44px; }
+.mobile-menu .search-box input { width: 100%; font-size: 15px; }
+.mobile-menu .gps-btn { width: 100%; height: 44px; justify-content: center; font-size: 14px; }
+.mobile-menu .lang-switcher { width: 100%; justify-content: center; padding: 6px; }
+.mobile-menu .lang-btn { flex: 1; padding: 8px; font-size: 13px; text-align: center; }
+
+/* ===== HERO ===== */
+.hero {
+    position: relative; overflow: hidden; padding: 56px 20px 84px;
+    text-align: center; color: #fff;
+    background: linear-gradient(180deg, var(--sea-deep) 0%, var(--sea-mid) 38%, var(--dawn-coral) 78%, var(--dawn-gold) 100%);
+    background-size: 100% 220%;
+    animation: driftSky 26s ease-in-out infinite alternate;
+}
+@keyframes driftSky {
+    from { background-position: 0% 0%; }
+    to   { background-position: 0% 100%; }
+}
+.hero::before {
+    content: ''; position: absolute; left: 50%; top: 34%;
+    width: 120px; height: 120px; transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 35%, #fff9ec, var(--dawn-gold) 60%, transparent 72%);
+    opacity: 0.9; filter: blur(0.5px);
+    animation: sunPulse 8s ease-in-out infinite;
+}
+@keyframes sunPulse {
+    0%, 100% { opacity: 0.75; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 0.95; transform: translate(-50%, -50%) scale(1.06); }
+}
+.hero-content { position: relative; z-index: 2; }
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 10px; text-shadow: 0 2px 12px rgba(10,47,69,0.35); }
+.hero p { font-size: 14px; opacity: 0.95; max-width: 600px; margin: 0 auto; }
+
+.hero-wave { position: absolute; left: 0; right: 0; bottom: -1px; line-height: 0; z-index: 3; }
+.hero-wave svg { width: 100%; height: 60px; display: block; }
+.hero-wave path { fill: var(--foam); }
 
 /* ===== MAIN CONTAINER ===== */
-.container { max-width: 1200px; margin: 0 auto; padding: 32px 20px; }
+.container { max-width: 1200px; margin: 0 auto; padding: 28px 16px 20px; }
 
-.page-header {
-    text-align: center;
-    margin-bottom: 32px;
+.status-banner {
+    display: none; align-items: center; gap: 10px;
+    background: var(--sand); border: 1px solid rgba(124,90,142,0.25);
+    color: var(--dusk-plum); padding: 12px 16px; border-radius: var(--radius-sm);
+    font-size: 13px; font-weight: 600; margin-bottom: 16px;
 }
-.page-header h1 {
-    font-size: 26px;
-    font-weight: 800;
-    margin-bottom: 8px;
-    color: var(--text);
-}
-.page-header p {
-    font-size: 15px;
-    color: var(--text-secondary);
-    max-width: 600px;
-    margin: 0 auto;
+.status-banner.visible { display: flex; }
+.status-banner button {
+    margin-inline-start: auto; background: var(--dusk-plum); color: #fff;
+    border: none; padding: 6px 14px; border-radius: 8px;
+    font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer; flex-shrink: 0;
 }
 
 /* ===== GRID & CARDS ===== */
-.cities-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 16px;
-}
+.cities-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
 
 .city-card {
-    background: var(--surface);
-    border-radius: var(--radius);
-    border: 1px solid var(--border);
-    padding: 20px;
-    transition: var(--transition);
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+    background: var(--sand); border-radius: var(--radius); border: 1px solid var(--border);
+    padding: 20px; transition: var(--transition); cursor: pointer;
+    display: flex; flex-direction: column; gap: 16px;
+    animation: cardIn 0.4s ease both;
 }
-.city-card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-    border-color: var(--primary);
+@keyframes cardIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
 }
+.city-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--sea-light); }
+.city-card:active { transform: scale(0.98); }
 
-.card-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-.card-header i {
-    color: var(--primary);
-    font-size: 18px;
-}
-.card-header h3 {
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--text);
-}
-.card-header .coords {
-    font-size: 11px;
-    color: var(--text-secondary);
-    font-weight: 500;
-}
+.card-header { display: flex; align-items: center; gap: 10px; }
+.card-header i { color: var(--dawn-coral); font-size: 18px; }
+.card-header h3 { font-size: 16px; font-weight: 700; color: var(--sea-deep); }
+.card-header .coords { font-size: 11px; color: var(--text-secondary); font-weight: 500; font-family: 'Inter', monospace; margin-top: 2px; }
 
-.times-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-}
-.time-box {
-    background: var(--bg);
-    padding: 12px;
-    border-radius: var(--radius-sm);
-    text-align: center;
-}
-.time-box .label {
-    font-size: 11px;
-    color: var(--text-secondary);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 4px;
-}
-.time-box .value {
-    font-size: 18px;
-    font-weight: 800;
-    color: var(--text);
-}
-.time-box.sunrise .value { color: #d97706; }
-.time-box.sunset .value { color: #dc2626; }
+.times-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.time-box { background: var(--foam); padding: 14px; border-radius: var(--radius-sm); text-align: center; }
+.time-box .label { font-size: 11px; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+.time-box .value { font-size: 20px; font-weight: 700; color: var(--sea-deep); font-family: 'Fraunces', 'Cairo', serif; }
+.time-box.sunrise .value { color: var(--dawn-coral); }
+.time-box.sunset .value { color: var(--dusk-plum); }
 
 .card-footer {
-    border-top: 1px solid var(--border);
-    padding-top: 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 12px;
-    color: var(--text-secondary);
+    border-top: 1px solid var(--border); padding-top: 12px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 12px; color: var(--text-secondary);
 }
-.card-footer .day-length {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-weight: 600;
-}
-.card-footer .day-length i { color: var(--primary); }
+.card-footer .day-length { display: flex; align-items: center; gap: 6px; font-weight: 600; }
+.card-footer .day-length i { color: var(--sea-light); }
 
-/* ===== EMPTY & LOADING STATES ===== */
-.loading-state, .empty-state {
-    grid-column: 1 / -1;
-    text-align: center;
-    padding: 60px 20px;
-    background: var(--surface);
-    border-radius: var(--radius);
-    border: 1px dashed var(--border);
+/* ===== LOADING & EMPTY & ERROR ===== */
+.loading-state, .empty-state, .error-state {
+    grid-column: 1 / -1; text-align: center; padding: 60px 20px;
+    background: var(--sand); border-radius: var(--radius); border: 1px dashed var(--border);
 }
 .loading-spinner {
-    width: 40px; height: 40px;
-    border: 3px solid var(--border);
-    border-top-color: var(--primary);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    margin: 0 auto 16px;
+    width: 42px; height: 42px; border: 3px solid var(--border);
+    border-top-color: var(--dawn-coral); border-radius: 50%;
+    animation: spin 0.8s linear infinite; margin: 0 auto 16px;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
+.loading-note { font-size: 12px; color: var(--text-secondary); margin-top: 6px; }
+.error-state i { font-size: 30px; color: var(--dusk-plum); margin-bottom: 12px; }
+.retry-btn {
+    margin-top: 16px; background: var(--sea-deep); color: #fff; border: none;
+    padding: 10px 22px; border-radius: 10px; font-family: inherit;
+    font-weight: 700; font-size: 14px; cursor: pointer;
+}
 
 /* ===== MODAL ===== */
 .modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.6);
-    backdrop-filter: blur(4px);
-    z-index: 2000;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    opacity: 0;
-    transition: opacity 0.2s ease;
+    display: none; position: fixed; inset: 0;
+    background: rgba(10,47,69,0.55); backdrop-filter: blur(4px);
+    z-index: 2000; align-items: center; justify-content: center; padding: 20px;
+    opacity: 0; transition: opacity 0.2s ease;
 }
 .modal-overlay.active { display: flex; opacity: 1; }
 .modal-content {
-    background: var(--surface);
-    border-radius: 12px;
-    max-width: 600px;
-    width: 100%;
-    max-height: 85vh;
-    overflow-y: auto;
-    position: relative;
-    transform: scale(0.95);
-    transition: transform 0.2s ease;
+    background: var(--sand); border-radius: 18px; max-width: 600px; width: 100%;
+    max-height: 85vh; overflow-y: auto; position: relative;
+    transform: scale(0.95); transition: transform 0.2s ease;
+    -webkit-overflow-scrolling: touch;
 }
 .modal-overlay.active .modal-content { transform: scale(1); }
 
 .modal-header {
-    padding: 24px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+    padding: 24px; border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: flex-start;
+    position: sticky; top: 0; background: var(--sand); z-index: 10;
+    border-radius: 18px 18px 0 0;
 }
-.modal-header h2 { font-size: 20px; font-weight: 800; }
-.modal-header p { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
+.modal-header h2 { font-size: 20px; font-weight: 700; color: var(--sea-deep); font-family: 'Fraunces', 'Cairo', serif; }
+.modal-header p { font-size: 13px; color: var(--text-secondary); margin-top: 4px; font-family: 'Inter', monospace; }
 .modal-close {
-    background: var(--bg);
-    border: none;
-    width: 32px; height: 32px;
-    border-radius: 50%;
-    cursor: pointer;
-    color: var(--text-secondary);
+    background: var(--foam); border: none; width: 36px; height: 36px;
+    border-radius: 50%; cursor: pointer; color: var(--text-secondary);
     display: flex; align-items: center; justify-content: center;
-    transition: var(--transition);
+    transition: var(--transition); flex-shrink: 0;
 }
 .modal-close:hover { background: var(--border); color: var(--text); }
 
 .modal-body { padding: 24px; }
-.detail-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-}
+.detail-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
 .detail-item {
-    background: var(--bg);
-    padding: 16px;
-    border-radius: var(--radius-sm);
-    border-right: 3px solid var(--primary);
+    background: var(--foam); padding: 16px; border-radius: var(--radius-sm);
+    border-right: 3px solid var(--dawn-coral);
 }
-html[dir="ltr"] .detail-item { border-right: none; border-left: 3px solid var(--primary); }
+html[dir="ltr"] .detail-item { border-right: none; border-left: 3px solid var(--dawn-coral); }
 .detail-item .label { font-size: 12px; color: var(--text-secondary); margin-bottom: 6px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
-.detail-item .value { font-size: 18px; font-weight: 800; color: var(--text); }
+.detail-item .value { font-size: 18px; font-weight: 700; color: var(--sea-deep); word-break: break-word; font-family: 'Fraunces', 'Cairo', serif; }
 
 /* ===== FOOTER ===== */
 footer {
-    text-align: center;
-    padding: 32px 20px;
-    background: var(--surface);
-    border-top: 1px solid var(--border);
-    margin-top: 48px;
+    text-align: center; padding: 32px 20px;
+    background: var(--sand); border-top: 1px solid var(--border); margin-top: 48px;
 }
 .report-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--surface);
-    color: var(--text-secondary);
-    padding: 10px 20px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 14px;
-    border: 1px solid var(--border);
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--foam); color: var(--text-secondary);
+    padding: 10px 20px; border-radius: 10px; text-decoration: none;
+    font-weight: 600; font-size: 14px; border: 1px solid var(--border);
     transition: var(--transition);
 }
-.report-btn:hover { border-color: var(--primary); color: var(--primary); }
+.report-btn:hover { border-color: var(--dawn-coral); color: var(--dawn-coral); }
 
 /* ===== RESPONSIVE ===== */
-@media (max-width: 768px) {
-    .top-nav { padding: 0 16px; }
-    .search-box input { width: 120px; }
-    .gps-btn span { display: none; } /* Show only icon on mobile */
+@media (max-width: 900px) {
+    .search-box input { width: 140px; }
+    .gps-btn span { display: none; }
     .gps-btn { padding: 0 12px; }
-    .cities-grid { grid-template-columns: 1fr; }
-    .detail-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+    .top-nav { padding: 0 12px; height: 60px; }
+    .top-nav .logo-text span { font-size: 15px; }
+    .top-nav .logo-text small { font-size: 10px; }
+    .logo-img { height: 34px; width: 34px; }
+    .nav-actions .search-box, .nav-actions .gps-btn, .nav-actions .lang-switcher { display: none; }
+    .menu-toggle { display: flex; align-items: center; justify-content: center; }
+    .mobile-menu { top: 60px; }
+    .hero { padding: 40px 16px 64px; }
+    .hero h1 { font-size: 21px; }
+    .hero p { font-size: 13px; }
+    .hero::before { width: 90px; height: 90px; top: 32%; }
+    .container { padding: 20px 12px; }
+    .cities-grid { grid-template-columns: 1fr; gap: 12px; }
+    .city-card { padding: 16px; gap: 12px; }
+    .card-header h3 { font-size: 15px; }
+    .time-box { padding: 12px; }
+    .time-box .value { font-size: 18px; }
+    .modal-overlay { padding: 0; align-items: flex-end; }
+    .modal-content { max-height: 92vh; border-radius: 18px 18px 0 0; max-width: 100%; }
+    .modal-header { padding: 20px 16px; border-radius: 18px 18px 0 0; }
+    .modal-header h2 { font-size: 18px; }
+    .modal-body { padding: 16px; }
+    .detail-grid { grid-template-columns: 1fr; gap: 10px; }
+    .detail-item { padding: 14px; }
+    .detail-item .value { font-size: 17px; }
+    footer { padding: 24px 16px; margin-top: 32px; }
+}
+@media (max-width: 380px) {
+    .top-nav .logo-text small { display: none; }
+    .hero h1 { font-size: 18px; }
+    .time-box .value { font-size: 16px; }
+    .time-box .label { font-size: 10px; }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+    .hero { padding: 24px 16px 48px; }
+    .hero h1 { font-size: 18px; margin-bottom: 4px; }
+    .hero::before { display: none; }
+    .modal-content { max-height: 95vh; }
+}
+@media (hover: none) and (pointer: coarse) {
+    .city-card:hover { transform: none; box-shadow: var(--shadow-sm); }
+    .city-card:active { background: var(--sand-dim); border-color: var(--sea-light); }
+    .modal-close, .gps-btn, .lang-btn, .report-btn, .retry-btn { min-height: 44px; min-width: 44px; }
+}
+@supports (padding: max(0px)) {
+    .top-nav { padding-left: max(24px, env(safe-area-inset-left)); padding-right: max(24px, env(safe-area-inset-right)); }
+    footer { padding-bottom: max(32px, env(safe-area-inset-bottom)); }
+    .mobile-menu.active { padding-bottom: max(16px, env(safe-area-inset-bottom)); }
+}
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        background-position: 0% 40% !important;
+    }
 }
 </style>
 </head>
@@ -384,7 +386,7 @@ footer {
 <!-- HEADER -->
 <header class="top-nav">
     <a href="#" class="logo">
-        <img src="https://sone-solutions.github.io/SONE/SONELOGE.jpg" alt="Logo" class="logo-img">
+        <img src="https://sone-solutions.github.io/SONE/SONELOGE.jpg" alt="SONE Logo" class="logo-img">
         <div class="logo-text">
             <span data-i18n="siteTitle">SunTimes Morocco</span>
             <small data-i18n="subtitle">بيانات فلكية دقيقة</small>
@@ -394,32 +396,66 @@ footer {
         <div class="search-box">
             <i class="fas fa-search"></i>
             <input type="text" id="searchInput" data-i18n-placeholder="searchPlaceholder" placeholder="ابحث عن مدينة..." autocomplete="off">
+            <button type="button" class="clear-search" id="clearSearchBtn" data-i18n-title="clearSearch" title="مسح البحث">
+                <i class="fas fa-times-circle"></i>
+            </button>
         </div>
         <button class="gps-btn" id="gpsBtn" onclick="getUserLocation()">
             <i class="fas fa-location-crosshairs"></i>
-            <span data-i18n="gpsBtn">موقعي</span>
+            <span data-i18n="gpsBtn">موقعي الدقيق</span>
         </button>
         <div class="lang-switcher">
             <button class="lang-btn active" data-lang="ar">AR</button>
             <button class="lang-btn" data-lang="fr">FR</button>
             <button class="lang-btn" data-lang="en">EN</button>
         </div>
+        <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+            <i class="fas fa-bars"></i>
+        </button>
     </div>
 </header>
 
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+    <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" id="mobileSearchInput" data-i18n-placeholder="searchPlaceholder" placeholder="ابحث عن مدينة..." autocomplete="off">
+        <button type="button" class="clear-search" id="clearMobileSearchBtn" data-i18n-title="clearSearch" title="مسح البحث">
+            <i class="fas fa-times-circle"></i>
+        </button>
+    </div>
+    <button class="gps-btn" onclick="getUserLocation()">
+        <i class="fas fa-location-crosshairs"></i>
+        <span data-i18n="gpsBtn">موقعي الدقيق</span>
+    </button>
+    <div class="lang-switcher">
+        <button class="lang-btn active" data-lang="ar">AR</button>
+        <button class="lang-btn" data-lang="fr">FR</button>
+        <button class="lang-btn" data-lang="en">EN</button>
+    </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-content">
+        <h1 class="serif-ar" data-i18n="heroTitle">أوقات الشروق والغروب في المغرب</h1>
+        <p data-i18n="heroSubtitle">بيانات فلكية حقيقية ومحدثة يومياً لأكثر من 60 مدينة</p>
+    </div>
+    <div class="hero-wave">
+        <svg viewBox="0 0 1440 60" preserveAspectRatio="none">
+            <path d="M0,32 C240,60 480,4 720,24 C960,44 1200,54 1440,20 L1440,60 L0,60 Z"></path>
+        </svg>
+    </div>
+</section>
+
 <!-- MAIN -->
 <div class="container">
-    <div class="page-header">
-        <h1 data-i18n="heroTitle">أوقات الشروق والغروب في المغرب</h1>
-        <p data-i18n="heroSubtitle">بيانات فلكية حقيقية ومحدثة يومياً لأكثر من 60 مدينة ومنطقة في المملكة</p>
+    <div class="status-banner" id="statusBanner">
+        <i class="fas fa-triangle-exclamation"></i>
+        <span id="statusText"></span>
+        <button id="statusRetry" onclick="loadData()" data-i18n="retry">إعادة المحاولة</button>
     </div>
-
-    <div class="cities-grid" id="citiesGrid">
-        <div class="loading-state">
-            <div class="loading-spinner"></div>
-            <p data-i18n="loading">جاري تحميل البيانات...</p>
-        </div>
-    </div>
+    <div class="cities-grid" id="citiesGrid"></div>
 </div>
 
 <!-- MODAL -->
@@ -447,71 +483,57 @@ footer {
 // ===== TRANSLATIONS =====
 const translations = {
     ar: {
-        siteTitle: "SunTimes Morocco",
-        subtitle: "بيانات فلكية دقيقة",
-        searchPlaceholder: "ابحث عن مدينة...",
-        gpsBtn: "موقعي",
+        siteTitle: "SunTimes Morocco", subtitle: "بيانات فلكية دقيقة",
+        searchPlaceholder: "ابحث عن مدينة...", gpsBtn: "موقعي الدقيق",
         heroTitle: "أوقات الشروق والغروب في المغرب",
-        heroSubtitle: "بيانات فلكية حقيقية ومحدثة يومياً لأكثر من 60 مدينة ومنطقة في المملكة",
-        loading: "جاري تحميل البيانات...",
-        noResults: "لا توجد نتائج للبحث",
-        sunrise: "الشروق",
-        sunset: "الغروب",
-        dawn: "الفجر",
-        dusk: "العشاء",
-        dayLength: "طول النهار",
-        solarNoon: "منتصف النهار",
-        goldenHour: "الساعة الذهبية",
-        moonPhase: "طور القمر",
-        timezone: "المنطقة الزمنية",
-        reportBtn: "نموذج إبلاغ"
+        heroSubtitle: "بيانات فلكية حقيقية ومحدثة يومياً لأكثر من 60 مدينة",
+        loading: "جاري تحميل البيانات...", noResults: "لا توجد نتائج للبحث",
+        sunrise: "الشروق", sunset: "الغروب", dawn: "الفجر", dusk: "العشاء",
+        dayLength: "طول النهار", solarNoon: "منتصف النهار", goldenHour: "الساعة الذهبية",
+        timezone: "المنطقة الزمنية", reportBtn: "نموذج إبلاغ",
+        currentLocation: "📍 موقعك الحالي (إحداثيات دقيقة)", retry: "إعادة المحاولة",
+        partialError: "تعذر تحميل بيانات بعض المدن. البيانات المعروضة قد تكون غير مكتملة.",
+        fullError: "تعذر الاتصال بخدمة البيانات الفلكية. تحقق من اتصالك بالإنترنت.",
+        loadingOf: "تم تحميل {n} من {total} مدينة",
+        clearSearch: "مسح البحث"
     },
     en: {
-        siteTitle: "SunTimes Morocco",
-        subtitle: "Accurate Astronomical Data",
-        searchPlaceholder: "Search for a city...",
-        gpsBtn: "My Location",
+        siteTitle: "SunTimes Morocco", subtitle: "Accurate Astronomical Data",
+        searchPlaceholder: "Search for a city...", gpsBtn: "My Exact Location",
         heroTitle: "Sunrise & Sunset Times in Morocco",
-        heroSubtitle: "Real, daily-updated astronomical data for over 60 cities and regions in the Kingdom",
-        loading: "Loading data...",
-        noResults: "No results found",
-        sunrise: "Sunrise",
-        sunset: "Sunset",
-        dawn: "Dawn",
-        dusk: "Dusk",
-        dayLength: "Day Length",
-        solarNoon: "Solar Noon",
-        goldenHour: "Golden Hour",
-        moonPhase: "Moon Phase",
-        timezone: "Timezone",
-        reportBtn: "Report an Issue"
+        heroSubtitle: "Real, daily-updated astronomical data for 60+ cities",
+        loading: "Loading data...", noResults: "No results found",
+        sunrise: "Sunrise", sunset: "Sunset", dawn: "Dawn", dusk: "Dusk",
+        dayLength: "Day Length", solarNoon: "Solar Noon", goldenHour: "Golden Hour",
+        timezone: "Timezone", reportBtn: "Report an Issue",
+        currentLocation: "📍 Your Current Location (Exact Coordinates)", retry: "Retry",
+        partialError: "Some cities could not be loaded. Data shown may be incomplete.",
+        fullError: "Couldn't reach the astronomical data service. Check your connection.",
+        loadingOf: "Loaded {n} of {total} cities",
+        clearSearch: "Clear search"
     },
     fr: {
-        siteTitle: "SunTimes Morocco",
-        subtitle: "Données Astronomiques Précises",
-        searchPlaceholder: "Rechercher une ville...",
-        gpsBtn: "Ma Position",
+        siteTitle: "SunTimes Morocco", subtitle: "Données Astronomiques Précises",
+        searchPlaceholder: "Rechercher une ville...", gpsBtn: "Ma Position Exacte",
         heroTitle: "Lever et Coucher du Soleil au Maroc",
-        heroSubtitle: "Données astronomiques réelles et mises à jour quotidiennement pour plus de 60 villes et régions",
-        loading: "Chargement des données...",
-        noResults: "Aucun résultat trouvé",
-        sunrise: "Lever du soleil",
-        sunset: "Coucher du soleil",
-        dawn: "Aube",
-        dusk: "Crépuscule",
-        dayLength: "Durée du jour",
-        solarNoon: "Midi solaire",
-        goldenHour: "Heure dorée",
-        moonPhase: "Phase de la lune",
-        timezone: "Fuseau horaire",
-        reportBtn: "Signaler un problème"
+        heroSubtitle: "Données astronomiques réelles pour plus de 60 villes",
+        loading: "Chargement des données...", noResults: "Aucun résultat trouvé",
+        sunrise: "Lever du soleil", sunset: "Coucher du soleil", dawn: "Aube", dusk: "Crépuscule",
+        dayLength: "Durée du jour", solarNoon: "Midi solaire", goldenHour: "Heure dorée",
+        timezone: "Fuseau horaire", reportBtn: "Signaler un problème",
+        currentLocation: "📍 Votre Position Actuelle (Coordonnées Exactes)", retry: "Réessayer",
+        partialError: "Certaines villes n'ont pas pu être chargées. Les données peuvent être incomplètes.",
+        fullError: "Impossible de contacter le service de données. Vérifiez votre connexion.",
+        loadingOf: "{n} sur {total} villes chargées",
+        clearSearch: "Effacer la recherche"
     }
 };
 
 let currentLang = localStorage.getItem('preferredLang') || 'ar';
 let citiesData = [];
+const CONCURRENCY = 6;
 
-// ===== COMPREHENSIVE MOROCCAN CITIES DATABASE =====
+// ===== MOROCCAN CITIES DATABASE =====
 const moroccanCities = [
     { name: {ar:"الرباط", en:"Rabat", fr:"Rabat"}, lat: 34.0209, lng: -6.8416 },
     { name: {ar:"الدار البيضاء", en:"Casablanca", fr:"Casablanca"}, lat: 33.5731, lng: -7.5898 },
@@ -574,102 +596,113 @@ const moroccanCities = [
     { name: {ar:"اشتوكة آيت باها", en:"Chtouka Ait Baha", fr:"Chtouka Ait Baha"}, lat: 30.2167, lng: -9.2833 }
 ];
 
-// ===== HELPER FUNCTIONS =====
-function t(key) { return translations[currentLang][key] || key; }
-
+// ===== HELPERS =====
+function t(key, vars) {
+    let str = translations[currentLang][key] || key;
+    if (vars) Object.keys(vars).forEach(k => str = str.replace(`{${k}}`, vars[k]));
+    return str;
+}
 function getCityName(city) { return city.name[currentLang] || city.name.en; }
+function cacheKey(city) {
+    const day = new Date().toISOString().slice(0, 10);
+    return `sun_${city.lat.toFixed(2)}_${city.lng.toFixed(2)}_${day}`;
+}
 
 function updateLanguage(lang) {
     currentLang = lang;
     localStorage.setItem('preferredLang', lang);
     document.documentElement.lang = lang;
     document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
-    
     document.querySelectorAll('[data-i18n]').forEach(el => el.textContent = t(el.getAttribute('data-i18n')));
     document.querySelectorAll('[data-i18n-placeholder]').forEach(el => el.placeholder = t(el.getAttribute('data-i18n-placeholder')));
+    document.querySelectorAll('[data-i18n-title]').forEach(el => el.title = t(el.getAttribute('data-i18n-title')));
     document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.lang === lang));
-    
-    if (citiesData.length > 0) displayCities(citiesData);
+    if (citiesData.length > 0) {
+        const currentQuery = document.getElementById('searchInput').value;
+        handleSearch(currentQuery);
+    }
 }
 
-// Haversine formula to find nearest city from GPS
-function getDistance(lat1, lon1, lat2, lon2) {
-    const R = 6371; // Earth radius in km
-    const dLat = (lat2 - lat1) * Math.PI / 180;
-    const dLon = (lon2 - lon1) * Math.PI / 180;
-    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-              Math.sin(dLon/2) * Math.sin(dLon/2);
-    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-}
-
-// ===== GPS FUNCTIONALITY =====
+// ===== GPS =====
 function getUserLocation() {
-    const btn = document.getElementById('gpsBtn');
-    const originalText = btn.innerHTML;
-    
     if (!navigator.geolocation) {
-        alert("متصفحك لا يدعم تحديد الموقع الجغرافي.");
+        alert(currentLang === 'ar' ? 'متصفحك لا يدعم تحديد الموقع.' : 'Geolocation not supported.');
         return;
     }
-
-    btn.disabled = true;
-    btn.innerHTML = '<i class="fas fa-spinner"></i> <span>جاري التحديد...</span>';
+    document.getElementById('mobileMenu').classList.remove('active');
+    
+    const gpsBtns = document.querySelectorAll('.gps-btn');
+    gpsBtns.forEach(btn => {
+        btn.disabled = true;
+        btn.dataset.originalHTML = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>' + t('loading') + '</span>';
+    });
 
     navigator.geolocation.getCurrentPosition(
         async (position) => {
             const lat = position.coords.latitude;
             const lng = position.coords.longitude;
-            
-            // Find nearest city
-            let nearestCity = moroccanCities[0];
-            let minDistance = Infinity;
-            
-            moroccanCities.forEach(city => {
-                const dist = getDistance(lat, lng, city.lat, city.lng);
-                if (dist < minDistance) {
-                    minDistance = dist;
-                    nearestCity = city;
-                }
-            });
-
-            // Fetch data for the nearest city
-            const data = await fetchSunData(nearestCity);
+            const exactLocation = {
+                name: { ar: "موقعك الحالي", en: "Your Current Location", fr: "Votre Position Actuelle" },
+                lat: lat, lng: lng, isGps: true
+            };
+            const data = await fetchSunData(exactLocation);
             if (data) {
-                // Override name to indicate it's based on GPS
-                data.name = { 
-                    ar: `موقعك الحالي (قريب من ${nearestCity.name.ar})`, 
-                    en: `Your Location (Near ${nearestCity.name.en})`, 
-                    fr: `Votre position (Près de ${nearestCity.name.fr})` 
-                };
-                data.lat = lat; // Keep actual GPS coords for display
-                data.lng = lng;
+                // إزالة أي موقع سابق لتجنب التكرار
+                citiesData = citiesData.filter(c => !c.isGps);
+                // إضافة الموقع الجديد في أعلى القائمة
+                citiesData.unshift(data);
                 
-                citiesData = [data]; // Show only this result
-                displayCities(citiesData);
+                // إعادة تطبيق البحث الحالي أو عرض الكل
+                const currentQuery = document.getElementById('searchInput').value;
+                handleSearch(currentQuery);
+                
+                window.scrollTo({ top: 300, behavior: 'smooth' });
             }
             
-            btn.disabled = false;
-            btn.innerHTML = originalText;
+            // استعادة أزرار الموقع
+            gpsBtns.forEach(btn => {
+                btn.disabled = false;
+                btn.innerHTML = btn.dataset.originalHTML;
+            });
         },
         (error) => {
-            alert("تعذر تحديد الموقع. يرجى التأكد من تفعيل خدمات الموقع في جهازك.");
-            btn.disabled = false;
-            btn.innerHTML = originalText;
+            gpsBtns.forEach(btn => {
+                btn.disabled = false;
+                btn.innerHTML = btn.dataset.originalHTML;
+            });
+            const msgs = {
+                ar: ['تم رفض الإذن.', 'الموقع غير متاح.', 'انتهت المهلة.'],
+                en: ['Permission denied.', 'Position unavailable.', 'Timeout.'],
+                fr: ['Permission refusée.', 'Position indisponible.', 'Délai expiré.']
+            };
+            alert(msgs[currentLang][error.code - 1] || 'Error');
         },
         { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
     );
 }
 
-// ===== API FETCHING =====
+// ===== API with caching =====
 async function fetchSunData(city) {
+    const key = cacheKey(city);
+    if (!city.isGps) {
+        try {
+            const cached = localStorage.getItem(key);
+            if (cached) return { ...city, ...JSON.parse(cached) };
+        } catch (e) { /* ignore cache errors */ }
+    }
     try {
         const url = `https://api.sunrisesunset.io/json?lat=${city.lat}&lng=${city.lng}`;
         const response = await fetch(url);
         const data = await response.json();
-        if (data.status === 'OK') return { ...city, ...data.results };
+        if (data.status === 'OK') {
+            if (!city.isGps) {
+                try { localStorage.setItem(key, JSON.stringify(data.results)); } catch (e) { /* storage full, ignore */ }
+            }
+            return { ...city, ...data.results };
+        }
     } catch (error) {
-        console.error(`Error fetching data for ${getCityName(city)}:`, error);
+        console.error('Fetch error for', getCityName(city), error);
     }
     return null;
 }
@@ -679,12 +712,13 @@ function createCityCard(cityData) {
     const card = document.createElement('div');
     card.className = 'city-card';
     card.onclick = () => showDetails(cityData);
-    
+    const locationIcon = cityData.isGps ? 'fa-location-crosshairs' : 'fa-map-marker-alt';
+    const displayName = cityData.isGps ? t('currentLocation') : getCityName(cityData);
     card.innerHTML = `
         <div class="card-header">
-            <i class="fas fa-map-marker-alt"></i>
+            <i class="fas ${locationIcon}"></i>
             <div>
-                <h3>${getCityName(cityData)}</h3>
+                <h3>${displayName}</h3>
                 <div class="coords">${cityData.lat.toFixed(4)}°, ${Math.abs(cityData.lng).toFixed(4)}°</div>
             </div>
         </div>
@@ -709,19 +743,17 @@ function createCityCard(cityData) {
 function displayCities(data) {
     const grid = document.getElementById('citiesGrid');
     grid.innerHTML = '';
-    
     if (data.length === 0) {
-        grid.innerHTML = `<div class="empty-state"><i class="fas fa-search" style="font-size:32px; color:var(--primary); margin-bottom:12px;"></i><h3>${t('noResults')}</h3></div>`;
+        grid.innerHTML = `<div class="empty-state"><i class="fas fa-search" style="font-size:32px; color:var(--dawn-coral); margin-bottom:12px;"></i><h3>${t('noResults')}</h3></div>`;
         return;
     }
-    
     data.forEach(cityData => grid.appendChild(createCityCard(cityData)));
 }
 
 function showDetails(cityData) {
-    document.getElementById('modalTitle').textContent = getCityName(cityData);
-    document.getElementById('modalCoords').textContent = `${cityData.lat.toFixed(4)}°, ${Math.abs(cityData.lng).toFixed(4)}°`;
-    
+    const displayName = cityData.isGps ? t('currentLocation') : getCityName(cityData);
+    document.getElementById('modalTitle').textContent = displayName;
+    document.getElementById('modalCoords').textContent = `Lat: ${cityData.lat.toFixed(6)} | Lng: ${Math.abs(cityData.lng).toFixed(6)}`;
     document.getElementById('modalBody').innerHTML = `
         <div class="detail-grid">
             <div class="detail-item"><div class="label"><i class="fas fa-cloud-sun"></i> ${t('dawn')}</div><div class="value">${cityData.dawn}</div></div>
@@ -731,7 +763,7 @@ function showDetails(cityData) {
             <div class="detail-item"><div class="label"><i class="fas fa-moon"></i> ${t('sunset')}</div><div class="value">${cityData.sunset}</div></div>
             <div class="detail-item"><div class="label"><i class="fas fa-cloud-moon"></i> ${t('dusk')}</div><div class="value">${cityData.dusk}</div></div>
             <div class="detail-item"><div class="label"><i class="fas fa-hourglass-half"></i> ${t('dayLength')}</div><div class="value">${cityData.day_length}</div></div>
-            <div class="detail-item"><div class="label"><i class="fas fa-moon"></i> ${t('moonPhase')}</div><div class="value">${cityData.moon_phase}</div></div>
+            <div class="detail-item"><div class="label"><i class="fas fa-globe"></i> ${t('timezone')}</div><div class="value">${cityData.timezone}</div></div>
         </div>
     `;
     document.getElementById('modal').classList.add('active');
@@ -743,36 +775,176 @@ function closeModal() {
     document.body.style.overflow = '';
 }
 
-// ===== INITIALIZATION =====
-async function loadData() {
-    const promises = moroccanCities.map(city => fetchSunData(city));
-    const results = await Promise.all(promises);
-    citiesData = results.filter(data => data !== null);
-    displayCities(citiesData);
+// ===== SEARCH =====
+function handleSearch(query) {
+    const clearBtn = document.getElementById('clearSearchBtn');
+    const clearMobileBtn = document.getElementById('clearMobileSearchBtn');
+    
+    if (query && query.trim().length > 0) {
+        clearBtn.classList.add('visible');
+        clearMobileBtn.classList.add('visible');
+    } else {
+        clearBtn.classList.remove('visible');
+        clearMobileBtn.classList.remove('visible');
+    }
+
+    const lowerQuery = query.toLowerCase().trim();
+    
+    const gpsCity = citiesData.find(c => c.isGps);
+    const regularCities = citiesData.filter(c => !c.isGps);
+    
+    let filteredRegular = regularCities;
+    if (lowerQuery !== '') {
+        filteredRegular = regularCities.filter(city => getCityName(city).toLowerCase().includes(lowerQuery));
+    }
+    
+    let displayData = [...filteredRegular];
+    
+    if (gpsCity) {
+        const gpsNameAr = gpsCity.name.ar.toLowerCase();
+        const gpsNameEn = gpsCity.name.en.toLowerCase();
+        const gpsNameFr = gpsCity.name.fr.toLowerCase();
+        
+        const matchesGps = lowerQuery === '' || 
+                           gpsNameAr.includes(lowerQuery) || 
+                           gpsNameEn.includes(lowerQuery) || 
+                           gpsNameFr.includes(lowerQuery);
+                           
+        if (matchesGps) {
+            displayData.unshift(gpsCity);
+        }
+    }
+    
+    displayCities(displayData);
 }
 
-document.getElementById('searchInput').addEventListener('input', (e) => {
-    const query = e.target.value.toLowerCase();
-    const filtered = citiesData.filter(city => getCityName(city).toLowerCase().includes(query));
-    displayCities(filtered);
-});
+// ===== STATUS BANNER =====
+function showBanner(message) {
+    const banner = document.getElementById('statusBanner');
+    document.getElementById('statusText').textContent = message;
+    banner.classList.add('visible');
+}
+function hideBanner() {
+    document.getElementById('statusBanner').classList.remove('visible');
+}
 
-document.getElementById('modal').addEventListener('click', (e) => {
-    if (e.target.id === 'modal') closeModal();
-});
+// ===== INITIALIZATION =====
+async function loadData() {
+    hideBanner();
+    citiesData = [];
+    const grid = document.getElementById('citiesGrid');
+    grid.innerHTML = `<div class="loading-state"><div class="loading-spinner"></div><p>${t('loading')}</p><p class="loading-note" id="loadingProgress"></p></div>`;
+    const queue = [...moroccanCities];
+    const total = queue.length;
+    let done = 0;
+    let failed = 0;
+    let firstRender = true;
 
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeModal();
-});
+    function updateProgress() {
+        const el = document.getElementById('loadingProgress');
+        if (el) el.textContent = t('loadingOf', { n: done, total });
+    }
 
-document.querySelectorAll('.lang-btn').forEach(btn => {
-    btn.addEventListener('click', () => updateLanguage(btn.dataset.lang));
-});
+    async function worker() {
+        while (queue.length) {
+            const city = queue.shift();
+            const data = await fetchSunData(city);
+            done++;
+            if (data) {
+                citiesData.push(data);
+                if (firstRender) {
+                    firstRender = false;
+                    displayCities(citiesData);
+                } else {
+                    document.getElementById('citiesGrid').appendChild(createCityCard(data));
+                }
+            } else {
+                failed++;
+            }
+            updateProgress();
+        }
+    }
 
-window.addEventListener('DOMContentLoaded', () => {
+    const workers = Array.from({ length: CONCURRENCY }, () => worker());
+    await Promise.all(workers);
+
+    if (citiesData.length === 0) {
+        document.getElementById('citiesGrid').innerHTML = `
+            <div class="error-state">
+                <i class="fas fa-cloud-slash"></i>
+                <p>${t('fullError')}</p>
+                <button class="retry-btn" onclick="loadData()">${t('retry')}</button>
+            </div>`;
+    } else if (failed > 0) {
+        showBanner(t('partialError'));
+    }
+}
+
+// ===== EVENT LISTENERS =====
+document.addEventListener('DOMContentLoaded', () => {
     updateLanguage(currentLang);
     loadData();
+
+    const desktopSearch = document.getElementById('searchInput');
+    const mobileSearch = document.getElementById('mobileSearchInput');
+    const clearSearchBtn = document.getElementById('clearSearchBtn');
+    const clearMobileSearchBtn = document.getElementById('clearMobileSearchBtn');
+
+    desktopSearch.addEventListener('input', (e) => {
+        mobileSearch.value = e.target.value;
+        handleSearch(e.target.value);
+    });
+    mobileSearch.addEventListener('input', (e) => {
+        desktopSearch.value = e.target.value;
+        handleSearch(e.target.value);
+    });
+
+    clearSearchBtn.addEventListener('click', () => {
+        desktopSearch.value = '';
+        mobileSearch.value = '';
+        handleSearch('');
+        desktopSearch.focus();
+    });
+
+    clearMobileSearchBtn.addEventListener('click', () => {
+        desktopSearch.value = '';
+        mobileSearch.value = '';
+        handleSearch('');
+        mobileSearch.focus();
+    });
+
+    document.getElementById('modal').addEventListener('click', (e) => {
+        if (e.target.id === 'modal') closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeModal();
+    });
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.addEventListener('click', () => updateLanguage(btn.dataset.lang));
+    });
+
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    menuToggle.addEventListener('click', () => {
+        mobileMenu.classList.toggle('active');
+        const icon = menuToggle.querySelector('i');
+        icon.className = mobileMenu.classList.contains('active') ? 'fas fa-times' : 'fas fa-bars';
+    });
+    document.addEventListener('click', (e) => {
+        if (!mobileMenu.contains(e.target) && !menuToggle.contains(e.target)) {
+            mobileMenu.classList.remove('active');
+            menuToggle.querySelector('i').className = 'fas fa-bars';
+        }
+    });
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 600) {
+            mobileMenu.classList.remove('active');
+            menuToggle.querySelector('i').className = 'fas fa-bars';
+        }
+    });
 });
 </script>
+
 </body>
 </html>

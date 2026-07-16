@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="fr" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>مدبر | Agri Manager - SONE Solutions</title>
+    <title>Medber | Agri Manager - SONE Solutions</title>
     
     <!-- Leaflet CSS & JS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
@@ -16,7 +16,8 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
         * {
@@ -26,7 +27,7 @@
         }
         
         body {
-            font-family: 'Cairo', 'Segoe UI', sans-serif;
+            font-family: 'Inter', 'Cairo', 'Segoe UI', sans-serif;
             background: #0A1408;
             color: #FBFCFB;
         }
@@ -79,6 +80,45 @@
             font-size: 10px;
             color: #C1DCB5;
             letter-spacing: 1px;
+        }
+        
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .lang-selector {
+            display: flex;
+            gap: 4px;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 4px 6px;
+            border-radius: 30px;
+            border: 1px solid rgba(76, 175, 80, 0.3);
+        }
+        
+        .lang-btn {
+            background: transparent;
+            border: none;
+            color: #888;
+            padding: 4px 10px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            width: auto;
+        }
+        
+        .lang-btn:hover {
+            color: #FBFCFB;
+            background: rgba(76, 175, 80, 0.2);
+        }
+        
+        .lang-btn.active {
+            background: #4caf50;
+            color: #0A1408;
         }
         
         .stats {
@@ -250,10 +290,23 @@
         .section-title {
             font-size: 1rem;
             margin: 20px 0 12px 0;
-            border-right: 3px solid #4caf50;
-            padding-right: 12px;
+            padding-left: 12px;
             color: #4caf50;
             font-weight: 700;
+        }
+        
+        .section-title[dir="rtl"] {
+            border-right: 3px solid #4caf50;
+            padding-right: 12px;
+            padding-left: 0;
+            border-left: none;
+        }
+        
+        .section-title[dir="ltr"] {
+            border-left: 3px solid #4caf50;
+            padding-left: 12px;
+            padding-right: 0;
+            border-right: none;
         }
         
         .area-card {
@@ -290,7 +343,7 @@
             border: 1px solid rgba(76, 175, 80, 0.3);
             border-radius: 12px;
             color: #FBFCFB;
-            font-family: 'Cairo', sans-serif;
+            font-family: 'Inter', 'Cairo', sans-serif;
             font-size: 0.85rem;
             transition: all 0.3s ease;
         }
@@ -307,7 +360,7 @@
             appearance: none;
             background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
             background-repeat: no-repeat;
-            background-position: left 12px center;
+            background-position: right 12px center;
             background-size: 20px;
         }
         
@@ -315,19 +368,6 @@
             background-color: #1C2A16;
             color: #FBFCFB;
             padding: 10px;
-        }
-        
-        select:focus option,
-        select:hover option {
-            background-color: white !important;
-            color: #0A1408 !important;
-        }
-        
-        select option:hover,
-        select option:focus,
-        select option:active {
-            background: white !important;
-            color: #0A1408 !important;
         }
         
         button {
@@ -362,14 +402,22 @@
             border-radius: 12px;
             padding: 10px;
             margin-bottom: 8px;
-            border-right: 3px solid;
             cursor: pointer;
             transition: all 0.2s;
         }
         
+        .sector-item[dir="rtl"] {
+            border-right: 3px solid;
+            border-left: none;
+        }
+        
+        .sector-item[dir="ltr"] {
+            border-left: 3px solid;
+            border-right: none;
+        }
+        
         .sector-item:hover, .worker-card:hover {
             background: rgba(76, 175, 80, 0.15);
-            transform: translateX(-3px);
         }
         
         .sector-number {
@@ -383,14 +431,28 @@
             line-height: 24px;
             font-size: 11px;
             font-weight: bold;
+            margin-right: 8px;
+        }
+        
+        .sector-item[dir="rtl"] .sector-number {
+            margin-right: 8px;
+            margin-left: 0;
+        }
+        
+        .sector-item[dir="ltr"] .sector-number {
             margin-left: 8px;
+            margin-right: 0;
         }
         
         .delete-sector {
             color: #ff6b6b;
             cursor: pointer;
-            float: left;
+            float: right;
             font-size: 0.75rem;
+        }
+        
+        .sector-item[dir="rtl"] .delete-sector {
+            float: left;
         }
         
         .select-by-number {
@@ -485,6 +547,10 @@
             .logo-text h1 {
                 font-size: 1rem;
             }
+            .header-controls {
+                width: 100%;
+                justify-content: center;
+            }
         }
         
         .worker-marker {
@@ -534,7 +600,7 @@
             max-height: 95vh;
             overflow-y: auto;
             box-shadow: 0 25px 80px rgba(0, 0, 0, 0.9);
-            font-family: 'Cairo', 'Segoe UI', sans-serif;
+            font-family: 'Inter', 'Cairo', 'Segoe UI', sans-serif;
         }
         
         .report-container.dir-ltr {
@@ -639,7 +705,6 @@
             transform: none;
         }
         
-        /* Report Title */
         .report-title {
             text-align: center;
             padding: 15px 0 25px 0;
@@ -661,7 +726,6 @@
             font-weight: 500;
         }
         
-        /* Report Body */
         .report-body {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -691,7 +755,6 @@
             text-align: center;
         }
         
-        /* Info Cards */
         .report-info-card {
             background: #f8f9fa;
             border-radius: 6px;
@@ -739,7 +802,6 @@
             color: #2e7d32;
         }
         
-        /* Sectors Table */
         .report-sectors-list {
             grid-column: 1 / -1;
             margin-top: 10px;
@@ -797,7 +859,6 @@
             margin-right: 8px;
         }
         
-        /* Report Footer */
         .report-footer {
             grid-column: 1 / -1;
             display: flex;
@@ -823,7 +884,6 @@
             color: #1a237e;
         }
         
-        /* Report Actions */
         .report-actions {
             grid-column: 1 / -1;
             display: flex;
@@ -882,7 +942,7 @@
             border: 1px solid #ccc;
             border-radius: 4px;
             font-size: 0.75rem;
-            font-family: 'Cairo', sans-serif;
+            font-family: 'Inter', 'Cairo', sans-serif;
         }
         
         @media print {
@@ -945,44 +1005,51 @@
     <header class="header">
         <div class="logo">
             <div class="logo-icon">
-                <img src="https://scontent.frba1-4.fna.fbcdn.net/v/t39.30808-6/681884209_122093720763301010_4741601618872924151_n.jpg?stp=dst-jpg_tt6&amp;cstp=mx1448x1086&amp;ctp=s1448x1086&amp;_nc_cat=105&amp;ccb=1-7&amp;_nc_sid=6ee11a&amp;_nc_eui2=AeHxluZ2hQ1jX0BWnXknNpa0vNxkRJHUvNK83GREkdS80v2iGDQGg09nRpOJIyBvRZqewR8ANuZxnglu_3jyBLRP&amp;_nc_ohc=5MY4DOQZ3KEQ7kNvwFYjH64&amp;_nc_oc=AdrtCWkds6_rCmi27vAUw_i2tqrK5RREgsOVn-UhSWmJrBplMesSofJ_HaH2GVySs3c&amp;_nc_zt=23&amp;_nc_ht=scontent.frba1-4.fna&amp;_nc_gid=x4zpjI23ZjMYr9arUfGT6Q&amp;_nc_ss=7e2a8&amp;oh=00_Af-K5RI0vsrfWdFx85meEe_0vpC43KLltPAbhOa_rCeQ2A&amp;oe=6A375FA6" alt="مدبر شعار">
+                <img src="https://sone-solutions.github.io/SONE/SONELOGE.jpg" alt="SONE Solutions Logo">
             </div>
             <div class="logo-text">
-                <h1>مدبر | Agri Manager</h1>
-                <p>SONE Solutions - النظام المتكامل لتدبير الضيعات الفلاحية</p>
+                <h1 id="brandTitle">Medber | Agri Manager</h1>
+                <p id="brandSub">SONE Solutions - Système intégré de gestion des exploitations agricoles</p>
             </div>
         </div>
-        <div class="company-input">
-            <i class="fas fa-building" style="color:#4caf50;"></i>
-            <input type="text" id="companyNameInput" placeholder="اسم الشركة" value="SONE Solutions">
-            <button id="setCompanyBtn"><i class="fas fa-check"></i> تعيين</button>
-        </div>
-        <div class="stats">
-            <div class="stat"><i class="fas fa-map"></i> الضيعة: <span id="farmStatus">غير محددة</span></div>
-            <div class="stat"><i class="fas fa-cut"></i> الأجزاء: <span id="sectorCount">0</span></div>
-            <div class="stat"><i class="fas fa-users"></i> العمال: <span id="activeWorkers">0</span></div>
+        <div class="header-controls">
+            <div class="lang-selector">
+                <button class="lang-btn" data-lang="fr" onclick="setLanguage('fr')">FR</button>
+                <button class="lang-btn" data-lang="ar" onclick="setLanguage('ar')">AR</button>
+                <button class="lang-btn" data-lang="en" onclick="setLanguage('en')">EN</button>
+            </div>
+            <div class="company-input">
+                <i class="fas fa-building" style="color:#4caf50;"></i>
+                <input type="text" id="companyNameInput" placeholder="Nom de l'entreprise" value="SONE Solutions">
+                <button id="setCompanyBtn"><i class="fas fa-check"></i> OK</button>
+            </div>
+            <div class="stats">
+                <div class="stat"><i class="fas fa-map"></i> <span id="farmStatusLabel">Ferme:</span> <span id="farmStatus">Non définie</span></div>
+                <div class="stat"><i class="fas fa-cut"></i> <span id="sectorCountLabel">Parcelles:</span> <span id="sectorCount">0</span></div>
+                <div class="stat"><i class="fas fa-users"></i> <span id="activeWorkersLabel">Travailleurs:</span> <span id="activeWorkers">0</span></div>
+            </div>
         </div>
     </header>
 
     <div class="container">
         <div class="map-card">
             <div class="map-header">
-                <h3><i class="fas fa-map-marked-alt"></i> خريطة الضيعة - SONE Solutions</h3>
-                <div class="coord-info" id="coordInfo">لم يتم الاختيار</div>
+                <h3 id="mapTitle"><i class="fas fa-map-marked-alt"></i> Carte de la ferme - SONE Solutions</h3>
+                <div class="coord-info" id="coordInfo">Aucune sélection</div>
             </div>
-            <div id="map" style="position: relative;"></div>
+            <div id="map"></div>
             <div class="map-tools">
-                <button class="tool-btn" id="drawFarmBtn"><i class="fas fa-draw-polygon"></i> رسم حدود الضيعة</button>
-                <button class="tool-btn" id="drawSectorBtn" disabled=""><i class="fas fa-palette"></i> رسم جزء</button>
-                <button class="tool-btn" id="clearFarmBtn"><i class="fas fa-trash-alt"></i> مسح الكل</button>
-                <button class="tool-btn" id="fitFarmBtn"><i class="fas fa-expand"></i> تكبير</button>
-                <button class="tool-btn report-btn" id="generateReportBtn"><i class="fas fa-file-alt"></i> تقرير</button>
+                <button class="tool-btn" id="drawFarmBtn"><i class="fas fa-draw-polygon"></i> <span id="drawFarmLabel">Dessiner la ferme</span></button>
+                <button class="tool-btn" id="drawSectorBtn" disabled><i class="fas fa-palette"></i> <span id="drawSectorLabel">Dessiner une parcelle</span></button>
+                <button class="tool-btn" id="clearFarmBtn"><i class="fas fa-trash-alt"></i> <span id="clearAllLabel">Tout effacer</span></button>
+                <button class="tool-btn" id="fitFarmBtn"><i class="fas fa-expand"></i> <span id="fitViewLabel">Zoom</span></button>
+                <button class="tool-btn report-btn" id="generateReportBtn"><i class="fas fa-file-alt"></i> <span id="reportLabel">Rapport</span></button>
                 <div class="map-type-selector">
                     <i class="fas fa-satellite"></i>
                     <select id="mapTypeSelect">
-                        <option value="satellite">أقمار صناعية</option>
-                        <option value="hybrid">هجين</option>
-                        <option value="streets">شوارع</option>
+                        <option value="satellite">Satellite</option>
+                        <option value="hybrid">Hybride</option>
+                        <option value="streets">Rues</option>
                     </select>
                 </div>
             </div>
@@ -991,174 +1058,174 @@
         <div class="control-panel">
             <div class="area-card">
                 <i class="fas fa-chart-line"></i>
-                <strong>مساحة الضيعة الإجمالية</strong><br>
+                <strong id="totalAreaLabel">Superficie totale</strong><br>
                 <span class="area-value" id="totalAreaValue">0</span><br>
-                <small id="totalAreaUnit">م²</small>
+                <small id="totalAreaUnit">m²</small>
                 <div class="satellite-badge">
                     <i class="fas fa-microchip"></i> SONE Solutions
                 </div>
             </div>
 
             <div class="select-by-number">
-                <label><i class="fas fa-hashtag"></i> اختيار الجزء برقمه</label>
+                <label id="selectByNumberLabel"><i class="fas fa-hashtag"></i> Sélectionner par numéro</label>
                 <div class="number-buttons" id="numberButtons">
-                    <span style="color:#888;">لا توجد أجزاء</span>
+                    <span style="color:#888;">Aucune parcelle</span>
                 </div>
                 <div style="margin-top: 8px; font-size: 12px;">
-                    الجزء المحدد: <span id="selectedSectorDisplay">لا شيء</span>
+                    <span id="selectedSectorLabel">Parcelle sélectionnée:</span> <span id="selectedSectorDisplay">Aucune</span>
                 </div>
             </div>
 
-            <h3 class="section-title"><i class="fas fa-palette"></i> إدارة الأجزاء</h3>
+            <h3 class="section-title" id="manageSectorsTitle"><i class="fas fa-palette"></i> Gestion des parcelles</h3>
             <div class="form-group">
-                <label>اسم الجزء</label>
-                <input type="text" id="newSectorName" placeholder="مثال: قطاع الزيتون">
+                <label id="sectorNameLabel">Nom de la parcelle</label>
+                <input type="text" id="newSectorName" placeholder="Ex: Parcelle d'oliviers">
             </div>
             <div class="form-group">
-                <label>لون الجزء</label>
+                <label id="sectorColorLabel">Couleur</label>
                 <select id="sectorColor">
-                    <option value="#4caf50">أخضر</option>
-                    <option value="#ff9800">برتقالي</option>
-                    <option value="#2196f3">أزرق</option>
-                    <option value="#f44336">أحمر</option>
-                    <option value="#9c27b0">بنفسجي</option>
-                    <option value="#00bcd4">فيروزي</option>
+                    <option value="#4caf50">Vert</option>
+                    <option value="#ff9800">Orange</option>
+                    <option value="#2196f3">Bleu</option>
+                    <option value="#f44336">Rouge</option>
+                    <option value="#9c27b0">Violet</option>
+                    <option value="#00bcd4">Cyan</option>
                 </select>
             </div>
             <div class="form-group">
-                <label>النشاط الرئيسي</label>
+                <label id="sectorActivityLabel">Activité principale</label>
                 <select id="sectorActivity">
-                    <option value="الري">الري</option>
-                    <option value="التسميد">التسميد</option>
-                    <option value="الحصاد">الحصاد</option>
-                    <option value="التقليم">التقليم</option>
-                    <option value="المكافحة">المكافحة</option>
+                    <option value="Irrigation">Irrigation</option>
+                    <option value="Fertilisation">Fertilisation</option>
+                    <option value="Récolte">Récolte</option>
+                    <option value="Taille">Taille</option>
+                    <option value="Traitement">Traitement</option>
                 </select>
             </div>
-            <button id="addSectorBtn" disabled=""><i class="fas fa-plus-circle"></i> إضافة جزء (ارسمه)</button>
+            <button id="addSectorBtn" disabled><i class="fas fa-plus-circle"></i> <span id="addSectorLabel">Ajouter (dessiner)</span></button>
 
-            <h3 class="section-title"><i class="fas fa-layer-group"></i> الأجزاء المسجلة</h3>
-            <div id="sectorsList" class="sectors-list"><div style="text-align:center; color:#888;">ارسم أجزاء ملونة</div></div>
+            <h3 class="section-title" id="sectorsListTitle"><i class="fas fa-layer-group"></i> Parcelles enregistrées</h3>
+            <div id="sectorsList" class="sectors-list"><div style="text-align:center; color:#888;">Dessinez des parcelles</div></div>
 
-            <h3 class="section-title"><i class="fas fa-hard-hat"></i> إدارة العمال</h3>
+            <h3 class="section-title" id="workersTitle"><i class="fas fa-hard-hat"></i> Gestion des travailleurs</h3>
             <div class="form-group">
                 <div style="display: flex; gap: 8px;">
-                    <input type="text" id="newWorkerName" placeholder="اسم العامل" style="flex:2">
-                    <button id="addWorkerBtn" style="width: auto; padding: 8px 15px;">إضافة</button>
+                    <input type="text" id="newWorkerName" placeholder="Nom du travailleur" style="flex:2">
+                    <button id="addWorkerBtn" style="width: auto; padding: 8px 15px;"><span id="addWorkerLabel">Ajouter</span></button>
                 </div>
             </div>
             <div class="form-group">
-                <label>اختيار العامل</label>
-                <select id="workerSelect"><option value="">-- اختر عاملاً --</option></select>
+                <label id="selectWorkerLabel">Sélectionner un travailleur</label>
+                <select id="workerSelect"><option value="">-- Choisir --</option></select>
             </div>
             <div class="form-group">
-                <label>المدة المستغرقة</label>
+                <label id="durationLabel">Durée de la tâche</label>
                 <div class="time-group">
-                    <input type="number" id="taskHours" placeholder="ساعات" value="1" min="0">
-                    <input type="number" id="taskMinutes" placeholder="دقائق" value="0" min="0" max="59">
+                    <input type="number" id="taskHours" placeholder="Heures" value="1" min="0">
+                    <input type="number" id="taskMinutes" placeholder="Minutes" value="0" min="0" max="59">
                 </div>
             </div>
             <div class="form-group">
-                <label>وصف المهمة</label>
-                <input type="text" id="taskDescription" placeholder="وصف إضافي">
+                <label id="taskDescLabel">Description de la tâche</label>
+                <input type="text" id="taskDescription" placeholder="Description supplémentaire">
             </div>
-            <button id="assignTaskBtn"><i class="fas fa-paper-plane"></i> إرسال العامل</button>
+            <button id="assignTaskBtn"><i class="fas fa-paper-plane"></i> <span id="assignTaskLabel">Envoyer le travailleur</span></button>
 
-            <h3 class="section-title"><i class="fas fa-users"></i> العمال النشطون</h3>
-            <div id="workersList" class="workers-list"><div style="color:#888; text-align:center;">أضف عامل جديد</div></div>
+            <h3 class="section-title" id="activeWorkersTitle"><i class="fas fa-users"></i> Travailleurs actifs</h3>
+            <div id="workersList" class="workers-list"></div>
         </div>
     </div>
 
     <!-- ===== Report Modal ===== -->
     <div class="report-overlay" id="reportOverlay">
-        <div class="report-container dir-rtl" id="reportContainer">
+        <div class="report-container dir-ltr" id="reportContainer">
             <!-- Header -->
             <div class="report-header">
                 <div class="company-section">
                     <div class="company-logo">
-                        <img src="https://scontent.frba1-4.fna.fbcdn.net/v/t39.30808-6/681884209_122093720763301010_4741601618872924151_n.jpg?stp=dst-jpg_tt6&amp;cstp=mx1448x1086&amp;ctp=s1448x1086&amp;_nc_cat=105&amp;ccb=1-7&amp;_nc_sid=6ee11a&amp;_nc_eui2=AeHxluZ2hQ1jX0BWnXknNpa0vNxkRJHUvNK83GREkdS80v2iGDQGg09nRpOJIyBvRZqewR8ANuZxnglu_3jyBLRP&amp;_nc_ohc=5MY4DOQZ3KEQ7kNvwFYjH64&amp;_nc_oc=AdrtCWkds6_rCmi27vAUw_i2tqrK5RREgsOVn-UhSWmJrBplMesSofJ_HaH2GVySs3c&amp;_nc_zt=23&amp;_nc_ht=scontent.frba1-4.fna&amp;_nc_gid=x4zpjI23ZjMYr9arUfGT6Q&amp;_nc_ss=7e2a8&amp;oh=00_Af-K5RI0vsrfWdFx85meEe_0vpC43KLltPAbhOa_rCeQ2A&amp;oe=6A375FA6" alt="SONE Solutions">
+                        <img src="https://sone-solutions.github.io/SONE/SONELOGE.jpg" alt="SONE Solutions">
                     </div>
                     <div>
                         <div class="company-name">SONE Solutions</div>
-                        <div class="company-sub" id="reportCompanySub">النظام المتكامل لتدبير الضيعات الفلاحية</div>
+                        <div class="company-sub" id="reportCompanySub">Système intégré de gestion des exploitations agricoles</div>
                     </div>
                 </div>
                 <div>
-                    <button class="report-close-btn" id="closeReportBtn">إغلاق</button>
+                    <button class="report-close-btn" id="closeReportBtn">Fermer</button>
                 </div>
             </div>
 
             <!-- Title -->
             <div class="report-title">
-                <h2 id="reportMainTitle">تقرير الضيعة الفلاحية</h2>
-                <div class="sub-title" id="reportDateValue">تاريخ التقرير: --</div>
+                <h2 id="reportMainTitle">Rapport de l'exploitation agricole</h2>
+                <div class="sub-title" id="reportDateValue">Date du rapport: --</div>
             </div>
 
             <!-- Body -->
             <div class="report-body" id="reportBody">
                 <!-- Map Image -->
                 <div class="report-map-image" id="reportMapImage">
-                    <img id="reportMapImg" src="" alt="خريطة الضيعة">
-                    <div class="map-caption" id="reportMapCaption">خريطة الضيعة - SONE Solutions</div>
+                    <img id="reportMapImg" src="" alt="Carte de la ferme">
+                    <div class="map-caption" id="reportMapCaption">Carte de la ferme - SONE Solutions</div>
                 </div>
 
                 <!-- Farm Info -->
                 <div class="report-info-card">
-                    <h4 id="reportInfoTitle1">معلومات الضيعة</h4>
+                    <h4 id="reportInfoTitle1">Informations de la ferme</h4>
                     <div class="info-row">
-                        <span class="info-label" id="labelFarmName">اسم الضيعة</span>
-                        <span class="info-value" id="reportFarmName">غير محددة</span>
+                        <span class="info-label" id="labelFarmName">Nom de la ferme</span>
+                        <span class="info-value" id="reportFarmName">Non définie</span>
                     </div>
                     <div class="info-row">
-                        <span class="info-label" id="labelTotalArea">المساحة الإجمالية</span>
-                        <span class="info-value green" id="reportTotalArea">0 م²</span>
+                        <span class="info-label" id="labelTotalArea">Superficie totale</span>
+                        <span class="info-value green" id="reportTotalArea">0 m²</span>
                     </div>
                     <div class="info-row">
-                        <span class="info-label" id="labelReportDate">تاريخ التقرير</span>
+                        <span class="info-label" id="labelReportDate">Date du rapport</span>
                         <span class="info-value" id="reportDateValue2">-</span>
                     </div>
                 </div>
 
                 <!-- Coordinates Info -->
                 <div class="report-info-card">
-                    <h4 id="reportInfoTitle2">الإحداثيات الجغرافية</h4>
+                    <h4 id="reportInfoTitle2">Coordonnées géographiques</h4>
                     <div class="info-row">
-                        <span class="info-label" id="labelLat">خط العرض</span>
+                        <span class="info-label" id="labelLat">Latitude</span>
                         <span class="info-value" id="reportLat">-</span>
                     </div>
                     <div class="info-row">
-                        <span class="info-label" id="labelLng">خط الطول</span>
+                        <span class="info-label" id="labelLng">Longitude</span>
                         <span class="info-value" id="reportLng">-</span>
                     </div>
                     <div class="info-row">
-                        <span class="info-label" id="labelCenter">مركز الضيعة</span>
+                        <span class="info-label" id="labelCenter">Centre de la ferme</span>
                         <span class="info-value" id="reportCenter">-</span>
                     </div>
                     <div class="info-row">
-                        <span class="info-label" id="labelScale">مقياس الرسم</span>
+                        <span class="info-label" id="labelScale">Échelle</span>
                         <span class="info-value" id="reportScale">-</span>
                     </div>
                     <div class="info-row">
-                        <span class="info-label" id="labelZoom">مستوى التكبير</span>
+                        <span class="info-label" id="labelZoom">Niveau de zoom</span>
                         <span class="info-value" id="reportZoom">-</span>
                     </div>
                 </div>
 
                 <!-- Sectors Table -->
                 <div class="report-sectors-list">
-                    <h4 id="reportSectorsTitle">تفاصيل الأجزاء</h4>
+                    <h4 id="reportSectorsTitle">Détails des parcelles</h4>
                     <table>
                         <thead>
                             <tr>
-                                <th id="thNumber">الرقم</th>
-                                <th id="thName">الاسم</th>
-                                <th id="thActivity">النشاط</th>
-                                <th id="thArea">المساحة</th>
-                                <th id="thColor">اللون</th>
+                                <th id="thNumber">N°</th>
+                                <th id="thName">Nom</th>
+                                <th id="thActivity">Activité</th>
+                                <th id="thArea">Superficie</th>
+                                <th id="thColor">Couleur</th>
                             </tr>
                         </thead>
                         <tbody id="reportSectorsTable">
-                            <tr><td colspan="5" style="text-align:center; color:#999;" id="noSectorsMsg">لا توجد أجزاء</td></tr>
+                            <tr><td colspan="5" style="text-align:center; color:#999;" id="noSectorsMsg">Aucune parcelle</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -1167,10 +1234,10 @@
                 <div class="report-footer">
                     <div class="footer-left">
                         <div class="signature">SONE Solutions</div>
-                        <div id="footerSub">النظام المتكامل لتدبير الضيعات الفلاحية</div>
+                        <div id="footerSub">Système intégré de gestion des exploitations agricoles</div>
                     </div>
                     <div class="footer-right">
-                        <div id="footerCertified">تقرير معتمد</div>
+                        <div id="footerCertified">Rapport certifié</div>
                         <div id="reportFooterDate">-</div>
                     </div>
                 </div>
@@ -1178,14 +1245,15 @@
                 <!-- Actions -->
                 <div class="report-actions">
                     <div class="language-selector">
-                        <label for="reportLangSelect">اللغة / Langue:</label>
+                        <label for="reportLangSelect">Langue:</label>
                         <select id="reportLangSelect">
-                            <option value="ar">العربية</option>
                             <option value="fr">Français</option>
+                            <option value="ar">العربية</option>
+                            <option value="en">English</option>
                         </select>
                     </div>
-                    <button class="btn-print" id="printReportBtn">طباعة التقرير</button>
-                    <button class="btn-download" id="downloadReportBtn">تحميل التقرير</button>
+                    <button class="btn-print" id="printReportBtn">Imprimer</button>
+                    <button class="btn-download" id="downloadReportBtn">Télécharger</button>
                 </div>
             </div>
         </div>
@@ -1193,13 +1261,438 @@
 
     <footer>
         <div class="copyright">
-            <p>© 2026 SONE Solutions | مدبر Agri Manager - النظام المتكامل لتدبير الضيعات الفلاحية</p>
-            <p style="margin-top: 5px; font-size: 10px;">مختبر متقدم لتحليل البيانات الزراعية - معتمد من Agri Maroc Précis</p>
+            <p id="footerText">© 2026 SONE Solutions | Medber Agri Manager - Système intégré de gestion des exploitations agricoles</p>
+            <p id="footerSubText" style="margin-top: 5px; font-size: 10px;">Laboratoire avancé d'analyse de données agricoles - Certifié par Agri Maroc Précis</p>
         </div>
     </footer>
 
     <script>
-        // ========== خرائط Google ==========
+        // ========== TRADUCTIONS ==========
+        const translations = {
+            fr: {
+                brandTitle: 'Medber | Agri Manager',
+                brandSub: 'SONE Solutions - Système intégré de gestion des exploitations agricoles',
+                farmStatusLabel: 'Ferme:',
+                farmStatus: 'Non définie',
+                sectorCountLabel: 'Parcelles:',
+                activeWorkersLabel: 'Travailleurs:',
+                mapTitle: 'Carte de la ferme - SONE Solutions',
+                coordInfo: 'Aucune sélection',
+                drawFarmLabel: 'Dessiner la ferme',
+                drawSectorLabel: 'Dessiner une parcelle',
+                clearAllLabel: 'Tout effacer',
+                fitViewLabel: 'Zoom',
+                reportLabel: 'Rapport',
+                totalAreaLabel: 'Superficie totale',
+                selectByNumberLabel: 'Sélectionner par numéro',
+                selectedSectorLabel: 'Parcelle sélectionnée:',
+                selectedSectorDisplay: 'Aucune',
+                manageSectorsTitle: 'Gestion des parcelles',
+                sectorNameLabel: 'Nom de la parcelle',
+                sectorColorLabel: 'Couleur',
+                sectorActivityLabel: 'Activité principale',
+                addSectorLabel: 'Ajouter (dessiner)',
+                sectorsListTitle: 'Parcelles enregistrées',
+                workersTitle: 'Gestion des travailleurs',
+                addWorkerLabel: 'Ajouter',
+                selectWorkerLabel: 'Sélectionner un travailleur',
+                durationLabel: 'Durée de la tâche',
+                taskDescLabel: 'Description de la tâche',
+                assignTaskLabel: 'Envoyer le travailleur',
+                activeWorkersTitle: 'Travailleurs actifs',
+                footerText: '© 2026 SONE Solutions | Medber Agri Manager - Système intégré de gestion des exploitations agricoles',
+                footerSubText: 'Laboratoire avancé d\'analyse de données agricoles - Certifié par Agri Maroc Précis',
+                // Report
+                reportCompanySub: 'Système intégré de gestion des exploitations agricoles',
+                reportMainTitle: 'Rapport de l\'exploitation agricole',
+                reportDate: 'Date du rapport:',
+                reportMapCaption: 'Carte de la ferme - SONE Solutions',
+                reportInfoTitle1: 'Informations de la ferme',
+                reportInfoTitle2: 'Coordonnées géographiques',
+                reportSectorsTitle: 'Détails des parcelles',
+                labelFarmName: 'Nom de la ferme',
+                labelTotalArea: 'Superficie totale',
+                labelReportDate: 'Date du rapport',
+                labelLat: 'Latitude',
+                labelLng: 'Longitude',
+                labelCenter: 'Centre de la ferme',
+                labelScale: 'Échelle',
+                labelZoom: 'Niveau de zoom',
+                thNumber: 'N°',
+                thName: 'Nom',
+                thActivity: 'Activité',
+                thArea: 'Superficie',
+                thColor: 'Couleur',
+                noSectorsMsg: 'Aucune parcelle',
+                footerSub: 'Système intégré de gestion des exploitations agricoles',
+                footerCertified: 'Rapport certifié',
+                printBtn: 'Imprimer',
+                downloadBtn: 'Télécharger',
+                farmUndefined: 'Non définie',
+                areaUnit: 'm²',
+                hectare: 'ha',
+                zoomLevel: 'Niveau',
+                noSectors: 'Aucune parcelle',
+                noWorkers: 'Ajouter un travailleur',
+                busy: 'Occupé',
+                free: 'Disponible',
+                minutes: 'min',
+                alertDrawFarmFirst: 'Veuillez d\'abord dessiner les limites de la ferme',
+                alertEnterSectorName: 'Entrez un nom pour la parcelle',
+                alertSectorAdded: 'Parcelle ajoutée avec succès',
+                alertDeleteSector: 'Êtes-vous sûr de vouloir supprimer cette parcelle ?',
+                alertSectorDeleted: 'Parcelle supprimée avec succès',
+                alertClearAll: 'Tout effacer (limites, parcelles, tâches, travailleurs) ?',
+                alertAllCleared: 'Toutes les données ont été effacées',
+                alertWorkerBusy: 'est occupé',
+                alertNoSectors: 'Aucune parcelle. Dessinez d\'abord des parcelles.',
+                alertSelectWorker: 'Sélectionnez un travailleur',
+                alertWorkerNotFound: 'Travailleur introuvable',
+                alertWorkerAlreadyBusy: 'est déjà occupé',
+                alertEnterSectorNumber: 'Entrez le numéro de la parcelle:\n',
+                alertSectorNotFound: 'Parcelle introuvable',
+                alertInvalidDuration: 'Durée invalide',
+                confirmAssign: 'Envoyer {worker} à la parcelle {sector} pour {hours}h {minutes}min ?',
+                alertWorkerSent: 'Travailleur envoyé avec succès',
+                alertDrawSectorFirst: 'Dessinez d\'abord les limites de la ferme',
+                alertFarmDefined: 'Limites de la ferme définies avec succès\nSuperficie: {area}',
+                alertAddSectorFirst: 'Dessinez d\'abord les limites de la ferme',
+                alertNoFarm: 'Aucune ferme dessinée',
+                alertNoSectorsToSelect: 'Aucune parcelle disponible',
+                alertSelectSector: 'Sélectionnez une parcelle',
+                alertWorkerTaskDone: 'a terminé sa tâche avec succès'
+            },
+            ar: {
+                brandTitle: 'مدبر | Agri Manager',
+                brandSub: 'SONE Solutions - النظام المتكامل لتدبير الضيعات الفلاحية',
+                farmStatusLabel: 'الضيعة:',
+                farmStatus: 'غير محددة',
+                sectorCountLabel: 'الأجزاء:',
+                activeWorkersLabel: 'العمال:',
+                mapTitle: 'خريطة الضيعة - SONE Solutions',
+                coordInfo: 'لم يتم الاختيار',
+                drawFarmLabel: 'رسم حدود الضيعة',
+                drawSectorLabel: 'رسم جزء',
+                clearAllLabel: 'مسح الكل',
+                fitViewLabel: 'تكبير',
+                reportLabel: 'تقرير',
+                totalAreaLabel: 'مساحة الضيعة الإجمالية',
+                selectByNumberLabel: 'اختيار الجزء برقمه',
+                selectedSectorLabel: 'الجزء المحدد:',
+                selectedSectorDisplay: 'لا شيء',
+                manageSectorsTitle: 'إدارة الأجزاء',
+                sectorNameLabel: 'اسم الجزء',
+                sectorColorLabel: 'لون الجزء',
+                sectorActivityLabel: 'النشاط الرئيسي',
+                addSectorLabel: 'إضافة جزء (ارسمه)',
+                sectorsListTitle: 'الأجزاء المسجلة',
+                workersTitle: 'إدارة العمال',
+                addWorkerLabel: 'إضافة',
+                selectWorkerLabel: 'اختيار العامل',
+                durationLabel: 'المدة المستغرقة',
+                taskDescLabel: 'وصف المهمة',
+                assignTaskLabel: 'إرسال العامل',
+                activeWorkersTitle: 'العمال النشطون',
+                footerText: '© 2026 SONE Solutions | مدبر Agri Manager - النظام المتكامل لتدبير الضيعات الفلاحية',
+                footerSubText: 'مختبر متقدم لتحليل البيانات الزراعية - معتمد من Agri Maroc Précis',
+                reportCompanySub: 'النظام المتكامل لتدبير الضيعات الفلاحية',
+                reportMainTitle: 'تقرير الضيعة الفلاحية',
+                reportDate: 'تاريخ التقرير:',
+                reportMapCaption: 'خريطة الضيعة - SONE Solutions',
+                reportInfoTitle1: 'معلومات الضيعة',
+                reportInfoTitle2: 'الإحداثيات الجغرافية',
+                reportSectorsTitle: 'تفاصيل الأجزاء',
+                labelFarmName: 'اسم الضيعة',
+                labelTotalArea: 'المساحة الإجمالية',
+                labelReportDate: 'تاريخ التقرير',
+                labelLat: 'خط العرض',
+                labelLng: 'خط الطول',
+                labelCenter: 'مركز الضيعة',
+                labelScale: 'مقياس الرسم',
+                labelZoom: 'مستوى التكبير',
+                thNumber: 'الرقم',
+                thName: 'الاسم',
+                thActivity: 'النشاط',
+                thArea: 'المساحة',
+                thColor: 'اللون',
+                noSectorsMsg: 'لا توجد أجزاء',
+                footerSub: 'النظام المتكامل لتدبير الضيعات الفلاحية',
+                footerCertified: 'تقرير معتمد',
+                printBtn: 'طباعة التقرير',
+                downloadBtn: 'تحميل التقرير',
+                farmUndefined: 'غير محددة',
+                areaUnit: 'م²',
+                hectare: 'هكتار',
+                zoomLevel: 'المستوى',
+                noSectors: 'لا توجد أجزاء',
+                noWorkers: 'أضف عامل جديد',
+                busy: 'مشغول',
+                free: 'متفرغ',
+                minutes: 'دقيقة',
+                alertDrawFarmFirst: 'يرجى رسم حدود الضيعة أولاً',
+                alertEnterSectorName: 'أدخل اسم الجزء',
+                alertSectorAdded: 'تم إضافة الجزء بنجاح',
+                alertDeleteSector: 'هل أنت متأكد من حذف هذا الجزء؟',
+                alertSectorDeleted: 'تم حذف الجزء بنجاح',
+                alertClearAll: 'مسح كل شيء (الحدود، الأجزاء، المهام، العمال)؟',
+                alertAllCleared: 'تم مسح جميع البيانات',
+                alertWorkerBusy: 'مشغول حالياً',
+                alertNoSectors: 'لا توجد أجزاء. ارسم أجزاء أولاً.',
+                alertSelectWorker: 'اختر عاملاً',
+                alertWorkerNotFound: 'العامل غير موجود',
+                alertWorkerAlreadyBusy: 'مشغول حالياً',
+                alertEnterSectorNumber: 'أدخل رقم الجزء:\n',
+                alertSectorNotFound: 'الجزء غير موجود',
+                alertInvalidDuration: 'المدة غير صحيحة',
+                confirmAssign: 'إرسال {worker} إلى الجزء {sector} لمدة {hours} ساعة {minutes} دقيقة؟',
+                alertWorkerSent: 'تم إرسال العامل بنجاح',
+                alertDrawSectorFirst: 'حدد حدود الضيعة أولاً',
+                alertFarmDefined: 'تم رسم حدود الضيعة بنجاح\nالمساحة: {area}',
+                alertAddSectorFirst: 'حدد حدود الضيعة أولاً',
+                alertNoFarm: 'لم يتم رسم حدود الضيعة',
+                alertNoSectorsToSelect: 'لا توجد أجزاء',
+                alertSelectSector: 'اختر جزءاً',
+                alertWorkerTaskDone: 'أنهى مهمته بنجاح'
+            },
+            en: {
+                brandTitle: 'Medber | Agri Manager',
+                brandSub: 'SONE Solutions - Integrated Agricultural Farm Management System',
+                farmStatusLabel: 'Farm:',
+                farmStatus: 'Not defined',
+                sectorCountLabel: 'Sectors:',
+                activeWorkersLabel: 'Workers:',
+                mapTitle: 'Farm Map - SONE Solutions',
+                coordInfo: 'No selection',
+                drawFarmLabel: 'Draw Farm',
+                drawSectorLabel: 'Draw Sector',
+                clearAllLabel: 'Clear All',
+                fitViewLabel: 'Zoom',
+                reportLabel: 'Report',
+                totalAreaLabel: 'Total Farm Area',
+                selectByNumberLabel: 'Select by Number',
+                selectedSectorLabel: 'Selected sector:',
+                selectedSectorDisplay: 'None',
+                manageSectorsTitle: 'Manage Sectors',
+                sectorNameLabel: 'Sector Name',
+                sectorColorLabel: 'Sector Color',
+                sectorActivityLabel: 'Main Activity',
+                addSectorLabel: 'Add Sector (Draw)',
+                sectorsListTitle: 'Registered Sectors',
+                workersTitle: 'Worker Management',
+                addWorkerLabel: 'Add',
+                selectWorkerLabel: 'Select Worker',
+                durationLabel: 'Task Duration',
+                taskDescLabel: 'Task Description',
+                assignTaskLabel: 'Send Worker',
+                activeWorkersTitle: 'Active Workers',
+                footerText: '© 2026 SONE Solutions | Medber Agri Manager - Integrated Agricultural Farm Management System',
+                footerSubText: 'Advanced Agricultural Data Analysis Lab - Certified by Agri Maroc Précis',
+                reportCompanySub: 'Integrated Agricultural Farm Management System',
+                reportMainTitle: 'Agricultural Farm Report',
+                reportDate: 'Report Date:',
+                reportMapCaption: 'Farm Map - SONE Solutions',
+                reportInfoTitle1: 'Farm Information',
+                reportInfoTitle2: 'Geographic Coordinates',
+                reportSectorsTitle: 'Sector Details',
+                labelFarmName: 'Farm Name',
+                labelTotalArea: 'Total Area',
+                labelReportDate: 'Report Date',
+                labelLat: 'Latitude',
+                labelLng: 'Longitude',
+                labelCenter: 'Farm Center',
+                labelScale: 'Scale',
+                labelZoom: 'Zoom Level',
+                thNumber: 'No.',
+                thName: 'Name',
+                thActivity: 'Activity',
+                thArea: 'Area',
+                thColor: 'Color',
+                noSectorsMsg: 'No sectors',
+                footerSub: 'Integrated Agricultural Farm Management System',
+                footerCertified: 'Certified Report',
+                printBtn: 'Print Report',
+                downloadBtn: 'Download Report',
+                farmUndefined: 'Not defined',
+                areaUnit: 'm²',
+                hectare: 'ha',
+                zoomLevel: 'Level',
+                noSectors: 'No sectors',
+                noWorkers: 'Add a worker',
+                busy: 'Busy',
+                free: 'Free',
+                minutes: 'min',
+                alertDrawFarmFirst: 'Please draw the farm boundaries first',
+                alertEnterSectorName: 'Enter sector name',
+                alertSectorAdded: 'Sector added successfully',
+                alertDeleteSector: 'Are you sure you want to delete this sector?',
+                alertSectorDeleted: 'Sector deleted successfully',
+                alertClearAll: 'Clear all (boundaries, sectors, tasks, workers)?',
+                alertAllCleared: 'All data cleared',
+                alertWorkerBusy: 'is busy',
+                alertNoSectors: 'No sectors. Draw sectors first.',
+                alertSelectWorker: 'Select a worker',
+                alertWorkerNotFound: 'Worker not found',
+                alertWorkerAlreadyBusy: 'is already busy',
+                alertEnterSectorNumber: 'Enter sector number:\n',
+                alertSectorNotFound: 'Sector not found',
+                alertInvalidDuration: 'Invalid duration',
+                confirmAssign: 'Send {worker} to sector {sector} for {hours}h {minutes}min?',
+                alertWorkerSent: 'Worker sent successfully',
+                alertDrawSectorFirst: 'Draw farm boundaries first',
+                alertFarmDefined: 'Farm boundaries defined\nArea: {area}',
+                alertAddSectorFirst: 'Draw farm boundaries first',
+                alertNoFarm: 'No farm drawn',
+                alertNoSectorsToSelect: 'No sectors available',
+                alertSelectSector: 'Select a sector',
+                alertWorkerTaskDone: 'has finished their task successfully'
+            }
+        };
+
+        // ========== LANGUE ACTUELLE ==========
+        let currentLang = 'fr';
+
+        // ========== FONCTION DE CHANGEMENT DE LANGUE ==========
+        function setLanguage(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+            
+            // Update HTML direction
+            if (lang === 'ar') {
+                document.documentElement.dir = 'rtl';
+                document.documentElement.lang = 'ar';
+            } else {
+                document.documentElement.dir = 'ltr';
+                document.documentElement.lang = lang === 'fr' ? 'fr' : 'en';
+            }
+            
+            // Update all text elements with data-i18n
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (t[key] !== undefined) {
+                    el.textContent = t[key];
+                }
+            });
+            
+            // Update brand
+            document.getElementById('brandTitle').textContent = t.brandTitle;
+            document.getElementById('brandSub').textContent = t.brandSub;
+            
+            // Update stats
+            document.querySelectorAll('.stat span:first-child').forEach(el => {
+                const key = el.id + 'Label';
+                if (t[key] !== undefined) {
+                    el.textContent = t[key];
+                }
+            });
+            
+            // Update map header
+            document.getElementById('mapTitle').textContent = t.mapTitle;
+            document.getElementById('coordInfo').textContent = t.coordInfo;
+            
+            // Update tool buttons
+            document.querySelectorAll('.tool-btn span').forEach(el => {
+                const key = el.id;
+                if (t[key] !== undefined) {
+                    el.textContent = t[key];
+                }
+            });
+            
+            // Update area
+            document.getElementById('totalAreaLabel').textContent = t.totalAreaLabel;
+            
+            // Update select by number
+            document.getElementById('selectByNumberLabel').textContent = t.selectByNumberLabel;
+            document.querySelector('#selectedSectorLabel').textContent = t.selectedSectorLabel;
+            document.getElementById('selectedSectorDisplay').textContent = t.selectedSectorDisplay;
+            
+            // Update sections
+            document.getElementById('manageSectorsTitle').textContent = t.manageSectorsTitle;
+            document.getElementById('sectorNameLabel').textContent = t.sectorNameLabel;
+            document.getElementById('sectorColorLabel').textContent = t.sectorColorLabel;
+            document.getElementById('sectorActivityLabel').textContent = t.sectorActivityLabel;
+            document.querySelector('#addSectorBtn span').textContent = t.addSectorLabel;
+            document.getElementById('sectorsListTitle').textContent = t.sectorsListTitle;
+            document.getElementById('workersTitle').textContent = t.workersTitle;
+            document.querySelector('#addWorkerBtn span').textContent = t.addWorkerLabel;
+            document.getElementById('selectWorkerLabel').textContent = t.selectWorkerLabel;
+            document.getElementById('durationLabel').textContent = t.durationLabel;
+            document.getElementById('taskDescLabel').textContent = t.taskDescLabel;
+            document.querySelector('#assignTaskBtn span').textContent = t.assignTaskLabel;
+            document.getElementById('activeWorkersTitle').textContent = t.activeWorkersTitle;
+            
+            // Update footer
+            document.getElementById('footerText').textContent = t.footerText;
+            document.getElementById('footerSubText').textContent = t.footerSubText;
+            
+            // Update report (if open)
+            updateReportLanguage(lang);
+            
+            // Update language buttons
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === lang);
+            });
+            
+            // Update placeholders
+            document.getElementById('newSectorName').placeholder = lang === 'fr' ? 'Ex: Parcelle d\'oliviers' : 
+                                                                 lang === 'ar' ? 'مثال: قطاع الزيتون' : 'Ex: Olive sector';
+            document.getElementById('newWorkerName').placeholder = lang === 'fr' ? 'Nom du travailleur' :
+                                                                 lang === 'ar' ? 'اسم العامل' : 'Worker name';
+            document.getElementById('taskDescription').placeholder = lang === 'fr' ? 'Description supplémentaire' :
+                                                                   lang === 'ar' ? 'وصف إضافي' : 'Additional description';
+            
+            // Update select options for activities
+            const activitySelect = document.getElementById('sectorActivity');
+            const activityOptions = {
+                fr: ['Irrigation', 'Fertilisation', 'Récolte', 'Taille', 'Traitement'],
+                ar: ['الري', 'التسميد', 'الحصاد', 'التقليم', 'المكافحة'],
+                en: ['Irrigation', 'Fertilization', 'Harvest', 'Pruning', 'Treatment']
+            };
+            if (activityOptions[lang]) {
+                activityOptions[lang].forEach((val, idx) => {
+                    if (activitySelect.options[idx]) {
+                        activitySelect.options[idx].text = val;
+                    }
+                });
+            }
+            
+            // Update color options
+            const colorSelect = document.getElementById('sectorColor');
+            const colorOptions = {
+                fr: ['Vert', 'Orange', 'Bleu', 'Rouge', 'Violet', 'Cyan'],
+                ar: ['أخضر', 'برتقالي', 'أزرق', 'أحمر', 'بنفسجي', 'فيروزي'],
+                en: ['Green', 'Orange', 'Blue', 'Red', 'Purple', 'Cyan']
+            };
+            if (colorOptions[lang]) {
+                colorOptions[lang].forEach((val, idx) => {
+                    if (colorSelect.options[idx]) {
+                        colorSelect.options[idx].text = val;
+                    }
+                });
+            }
+            
+            // Update worker select
+            updateWorkerSelect();
+            
+            // Update farm status
+            const statusKey = farmPolygon ? (lang === 'fr' ? 'Définie' : lang === 'ar' ? 'محددة' : 'Defined') : t.farmStatus;
+            document.getElementById('farmStatus').textContent = statusKey;
+            
+            // Update sectors list
+            renderSectorsList();
+        }
+
+        // ========== INITIALISATION ==========
+        // Set French as default
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set French as active
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === 'fr');
+            });
+            // Update all text
+            setLanguage('fr');
+        });
+
+        // ========== GOOGLE MAPS LAYERS ==========
         let googleSatellite = L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
             subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
             attribution: '© Google Earth',
@@ -1251,8 +1744,8 @@
                     break;
             }
         };
-        
-        // ========== دوال حساب المساحة ==========
+
+        // ========== CALCUL DE SUPERFICIE ==========
         function calculatePolygonArea(latLngs) {
             if (!latLngs || latLngs.length < 3) return 0;
             let area = 0;
@@ -1267,20 +1760,14 @@
         }
         
         function formatArea(area) {
+            const t = translations[currentLang];
             if (area >= 10000) {
-                return { value: (area/10000).toFixed(2), unit: "هكتار", display: `${(area/10000).toFixed(2)} هكتار (${Math.round(area)} م²)` };
+                return { value: (area/10000).toFixed(2), unit: t.hectare, display: `${(area/10000).toFixed(2)} ${t.hectare} (${Math.round(area)} ${t.areaUnit})` };
             }
-            return { value: Math.round(area), unit: "م²", display: `${Math.round(area)} متر مربع` };
+            return { value: Math.round(area), unit: t.areaUnit, display: `${Math.round(area)} ${t.areaUnit}` };
         }
-        
-        function formatAreaFR(area) {
-            if (area >= 10000) {
-                return { value: (area/10000).toFixed(2), unit: "ha", display: `${(area/10000).toFixed(2)} ha (${Math.round(area)} m²)` };
-            }
-            return { value: Math.round(area), unit: "m²", display: `${Math.round(area)} mètres carrés` };
-        }
-        
-        // ========== حساب المسافة ==========
+
+        // ========== CALCUL DE DISTANCE ==========
         function calculateDistance(lat1, lng1, lat2, lng2) {
             const R = 6371000;
             const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -1306,29 +1793,7 @@
             const mapWidth = document.getElementById('map').clientWidth || 800;
             const metersPerPixel = avgDist / mapWidth;
             
-            if (metersPerPixel >= 1000) {
-                return `${(metersPerPixel / 1000).toFixed(2)} كم/بكسل`;
-            } else if (metersPerPixel >= 1) {
-                return `${metersPerPixel.toFixed(2)} م/بكسل`;
-            } else {
-                return `${(metersPerPixel * 100).toFixed(2)} سم/بكسل`;
-            }
-        }
-        
-        function getScaleStringFR() {
-            const bounds = map.getBounds();
-            const center = map.getCenter();
-            const north = bounds.getNorth();
-            const south = bounds.getSouth();
-            const west = bounds.getWest();
-            const east = bounds.getEast();
-            
-            const distHorizontal = calculateDistance(center.lat, west, center.lat, east);
-            const distVertical = calculateDistance(north, center.lng, south, center.lng);
-            const avgDist = (distHorizontal + distVertical) / 2;
-            const mapWidth = document.getElementById('map').clientWidth || 800;
-            const metersPerPixel = avgDist / mapWidth;
-            
+            const t = translations[currentLang];
             if (metersPerPixel >= 1000) {
                 return `${(metersPerPixel / 1000).toFixed(2)} km/pixel`;
             } else if (metersPerPixel >= 1) {
@@ -1337,8 +1802,8 @@
                 return `${(metersPerPixel * 100).toFixed(2)} cm/pixel`;
             }
         }
-        
-        // ========== المتغيرات ==========
+
+        // ========== VARIABLES ==========
         let farmPolygon = null;
         let farmLayerGroup = L.layerGroup().addTo(map);
         let workersLayerGroup = L.layerGroup().addTo(map);
@@ -1351,133 +1816,55 @@
         let farmArea = 0;
         let selectedSectorForTask = null;
         let companyName = "SONE Solutions";
-        let currentLanguage = 'ar';
-        
-        // ========== ترجمات التقرير ==========
-        const translations = {
-            ar: {
-                companySub: 'النظام المتكامل لتدبير الضيعات الفلاحية',
-                mainTitle: 'تقرير الضيعة الفلاحية',
-                reportDate: 'تاريخ التقرير:',
-                mapCaption: 'خريطة الضيعة - SONE Solutions',
-                infoTitle1: 'معلومات الضيعة',
-                infoTitle2: 'الإحداثيات الجغرافية',
-                sectorsTitle: 'تفاصيل الأجزاء',
-                farmName: 'اسم الضيعة',
-                totalArea: 'المساحة الإجمالية',
-                reportDateLabel: 'تاريخ التقرير',
-                lat: 'خط العرض',
-                lng: 'خط الطول',
-                center: 'مركز الضيعة',
-                scale: 'مقياس الرسم',
-                zoom: 'مستوى التكبير',
-                thNumber: 'الرقم',
-                thName: 'الاسم',
-                thActivity: 'النشاط',
-                thArea: 'المساحة',
-                thColor: 'اللون',
-                noSectors: 'لا توجد أجزاء',
-                footerSub: 'النظام المتكامل لتدبير الضيعات الفلاحية',
-                footerCertified: 'تقرير معتمد',
-                print: 'طباعة التقرير',
-                download: 'تحميل التقرير',
-                language: 'اللغة:',
-                areaUnit: 'م²',
-                hectare: 'هكتار',
-                farmUndefined: 'غير محددة',
-                zoomLevel: 'المستوى'
-            },
-            fr: {
-                companySub: 'Système intégré de gestion des exploitations agricoles',
-                mainTitle: 'Rapport de l\'exploitation agricole',
-                reportDate: 'Date du rapport:',
-                mapCaption: 'Carte de l\'exploitation - SONE Solutions',
-                infoTitle1: 'Informations de l\'exploitation',
-                infoTitle2: 'Coordonnées géographiques',
-                sectorsTitle: 'Détails des parcelles',
-                farmName: 'Nom de l\'exploitation',
-                totalArea: 'Superficie totale',
-                reportDateLabel: 'Date du rapport',
-                lat: 'Latitude',
-                lng: 'Longitude',
-                center: 'Centre de l\'exploitation',
-                scale: 'Échelle',
-                zoom: 'Niveau de zoom',
-                thNumber: 'N°',
-                thName: 'Nom',
-                thActivity: 'Activité',
-                thArea: 'Superficie',
-                thColor: 'Couleur',
-                noSectors: 'Aucune parcelle',
-                footerSub: 'Système intégré de gestion des exploitations agricoles',
-                footerCertified: 'Rapport certifié',
-                print: 'Imprimer le rapport',
-                download: 'Télécharger le rapport',
-                language: 'Langue:',
-                areaUnit: 'm²',
-                hectare: 'ha',
-                farmUndefined: 'Non définie',
-                zoomLevel: 'Niveau'
-            }
-        };
-        
+
+        // ========== RAPPORT - TRADUCTIONS ==========
         function updateReportLanguage(lang) {
-            currentLanguage = lang;
             const t = translations[lang];
-            const container = document.getElementById('reportContainer');
+            if (!t) return;
             
-            // Update direction
+            const container = document.getElementById('reportContainer');
             if (lang === 'ar') {
                 container.className = 'report-container dir-rtl';
             } else {
                 container.className = 'report-container dir-ltr';
             }
             
-            // Update all text elements
-            document.getElementById('reportCompanySub').textContent = t.companySub;
-            document.getElementById('reportMainTitle').textContent = t.mainTitle;
-            document.getElementById('reportMapCaption').textContent = t.mapCaption;
-            document.getElementById('reportInfoTitle1').textContent = t.infoTitle1;
-            document.getElementById('reportInfoTitle2').textContent = t.infoTitle2;
-            document.getElementById('reportSectorsTitle').textContent = t.sectorsTitle;
-            document.getElementById('labelFarmName').textContent = t.farmName;
-            document.getElementById('labelTotalArea').textContent = t.totalArea;
-            document.getElementById('labelReportDate').textContent = t.reportDateLabel;
-            document.getElementById('labelLat').textContent = t.lat;
-            document.getElementById('labelLng').textContent = t.lng;
-            document.getElementById('labelCenter').textContent = t.center;
-            document.getElementById('labelScale').textContent = t.scale;
-            document.getElementById('labelZoom').textContent = t.zoom;
-            document.getElementById('thNumber').textContent = t.thNumber;
-            document.getElementById('thName').textContent = t.thName;
-            document.getElementById('thActivity').textContent = t.thActivity;
-            document.getElementById('thArea').textContent = t.thArea;
-            document.getElementById('thColor').textContent = t.thColor;
-            document.getElementById('footerSub').textContent = t.footerSub;
-            document.getElementById('footerCertified').textContent = t.footerCertified;
-            document.getElementById('printReportBtn').textContent = t.print;
-            document.getElementById('downloadReportBtn').textContent = t.download;
-            document.querySelector('.language-selector label').textContent = t.language;
+            document.getElementById('reportCompanySub').textContent = t.reportCompanySub || t.companySub || t.brandSub;
+            document.getElementById('reportMainTitle').textContent = t.reportMainTitle || t.mainTitle || 'Rapport';
+            document.getElementById('reportMapCaption').textContent = t.reportMapCaption || t.mapCaption || 'Carte';
+            document.getElementById('reportInfoTitle1').textContent = t.reportInfoTitle1 || t.infoTitle1 || 'Informations';
+            document.getElementById('reportInfoTitle2').textContent = t.reportInfoTitle2 || t.infoTitle2 || 'Coordonnées';
+            document.getElementById('reportSectorsTitle').textContent = t.reportSectorsTitle || t.sectorsTitle || 'Parcelles';
+            document.getElementById('labelFarmName').textContent = t.labelFarmName || t.farmName || 'Nom';
+            document.getElementById('labelTotalArea').textContent = t.labelTotalArea || t.totalArea || 'Superficie';
+            document.getElementById('labelReportDate').textContent = t.labelReportDate || t.reportDateLabel || 'Date';
+            document.getElementById('labelLat').textContent = t.labelLat || t.lat || 'Latitude';
+            document.getElementById('labelLng').textContent = t.labelLng || t.lng || 'Longitude';
+            document.getElementById('labelCenter').textContent = t.labelCenter || t.center || 'Centre';
+            document.getElementById('labelScale').textContent = t.labelScale || t.scale || 'Échelle';
+            document.getElementById('labelZoom').textContent = t.labelZoom || t.zoom || 'Zoom';
+            document.getElementById('thNumber').textContent = t.thNumber || 'N°';
+            document.getElementById('thName').textContent = t.thName || 'Nom';
+            document.getElementById('thActivity').textContent = t.thActivity || 'Activité';
+            document.getElementById('thArea').textContent = t.thArea || 'Superficie';
+            document.getElementById('thColor').textContent = t.thColor || 'Couleur';
+            document.getElementById('footerSub').textContent = t.footerSub || t.brandSub;
+            document.getElementById('footerCertified').textContent = t.footerCertified || 'Certifié';
+            document.getElementById('printReportBtn').textContent = t.printBtn || 'Imprimer';
+            document.getElementById('downloadReportBtn').textContent = t.downloadBtn || 'Télécharger';
+            
+            // Update farm name if needed
+            const farmName = document.getElementById('reportFarmName');
+            if (farmName.textContent === 'Non définie' || farmName.textContent === 'غير محددة' || farmName.textContent === 'Not defined') {
+                farmName.textContent = t.farmUndefined || 'Non définie';
+            }
             
             // Update date label
             const dateLabel = document.getElementById('reportDateValue');
             const dateStr = dateLabel.textContent.replace(/^[^:]*:/, '');
-            dateLabel.textContent = `${t.reportDate} ${dateStr}`;
-            
-            // Update farm name if exists
-            const farmName = document.getElementById('reportFarmName').textContent;
-            if (farmName === 'غير محددة' || farmName === 'Non définie') {
-                document.getElementById('reportFarmName').textContent = t.farmUndefined;
-            }
-            
-            // Update area unit
-            const areaValue = document.getElementById('reportTotalArea');
-            if (areaValue.textContent.includes('هكتار') || areaValue.textContent.includes('ha')) {
-                // Recalculate with proper format
-                updateReportData(lang);
-            }
+            dateLabel.textContent = `${t.reportDate || 'Date du rapport:'} ${dateStr}`;
         }
-        
+
         function updateReportData(lang) {
             const t = translations[lang];
             const center = map.getCenter();
@@ -1485,19 +1872,17 @@
             const lng = center.lng.toFixed(6);
             const zoom = map.getZoom();
             
-            // Update farm info
             document.getElementById('reportFarmName').textContent = companyName;
             
-            if (lang === 'ar') {
-                document.getElementById('reportTotalArea').textContent = farmArea > 0 ? formatArea(farmArea).display : `0 ${t.areaUnit}`;
-                document.getElementById('reportZoom').textContent = `${t.zoomLevel} ${zoom}`;
-                document.getElementById('reportScale').textContent = getScaleString();
+            if (farmArea > 0) {
+                const f = formatArea(farmArea);
+                document.getElementById('reportTotalArea').textContent = f.display;
             } else {
-                document.getElementById('reportTotalArea').textContent = farmArea > 0 ? formatAreaFR(farmArea).display : `0 ${t.areaUnit}`;
-                document.getElementById('reportZoom').textContent = `${t.zoomLevel} ${zoom}`;
-                document.getElementById('reportScale').textContent = getScaleStringFR();
+                document.getElementById('reportTotalArea').textContent = `0 ${t.areaUnit || 'm²'}`;
             }
             
+            document.getElementById('reportZoom').textContent = `${t.zoomLevel || 'Niveau'} ${zoom}`;
+            document.getElementById('reportScale').textContent = getScaleString();
             document.getElementById('reportLat').textContent = lat;
             document.getElementById('reportLng').textContent = lng;
             document.getElementById('reportCenter').textContent = `${lat}, ${lng}`;
@@ -1505,22 +1890,17 @@
             // Update sectors table
             const tableBody = document.getElementById('reportSectorsTable');
             if (sectors.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#999;">${t.noSectors}</td></tr>`;
+                tableBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#999;">${t.noSectorsMsg || 'Aucune parcelle'}</td></tr>`;
             } else {
                 let html = '';
                 sectors.forEach(s => {
-                    let areaDisplay;
-                    if (lang === 'ar') {
-                        areaDisplay = formatArea(s.area).display;
-                    } else {
-                        areaDisplay = formatAreaFR(s.area).display;
-                    }
+                    const f = formatArea(s.area);
                     html += `
                         <tr>
                             <td>${s.number}</td>
                             <td>${s.name}</td>
                             <td>${s.activity}</td>
-                            <td>${areaDisplay}</td>
+                            <td>${f.display}</td>
                             <td><span class="color-dot" style="background:${s.color}"></span></td>
                         </tr>
                     `;
@@ -1528,8 +1908,8 @@
                 tableBody.innerHTML = html;
             }
         }
-        
-        // ========== دوال العمال ==========
+
+        // ========== GESTION DES TRAVAILLEURS ==========
         function updateWorkersOnMap() {
             workersLayerGroup.clearLayers();
             workers.forEach(worker => {
@@ -1546,32 +1926,33 @@
                             <div style="text-align:center;">
                                 <b>${worker.name}</b><br>
                                 ${worker.currentTask}<br>
-                                ${Math.floor(worker.timeRemaining/60)} دقيقة
+                                ${Math.floor(worker.timeRemaining/60)} ${translations[currentLang].minutes || 'min'}
                             </div>
                         `);
                     }
                 }
             });
         }
-        
+
         function renderWorkersList() {
             let container = document.getElementById('workersList');
+            const t = translations[currentLang];
             if (workers.length === 0) {
-                container.innerHTML = '<div style="color:#888; text-align:center;">أضف عامل جديد</div>';
+                container.innerHTML = `<div style="color:#888; text-align:center;">${t.noWorkers || 'Ajouter un travailleur'}</div>`;
                 return;
             }
             let html = '';
             workers.forEach(w => {
                 if (w.currentTask) {
                     let mins = Math.floor(w.timeRemaining / 60);
-                    html += `<div class="worker-card" style="border-left: none; border-right: 3px solid #dc3545;">
-                                <b><i class="fas fa-user"></i> ${w.name}</b> مشغول<br>
+                    html += `<div class="worker-card" style="border-left: 3px solid #dc3545; border-right: none;">
+                                <b><i class="fas fa-user"></i> ${w.name}</b> ${t.busy || 'Occupé'}<br>
                                 ${w.currentTask}<br>
-                                <span class="timer">${mins} دقيقة</span>
+                                <span class="timer">${mins} ${t.minutes || 'min'}</span>
                             </div>`;
                 } else {
-                    html += `<div class="worker-card" style="border-left: none; border-right: 3px solid #4caf50;">
-                                <b><i class="fas fa-user-check"></i> ${w.name}</b> متفرغ
+                    html += `<div class="worker-card" style="border-left: 3px solid #4caf50; border-right: none;">
+                                <b><i class="fas fa-user-check"></i> ${w.name}</b> ${t.free || 'Disponible'}
                             </div>`;
                 }
             });
@@ -1580,7 +1961,7 @@
             updateWorkersOnMap();
             renderSectorsList();
         }
-        
+
         function finishWorkerTask(worker) {
             if (worker.intervalId) clearInterval(worker.intervalId);
             worker.currentTask = null;
@@ -1588,12 +1969,17 @@
             worker.sectorId = null;
             worker.sectorNumber = null;
             renderWorkersList();
-            alert(`أنهى العامل ${worker.name} مهمته بنجاح`);
+            const t = translations[currentLang];
+            alert(`${worker.name} ${t.alertWorkerTaskDone || 'a terminé sa tâche avec succès'}`);
         }
-        
+
         function startWorkerTask(worker, sector, durationSeconds, description) {
-            if (worker.currentTask) { alert(`${worker.name} مشغول`); return false; }
-            worker.currentTask = `الجزء ${sector.number} (${sector.activity})`;
+            const t = translations[currentLang];
+            if (worker.currentTask) { 
+                alert(`${worker.name} ${t.alertWorkerBusy || 'est occupé'}`); 
+                return false; 
+            }
+            worker.currentTask = `Parcelle ${sector.number} (${sector.activity})`;
             worker.timeRemaining = durationSeconds;
             worker.sectorId = sector.id;
             worker.sectorNumber = sector.number;
@@ -1609,52 +1995,62 @@
             renderWorkersList();
             return true;
         }
-        
+
         function addWorker(name) {
-            if (!name.trim()) { alert("أدخل اسم العامل"); return; }
+            if (!name.trim()) { alert("Entrez un nom"); return; }
             workers.push({ id: nextWorkerId++, name: name.trim(), currentTask: null, timeRemaining: 0, intervalId: null, sectorId: null, sectorNumber: null });
             renderWorkersList();
             updateWorkerSelect();
         }
-        
+
         function updateWorkerSelect() {
             let select = document.getElementById('workerSelect');
-            select.innerHTML = '<option value="">-- اختر عاملاً --</option>';
+            const t = translations[currentLang];
+            select.innerHTML = `<option value="">-- ${t.selectWorkerLabel || 'Choisir'} --</option>`;
             workers.forEach(w => {
-                let status = w.currentTask ? '(مشغول)' : '(متفرغ)';
+                let status = w.currentTask ? `(${t.busy || 'Occupé'})` : `(${t.free || 'Disponible'})`;
                 select.innerHTML += `<option value="${w.id}">${w.name} ${status}</option>`;
             });
         }
-        
+
         function assignWorkerToSector() {
-            if (sectors.length === 0) { alert("لا توجد أجزاء. ارسم أجزاء أولاً."); return; }
+            const t = translations[currentLang];
+            if (sectors.length === 0) { alert(t.alertNoSectors || 'Aucune parcelle'); return; }
             let workerId = parseInt(document.getElementById('workerSelect').value);
-            if (!workerId) { alert("اختر عاملاً"); return; }
+            if (!workerId) { alert(t.alertSelectWorker || 'Sélectionnez un travailleur'); return; }
             let worker = workers.find(w => w.id === workerId);
-            if (!worker) { alert("العامل غير موجود"); return; }
-            if (worker.currentTask) { alert(`${worker.name} مشغول حالياً`); return; }
+            if (!worker) { alert(t.alertWorkerNotFound || 'Travailleur introuvable'); return; }
+            if (worker.currentTask) { alert(`${worker.name} ${t.alertWorkerAlreadyBusy || 'est déjà occupé'}`); return; }
             
-            let sectorNum = prompt("أدخل رقم الجزء:\n" + sectors.map(s => s.number).join(", "), "1");
+            let sectorNum = prompt(`${t.alertEnterSectorNumber || 'Entrez le numéro de la parcelle:\n'}${sectors.map(s => s.number).join(', ')}`, "1");
             if (!sectorNum) return;
             let sector = sectors.find(s => s.number === parseInt(sectorNum));
-            if (!sector) { alert("الجزء غير موجود"); return; }
+            if (!sector) { alert(t.alertSectorNotFound || 'Parcelle introuvable'); return; }
             
             let hours = parseInt(document.getElementById('taskHours').value) || 0;
             let minutes = parseInt(document.getElementById('taskMinutes').value) || 0;
             let seconds = (hours * 3600) + (minutes * 60);
-            if (seconds <= 0) { alert("المدة غير صحيحة"); return; }
+            if (seconds <= 0) { alert(t.alertInvalidDuration || 'Durée invalide'); return; }
             
-            if (confirm(`إرسال ${worker.name} إلى الجزء ${sector.number} لمدة ${hours} ساعة ${minutes} دقيقة؟`)) {
+            const confirmMsg = t.confirmAssign || 'Envoyer {worker} à la parcelle {sector} pour {hours}h {minutes}min ?';
+            const msg = confirmMsg
+                .replace('{worker}', worker.name)
+                .replace('{sector}', sector.number)
+                .replace('{hours}', hours)
+                .replace('{minutes}', minutes);
+            
+            if (confirm(msg)) {
                 startWorkerTask(worker, sector, seconds, document.getElementById('taskDescription').value);
                 map.fitBounds(sector.layer.getBounds());
                 let origColor = sector.layer.options.color;
                 sector.layer.setStyle({ color: '#dc3545', weight: 5 });
                 setTimeout(() => sector.layer.setStyle({ color: origColor, weight: 3 }), 1000);
                 document.getElementById('taskDescription').value = '';
+                alert(t.alertWorkerSent || 'Travailleur envoyé avec succès');
             }
         }
-        
-        // ========== دوال الرسم ==========
+
+        // ========== GESTION DU DESSIN ==========
         function initDrawControl(mode, color) {
             if (drawControl) {
                 map.removeControl(drawControl);
@@ -1685,6 +2081,8 @@
             drawControl = new L.Control.Draw(drawOptions);
             map.addControl(drawControl);
             
+            const t = translations[currentLang];
+            
             map.on(L.Draw.Event.CREATED, function(e) {
                 let layer = e.layer;
                 let latlngs = layer.getLatLngs()[0];
@@ -1698,20 +2096,23 @@
                     farmArea = area;
                     farmLayerGroup.addLayer(farmPolygon);
                     
-                    document.getElementById('farmStatus').innerHTML = 'محددة';
+                    document.getElementById('farmStatus').textContent = currentLang === 'fr' ? 'Définie' : 
+                                                                     currentLang === 'ar' ? 'محددة' : 'Defined';
                     document.getElementById('drawSectorBtn').disabled = false;
                     document.getElementById('addSectorBtn').disabled = false;
                     updateTotalAreaDisplay();
-                    alert(`تم رسم حدود الضيعة بنجاح\nالمساحة: ${formatArea(area).display}`);
+                    
+                    const areaDisplay = formatArea(area).display;
+                    alert(t.alertFarmDefined || 'Ferme définie').replace('{area}', areaDisplay);
                 } 
                 else if (currentDrawingMode === 'sector') {
                     if (!farmPolygon) {
-                        alert("يرجى رسم حدود الضيعة أولاً");
+                        alert(t.alertDrawFarmFirst || 'Dessinez d\'abord la ferme');
                         return;
                     }
                     let name = document.getElementById('newSectorName').value.trim();
                     if (!name) {
-                        alert("أدخل اسم الجزء");
+                        alert(t.alertEnterSectorName || 'Entrez un nom');
                         return;
                     }
                     let number = sectors.length + 1;
@@ -1737,7 +2138,8 @@
                     document.getElementById('sectorCount').innerText = sectors.length;
                     document.getElementById('newSectorName').value = '';
                     
-                    alert(`تم إضافة الجزء رقم ${number}: ${name}\nالمساحة: ${formatArea(area).display}`);
+                    const areaDisplay = formatArea(area).display;
+                    alert(`${t.alertSectorAdded || 'Parcelle ajoutée'}\n${areaDisplay}`);
                 }
                 
                 if (drawControl) {
@@ -1747,33 +2149,37 @@
                 currentDrawingMode = null;
             });
         }
-        
+
         function renderSectorsList() {
             let container = document.getElementById('sectorsList');
+            const t = translations[currentLang];
             if (sectors.length === 0) {
-                container.innerHTML = '<div style="text-align:center; color:#888;">ارسم أجزاء ملونة</div>';
+                container.innerHTML = `<div style="text-align:center; color:#888;">${t.noSectors || 'Dessinez des parcelles'}</div>`;
                 return;
             }
             let html = '';
+            const dir = currentLang === 'ar' ? 'rtl' : 'ltr';
             sectors.forEach(sec => {
                 let workersCount = workers.filter(w => w.sectorId === sec.id && w.currentTask).length;
                 let badge = workersCount > 0 ? `<span class="badge">${workersCount}</span>` : '';
+                const areaDisplay = formatArea(sec.area).display;
                 html += `
-                    <div class="sector-item" style="border-right-color: ${sec.color}" onclick="selectSectorByNumber(${sec.number})">
+                    <div class="sector-item" dir="${dir}" style="${dir === 'rtl' ? 'border-right-color' : 'border-left-color'}: ${sec.color}" onclick="selectSectorByNumber(${sec.number})">
                         <div class="sector-name">
                             <span><span class="sector-number">${sec.number}</span> ${sec.name} ${badge}</span>
                             <span class="delete-sector" onclick="event.stopPropagation(); deleteSector(${sec.id})"><i class="fas fa-trash"></i></span>
                         </div>
                         <div style="font-size:11px;">${sec.activity}</div>
-                        <div style="font-size:10px;">${formatArea(sec.area).display}</div>
+                        <div style="font-size:10px;">${areaDisplay}</div>
                     </div>
                 `;
             });
             container.innerHTML = html;
         }
-        
+
         window.deleteSector = function(id) {
-            if (confirm("هل أنت متأكد من حذف هذا الجزء؟")) {
+            const t = translations[currentLang];
+            if (confirm(t.alertDeleteSector || 'Supprimer cette parcelle ?')) {
                 let index = sectors.findIndex(s => s.id === id);
                 if (index !== -1) {
                     farmLayerGroup.removeLayer(sectors[index].layer);
@@ -1790,15 +2196,15 @@
                         }
                     });
                     renderWorkersList();
-                    alert("تم حذف الجزء بنجاح");
+                    alert(t.alertSectorDeleted || 'Parcelle supprimée');
                 }
             }
         };
-        
+
         function updateNumberButtons() {
             let container = document.getElementById('numberButtons');
             if (sectors.length === 0) {
-                container.innerHTML = '<span style="color:#888;">لا توجد أجزاء</span>';
+                container.innerHTML = '<span style="color:#888;">Aucune parcelle</span>';
                 return;
             }
             let html = '';
@@ -1807,19 +2213,20 @@
             });
             container.innerHTML = html;
         }
-        
+
         window.selectSectorByNumber = function(number) {
+            const t = translations[currentLang];
             let sector = sectors.find(s => s.number === number);
             if (sector) {
                 selectedSectorForTask = sector;
-                document.getElementById('selectedSectorDisplay').innerHTML = `رقم ${sector.number} - ${sector.name}`;
+                document.getElementById('selectedSectorDisplay').textContent = `${t.selectedSectorLabel || 'Parcelle'} ${sector.number} - ${sector.name}`;
                 map.fitBounds(sector.layer.getBounds());
                 let origColor = sector.layer.options.color;
                 sector.layer.setStyle({ color: '#dc3545', weight: 5 });
                 setTimeout(() => sector.layer.setStyle({ color: origColor, weight: 3 }), 800);
             }
         };
-        
+
         function updateTotalAreaDisplay() {
             if (farmArea > 0) {
                 let f = formatArea(farmArea);
@@ -1827,42 +2234,32 @@
                 document.getElementById('totalAreaUnit').innerHTML = f.unit;
             } else {
                 document.getElementById('totalAreaValue').innerHTML = '0';
-                document.getElementById('totalAreaUnit').innerHTML = 'متر مربع';
+                document.getElementById('totalAreaUnit').innerHTML = translations[currentLang].areaUnit || 'm²';
             }
         }
-        
-        // ========== نظام التقارير ==========
+
+        // ========== RAPPORT ==========
         function generateReport() {
             const now = new Date();
-            const dateStrAr = now.toLocaleDateString('ar-MA', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-            
-            const dateStrFr = now.toLocaleDateString('fr-FR', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-            
             const lang = document.getElementById('reportLangSelect').value;
             const t = translations[lang];
-            const dateStr = lang === 'ar' ? dateStrAr : dateStrFr;
             
-            // Update report header
-            document.getElementById('reportDateValue').textContent = `${t.reportDate} ${dateStr}`;
+            let dateStr;
+            if (lang === 'ar') {
+                dateStr = now.toLocaleDateString('ar-MA', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+            } else if (lang === 'fr') {
+                dateStr = now.toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+            } else {
+                dateStr = now.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+            }
+            
+            document.getElementById('reportDateValue').textContent = `${t.reportDate || 'Date du rapport:'} ${dateStr}`;
             document.getElementById('reportDateValue2').textContent = dateStr;
             document.getElementById('reportFooterDate').textContent = dateStr;
             
-            // Update data based on language
+            updateReportLanguage(lang);
             updateReportData(lang);
             
-            // Capture map as image
             const mapElement = document.getElementById('map');
             html2canvas(mapElement, {
                 useCORS: true,
@@ -1873,20 +2270,19 @@
                 document.getElementById('reportMapImg').src = imgData;
             });
             
-            // Show report overlay
             document.getElementById('reportOverlay').classList.add('active');
             document.body.style.overflow = 'hidden';
         }
-        
+
         function closeReport() {
             document.getElementById('reportOverlay').classList.remove('active');
             document.body.style.overflow = 'auto';
         }
-        
+
         function printReport() {
             window.print();
         }
-        
+
         function downloadReport() {
             const reportElement = document.getElementById('reportContainer');
             
@@ -1899,18 +2295,19 @@
             }).then(canvas => {
                 const link = document.createElement('a');
                 const lang = document.getElementById('reportLangSelect').value;
-                const suffix = lang === 'ar' ? 'تقرير' : 'Rapport';
+                const suffix = lang === 'ar' ? 'تقرير' : lang === 'fr' ? 'Rapport' : 'Report';
                 link.download = `${suffix}_${companyName}_${new Date().toISOString().slice(0,10)}.png`;
                 link.href = canvas.toDataURL('image/png');
                 link.click();
             }).catch(err => {
-                alert('حدث خطأ أثناء تحميل التقرير: ' + err.message);
+                alert('Erreur: ' + err.message);
             });
         }
-        
-        // ========== ربط الأحداث ==========
+
+        // ========== BINDING EVENTS ==========
         document.getElementById('drawFarmBtn').onclick = () => {
-            if (farmPolygon && !confirm("رسم حدود جديدة سيمسح الأجزاء الحالية. هل تريد المتابعة؟")) return;
+            const t = translations[currentLang];
+            if (farmPolygon && !confirm(t.alertClearAll || 'Tout effacer ?')) return;
             
             if (farmPolygon) {
                 farmLayerGroup.clearLayers();
@@ -1920,7 +2317,7 @@
                 updateTotalAreaDisplay();
                 updateNumberButtons();
                 renderSectorsList();
-                document.getElementById('farmStatus').innerHTML = 'غير محددة';
+                document.getElementById('farmStatus').textContent = t.farmStatus || 'Non définie';
                 document.getElementById('sectorCount').innerText = '0';
                 document.getElementById('drawSectorBtn').disabled = true;
                 document.getElementById('addSectorBtn').disabled = true;
@@ -1928,22 +2325,24 @@
             currentDrawingMode = 'farm';
             initDrawControl('farm', '#4caf50');
         };
-        
+
         document.getElementById('drawSectorBtn').onclick = () => {
+            const t = translations[currentLang];
             if (!farmPolygon) { 
-                alert("يرجى رسم حدود الضيعة أولاً"); 
+                alert(t.alertDrawFarmFirst || 'Dessinez d\'abord la ferme'); 
                 return; 
             }
             if (!document.getElementById('newSectorName').value.trim()) { 
-                alert("أدخل اسم الجزء"); 
+                alert(t.alertEnterSectorName || 'Entrez un nom'); 
                 return; 
             }
             currentDrawingMode = 'sector';
             initDrawControl('sector', document.getElementById('sectorColor').value);
         };
-        
+
         document.getElementById('clearFarmBtn').onclick = () => {
-            if (confirm("مسح كل شيء (الحدود، الأجزاء، المهام، العمال)؟")) {
+            const t = translations[currentLang];
+            if (confirm(t.alertClearAll || 'Tout effacer ?')) {
                 farmLayerGroup.clearLayers();
                 workersLayerGroup.clearLayers();
                 workers.forEach(w => { if(w.intervalId) clearInterval(w.intervalId); w.currentTask = null; });
@@ -1957,66 +2356,95 @@
                 renderWorkersList();
                 updateTotalAreaDisplay();
                 updateNumberButtons();
-                document.getElementById('farmStatus').innerHTML = 'غير محددة';
+                document.getElementById('farmStatus').textContent = t.farmStatus || 'Non définie';
                 document.getElementById('sectorCount').innerText = '0';
                 document.getElementById('drawSectorBtn').disabled = true;
                 document.getElementById('addSectorBtn').disabled = true;
-                document.getElementById('selectedSectorDisplay').innerHTML = 'لا شيء';
-                alert("تم مسح جميع البيانات");
+                document.getElementById('selectedSectorDisplay').textContent = t.selectedSectorDisplay || 'Aucune';
+                alert(t.alertAllCleared || 'Tout effacé');
             }
         };
-        
+
         document.getElementById('fitFarmBtn').onclick = () => {
             if (farmPolygon) {
                 map.fitBounds(farmPolygon.getBounds());
             } else if (sectors.length > 0) {
                 map.fitBounds(sectors[0].layer.getBounds());
             } else {
-                alert("لم يتم رسم حدود الضيعة أو أجزاء بعد");
+                alert(translations[currentLang].alertNoFarm || 'Aucune ferme');
             }
         };
-        
+
         document.getElementById('assignTaskBtn').onclick = assignWorkerToSector;
         document.getElementById('addWorkerBtn').onclick = () => {
             addWorker(document.getElementById('newWorkerName').value);
             document.getElementById('newWorkerName').value = '';
         };
         document.getElementById('addSectorBtn').onclick = () => {
+            const t = translations[currentLang];
             if (farmPolygon) document.getElementById('drawSectorBtn').click();
-            else alert("حدد حدود الضيعة أولاً");
+            else alert(t.alertAddSectorFirst || 'Dessinez d\'abord la ferme');
         };
-        
+
         document.getElementById('setCompanyBtn').onclick = () => {
             companyName = document.getElementById('companyNameInput').value || "SONE Solutions";
-            document.querySelector('.logo-text p').textContent = `${companyName} - النظام المتكامل لتدبير الضيعات الفلاحية`;
+            document.querySelector('.logo-text p').textContent = `${companyName} - ${translations[currentLang].brandSub}`;
             document.querySelector('.company-name').textContent = companyName;
         };
-        
+
         // Report buttons
         document.getElementById('generateReportBtn').onclick = generateReport;
         document.getElementById('closeReportBtn').onclick = closeReport;
         document.getElementById('printReportBtn').onclick = printReport;
         document.getElementById('downloadReportBtn').onclick = downloadReport;
         document.getElementById('reportLangSelect').onchange = (e) => {
-            updateReportLanguage(e.target.value);
-            // Update data with new language
-            updateReportData(e.target.value);
+            const lang = e.target.value;
+            updateReportLanguage(lang);
+            updateReportData(lang);
         };
-        
-        // Close report on overlay click
+
         document.getElementById('reportOverlay').onclick = (e) => {
             if (e.target === e.currentTarget) closeReport();
         };
-        
-        // ESC key to close report
+
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') closeReport();
         });
-        
-        // ========== عمال افتراضيين ==========
-        addWorker("أحمد");
-        addWorker("فاطمة");
-        addWorker("خالد");
+
+        // ========== DEFAULT WORKERS ==========
+        const defaultNames = {
+            fr: ['Ahmed', 'Fatima', 'Khalid'],
+            ar: ['أحمد', 'فاطمة', 'خالد'],
+            en: ['Ahmed', 'Fatima', 'Khalid']
+        };
+
+        function initDefaultWorkers() {
+            const names = defaultNames[currentLang] || defaultNames.fr;
+            names.forEach(name => {
+                workers.push({ 
+                    id: nextWorkerId++, 
+                    name: name, 
+                    currentTask: null, 
+                    timeRemaining: 0, 
+                    intervalId: null, 
+                    sectorId: null, 
+                    sectorNumber: null 
+                });
+            });
+            renderWorkersList();
+            updateWorkerSelect();
+        }
+
+        initDefaultWorkers();
+
+        // ========== DATA-I18N INIT ==========
+        // Add data-i18n attributes to all translatable elements
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (translations.fr[key] !== undefined) {
+                el.textContent = translations.fr[key];
+            }
+        });
     </script>
 
 </body>

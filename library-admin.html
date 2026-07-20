@@ -1,9 +1,11 @@
-<html lang="ar" dir="rtl"><head>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>لوحة تحكم المكتبة | SONE Marché</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -53,6 +55,53 @@
             transition: 0.3s;
         }
         .refresh-btn:hover { background: #1976d2; transform: scale(1.02); }
+
+        /* ===== مربع البحث ===== */
+        .search-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(168,132,66,0.3);
+            border-radius: 50px;
+            padding: 8px 18px;
+            margin-bottom: 20px;
+            transition: 0.3s;
+        }
+        .search-bar:focus-within {
+            border-color: #A8842A;
+            box-shadow: 0 0 20px rgba(168,132,66,0.15);
+        }
+        .search-bar i {
+            color: #A8842A;
+            font-size: 16px;
+        }
+        .search-bar input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #fff;
+            font-family: 'Cairo', sans-serif;
+            font-size: 15px;
+            padding: 6px 0;
+        }
+        .search-bar input::placeholder {
+            color: #7f8c8d;
+        }
+        .search-bar .clear-search {
+            color: #f44336;
+            cursor: pointer;
+            font-size: 18px;
+            display: none;
+            transition: 0.3s;
+        }
+        .search-bar .clear-search:hover { transform: scale(1.2); }
+        .search-count {
+            color: #A8842A;
+            font-size: 13px;
+            white-space: nowrap;
+        }
 
         .admin-form-group { margin-bottom: 15px; }
         .admin-form-group label {
@@ -179,6 +228,10 @@
             margin-bottom: 8px;
             flex-wrap: wrap;
             gap: 8px;
+            transition: 0.3s;
+        }
+        .content-item:hover {
+            background: rgba(255,255,255,0.08);
         }
         .content-item .item-info { flex: 1; }
         .content-item .item-info strong { color: #fff; }
@@ -200,7 +253,6 @@
             bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
-            background: #4CAF50;
             color: white;
             padding: 12px 25px;
             border-radius: 50px;
@@ -212,12 +264,21 @@
             text-align: center;
         }
 
+        .no-results {
+            text-align: center;
+            padding: 30px;
+            color: #7f8c8d;
+        }
+        .no-results i { font-size: 40px; display: block; margin-bottom: 10px; color: #A8842A; opacity: 0.5; }
+
         hr { border-color: rgba(168,132,66,0.3); margin: 20px 0; }
 
         @media (max-width: 600px) {
             .admin-header h1 { font-size: 20px; }
             .content-item { flex-direction: column; align-items: stretch; }
             .content-item-actions { text-align: center; }
+            .search-bar { padding: 6px 14px; }
+            .search-bar input { font-size: 13px; }
         }
     </style>
 </head>
@@ -233,9 +294,18 @@
                 <button class="refresh-btn" onclick="loadData()"><i class="fas fa-sync-alt"></i> تحديث</button>
             </div>
 
+            <!-- ===== مربع البحث ===== -->
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" id="adminSearchInput" placeholder="🔍 ابحث في المحتوى..." oninput="filterContent()">
+                <span class="clear-search" id="clearAdminSearch" onclick="clearAdminSearch()"><i class="fas fa-times-circle"></i></span>
+                <span class="search-count" id="searchCount">0</span>
+            </div>
+
             <div class="admin-form-group">
                 <label>نوع المحتوى</label>
                 <select id="contentType">
+                    <option value="all">📚 جميع الأنواع</option>
                     <option value="book">📚 كتاب PDF</option>
                     <option value="article">📄 مقال/نص</option>
                     <option value="video">🎥 فيديو</option>
@@ -299,27 +369,7 @@
             <hr>
             <h4 style="color: #A8842A; margin-bottom: 10px;">📋 المحتوى المنشور</h4>
             <div id="contentList" class="content-list">
-                <div class="content-item">
-                    <div class="item-info">
-                        <strong>Encadré Par bahija.pptx</strong>
-                        <span class="item-type">📚 كتاب | ١٢&rlm;/٧&rlm;/٢٠٢٦</span>
-                    </div>
-                    <div class="content-item-actions">
-                        <button class="edit-content" onclick="editContent(78, 'book')" title="تعديل"><i class="fas fa-edit"></i></button>
-                        <button class="delete-content" onclick="deleteContent(78, 'book')" title="حذف"><i class="fas fa-trash"></i></button>
-                    </div>
-                </div>
-            
-                <div class="content-item">
-                    <div class="item-info">
-                        <strong>تلخيص الاجتماعيات.pdf</strong>
-                        <span class="item-type">📚 كتاب | ١٢&rlm;/٧&rlm;/٢٠٢٦</span>
-                    </div>
-                    <div class="content-item-actions">
-                        <button class="edit-content" onclick="editContent(66, 'book')" title="تعديل"><i class="fas fa-edit"></i></button>
-                        <button class="delete-content" onclick="deleteContent(66, 'book')" title="حذف"><i class="fas fa-trash"></i></button>
-                    </div>
-                </div>
+                <p style="color:#C1DCB5;">⏳ جاري التحميل...</p>
             </div>
         </div>
     </div>
@@ -328,20 +378,20 @@
 
     <script>
         // ============================================================
-        // إعدادات Supabase
+        // إعدادات Supabase - ✅ المفاتيح الصحيحة
         // ============================================================
         const SUPABASE_URL = 'https://zpjuhprlcaigmczhqlye.supabase.co';
-        const DATA_API_KEY = 'sb_publishable_PVQ61DBLGYjzaXy-XFrWpA_k_94iEvK';
-        const STORAGE_API_KEY = 'sb_secret_oBHsaPFwZ1GsL9ChphaovA_KWkPYDfn';
+        const API_KEY = 'sb_publishable_PVQ61DBLGYjzaXy-XFrWpA_k_94iEvK';
         const BUCKET_NAME = 'product-images';
 
         const headers = {
-            'apikey': DATA_API_KEY,
-            'Authorization': `Bearer ${DATA_API_KEY}`,
+            'apikey': API_KEY,
+            'Authorization': `Bearer ${API_KEY}`,
             'Content-Type': 'application/json'
         };
 
         let allItems = [];
+        let filteredItems = [];
         let editingId = null;
         let editingType = null;
 
@@ -361,13 +411,11 @@
             uploadedFileUrl = null;
             uploadedFileName = file.name;
 
-            // عرض معاينة الملف
             const preview = document.getElementById('filePreview');
             const previewIcon = document.getElementById('filePreviewIcon');
             const previewName = document.getElementById('filePreviewName');
             const previewSize = document.getElementById('filePreviewSize');
 
-            // تحديد أيقونة حسب النوع
             const ext = file.name.split('.').pop().toLowerCase();
             const iconMap = {
                 pdf: 'fa-file-pdf',
@@ -392,12 +440,11 @@
             previewSize.textContent = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
             preview.style.display = 'flex';
 
-            // بدء رفع الملف فوراً
             uploadFile(file);
         }
 
         // ============================================================
-        // رفع الملف مع شريط تقدم (بدون مهلة زمنية)
+        // رفع الملف مع شريط تقدم
         // ============================================================
         function uploadFile(file) {
             const progressContainer = document.getElementById('progressContainer');
@@ -418,7 +465,6 @@
 
             const xhr = new XMLHttpRequest();
 
-            // تتبع التقدم
             xhr.upload.addEventListener('progress', function(e) {
                 if (e.lengthComputable) {
                     const percent = Math.round((e.loaded / e.total) * 100);
@@ -427,7 +473,6 @@
                 }
             });
 
-            // عند الانتهاء
             xhr.addEventListener('load', function() {
                 if (xhr.status >= 200 && xhr.status < 300) {
                     const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/${BUCKET_NAME}/${fileName}`;
@@ -452,7 +497,6 @@
                 }
             });
 
-            // عند حدوث خطأ في الشبكة
             xhr.addEventListener('error', function() {
                 progressStatus.innerHTML = '<span class="status-error"><i class="fas fa-exclamation-circle"></i> ❌ فشل الاتصال بالخادم</span>';
                 submitBtn.disabled = false;
@@ -460,13 +504,10 @@
                 showToast('❌ فشل الاتصال بالخادم', 'error');
             });
 
-            // إعداد الطلب (بدون مهلة زمنية)
             xhr.open('POST', storageUrl, true);
-            xhr.setRequestHeader('apikey', STORAGE_API_KEY);
-            xhr.setRequestHeader('Authorization', `Bearer ${STORAGE_API_KEY}`);
+            xhr.setRequestHeader('apikey', API_KEY);
+            xhr.setRequestHeader('Authorization', `Bearer ${API_KEY}`);
             xhr.setRequestHeader('Content-Type', file.type || 'application/octet-stream');
-
-            // إرسال الملف
             xhr.send(file);
         }
 
@@ -490,7 +531,7 @@
         // جلب البيانات من Supabase
         // ============================================================
         async function fetchLibraryItems() {
-            const res = await fetch(`${SUPABASE_URL}/rest/v1/library_items?select=*`, { headers });
+            const res = await fetch(`${SUPABASE_URL}/rest/v1/library_items?select=*&order=id.desc`, { headers });
             if (!res.ok) throw new Error(`فشل جلب المحتوى: ${res.status}`);
             return await res.json();
         }
@@ -498,29 +539,84 @@
         async function loadData() {
             try {
                 allItems = await fetchLibraryItems();
+                filteredItems = [...allItems];
                 renderContentList();
+                updateSearchCount();
             } catch (error) {
                 document.getElementById('contentList').innerHTML = `<p style="color:#f44336;">❌ ${error.message}</p>`;
                 showToast('خطأ في تحميل البيانات: ' + error.message, 'error');
             }
         }
 
+        // ============================================================
+        // البحث والتصفية
+        // ============================================================
+        function filterContent() {
+            const searchInput = document.getElementById('adminSearchInput');
+            const query = searchInput.value.trim().toLowerCase();
+            const typeFilter = document.getElementById('contentType').value;
+
+            const clearBtn = document.getElementById('clearAdminSearch');
+            clearBtn.style.display = query ? 'inline-block' : 'none';
+
+            filteredItems = allItems.filter(item => {
+                // تصفية حسب النوع
+                if (typeFilter !== 'all' && item.type !== typeFilter) return false;
+
+                // تصفية حسب النص
+                if (query) {
+                    const title = (item.title || '').toLowerCase();
+                    const desc = (item.description || '').toLowerCase();
+                    return title.includes(query) || desc.includes(query);
+                }
+
+                return true;
+            });
+
+            renderContentList();
+            updateSearchCount();
+        }
+
+        function clearAdminSearch() {
+            document.getElementById('adminSearchInput').value = '';
+            document.getElementById('clearAdminSearch').style.display = 'none';
+            filterContent();
+            document.getElementById('adminSearchInput').focus();
+        }
+
+        function updateSearchCount() {
+            const count = document.getElementById('searchCount');
+            const total = allItems.length;
+            const shown = filteredItems.length;
+            count.textContent = shown === total ? `${total}` : `${shown} / ${total}`;
+        }
+
+        // ============================================================
+        // عرض القائمة
+        // ============================================================
         function renderContentList() {
             const container = document.getElementById('contentList');
-            if (allItems.length === 0) {
-                container.innerHTML = '<p style="color:#C1DCB5;">📭 لا يوجد محتوى منشور</p>';
+
+            if (filteredItems.length === 0) {
+                container.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-search"></i>
+                        <p>لا توجد نتائج مطابقة للبحث</p>
+                        <p style="font-size:12px;color:#7f8c8d;">جرب كلمات بحث مختلفة</p>
+                    </div>
+                `;
                 return;
             }
-            const sorted = [...allItems].sort((a, b) => b.id - a.id);
-            container.innerHTML = sorted.map(item => `
+
+            container.innerHTML = filteredItems.map(item => `
                 <div class="content-item">
                     <div class="item-info">
                         <strong>${escapeHtml(item.title)}</strong>
                         <span class="item-type">${getTypeName(item.type)} | ${formatDate(item.date)}</span>
                     </div>
                     <div class="content-item-actions">
-                        <button class="edit-content" onclick="editContent(${item.id}, '${item.type}')" title="تعديل"><i class="fas fa-edit"></i></button>
-                        <button class="delete-content" onclick="deleteContent(${item.id}, '${item.type}')" title="حذف"><i class="fas fa-trash"></i></button>
+                        <button class="edit-content" onclick="editContent(${item.id})" title="تعديل"><i class="fas fa-edit"></i></button>
+                        <button class="delete-content" onclick="deleteContent(${item.id})" title="حذف"><i class="fas fa-trash"></i></button>
                     </div>
                 </div>
             `).join('');
@@ -617,13 +713,13 @@
         // ============================================================
         // تعديل محتوى
         // ============================================================
-        function editContent(id, type) {
-            const item = allItems.find(i => i.id === id && i.type === type);
+        function editContent(id) {
+            const item = allItems.find(i => i.id === id);
             if (!item) return;
 
             editingId = id;
-            editingType = type;
-            document.getElementById('contentType').value = type;
+            editingType = item.type;
+            document.getElementById('contentType').value = item.type;
             document.getElementById('contentTitle').value = item.title;
             document.getElementById('contentDesc').value = item.description || '';
             document.getElementById('contentIcon').value = item.icon || '📘';
@@ -632,8 +728,11 @@
             document.getElementById('videoLink').value = item.video_url || '';
             removeFile();
 
-            toggleFormFields(type);
+            toggleFormFields(item.type);
             showToast("✏️ عدل البيانات ثم اضغط نشر (سيتم استبدال الملف القديم برفع ملف جديد)", "info");
+
+            // تمرير إلى أعلى النموذج
+            document.querySelector('.admin-form-group').scrollIntoView({ behavior: 'smooth' });
         }
 
         // ============================================================
@@ -649,6 +748,9 @@
             toggleFormFields(this.value);
             removeFile();
         });
+
+        // تحديث البحث عند تغيير نوع المحتوى
+        document.getElementById('contentType').addEventListener('change', filterContent);
 
         function clearAdminForm() {
             document.getElementById('contentTitle').value = '';
@@ -678,7 +780,9 @@
         // بدء التشغيل
         // ============================================================
         loadData();
-        console.log('📚 لوحة تحكم المكتبة - رفع الملفات بدون مهلة زمنية');
+        console.log('📚 لوحة تحكم المكتبة - جاهزة');
+        console.log('✅ استخدام المفتاح:', API_KEY);
     </script>
 
-</body></html>
+</body>
+</html>

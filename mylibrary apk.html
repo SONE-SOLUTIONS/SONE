@@ -1,1168 +1,732 @@
-<!DOCTYPE html>
-<html lang="fr" dir="ltr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#b8860b">
-    <title>SONE LIBRARY - Formations</title>
-
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
-          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" 
-          crossorigin="anonymous" referrerpolicy="no-referrer">
-
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-    <script>
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-    </script>
-
-    <style>
-        *, *::before, *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary: #b8860b;
-            --primary-dark: #a0750a;
-            --bg: #f5f5f7;
-            --surface: #fff;
-            --text: #1d1d1f;
-            --text-secondary: #6c757d;
-            --border: #e9ecef;
-            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
-            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
-            --shadow-lg: 0 12px 24px rgba(0,0,0,0.08);
-            --radius: 12px;
-            --radius-sm: 8px;
-            --transition: 0.2s ease;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Cairo', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-            -webkit-tap-highlight-color: transparent;
-            -webkit-touch-callout: none;
-            user-select: none;
-            overscroll-behavior-y: none;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        input, textarea {
-            user-select: text;
-        }
-
-        ::-webkit-scrollbar {
-            width: 0;
-            height: 0;
-            display: none;
-        }
-
-        /* HEADER */
-        .top-nav {
-            background: var(--surface);
-            border-bottom: 1px solid var(--border);
-            padding: 0 16px;
-            height: 56px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            backdrop-filter: blur(8px);
-            background: rgba(255,255,255,0.95);
-        }
-
-        .top-nav .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-        }
-
-        .top-nav .logo img {
-            height: 32px;
-            width: 32px;
-            border-radius: 50%;
-            border: 2px solid var(--primary);
-            object-fit: cover;
-        }
-
-        .top-nav .logo span {
-            font-size: 18px;
-            font-weight: 800;
-            color: var(--text);
-            line-height: 1.2;
-        }
-
-        .top-nav .logo span small {
-            font-weight: 400;
-            font-size: 11px;
-            color: var(--text-secondary);
-            display: block;
-            margin-top: -2px;
-        }
-
-        .nav-actions {
-            display: none;
-        }
-
-        .search-box {
-            background: #f1f3f5;
-            border-radius: 20px;
-            padding: 6px 16px;
-            display: flex;
-            align-items: center;
-            border: 1px solid transparent;
-            transition: var(--transition);
-        }
-
-        .search-box:focus-within {
-            border-color: var(--primary);
-            background: var(--surface);
-            box-shadow: 0 0 0 2px rgba(184, 134, 11, 0.2);
-        }
-
-        .search-box input {
-            border: none;
-            background: transparent;
-            padding: 6px 8px;
-            font-family: 'Cairo', sans-serif;
-            outline: none;
-            width: 200px;
-            color: var(--text);
-            font-size: 14px;
-        }
-
-        .search-box input::placeholder {
-            color: var(--text-secondary);
-        }
-
-        .search-box i {
-            color: var(--text-secondary);
-            font-size: 14px;
-        }
-
-        /* MAIN */
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 72px 12px 24px;
-        }
-
-        .refresh-hint {
-            text-align: center;
-            padding: 12px;
-            color: var(--text-secondary);
-            font-size: 12px;
-            opacity: 0.6;
-        }
-
-        /* GRID */
-        .library-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
-        /* CARD */
-        .library-card {
-            background: var(--surface);
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            border: 1px solid var(--border);
-            transition: var(--transition);
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            will-change: transform;
-        }
-
-        .library-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-lg);
-            border-color: var(--primary);
-        }
-
-        .card-thumbnail {
-            background: #f1f3f5;
-            height: 140px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-            border-radius: 16px 16px 0 0;
-        }
-
-        .card-thumbnail img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s ease;
-        }
-
-        .library-card:hover .card-thumbnail img {
-            transform: scale(1.05);
-        }
-
-        .file-icon {
-            font-size: 48px;
-        }
-
-        .file-icon img {
-            width: 64px;
-            height: 64px;
-            object-fit: contain;
-        }
-
-        .pdf-thumb-placeholder {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #f8f9fa;
-        }
-
-        .pdf-thumb-loaded {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
-
-        .pdf-thumb-loaded img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            animation: fadeInThumb 0.4s ease;
-        }
-
-        @keyframes fadeInThumb {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        .card-body {
-            padding: 10px 12px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .card-body h4 {
-            font-size: 12px;
-            font-weight: 600;
-            margin-bottom: 4px;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            line-height: 1.4;
-        }
-
-        .card-body p {
-            font-size: 11px;
-            color: var(--text-secondary);
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            margin-bottom: 8px;
-            flex: 1;
-        }
-
-        .card-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 6px;
-            border-top: 1px solid #f1f3f5;
-            padding-top: 6px;
-            gap: 8px;
-        }
-
-        .card-footer .meta {
-            font-size: 10px;
-            color: var(--text-secondary);
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .card-footer .meta i {
-            margin-left: 4px;
-        }
-
-        .card-footer .actions {
-            display: flex;
-            gap: 4px;
-            flex-shrink: 0;
-        }
-
-        .card-footer .actions button,
-        .card-footer .actions a.btn-action {
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            cursor: pointer;
-            font-size: 14px;
-            padding: 6px;
-            border-radius: 6px;
-            transition: var(--transition);
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 36px;
-            height: 36px;
-            min-height: 44px;
-            min-width: 44px;
-        }
-
-        .card-footer .actions button:hover,
-        .card-footer .actions a.btn-action:hover {
-            background: #f1f3f5;
-            color: var(--primary);
-        }
-
-        .card-footer .actions a.btn-action.download-btn:hover {
-            background: #d4edda;
-            color: #28a745;
-        }
-
-        /* EMPTY STATE */
-        .empty-library {
-            grid-column: 1/-1;
-            text-align: center;
-            padding: 40px 20px;
-            background: var(--surface);
-            border-radius: 20px;
-            border: 1px dashed var(--border);
-        }
-
-        .empty-library i {
-            font-size: 48px;
-            color: var(--primary);
-            opacity: 0.5;
-        }
-
-        .empty-library h3 {
-            margin-top: 12px;
-            color: var(--text);
-            font-size: 18px;
-        }
-
-        .empty-library p {
-            color: var(--text-secondary);
-            margin-top: 8px;
-        }
-
-        /* MODALS */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(4px);
-            z-index: 3000;
-            align-items: center;
-            justify-content: center;
-            padding: 16px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-            opacity: 1;
-        }
-
-        .modal-content {
-            background: var(--surface);
-            border-radius: 20px 20px 0 0;
-            max-width: 800px;
-            width: 100%;
-            max-height: 85vh;
-            overflow-y: auto;
-            padding: 24px;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            transform: translateY(100%);
-            transition: transform 0.3s ease;
-        }
-
-        .modal-overlay.active .modal-content {
-            transform: translateY(0);
-        }
-
-        .modal-close {
-            position: sticky;
-            top: 0;
-            float: left;
-            background: var(--primary);
-            border: none;
-            color: #fff;
-            padding: 8px 20px;
-            border-radius: 30px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-bottom: 16px;
-            font-family: 'Cairo', sans-serif;
-            font-size: 14px;
-            transition: var(--transition);
-        }
-
-        .modal-close:hover {
-            background: var(--primary-dark);
-        }
-
-        .modal-content h2 {
-            color: var(--text);
-            margin-bottom: 12px;
-            font-size: 20px;
-        }
-
-        .detail-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 16px;
-            font-size: 14px;
-            color: var(--text-secondary);
-            margin-bottom: 16px;
-        }
-
-        .detail-viewer {
-            background: #f1f3f5;
-            border-radius: var(--radius-sm);
-            padding: 8px;
-            margin-bottom: 16px;
-            min-height: 300px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        .detail-viewer iframe,
-        .detail-viewer img {
-            max-width: 100%;
-            max-height: 60vh;
-            border-radius: 4px;
-        }
-
-        .detail-viewer .text-content {
-            background: var(--surface);
-            padding: 20px;
-            border-radius: 4px;
-            max-height: 60vh;
-            overflow-y: auto;
-            width: 100%;
-            white-space: pre-wrap;
-            font-family: monospace;
-            font-size: 14px;
-            color: var(--text);
-            text-align: left;
-            direction: ltr;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .action-buttons a,
-        .action-buttons button {
-            flex: 1;
-            min-width: 120px;
-            padding: 10px 16px;
-            border-radius: 30px;
-            text-align: center;
-            text-decoration: none;
-            font-weight: 600;
-            font-family: 'Cairo', sans-serif;
-            transition: var(--transition);
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-            min-height: 44px;
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: #fff;
-        }
-
-        .btn-primary:hover {
-            background: var(--primary-dark);
-        }
-
-        .btn-secondary {
-            background: #f1f3f5;
-            color: var(--text);
-        }
-
-        .btn-secondary:hover {
-            background: var(--border);
-        }
-
-        /* PDF PREVIEW MODAL */
-        .pdf-preview-modal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.85);
-            backdrop-filter: blur(6px);
-            z-index: 4000;
-            align-items: center;
-            justify-content: center;
-            padding: 16px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .pdf-preview-modal.active {
-            display: flex;
-            opacity: 1;
-        }
-
-        .pdf-preview-content {
-            background: var(--surface);
-            border-radius: 20px 20px 0 0;
-            max-width: 900px;
-            width: 100%;
-            max-height: 90vh;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            transform: translateY(100%);
-            transition: transform 0.3s ease;
-        }
-
-        .pdf-preview-modal.active .pdf-preview-content {
-            transform: translateY(0);
-        }
-
-        .pdf-preview-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 16px 20px;
-            border-bottom: 1px solid var(--border);
-            background: var(--bg);
-            flex-shrink: 0;
-        }
-
-        .pdf-preview-header h3 {
-            margin: 0;
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--text);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .pdf-preview-header h3 i {
-            color: var(--primary);
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .header-actions button,
-        .header-actions a {
-            background: var(--primary);
-            color: #fff;
-            border: none;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-family: 'Cairo', sans-serif;
-            font-weight: 600;
-            font-size: 13px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            transition: var(--transition);
-        }
-
-        .header-actions button:hover,
-        .header-actions a:hover {
-            background: var(--primary-dark);
-        }
-
-        .close-preview {
-            background: var(--border) !important;
-            color: var(--text) !important;
-            width: 32px;
-            height: 32px;
-            padding: 0 !important;
-            border-radius: 50% !important;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .close-preview:hover {
-            background: #dc3545 !important;
-            color: #fff !important;
-        }
-
-        .pdf-preview-body {
-            flex: 1;
-            overflow: hidden;
-            background: #f1f3f5;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 400px;
-        }
-
-        .pdf-preview-body iframe {
-            width: 100%;
-            height: 100%;
-            min-height: 500px;
-            border: none;
-            border-radius: 0 0 20px 20px;
-        }
-
-        .pdf-loading, .pdf-error, .no-preview {
-            text-align: center;
-            padding: 40px;
-        }
-
-        .pdf-loading i {
-            font-size: 48px;
-            color: var(--primary);
-            animation: spin 1s linear infinite;
-        }
-
-        .pdf-loading p {
-            margin-top: 12px;
-            color: var(--text-secondary);
-            font-size: 14px;
-        }
-
-        .pdf-error {
-            color: #dc3545;
-        }
-
-        .pdf-error i {
-            font-size: 48px;
-            margin-bottom: 12px;
-        }
-
-        .no-preview {
-            color: var(--text-secondary);
-        }
-
-        .no-preview i {
-            font-size: 48px;
-            color: var(--primary);
-            margin-bottom: 12px;
-        }
-
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        /* BOTTOM BAR */
-        .bottom-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(12px);
-            border-top: 1px solid var(--border);
-            padding: 8px 16px 24px;
-            z-index: 1000;
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-        }
-
-        .bottom-bar .app-title {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-secondary);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        /* RESPONSIVE */
-        @media (min-width: 769px) {
-            .library-grid {
-                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            }
-            
-            .top-nav .nav-actions {
-                display: flex;
-            }
-            
-            .nav-actions {
-                display: flex;
-                align-items: center;
-                gap: 16px;
-            }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-        }
-    </style>
+<html lang="ar" dir="rtl"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>SONE — مكتبة المعرفة الفلاحية</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Lalezar&amp;family=Tajawal:wght@300;400;500;700;800;900&amp;family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
+
+<style>
+  :root{
+    --canvas:#0E1712;
+    --cream:#FBF7EF;
+    --cream-2:#F2ECDB;
+    --surface:#FFFFFF;
+    --forest:#1F3A2E;
+    --forest-2:#28503F;
+    --forest-3:#356751;
+    --ink:#1C241D;
+    --muted:#7C8478;
+    --line:#E9E2CF;
+
+    --c-books:#5C7A3D;   --c-books-tint:#EDF3E4;
+    --c-articles:#C1683B;--c-articles-tint:#FBEEE5;
+    --c-videos:#5B4B8A;  --c-videos-tint:#EFEBF7;
+    --c-reports:#B8790A; --c-reports-tint:#FBF1E0;
+    --c-trainings:#1F6F63;--c-trainings-tint:#E7F2F0;
+
+    --radius-lg:28px;
+    --radius-md:18px;
+    --radius-sm:12px;
+    --shadow-soft:0 10px 30px rgba(31,58,46,.10);
+    --shadow-lift:0 18px 40px rgba(20,30,24,.16);
+  }
+
+  *,*::before,*::after{box-sizing:border-box; margin:0; padding:0;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    font-family:'Tajawal',sans-serif;
+    background:var(--canvas);
+    color:var(--ink);
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::-webkit-scrollbar{width:0;height:0;}
+  *:focus-visible{outline:2.5px solid var(--c-reports); outline-offset:2px; border-radius:6px;}
+  button{font-family:inherit; border:none; background:none; cursor:pointer; color:inherit;}
+  a{color:inherit; text-decoration:none;}
+  img{display:block; max-width:100%;}
+
+  /* ================= APP SHELL / PHONE FRAME ================= */
+  .app-shell{
+    min-height:100dvh;
+    display:flex; align-items:center; justify-content:center;
+    padding:38px 16px;
+    background:
+      radial-gradient(70% 55% at 50% 0%, rgba(53,103,81,.35), transparent 60%),
+      var(--canvas);
+  }
+  .phone-frame{
+    position:relative;
+    width:100%; max-width:412px;
+    height:min(890px,92dvh);
+    background:linear-gradient(160deg,#0B1210,#1a2621);
+    border-radius:46px;
+    padding:12px;
+    box-shadow:var(--shadow-lift), 0 0 0 1px rgba(255,255,255,.04) inset;
+  }
+  .notch{
+    position:absolute; top:12px; left:50%; transform:translateX(-50%);
+    width:120px; height:22px; background:#0B1210; border-radius:0 0 16px 16px; z-index:40;
+  }
+  .app-screen{
+    position:relative; width:100%; height:100%;
+    background:var(--cream);
+    border-radius:36px;
+    overflow:hidden;
+    display:flex; flex-direction:column;
+  }
+
+  @media (max-width:480px){
+    .app-shell{padding:0;}
+    .phone-frame{max-width:100%; height:100dvh; border-radius:0; padding:0; box-shadow:none;}
+    .app-screen{border-radius:0;}
+    .notch{display:none;}
+  }
+
+  /* ================= STATUS BAR ================= */
+  .status-bar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 26px 4px; font-family:'IBM Plex Sans Arabic',sans-serif;
+    font-size:13px; font-weight:600; color:var(--forest); flex-shrink:0;
+  }
+  .status-bar .icons{display:flex; align-items:center; gap:6px;}
+  .status-bar svg{width:17px; height:17px;}
+
+  /* ================= APP BAR ================= */
+  .app-bar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:6px 20px 14px; flex-shrink:0;
+  }
+  .brand{display:flex; align-items:center; gap:10px;}
+  .brand-mark{
+    width:42px; height:42px; border-radius:13px;
+    background:linear-gradient(150deg,var(--forest-3),var(--forest));
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 6px 14px rgba(31,58,46,.35);
+  }
+  .brand-mark svg{width:22px; height:22px; stroke:#EFE6C8; fill:none; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round;}
+  .brand-text .name{font-family:'Lalezar',sans-serif; font-size:22px; color:var(--forest); line-height:1;}
+  .brand-text .tag{font-size:11.5px; color:var(--muted); font-weight:500; margin-top:2px;}
+  .bell-btn{
+    width:40px; height:40px; border-radius:50%; background:var(--surface);
+    display:flex; align-items:center; justify-content:center; position:relative;
+    box-shadow:0 3px 10px rgba(31,58,46,.08); border:1px solid var(--line);
+    color:var(--forest); transition:transform .15s ease;
+  }
+  .bell-btn:active{transform:scale(.92);}
+  .bell-btn::after{
+    content:''; position:absolute; top:9px; left:11px; width:7px; height:7px;
+    border-radius:50%; background:var(--c-articles); border:2px solid var(--surface);
+  }
+
+  /* ================= SCROLL AREA ================= */
+  .app-main{flex:1; overflow-y:auto; padding-bottom:104px; -webkit-overflow-scrolling:touch;}
+
+  /* ================= HERO CARD ================= */
+  .hero{
+    margin:2px 18px 26px; padding:22px 20px 30px;
+    border-radius:var(--radius-lg);
+    background:linear-gradient(155deg,var(--forest) 0%,var(--forest-3) 65%,#3d7a5f 100%);
+    position:relative; overflow:hidden;
+    box-shadow:var(--shadow-soft);
+  }
+  .hero .veins{position:absolute; inset:0; opacity:.16; pointer-events:none;}
+  .hero-eyebrow{
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:'IBM Plex Sans Arabic',sans-serif; font-size:10.5px; font-weight:700;
+    letter-spacing:.14em; color:#D9E8CE; background:rgba(255,255,255,.12);
+    padding:5px 11px; border-radius:20px;
+  }
+  .hero h1{
+    font-family:'Lalezar',sans-serif; font-weight:400; font-size:27px; line-height:1.35;
+    color:#FBF7EF; margin:14px 0 8px; max-width:230px;
+  }
+  .hero p{font-size:13px; color:#CFE0C7; line-height:1.6; max-width:250px;}
+
+  .search-pill{
+    position:relative; margin:20px -2px -46px; z-index:5;
+    display:flex; align-items:center; gap:10px;
+    background:var(--surface); border-radius:20px; padding:13px 16px;
+    box-shadow:0 14px 30px rgba(20,30,24,.22);
+  }
+  .search-pill i{color:var(--forest-3); font-size:15px;}
+  .search-pill input{
+    flex:1; border:none; outline:none; font-family:'Tajawal',sans-serif;
+    font-size:14.5px; background:transparent; color:var(--ink);
+  }
+  .search-pill input::placeholder{color:var(--muted);}
+  .clear-btn{display:none; color:var(--muted); font-size:14px;}
+  .clear-btn.show{display:block;}
+
+  /* ================= CHIP ROW ================= */
+  .chip-row{
+    display:flex; gap:10px; overflow-x:auto; padding:56px 18px 4px;
+    scroll-snap-type:x proximity;
+  }
+  .chip{
+    flex:0 0 auto; scroll-snap-align:start;
+    display:flex; align-items:center; gap:8px;
+    background:var(--surface); border:1px solid var(--line);
+    padding:8px 8px 8px 14px; border-radius:26px;
+    font-size:12.5px; font-weight:700; color:var(--ink);
+    transition:background .18s ease,color .18s ease,border-color .18s ease,transform .15s ease;
+  }
+  .chip:active{transform:scale(.96);}
+  .chip .ic{
+    width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .chip .ic svg{width:14px; height:14px; fill:none; stroke:currentColor; stroke-width:1.9; stroke-linecap:round; stroke-linejoin:round;}
+  .chip .count{
+    font-family:'IBM Plex Sans Arabic',sans-serif; font-size:10.5px; font-weight:600;
+    opacity:.7; margin-inline-start:2px;
+  }
+  .chip.is-active{color:#fff; border-color:transparent;}
+  .chip.is-active .count{opacity:.85;}
+
+  /* ================= SECTION HEAD ================= */
+  .section-head{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:22px 18px 12px;
+  }
+  .section-head .title-wrap{display:flex; align-items:center; gap:10px;}
+  .section-head .ic{
+    width:38px; height:38px; border-radius:12px; display:flex; align-items:center; justify-content:center;
+  }
+  .section-head .ic svg{width:19px; height:19px; fill:none; stroke:currentColor; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round;}
+  .section-head h2{font-size:16.5px; font-weight:800; color:var(--ink);}
+  .section-head .count-line{
+    font-family:'IBM Plex Sans Arabic',sans-serif; font-size:11.5px; color:var(--muted); font-weight:500; margin-top:1px;
+  }
+  .sort-btn{
+    display:flex; align-items:center; gap:5px; font-size:11.5px; font-weight:700;
+    color:var(--forest-3); background:var(--surface); border:1px solid var(--line);
+    padding:8px 12px; border-radius:16px;
+  }
+  .sort-btn i{font-size:11px;}
+
+  /* ================= CARD LIST ================= */
+  .card-list{padding:0 18px; display:flex; flex-direction:column; gap:12px;}
+  .card{
+    display:flex; align-items:flex-start; gap:12px;
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-md);
+    padding:12px; text-align:right; transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .card:active{transform:scale(.985);}
+  .thumb{
+    flex-shrink:0; width:60px; height:60px; border-radius:14px; overflow:hidden;
+    background:var(--cream-2); display:flex; align-items:center; justify-content:center; position:relative;
+  }
+  .thumb img{width:100%; height:100%; object-fit:cover;}
+  .thumb .file-ic{font-size:22px;}
+  .thumb .ext-tag{
+    position:absolute; bottom:-1px; left:-1px; font-family:'IBM Plex Sans Arabic',sans-serif;
+    font-size:8px; font-weight:700; color:#fff; padding:1.5px 5px 2px; border-radius:6px 0 8px 0;
+  }
+  .card-body{flex:1; min-width:0;}
+  .card-body h3{
+    font-size:13.8px; font-weight:700; color:var(--ink); line-height:1.45;
+    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+  }
+  .card-meta{
+    display:flex; align-items:center; gap:8px; margin-top:8px;
+    font-family:'IBM Plex Sans Arabic',sans-serif; font-size:10.8px; color:var(--muted); font-weight:500;
+  }
+  .card-meta .dot{width:3px; height:3px; border-radius:50%; background:var(--line);}
+  .card-actions{display:flex; gap:4px; margin-top:9px;}
+  .card-actions button, .card-actions a{
+    width:29px; height:29px; border-radius:9px; display:flex; align-items:center; justify-content:center;
+    background:var(--cream-2); color:var(--forest-3); font-size:12px; transition:background .15s ease;
+  }
+  .card-actions .dl:hover, .card-actions .dl:active{background:var(--c-books-tint); color:var(--c-books);}
+
+  /* ================= EMPTY STATE ================= */
+  .empty-state{
+    text-align:center; padding:52px 30px; color:var(--muted);
+  }
+  .empty-state .ic{
+    width:64px; height:64px; border-radius:20px; margin:0 auto 16px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .empty-state .ic svg{width:30px; height:30px; fill:none; stroke:currentColor; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round;}
+  .empty-state h3{font-size:15px; color:var(--ink); font-weight:800; margin-bottom:6px;}
+  .empty-state p{font-size:12.5px; line-height:1.6;}
+
+  /* ================= BOTTOM NAV ================= */
+  .bottom-nav{
+    position:absolute; inset-inline:0; bottom:0; height:82px;
+    background:rgba(255,255,255,.92); backdrop-filter:blur(14px);
+    border-top:1px solid var(--line);
+    display:flex; align-items:stretch; justify-content:space-around;
+    padding-bottom:14px; z-index:60;
+  }
+  .nav-btn{
+    flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px;
+    color:var(--muted); position:relative;
+  }
+  .nav-btn svg{width:21px; height:21px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; transition:stroke .18s ease;}
+  .nav-btn span{font-size:10px; font-weight:700;}
+  .nav-leaf{
+    position:absolute; top:2px; width:16px; height:16px; opacity:0; transform:scale(.4);
+    transition:opacity .28s ease, transform .28s ease;
+  }
+  .nav-btn.is-active .nav-leaf{opacity:1; transform:scale(1);}
+  @media (prefers-reduced-motion:reduce){
+    .nav-leaf, .chip, .card, .sheet, .sheet-backdrop{transition:none !important;}
+  }
+
+  /* ================= TOAST ================= */
+  .toast{
+    position:absolute; bottom:96px; left:50%; transform:translateX(-50%) translateY(12px);
+    background:var(--forest); color:#F6F1E2; font-size:12.5px; font-weight:600;
+    padding:11px 18px; border-radius:30px; box-shadow:0 12px 26px rgba(20,30,24,.3);
+    opacity:0; pointer-events:none; transition:opacity .25s ease, transform .25s ease; z-index:120;
+    white-space:nowrap; max-width:88%; overflow:hidden; text-overflow:ellipsis;
+  }
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+
+  /* ================= SHEETS ================= */
+  .sheet-backdrop{
+    position:absolute; inset:0; background:rgba(14,23,18,.5); opacity:0; pointer-events:none;
+    transition:opacity .25s ease; z-index:80;
+  }
+  .sheet-backdrop.show{opacity:1; pointer-events:auto;}
+  .sheet{
+    position:absolute; inset-inline:0; bottom:0; height:88%;
+    background:var(--cream); border-radius:26px 26px 0 0;
+    transform:translateY(100%); transition:transform .32s cubic-bezier(.32,.72,0,1);
+    z-index:100; display:flex; flex-direction:column; box-shadow:0 -10px 40px rgba(20,30,24,.25);
+  }
+  .sheet.show{transform:translateY(0);}
+  .sheet-grip{width:38px; height:4px; background:var(--line); border-radius:4px; margin:10px auto 4px;}
+  .sheet-head{
+    display:flex; align-items:center; gap:10px; padding:10px 16px 14px; border-bottom:1px solid var(--line);
+    flex-shrink:0;
+  }
+  .sheet-head .back{
+    width:34px; height:34px; border-radius:50%; background:var(--surface); border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center; flex-shrink:0; color:var(--forest);
+  }
+  .sheet-head h4{flex:1; font-size:13.5px; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .sheet-head .actions{display:flex; gap:6px;}
+  .sheet-head .actions a{
+    width:34px; height:34px; border-radius:50%; background:var(--forest); color:#F3EEDD;
+    display:flex; align-items:center; justify-content:center; font-size:13px;
+  }
+  .sheet-body{flex:1; overflow:hidden; position:relative; background:#EFE9D8;}
+  .sheet-body iframe{width:100%; height:100%; border:none;}
+  .sheet-fallback{
+    height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:14px; padding:30px; text-align:center; color:var(--muted);
+  }
+  .sheet-fallback i{font-size:44px; color:var(--forest-3);}
+  .sheet-fallback .btn{
+    background:var(--forest); color:#F3EEDD; padding:11px 22px; border-radius:24px; font-weight:700; font-size:13px;
+  }
+  .sheet-loading{
+    position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:10px; color:var(--muted); font-size:12.5px; background:#EFE9D8;
+  }
+  .sheet-loading i{font-size:26px; color:var(--forest-3); animation:spin 1s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+</style>
 </head>
 <body>
 
-    <header class="top-nav">
-        <a href="#" class="logo">
-            <img src="https://sone-solutions.github.io/SONE/SONELOGE.jpg" alt="SONE Logo" loading="lazy">
-            <span>
-                SONE LIBRARY
-                <small>Formations Agricoles</small>
-            </span>
-        </a>
-        <div class="nav-actions">
-            <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="Rechercher..." autocomplete="off">
-                <i class="fas fa-times-circle" id="clearSearchBtn" style="display:none; cursor:pointer; color:var(--primary);"></i>
+<div class="app-shell">
+  <div class="phone-frame">
+    <div class="notch"></div>
+    <div class="app-screen">
+
+      <div class="status-bar">
+        <span>٩:٤١</span>
+        <div class="icons">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M2 8.5a15 15 0 0 1 20 0M5.5 12a10 10 0 0 1 13 0M9 15.5a5 5 0 0 1 6 0M12 19h.01"></path></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="8" width="18" height="8" rx="2.5"></rect><path d="M22 10.5v3" stroke-linecap="round"></path><rect x="4" y="10" width="12" height="4" rx="1" fill="currentColor" stroke="none"></rect></svg>
+        </div>
+      </div>
+
+      <header class="app-bar">
+        <div class="brand">
+          <div class="brand-mark">
+            <svg viewBox="0 0 24 24"><path d="M12 21s-7-4.35-7-10.5A5.5 5.5 0 0 1 12 5a5.5 5.5 0 0 1 7 5.5C19 16.65 12 21 12 21Z"></path><path d="M12 21V9"></path></svg>
+          </div>
+          <div class="brand-text">
+            <div class="name">SONE</div>
+            <div class="tag">مكتبة المعرفة الفلاحية</div>
+          </div>
+        </div>
+        <button class="bell-btn" onclick="showToast('لا توجد إشعارات جديدة الآن','info')" aria-label="الإشعارات">
+          <i class="fa-regular fa-bell"></i>
+        </button>
+      </header>
+
+      <main class="app-main" id="appMain">
+
+        <section class="hero">
+          <svg class="veins" viewBox="0 0 300 160" preserveAspectRatio="none">
+            <path d="M-10 140 C 60 120, 90 150, 160 110 S 260 60, 320 70" stroke="#F6F1E2" stroke-width="2" fill="none"></path>
+            <path d="M40 170 C 90 130, 120 160, 190 130 S 280 90, 330 100" stroke="#F6F1E2" stroke-width="1.4" fill="none"></path>
+          </svg>
+          <span class="hero-eyebrow">SONE LIBRARY</span>
+          <h1>المعرفة الفلاحية بين إيديك</h1>
+          <p>تقارير، عروض تدريبية ودروس من واقع الميدان، جاهزة تقرأها أو تحمّلها في أي وقت.</p>
+          <div class="search-pill">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="searchInput" placeholder="دوّر على تقرير، درس أو موضوع…" autocomplete="off">
+            <button class="clear-btn" id="clearSearchBtn" onclick="clearSearch()" aria-label="مسح البحث"><i class="fa-solid fa-circle-xmark"></i></button>
+          </div>
+        </section>
+
+        <nav class="chip-row" id="chipRow"><button class="chip is-active" style="background: var(--c-books); color: rgb(255, 255, 255);"><span class="ic" style="background:rgba(255,255,255,.22);color:#fff"><svg viewBox="0 0 24 24"><path d="M12 6.7S10 4.3 5.6 4.3C4.7 4.3 4 5 4 5.9V17c0 .9.7 1.6 1.6 1.6 3.1 0 5.1 1.5 6.4 2.9"></path><path d="M12 6.7S14 4.3 18.4 4.3c.9 0 1.6.7 1.6 1.6V17c0 .9-.7 1.6-1.6 1.6-3.1 0-5.1 1.5-6.4 2.9"></path></svg></span>الكتب<span class="count">١</span></button><button class="chip"><span class="ic" style="background:var(--c-articles-tint);color:#C1683B"><svg viewBox="0 0 24 24"><rect x="4.5" y="4" width="15" height="16" rx="2.2"></rect><path d="M8 9h8M8 12.4h8M8 15.8h5"></path></svg></span>المقالات<span class="count">٠</span></button><button class="chip"><span class="ic" style="background:var(--c-videos-tint);color:#5B4B8A"><svg viewBox="0 0 24 24"><rect x="3.3" y="6.3" width="12.5" height="11.4" rx="2.3"></rect><path d="M15.8 10.3 20.7 8v8l-4.9-2.4Z"></path></svg></span>الفيديوهات<span class="count">٠</span></button><button class="chip"><span class="ic" style="background:var(--c-reports-tint);color:#B8790A"><svg viewBox="0 0 24 24"><path d="M5 20V10.5M11 20V4M17 20v-6.5"></path><path d="M3.5 20h17"></path></svg></span>التقارير<span class="count">٠</span></button><button class="chip"><span class="ic" style="background:var(--c-trainings-tint);color:#1F6F63"><svg viewBox="0 0 24 24"><path d="M12 5 2.3 9.5 12 14l9.7-4.5L12 5Z"></path><path d="M6.2 11.7v4.2c0 1.6 2.6 2.9 5.8 2.9s5.8-1.3 5.8-2.9v-4.2"></path><path d="M21.7 9.5V15"></path></svg></span>عروض التدريب<span class="count">٣٤</span></button></nav>
+
+        <section class="content-section">
+          <div class="section-head">
+            <div class="title-wrap">
+              <div class="ic" id="sectionIcon" style="background: var(--c-books-tint); color: rgb(92, 122, 61);"><svg viewBox="0 0 24 24"><path d="M12 6.7S10 4.3 5.6 4.3C4.7 4.3 4 5 4 5.9V17c0 .9.7 1.6 1.6 1.6 3.1 0 5.1 1.5 6.4 2.9"></path><path d="M12 6.7S14 4.3 18.4 4.3c.9 0 1.6.7 1.6 1.6V17c0 .9-.7 1.6-1.6 1.6-3.1 0-5.1 1.5-6.4 2.9"></path></svg></div>
+              <div>
+                <h2 id="sectionTitle">الكتب</h2>
+                <div class="count-line" id="sectionCount">١ ملف</div>
+              </div>
             </div>
-        </div>
-    </header>
+            <button class="sort-btn" id="sortBtn" onclick="toggleSort()">
+              <i class="fa-solid fa-arrow-down-wide-short"></i>
+              <span id="sortLabel">الأحدث</span>
+            </button>
+          </div>
+          <div class="card-list" id="cardList"><div class="card" data-id="122">
+    <div class="thumb" id="thumb-122"><img src="data:image/jpeg;base64,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" alt=""></div>
+    <div class="card-body">
+      <h3>CV_Soufiane_Ait_Belaid_EN.pdf</h3>
+      <div class="card-meta">
+        <span>٢١&rlm;/٧&rlm;/٢٠٢٦</span>
+        <span class="dot"></span>
+        <span style="color:#5C7A3D;font-weight:700">الكتب</span>
+      </div>
+      <div class="card-actions">
+        <button class="pv" title="معاينة"><i class="fa-regular fa-eye"></i></button>
+        <a class="op" href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1784592909755_r87a0m.pdf" target="_blank" title="فتح" onclick="event.stopPropagation()"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+        <a class="dl" href="https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1784592909755_r87a0m.pdf" download="CV_Soufiane_Ait_Belaid_EN.pdf" title="تحميل" onclick="event.stopPropagation()"><i class="fa-solid fa-download"></i></a>
+      </div>
+    </div></div></div>
+        </section>
 
-    <div class="container">
-        <div class="refresh-hint">
-            <i class="fas fa-arrow-down" style="font-size:10px;"></i> Glisser pour actualiser
+      </main>
+
+      <nav class="bottom-nav" id="bottomNav"><button class="nav-btn is-active" style="color: rgb(92, 122, 61);"><span class="nav-leaf"><svg viewBox="0 0 16 16"><path d="M8 14.5S2.5 11 2.5 6.2A4 4 0 0 1 8 2.5a4 4 0 0 1 5.5 3.7C13.5 11 8 14.5 8 14.5Z" fill="#5C7A3D"></path></svg></span><svg viewBox="0 0 24 24"><path d="M12 6.7S10 4.3 5.6 4.3C4.7 4.3 4 5 4 5.9V17c0 .9.7 1.6 1.6 1.6 3.1 0 5.1 1.5 6.4 2.9"></path><path d="M12 6.7S14 4.3 18.4 4.3c.9 0 1.6.7 1.6 1.6V17c0 .9-.7 1.6-1.6 1.6-3.1 0-5.1 1.5-6.4 2.9"></path></svg><span>كتب</span></button><button class="nav-btn"><span class="nav-leaf"><svg viewBox="0 0 16 16"><path d="M8 14.5S2.5 11 2.5 6.2A4 4 0 0 1 8 2.5a4 4 0 0 1 5.5 3.7C13.5 11 8 14.5 8 14.5Z" fill="#C1683B"></path></svg></span><svg viewBox="0 0 24 24"><rect x="4.5" y="4" width="15" height="16" rx="2.2"></rect><path d="M8 9h8M8 12.4h8M8 15.8h5"></path></svg><span>مقالات</span></button><button class="nav-btn"><span class="nav-leaf"><svg viewBox="0 0 16 16"><path d="M8 14.5S2.5 11 2.5 6.2A4 4 0 0 1 8 2.5a4 4 0 0 1 5.5 3.7C13.5 11 8 14.5 8 14.5Z" fill="#5B4B8A"></path></svg></span><svg viewBox="0 0 24 24"><rect x="3.3" y="6.3" width="12.5" height="11.4" rx="2.3"></rect><path d="M15.8 10.3 20.7 8v8l-4.9-2.4Z"></path></svg><span>فيديو</span></button><button class="nav-btn"><span class="nav-leaf"><svg viewBox="0 0 16 16"><path d="M8 14.5S2.5 11 2.5 6.2A4 4 0 0 1 8 2.5a4 4 0 0 1 5.5 3.7C13.5 11 8 14.5 8 14.5Z" fill="#B8790A"></path></svg></span><svg viewBox="0 0 24 24"><path d="M5 20V10.5M11 20V4M17 20v-6.5"></path><path d="M3.5 20h17"></path></svg><span>تقارير</span></button><button class="nav-btn"><span class="nav-leaf"><svg viewBox="0 0 16 16"><path d="M8 14.5S2.5 11 2.5 6.2A4 4 0 0 1 8 2.5a4 4 0 0 1 5.5 3.7C13.5 11 8 14.5 8 14.5Z" fill="#1F6F63"></path></svg></span><svg viewBox="0 0 24 24"><path d="M12 5 2.3 9.5 12 14l9.7-4.5L12 5Z"></path><path d="M6.2 11.7v4.2c0 1.6 2.6 2.9 5.8 2.9s5.8-1.3 5.8-2.9v-4.2"></path><path d="M21.7 9.5V15"></path></svg><span>تدريب</span></button></nav>
+
+      <div class="sheet-backdrop" id="sheetBackdrop" onclick="closeSheet()"></div>
+      <div class="sheet" id="previewSheet">
+        <div class="sheet-grip"></div>
+        <div class="sheet-head">
+          <button class="back" onclick="closeSheet()" aria-label="رجوع"><i class="fa-solid fa-arrow-right"></i></button>
+          <h4 id="sheetTitle">عنوان الملف</h4>
+          <div class="actions">
+            <a href="#" id="sheetOpenLink" target="_blank" aria-label="فتح في تبويب جديد"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+            <a href="#" id="sheetDownloadLink" aria-label="تحميل"><i class="fa-solid fa-download"></i></a>
+          </div>
         </div>
-        
-        <div id="trainings-panel" class="content-panel active">
-            <div class="library-grid" id="trainingsGrid"></div>
-        </div>
+        <div class="sheet-body" id="sheetBody"></div>
+      </div>
+
+      <div class="toast" id="toast"></div>
+
     </div>
+  </div>
+</div>
 
-    <div class="modal-overlay" id="detailModal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal()">Fermer</button>
-            <h2 id="modalTitle">Titre</h2>
-            <div class="detail-meta" id="modalMeta"></div>
-            <div class="detail-viewer" id="modalViewer"></div>
-            <div class="action-buttons" id="modalActions"></div>
-        </div>
-    </div>
+<script>
+/* ============ CATEGORY CONFIG ============ */
+const ORDER = ['books','articles','videos','reports','trainings'];
+const CATS = {
+  books:{type:'book', label:'الكتب', navLabel:'كتب', color:'var(--c-books)', hex:'#5C7A3D', tint:'var(--c-books-tint)',
+    icon:'<path d="M12 6.7S10 4.3 5.6 4.3C4.7 4.3 4 5 4 5.9V17c0 .9.7 1.6 1.6 1.6 3.1 0 5.1 1.5 6.4 2.9"/><path d="M12 6.7S14 4.3 18.4 4.3c.9 0 1.6.7 1.6 1.6V17c0 .9-.7 1.6-1.6 1.6-3.1 0-5.1 1.5-6.4 2.9"/>',
+    emptyTitle:'لا توجد كتب متاحة بعد', emptySub:'سيتم إضافة عناوين جديدة قريباً إلى هذا القسم.'},
+  articles:{type:'article', label:'المقالات', navLabel:'مقالات', color:'var(--c-articles)', hex:'#C1683B', tint:'var(--c-articles-tint)',
+    icon:'<rect x="4.5" y="4" width="15" height="16" rx="2.2"/><path d="M8 9h8M8 12.4h8M8 15.8h5"/>',
+    emptyTitle:'لا توجد مقالات بعد', emptySub:'راقب هذا القسم، المقالات تتجدد باستمرار.'},
+  videos:{type:'video', label:'الفيديوهات', navLabel:'فيديو', color:'var(--c-videos)', hex:'#5B4B8A', tint:'var(--c-videos-tint)',
+    icon:'<rect x="3.3" y="6.3" width="12.5" height="11.4" rx="2.3"/><path d="M15.8 10.3 20.7 8v8l-4.9-2.4Z"/>',
+    emptyTitle:'لا توجد فيديوهات بعد', emptySub:'دروس مصوّرة من الميدان في الطريق إليك.'},
+  reports:{type:'report', label:'التقارير', navLabel:'تقارير', color:'var(--c-reports)', hex:'#B8790A', tint:'var(--c-reports-tint)',
+    icon:'<path d="M5 20V10.5M11 20V4M17 20v-6.5"/><path d="M3.5 20h17"/>',
+    emptyTitle:'لا توجد تقارير بعد', emptySub:'التقارير الميدانية تُنشر هنا أولاً بأول.'},
+  trainings:{type:'training', label:'عروض التدريب', navLabel:'تدريب', color:'var(--c-trainings)', hex:'#1F6F63', tint:'var(--c-trainings-tint)',
+    icon:'<path d="M12 5 2.3 9.5 12 14l9.7-4.5L12 5Z"/><path d="M6.2 11.7v4.2c0 1.6 2.6 2.9 5.8 2.9s5.8-1.3 5.8-2.9v-4.2"/><path d="M21.7 9.5V15"/>',
+    emptyTitle:'لا توجد عروض تدريب بعد', emptySub:'تقارير التربصات والعروض التقديمية تظهر هنا.'}
+};
+const EXT_COLOR = {pdf:'#C1432E', doc:'#2b579a', docx:'#2b579a', ppt:'#d24726', pptx:'#d24726'};
+const AR_DIGITS = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+const toAr = n => String(n).replace(/[0-9]/g, d => AR_DIGITS[d]);
 
-    <div class="pdf-preview-modal" id="pdfPreviewModal">
-        <div class="pdf-preview-content">
-            <div class="pdf-preview-header">
-                <h3><i class="fas fa-file-pdf"></i> <span id="pdfPreviewTitle">Aperçu</span></h3>
-                <div class="header-actions">
-                    <a href="#" id="pdfDownloadLink" download target="_blank"><i class="fas fa-download"></i> Télécharger</a>
-                    <button class="close-preview" onclick="closePdfPreview()" title="Fermer"><i class="fas fa-times"></i></button>
-                </div>
-            </div>
-            <div class="pdf-preview-body" id="pdfPreviewBody">
-                <div class="pdf-loading">
-                    <i class="fas fa-spinner"></i>
-                    <p>Chargement...</p>
-                </div>
-            </div>
-        </div>
-    </div>
+/* ============ SUPABASE ============ */
+const SUPABASE_URL = 'https://zpjuhprlcaigmczhqlye.supabase.co';
+const DATA_API_KEY = 'sb_publishable_PVQ61DBLGYjzaXy-XFrWpA_k_94iEvK';
+const headers = { apikey: DATA_API_KEY, Authorization: `Bearer ${DATA_API_KEY}`, 'Content-Type': 'application/json' };
 
-    <div class="bottom-bar">
-        <span class="app-title">
-            <i class="fas fa-graduation-cap" style="color:var(--primary);"></i>
-            SONE Formations
-        </span>
-    </div>
+async function fetchLibraryItems(){
+  try{
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/library_items?select=*&order=id.desc`, { headers });
+    if(!res.ok) throw new Error(res.status);
+    return await res.json();
+  }catch(e){
+    console.error('fetch failed', e);
+    showToast('تعذّر تحميل المحتوى، تحقق من الاتصال','error');
+    return [];
+  }
+}
 
-    <script>
-    const CONFIG = {
-        LAZY_BATCH_SIZE: 12,
-        LAZY_DELAY: 50,
-        DEBOUNCE_DELAY: 150,
-        MAX_CONCURRENT_LOADS: 6
-    };
+/* ============ STATE ============ */
+const state = { data:[], active:'trainings', query:'', sortDesc:true, renderedIds:new Set() };
+const pdfThumbCache = new Map();
+const imgObserver = new IntersectionObserver(es=>{
+  es.forEach(e=>{ if(e.isIntersecting){ const img=e.target; if(img.dataset.src){img.src=img.dataset.src; img.removeAttribute('data-src');} imgObserver.unobserve(img); } });
+},{rootMargin:'120px'});
 
-    const libraryData = [
-        { id: 83, filename: "Exposé de fraisier.docx", pdfurl: "https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783897257248_rnn3gh.docx", type: "training", thumb: "https://sone-solutions.github.io/SONE/images%20docx.png", thumbAlt: "DOCX", date: "12/07/2026" },
-        { id: 84, filename: "L'oignon.pptx", pdfurl: "https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783897308980_0u9vi6.pptx", type: "training", thumb: "https://sone-solutions.github.io/SONE/pptx.png", thumbAlt: "PPTX", date: "12/07/2026" },
-        { id: 85, filename: "L'oignon exposé correction.pptx", pdfurl: "https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783897452938_r3kgww.pptx", type: "training", thumb: "https://sone-solutions.github.io/SONE/pptx.png", thumbAlt: "PPTX", date: "12/07/2026" },
-        { id: 86, filename: "Rapport-Framboise-Soema-avaryl.pdf", pdfurl: "https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783944933607_uo2qe7.pdf", type: "training", thumb: "", thumbAlt: "PDF", date: "13/07/2026" },
-        { id: 87, filename: "rapport tomate.pdf", pdfurl: "https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783945106191_43r32e.pdf", type: "training", thumb: "", thumbAlt: "PDF", date: "13/07/2026" },
-        { id: 88, filename: "Exposé de fraisier.docx", pdfurl: "https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783945202945_2e5l9s.docx", type: "training", thumb: "https://sone-solutions.github.io/SONE/images%20docx.png", thumbAlt: "DOCX", date: "13/07/2026" },
-        { id: 89, filename: "Rapport fraise.pdf", pdfurl: "https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783945296653_npfcd1.pdf", type: "training", thumb: "", thumbAlt: "PDF", date: "13/07/2026" },
-        { id: 90, filename: "rapport-framboise-palmagrii.docx", pdfurl: "https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783945432558_llshul.docx", type: "training", thumb: "https://sone-solutions.github.io/SONE/images%20docx.png", thumbAlt: "DOCX", date: "13/07/2026" },
-        { id: 91, filename: "Rapport_framboise_domaine_brahim_znibier_.docx", pdfurl: "https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783945617141_tr7cgh.docx", type: "training", thumb: "https://sone-solutions.github.io/SONE/images%20docx.png", thumbAlt: "DOCX", date: "13/07/2026" },
-        { id: 92, filename: "RAPPORT NAIMA MHAMDI.docx", pdfurl: "https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783945681170_vv6ozz.docx", type: "training", thumb: "https://sone-solutions.github.io/SONE/images%20docx.png", thumbAlt: "DOCX", date: "13/07/2026" },
-        { id: 93, filename: "Rapport_Pommes_de_terre.pdf", pdfurl: "https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783945998822_bembw5.pdf", type: "training", thumb: "", thumbAlt: "PDF", date: "13/07/2026" },
-        { id: 94, filename: "Potits pois.pptx", pdfurl: "https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783946042222_a2yl2e.pptx", type: "training", thumb: "https://sone-solutions.github.io/SONE/pptx.png", thumbAlt: "PPTX", date: "13/07/2026" },
-        { id: 95, filename: "rapport etude economique olivier.docx", pdfurl: "https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783946097004_kiba3c.docx", type: "training", thumb: "https://sone-solutions.github.io/SONE/images%20docx.png", thumbAlt: "DOCX", date: "13/07/2026" },
-        { id: 96, filename: "CONCOMBRE 212.pptx", pdfurl: "https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783946157587_hlplmu.pptx", type: "training", thumb: "https://sone-solutions.github.io/SONE/pptx.png", thumbAlt: "PPTX", date: "13/07/2026" },
-        { id: 97, filename: "Exposé tomate ronde-1.pptx", pdfurl: "https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783946225481_iwjpdh.pptx", type: "training", thumb: "https://sone-solutions.github.io/SONE/pptx.png", thumbAlt: "PPTX", date: "13/07/2026" },
-        { id: 98, filename: "TOMATE SERISE HORS SOL.pptx", pdfurl: "https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783946297627_dfjj4r.pptx", type: "training", thumb: "https://sone-solutions.github.io/SONE/pptx.png", thumbAlt: "PPTX", date: "13/07/2026" },
-        { id: 99, filename: "Tomate.pptx", pdfurl: "https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783946505640_ujuapm.pptx", type: "training", thumb: "https://sone-solutions.github.io/SONE/pptx.png", thumbAlt: "PPTX", date: "13/07/2026" },
-        { id: 100, filename: "rapport final Myrtille(0).docx", pdfurl: "https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783946622649_36pl52.docx", type: "training", thumb: "https://sone-solutions.github.io/SONE/images%20docx.png", thumbAlt: "DOCX", date: "13/07/2026" },
-        { id: 101, filename: "Rapport palmier datteir _.docx", pdfurl: "https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783946756100_ypj073.docx", type: "training", thumb: "https://sone-solutions.github.io/SONE/images%20docx.png", thumbAlt: "DOCX", date: "13/07/2026" },
-        { id: 102, filename: "expose ilham.pptx", pdfurl: "https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783946899177_h9rkax.pptx", type: "training", thumb: "https://sone-solutions.github.io/SONE/pptx.png", thumbAlt: "PPTX", date: "13/07/2026" },
-        { id: 103, filename: "Exposé framboisier  marzi.pptx", pdfurl: "https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783947097276_sd4yvi.pptx", type: "training", thumb: "https://sone-solutions.github.io/SONE/pptx.png", thumbAlt: "PPTX", date: "13/07/2026" },
-        { id: 104, filename: "RAPPORT DE Myrtille.docx", pdfurl: "https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783947230135_cgedbe.docx", type: "training", thumb: "https://sone-solutions.github.io/SONE/images%20docx.png", thumbAlt: "DOCX", date: "13/07/2026" },
-        { id: 105, filename: "rapport final framboisier.pdf", pdfurl: "https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783947396730_b0qfim.pdf", type: "training", thumb: "", thumbAlt: "PDF", date: "13/07/2026" },
-        { id: 106, filename: "Rapport pomme de terre.pdf", pdfurl: "https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783947459429_bvgusm.pdf", type: "training", thumb: "", thumbAlt: "PDF", date: "13/07/2026" },
-        { id: 107, filename: "culture tomate sous serre.pptx", pdfurl: "https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783947560484_0trsuf.pptx", type: "training", thumb: "https://sone-solutions.github.io/SONE/pptx.png", thumbAlt: "PPTX", date: "13/07/2026" },
-        { id: 108, filename: "Rapport Myrtille.pdf", pdfurl: "https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783947906421_yittpk.pdf", type: "training", thumb: "", thumbAlt: "PDF", date: "13/07/2026" },
-        { id: 109, filename: "rapport de myrtille driss.docx", pdfurl: "https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783948011773_kolyp5.docx", type: "training", thumb: "https://sone-solutions.github.io/SONE/images%20docx.png", thumbAlt: "DOCX", date: "13/07/2026" },
-        { id: 110, filename: "Rapport Myrtille les maladie et ravageurs -1.pdf", pdfurl: "https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783948156986_l3volt.pdf", type: "training", thumb: "", thumbAlt: "PDF", date: "13/07/2026" },
-        { id: 111, filename: "rapport_tomate.pdf", pdfurl: "https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783948254485_qc6v4y.pdf", type: "training", thumb: "", thumbAlt: "PDF", date: "13/07/2026" },
-        { id: 112, filename: "Rapport_de_tomate duroc 14.pdf", pdfurl: "https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783948391044_hzfo4e.pdf", type: "training", thumb: "", thumbAlt: "PDF", date: "13/07/2026" },
-        { id: 113, filename: "RAPPORE tomate L'exploitation  KARAM 05.pdf", pdfurl: "https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783948640851_2gj1ea.pdf", type: "training", thumb: "", thumbAlt: "PDF", date: "13/07/2026" },
-        { id: 114, filename: "Rapport  myrtille Techniciens Spécialisés en Gestion Et Commerce Agricole.pdf", pdfurl: "https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783948972126_c316iv.pdf", type: "training", thumb: "", thumbAlt: "PDF", date: "13/07/2026" },
-        { id: 115, filename: "rapport de myrtille 3.docx", pdfurl: "https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783949150876_5jl3j7.docx", type: "training", thumb: "https://sone-solutions.github.io/SONE/images%20docx.png", thumbAlt: "DOCX", date: "13/07/2026" },
-        { id: 116, filename: "EXPOSER DE TOMATE-1(0).pptx", pdfurl: "https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783949255699_p34q6q.pptx", type: "training", thumb: "https://sone-solutions.github.io/SONE/pptx.png", thumbAlt: "PPTX", date: "13/07/2026" },
-        { id: 117, filename: "TARIK BOUIH RAPPOR__KARAM_5[1] [Lecture seule][Compatibility Mode].ppt", pdfurl: "https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783949391780_iu14am.ppt", type: "training", thumb: "https://sone-solutions.github.io/SONE/pptx.png", thumbAlt: "PPT", date: "13/07/2026" },
-        { id: 118, filename: "rapport de stage duroc tomate cerise (1).pdf", pdfurl: "https://zpjuhprlcaigmczhqlye.supabase.co/storage/v1/object/public/product-images/library/1783949663176_c3ql8s.pdf", type: "training", thumb: "", thumbAlt: "PDF", date: "13/07/2026" }
-    ];
+async function generatePdfThumbnail(url, maxW=140){
+  if(pdfThumbCache.has(url)) return pdfThumbCache.get(url);
+  try{
+    const pdf = await pdfjsLib.getDocument(url).promise;
+    const page = await pdf.getPage(1);
+    const vp = page.getViewport({scale:1});
+    const scale = maxW/vp.width;
+    const svp = page.getViewport({scale});
+    const canvas = document.createElement('canvas');
+    canvas.width = svp.width; canvas.height = svp.height;
+    await page.render({canvasContext:canvas.getContext('2d'), viewport:svp}).promise;
+    const data = canvas.toDataURL('image/jpeg',.85);
+    pdfThumbCache.set(url,data);
+    return data;
+  }catch(e){ return null; }
+}
 
-    const state = {
-        currentTab: 'trainings',
-        searchQuery: '',
-        activePanels: new Set(),
-        renderedCards: new Set()
-    };
+/* ============ RENDER: NAV + CHIPS ============ */
+function countFor(type){ return state.data.filter(i=>i.type===type).length; }
 
-    const debounce = (fn, delay) => {
-        let timer;
-        return (...args) => {
-            clearTimeout(timer);
-            timer = setTimeout(() => fn(...args), delay);
-        };
-    };
+function buildIconSVG(cat){
+  return `<svg viewBox="0 0 24 24">${cat.icon}</svg>`;
+}
+function buildLeafSVG(hex){
+  return `<svg viewBox="0 0 16 16"><path d="M8 14.5S2.5 11 2.5 6.2A4 4 0 0 1 8 2.5a4 4 0 0 1 5.5 3.7C13.5 11 8 14.5 8 14.5Z" fill="${hex}"/></svg>`;
+}
 
-    const DOM = {};
-    const getEl = (id) => DOM[id] || (DOM[id] = document.getElementById(id));
+function renderChipsAndNav(){
+  const chipRow = document.getElementById('chipRow');
+  const nav = document.getElementById('bottomNav');
+  chipRow.innerHTML = ''; nav.innerHTML = '';
+  ORDER.forEach(key=>{
+    const cat = CATS[key]; const n = countFor(cat.type); const active = key===state.active;
+    const chip = document.createElement('button');
+    chip.className = 'chip' + (active?' is-active':'');
+    chip.style.background = active ? cat.color : '';
+    if(active) chip.style.color = '#fff';
+    chip.innerHTML = `<span class="ic" style="background:${active?'rgba(255,255,255,.22)':cat.tint};color:${active?'#fff':cat.hex}">${buildIconSVG(cat)}</span>${cat.label}<span class="count">${toAr(n)}</span>`;
+    chip.onclick = ()=> setActive(key);
+    chipRow.appendChild(chip);
 
-    const imgObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                if (img.dataset.src) {
-                    img.src = img.dataset.src;
-                    img.removeAttribute('data-src');
-                }
-                imgObserver.unobserve(img);
-            }
-        });
-    }, { rootMargin: '100px' });
+    const btn = document.createElement('button');
+    btn.className = 'nav-btn' + (active?' is-active':'');
+    if(active) btn.style.color = cat.hex;
+    btn.innerHTML = `<span class="nav-leaf">${buildLeafSVG(cat.hex)}</span><svg viewBox="0 0 24 24">${cat.icon}</svg><span>${cat.navLabel}</span>`;
+    btn.onclick = ()=> setActive(key);
+    nav.appendChild(btn);
+  });
+}
 
-    const FILE_ICONS = {
-        pdf: { icon: 'fa-file-pdf', color: '#dc3545', img: 'https://sone-solutions.github.io/SONE/pdf.png' },
-        docx: { icon: 'fa-file-word', color: '#2b579a', img: 'https://sone-solutions.github.io/SONE/images%20docx.png' },
-        doc: { icon: 'fa-file-word', color: '#2b579a', img: 'https://sone-solutions.github.io/SONE/images%20docx.png' },
-        pptx: { icon: 'fa-file-powerpoint', color: '#d24726', img: 'https://sone-solutions.github.io/SONE/pptx.png' },
-        ppt: { icon: 'fa-file-powerpoint', color: '#d24726', img: 'https://sone-solutions.github.io/SONE/pptx.png' }
-    };
+/* ============ RENDER: SECTION + LIST ============ */
+function setActive(key){
+  state.active = key; state.renderedIds.clear();
+  renderChipsAndNav();
+  renderSection();
+  document.getElementById('appMain').scrollTo({top:0,behavior:'smooth'});
+}
 
-    const getFileInfo = (filename) => {
-        const ext = filename.split('.').pop().toLowerCase();
-        return FILE_ICONS[ext] || { icon: 'fa-file', color: '#6c757d', img: '' };
-    };
+function toggleSort(){
+  state.sortDesc = !state.sortDesc;
+  document.getElementById('sortLabel').textContent = state.sortDesc ? 'الأحدث' : 'الأقدم';
+  renderSection();
+}
 
-    const pdfThumbnailCache = new Map();
+function getFiltered(){
+  const cat = CATS[state.active];
+  let items = state.data.filter(i=>i.type===cat.type);
+  if(state.query){
+    const q = state.query.toLowerCase();
+    items = items.filter(i=> i.title && i.title.toLowerCase().includes(q));
+  }
+  items = [...items].sort((a,b)=>{
+    const da = a.date ? new Date(a.date).getTime() : (a.id||0);
+    const db = b.date ? new Date(b.date).getTime() : (b.id||0);
+    return state.sortDesc ? db-da : da-db;
+  });
+  return items;
+}
 
-    const generatePdfThumbnail = async (pdfUrl, maxWidth = 200) => {
-        if (pdfThumbnailCache.has(pdfUrl)) {
-            return pdfThumbnailCache.get(pdfUrl);
+function renderSection(){
+  const cat = CATS[state.active];
+  document.getElementById('sectionIcon').style.background = cat.tint;
+  document.getElementById('sectionIcon').style.color = cat.hex;
+  document.getElementById('sectionIcon').innerHTML = buildIconSVG(cat);
+  document.getElementById('sectionTitle').textContent = cat.label;
+
+  const items = getFiltered();
+  document.getElementById('sectionCount').textContent = `${toAr(items.length)} ملف`;
+
+  const list = document.getElementById('cardList');
+  list.innerHTML = '';
+
+  if(!items.length){
+    list.innerHTML = `<div class="empty-state">
+      <div class="ic" style="background:${cat.tint};color:${cat.hex}">${buildIconSVG(cat)}</div>
+      <h3>${state.query ? 'ما لقيناش نتائج' : cat.emptyTitle}</h3>
+      <p>${state.query ? 'جرّب كلمات بحث مختلفة.' : cat.emptySub}</p>
+    </div>`;
+    return;
+  }
+
+  const frag = document.createDocumentFragment();
+  items.forEach(item=> frag.appendChild(buildCard(item, cat)));
+  list.appendChild(frag);
+  list.querySelectorAll('img[data-src]').forEach(img=>imgObserver.observe(img));
+
+  // lazy pdf thumbnails
+  items.forEach(item=>{
+    const fileUrl = item.file_url || item.pdfurl;
+    const ext = (item.title||'').split('.').pop().toLowerCase();
+    if(ext==='pdf' && !item.thumb){
+      const target = document.getElementById(`thumb-${item.id}`);
+      if(!target) return;
+      const run = ()=> generatePdfThumbnail(fileUrl,140).then(data=>{
+        if(data && document.body.contains(target)){
+          target.innerHTML = `<img src="${data}" alt="">`;
         }
-        try {
-            const loadingTask = pdfjsLib.getDocument(pdfUrl);
-            const pdf = await loadingTask.promise;
-            const page = await pdf.getPage(1);
-            const viewport = page.getViewport({ scale: 1 });
-            const scale = maxWidth / viewport.width;
-            const scaledViewport = page.getViewport({ scale });
-            const canvas = document.createElement('canvas');
-            const context = canvas.getContext('2d');
-            canvas.width = scaledViewport.width;
-            canvas.height = scaledViewport.height;
-            await page.render({ canvasContext: context, viewport: scaledViewport }).promise;
-            const base64 = canvas.toDataURL('image/jpeg', 0.85);
-            pdfThumbnailCache.set(pdfUrl, base64);
-            return base64;
-        } catch (err) {
-            console.error('PDF thumbnail error:', err);
-            return null;
-        }
-    };
+      });
+      (window.requestIdleCallback || setTimeout)(run,{timeout:600});
+    }
+  });
+}
 
-    const createCard = (item) => {
-        const info = getFileInfo(item.filename);
-        const shortName = item.filename.length > 25 ? item.filename.substring(0, 22) + '...' : item.filename;
-        const ext = item.filename.split('.').pop().toLowerCase();
-        const isPdf = ext === 'pdf';
-        const isOffice = ['docx', 'doc', 'pptx', 'ppt'].includes(ext);
-        const hasPreview = isPdf || isOffice;
+function buildCard(item, cat){
+  const filename = item.title || 'ملف بدون اسم';
+  const ext = filename.split('.').pop().toLowerCase();
+  const fileUrl = item.file_url || item.pdfurl || '#';
+  const dateStr = item.date ? new Date(item.date).toLocaleDateString('ar-EG') : '';
+  const extColor = EXT_COLOR[ext] || '#7C8478';
+  const fileIconClass = ext==='pdf' ? 'fa-file-pdf' : (ext==='doc'||ext==='docx') ? 'fa-file-word' : (ext==='ppt'||ext==='pptx') ? 'fa-file-powerpoint' : 'fa-file';
 
-        const div = document.createElement('div');
-        div.className = 'library-card';
-        div.dataset.id = item.id;
-        div.dataset.pdfurl = item.pdfurl;
-        div.dataset.filename = item.filename;
-        div.dataset.type = item.type;
+  const el = document.createElement('div');
+  el.className = 'card';
+  el.dataset.id = item.id;
 
-        let thumbHTML;
-        if (item.thumb) {
-            thumbHTML = `<img data-src="${item.thumb}" alt="${item.thumbAlt || ''}" loading="lazy">`;
-        } else if (isPdf) {
-            thumbHTML = `<div class="pdf-thumb-placeholder" id="pdf-thumb-${item.id}">
-                <i class="fas fa-file-pdf" style="font-size:48px;color:#dc3545;"></i>
-            </div>`;
-        } else {
-            thumbHTML = `<div class="file-icon"><i class="fas ${info.icon}" style="color:${info.color}"></i></div>`;
-        }
+  let thumbHTML;
+  if(item.thumb){
+    thumbHTML = `<img data-src="${item.thumb}" alt="">`;
+  }else if(ext==='pdf'){
+    thumbHTML = `<i class="fa-solid ${fileIconClass} file-ic" style="color:${extColor}"></i>`;
+  }else{
+    thumbHTML = `<i class="fa-solid ${fileIconClass} file-ic" style="color:${extColor}"></i>`;
+  }
 
-        div.innerHTML = `
-            <div class="card-thumbnail" id="thumb-${item.id}">${thumbHTML}</div>
-            <div class="card-body">
-                <h4>${item.filename}</h4>
-                <p>...</p>
-                <div class="card-footer">
-                    <span class="meta">
-                        <span><i class="fas fa-calendar-alt"></i> ${item.date || ''}</span>
-                    </span>
-                    <div class="actions">
-                        <button onclick="${hasPreview ? `openPreview(${item.id})` : `viewItem(${item.id})`}" title="${hasPreview ? 'Aperçu' : 'Détails'}"><i class="fas fa-eye"></i></button>
-                        <a href="${item.pdfurl}" download="${item.filename}" class="btn-action download-btn" title="Télécharger">
-                            <i class="fas fa-download"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        `;
+  el.innerHTML = `
+    <div class="thumb" id="thumb-${item.id}">${thumbHTML}<span class="ext-tag" style="background:${extColor}">${ext.toUpperCase()}</span></div>
+    <div class="card-body">
+      <h3>${filename}</h3>
+      <div class="card-meta">
+        <span>${dateStr}</span>
+        ${dateStr ? '<span class="dot"></span>' : ''}
+        <span style="color:${cat.hex};font-weight:700">${cat.label}</span>
+      </div>
+      <div class="card-actions">
+        <button class="pv" title="معاينة"><i class="fa-regular fa-eye"></i></button>
+        <a class="op" href="${fileUrl}" target="_blank" title="فتح" onclick="event.stopPropagation()"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+        <a class="dl" href="${fileUrl}" download="${filename}" title="تحميل" onclick="event.stopPropagation()"><i class="fa-solid fa-download"></i></a>
+      </div>
+    </div>`;
 
-        if (isPdf && !item.thumb) {
-            requestIdleCallback(() => {
-                generatePdfThumbnail(item.pdfurl, 200).then(base64 => {
-                    const container = document.getElementById(`pdf-thumb-${item.id}`);
-                    if (container && base64) {
-                        container.innerHTML = `<img src="${base64}" alt="Page 1" style="width:100%;height:100%;object-fit:cover;">`;
-                        container.classList.remove('pdf-thumb-placeholder');
-                        container.classList.add('pdf-thumb-loaded');
-                    }
-                });
-            }, { timeout: 500 });
-        }
+  el.addEventListener('click', ()=> openPreview(item.id));
+  return el;
+}
 
-        return div;
-    };
+/* ============ PREVIEW SHEET ============ */
+function openPreview(id){
+  const item = state.data.find(i=>i.id===id);
+  if(!item) return;
+  const filename = item.title || 'ملف بدون اسم';
+  const fileUrl = item.file_url || item.pdfurl || '#';
+  const ext = filename.split('.').pop().toLowerCase();
+  const isPdf = ext==='pdf';
+  const isOffice = ['doc','docx','ppt','pptx'].includes(ext);
 
-    const renderBatch = (items, containerId, startIndex = 0) => {
-        const container = getEl(containerId);
-        if (!container) return;
+  document.getElementById('sheetTitle').textContent = filename;
+  document.getElementById('sheetOpenLink').href = fileUrl;
+  const dl = document.getElementById('sheetDownloadLink');
+  dl.href = fileUrl; dl.setAttribute('download', filename);
 
-        const batch = items.slice(startIndex, startIndex + CONFIG.LAZY_BATCH_SIZE);
-        if (!batch.length) return;
+  const body = document.getElementById('sheetBody');
+  if(isPdf || isOffice){
+    body.innerHTML = `<div class="sheet-loading"><i class="fa-solid fa-spinner"></i><span>جاري تحميل المعاينة…</span></div>`;
+    const viewerUrl = isPdf ? fileUrl : `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(fileUrl)}`;
+    const iframe = document.createElement('iframe');
+    iframe.src = viewerUrl; iframe.loading = 'lazy';
+    iframe.onload = ()=> body.innerHTML = '';
+    body.appendChild(iframe);
+  }else{
+    body.innerHTML = `<div class="sheet-fallback">
+      <i class="fa-solid fa-file"></i>
+      <div><strong>لا تتوفر معاينة لهذا النوع من الملفات</strong><p style="margin-top:6px;font-size:12px;">يمكنك تحميل الملف لفتحه على جهازك.</p></div>
+      <a class="btn" href="${fileUrl}" download="${filename}"><i class="fa-solid fa-download"></i>&nbsp; تحميل الملف</a>
+    </div>`;
+  }
 
-        const fragment = document.createDocumentFragment();
-        batch.forEach(item => {
-            if (state.renderedCards.has(item.id)) return;
-            state.renderedCards.add(item.id);
+  document.getElementById('previewSheet').classList.add('show');
+  document.getElementById('sheetBackdrop').classList.add('show');
+}
+function closeSheet(){
+  document.getElementById('previewSheet').classList.remove('show');
+  document.getElementById('sheetBackdrop').classList.remove('show');
+  setTimeout(()=>{ document.getElementById('sheetBody').innerHTML=''; }, 320);
+}
 
-            const card = createCard(item);
-            fragment.appendChild(card);
+/* ============ SEARCH ============ */
+let searchTimer;
+document.getElementById('searchInput').addEventListener('input', e=>{
+  clearTimeout(searchTimer);
+  const val = e.target.value;
+  document.getElementById('clearSearchBtn').classList.toggle('show', !!val);
+  searchTimer = setTimeout(()=>{ state.query = val; renderSection(); }, 160);
+});
+function clearSearch(){
+  const input = document.getElementById('searchInput');
+  input.value = ''; state.query = '';
+  document.getElementById('clearSearchBtn').classList.remove('show');
+  renderSection();
+}
 
-            const img = card.querySelector('img[data-src]');
-            if (img) imgObserver.observe(img);
-        });
+/* ============ TOAST ============ */
+let toastTimer;
+function showToast(msg, type){
+  const t = document.getElementById('toast');
+  t.style.background = type==='error' ? '#C1432E' : (type==='success' ? '#4C7A57' : 'var(--forest)');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=> t.classList.remove('show'), 3200);
+}
 
-        container.appendChild(fragment);
+/* ============ INIT ============ */
+async function init(){
+  state.data = await fetchLibraryItems();
+  let firstNonEmpty = ORDER.find(k=> countFor(CATS[k].type) > 0);
+  state.active = firstNonEmpty || 'books';
+  renderChipsAndNav();
+  renderSection();
+}
+document.readyState==='loading' ? document.addEventListener('DOMContentLoaded', init) : init();
+</script>
 
-        if (startIndex + CONFIG.LAZY_BATCH_SIZE < items.length) {
-            requestIdleCallback(() => {
-                renderBatch(items, containerId, startIndex + CONFIG.LAZY_BATCH_SIZE);
-            }, { timeout: 200 });
-        }
-    };
 
-    const filterItems = (items, query) => {
-        if (!query) return items;
-        const q = query.toLowerCase();
-        return items.filter(i => i.filename.toLowerCase().includes(q));
-    };
-
-    const renderPanel = () => {
-        const items = filterItems(libraryData, state.searchQuery);
-        const container = getEl('trainingsGrid');
-        
-        if (container) {
-            container.innerHTML = '';
-            state.renderedCards.clear();
-            if (!items.length) {
-                container.innerHTML = `<div class="empty-library">
-                    <i class="fas fa-folder-open" style="font-size:48px;color:var(--primary);opacity:0.5;"></i>
-                    <h3>Aucun document</h3>
-                    <p>Essayez une autre recherche</p>
-                </div>`;
-            } else {
-                renderBatch(items, 'trainingsGrid');
-            }
-        }
-    };
-
-    const handleSearch = debounce((query) => {
-        state.searchQuery = query;
-        state.renderedCards.clear();
-        renderPanel();
-        getEl('clearSearchBtn').style.display = query ? 'inline-block' : 'none';
-    }, CONFIG.DEBOUNCE_DELAY);
-
-    const clearSearch = () => {
-        const input = getEl('searchInput');
-        if (input) { input.value = ''; handleSearch(''); }
-    };
-
-    const viewItem = (id) => {
-        const item = libraryData.find(i => i.id === id);
-        if (!item) return;
-
-        const ext = item.filename.split('.').pop().toLowerCase();
-        const isPdf = ext === 'pdf';
-        const isOffice = ['docx', 'doc', 'pptx', 'ppt'].includes(ext);
-        const hasPreview = isPdf || isOffice;
-
-        getEl('modalTitle').textContent = item.filename;
-        getEl('modalMeta').innerHTML = `
-            <span><i class="fas fa-calendar-alt"></i> ${item.date || 'Non spécifié'}</span>
-            <span><i class="fas fa-file"></i> ${item.type}</span>
-        `;
-
-        let viewerHTML;
-        if (isPdf) {
-            viewerHTML = `<iframe src="${item.pdfurl}" loading="lazy" style="width:100%;height:500px;border:none;"></iframe>`;
-        } else if (isOffice) {
-            const officeUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(item.pdfurl)}`;
-            viewerHTML = `<iframe src="${officeUrl}" loading="lazy" style="width:100%;height:500px;border:none;" allowfullscreen></iframe>`;
-        } else {
-            viewerHTML = `<div class="no-preview"><i class="fas fa-file" style="font-size:48px;"></i><p>Aucun aperçu disponible</p></div>`;
-        }
-        getEl('modalViewer').innerHTML = viewerHTML;
-
-        getEl('modalActions').innerHTML = `
-            <a href="${item.pdfurl}" download="${item.filename}" class="btn-primary"><i class="fas fa-download"></i> Télécharger</a>
-            ${hasPreview ? `<button onclick="closeModal(); openPreview(${item.id});" class="btn-secondary"><i class="fas fa-expand"></i> Aperçu complet</button>` : ''}
-            <a href="${item.pdfurl}" target="_blank" class="btn-secondary"><i class="fas fa-external-link-alt"></i> Ouvrir</a>
-            <button onclick="closeModal()" class="btn-secondary">Fermer</button>
-        `;
-
-        getEl('detailModal').classList.add('active');
-        document.body.style.overflow = 'hidden';
-    };
-
-    const closeModal = () => {
-        getEl('detailModal').classList.remove('active');
-        document.body.style.overflow = '';
-    };
-
-    const closePdfPreview = () => {
-        getEl('pdfPreviewModal').classList.remove('active');
-        document.body.style.overflow = '';
-    };
-
-    const openPreview = (id) => {
-        const item = libraryData.find(i => i.id === id);
-        if (!item) return;
-
-        const ext = item.filename.split('.').pop().toLowerCase();
-        const isPdf = ext === 'pdf';
-        const isOffice = ['docx', 'doc', 'pptx', 'ppt'].includes(ext);
-
-        getEl('pdfPreviewTitle').textContent = item.filename;
-
-        const downloadLink = getEl('pdfDownloadLink');
-        downloadLink.href = item.pdfurl;
-        downloadLink.download = item.filename;
-
-        let viewerUrl;
-        if (isPdf) {
-            viewerUrl = item.pdfurl;
-        } else if (isOffice) {
-            viewerUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(item.pdfurl)}`;
-        } else {
-            viewerUrl = null;
-        }
-
-        if (viewerUrl) {
-            getEl('pdfPreviewBody').innerHTML = `
-                <iframe src="${viewerUrl}" style="width:100%;height:100%;min-height:600px;border:none;" loading="lazy" allowfullscreen></iframe>
-            `;
-        } else {
-            getEl('pdfPreviewBody').innerHTML = `
-                <div class="no-preview" style="padding:60px 20px;">
-                    <i class="fas fa-file" style="font-size:48px;color:var(--primary);"></i>
-                    <p style="margin-top:16px;">Aucun aperçu disponible</p>
-                    <a href="${item.pdfurl}" download="${item.filename}" class="btn-primary" style="margin-top:16px;display:inline-block;">
-                        <i class="fas fa-download"></i> Télécharger
-                    </a>
-                </div>
-            `;
-        }
-
-        getEl('pdfPreviewModal').classList.add('active');
-        document.body.style.overflow = 'hidden';
-    };
-
-    const init = () => {
-        getEl('searchInput')?.addEventListener('input', (e) => handleSearch(e.target.value));
-        getEl('clearSearchBtn')?.addEventListener('click', clearSearch);
-
-        getEl('detailModal')?.addEventListener('click', (e) => { if (e.target === e.currentTarget) closeModal(); });
-        getEl('pdfPreviewModal')?.addEventListener('click', (e) => { if (e.target === e.currentTarget) closePdfPreview(); });
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') { closeModal(); closePdfPreview(); }
-        });
-
-        renderPanel();
-    };
-
-    document.readyState === 'loading' 
-        ? document.addEventListener('DOMContentLoaded', init) 
-        : init();
-    </script>
-</body>
-</html>
+</body></html>

@@ -6,8 +6,8 @@
 <meta name="theme-color" content="#3C4A2E">
 <title>Herbier — Identification des plantes</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Cairo:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&amp;family=Cairo:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <style>
   :root{
     --paper:#F1ECDD;
@@ -371,23 +371,23 @@
 <div class="wrap">
 
   <div class="lang-bar">
-    <button class="lang-btn" data-lang="fr">Français</button>
+    <button class="lang-btn active" data-lang="fr">Français</button>
     <button class="lang-btn" data-lang="ar">العربية</button>
     <button class="lang-btn" data-lang="en">English</button>
   </div>
 
   <header>
     <img class="brand-logo" src="https://sone-solutions.github.io/SONE/SONELOGE.jpg" alt="SONE" loading="lazy">
-    <div class="eyebrow" data-i18n="eyebrow"></div>
-    <h1 data-i18n="title"></h1>
-    <p data-i18n="subtitle"></p>
+    <div class="eyebrow" data-i18n="eyebrow">Herbier numérique</div>
+    <h1 data-i18n="title">Identifier une plante</h1>
+    <p data-i18n="subtitle">Téléversez une photo d'une feuille, d'une fleur, d'un fruit ou d'une écorce, et nous identifierons l'espèce grâce à la base de données PlantNet.</p>
   </header>
 
   <div class="last-search" id="lastSearchBanner">
     <div class="ls-text" id="lastSearchText"></div>
     <div class="last-search-actions">
-      <button class="ls-btn" id="lsViewBtn" data-i18n="lsView"></button>
-      <button class="ls-btn ghost" id="lsClearBtn" data-i18n="lsClear"></button>
+      <button class="ls-btn" id="lsViewBtn" data-i18n="lsView">Revoir</button>
+      <button class="ls-btn ghost" id="lsClearBtn" data-i18n="lsClear">Effacer</button>
     </div>
   </div>
 
@@ -397,29 +397,29 @@
 
     <div class="drop" id="dropZone">
       <svg class="drop-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M12 16V4M12 4L7 9M12 4L17 9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M4 16V17.5C4 18.8807 5.11929 20 6.5 20H17.5C18.8807 20 20 18.8807 20 17.5V16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        <path d="M12 16V4M12 4L7 9M12 4L17 9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
+        <path d="M4 16V17.5C4 18.8807 5.11929 20 6.5 20H17.5C18.8807 20 20 18.8807 20 17.5V16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path>
       </svg>
-      <div class="drop-title" data-i18n="dropTitle"></div>
-      <div class="drop-sub" data-i18n="dropSub"></div>
-      <input type="file" id="fileInput" accept="image/*" multiple capture="environment">
+      <div class="drop-title" data-i18n="dropTitle">Glissez vos images ici ou touchez pour choisir</div>
+      <div class="drop-sub" data-i18n="dropSub">Jusqu'à 5 photos de la même plante pour plus de précision</div>
+      <input type="file" id="fileInput" accept="image/*" multiple="" capture="environment">
     </div>
 
     <div class="previews" id="previews"></div>
 
     <div class="organ-row">
-      <div class="organ-label" data-i18n="organLabel"></div>
-      <button class="chip active" data-organ="auto" data-i18n="organAuto"></button>
-      <button class="chip" data-organ="leaf" data-i18n="organLeaf"></button>
-      <button class="chip" data-organ="flower" data-i18n="organFlower"></button>
-      <button class="chip" data-organ="fruit" data-i18n="organFruit"></button>
-      <button class="chip" data-organ="bark" data-i18n="organBark"></button>
-      <button class="chip" data-organ="habit" data-i18n="organHabit"></button>
+      <div class="organ-label" data-i18n="organLabel">Quelle partie de la plante est visible ?</div>
+      <button class="chip active" data-organ="auto" data-i18n="organAuto">Automatique</button>
+      <button class="chip" data-organ="leaf" data-i18n="organLeaf">Feuille</button>
+      <button class="chip" data-organ="flower" data-i18n="organFlower">Fleur</button>
+      <button class="chip" data-organ="fruit" data-i18n="organFruit">Fruit</button>
+      <button class="chip" data-organ="bark" data-i18n="organBark">Écorce</button>
+      <button class="chip" data-organ="habit" data-i18n="organHabit">Plante entière</button>
     </div>
 
     <div class="submit-row">
-      <button class="btn-main" id="identifyBtn" disabled data-i18n="submitBtn"></button>
-      <span class="hint" data-i18n="submitHint"></span>
+      <button class="btn-main" id="identifyBtn" data-i18n="submitBtn">Identifier la plante</button>
+      <span class="hint" data-i18n="submitHint">Une photo au moins est requise</span>
     </div>
 
     <div class="error-box" id="errorBox"></div>
@@ -427,18 +427,19 @@
 
   <div class="loading" id="loadingBox">
     <div class="spinner"></div>
-    <div data-i18n="loadingText"></div>
+    <div data-i18n="loadingText">Analyse de la photo avec PlantNet…</div>
   </div>
 
   <div id="resultsArea"></div>
 
   <footer>
-    <span data-i18n="footerPrefix"></span> <a href="https://plantnet.org" target="_blank" rel="noopener">PlantNet</a> — <span data-i18n="footerSuffix"></span>
+    <span data-i18n="footerPrefix">Propulsé par</span> <a href="https://plantnet.org" target="_blank" rel="noopener">PlantNet</a> — <span data-i18n="footerSuffix">un outil gratuit à usage scientifique et éducatif</span>
   </footer>
 </div>
 
 <script>
-const API_KEY = "2b10GUflX7cOfwIxr75DMqwkju";
+// ✅ RÉCUPÉRATION SÉCURISÉE DE LA CLÉ API
+const API_KEY = window.PLANTNET_API_KEY || process.env.PLANTNET_API_KEY;
 const PROJECT = "all";
 const API_URL = `https://my-api.plantnet.org/v2/identify/${PROJECT}?api-key=${API_KEY}`;
 const STORAGE_KEY = "sone_plantid_last_search";
@@ -449,9 +450,9 @@ const I18N = {
     pageTitle: 'Herbier — Identification des plantes',
     eyebrow: 'Herbier numérique',
     title: 'Identifier une plante',
-    subtitle: 'Téléversez une photo d\u2019une feuille, d\u2019une fleur, d\u2019un fruit ou d\u2019une écorce, et nous identifierons l\u2019espèce grâce à la base de données PlantNet.',
+    subtitle: 'Téléversez une photo d\'une feuille, d\'une fleur, d\'un fruit ou d\'une écorce, et nous identifierons l\'espèce grâce à la base de données PlantNet.',
     dropTitle: 'Glissez vos images ici ou touchez pour choisir',
-    dropSub: 'Jusqu\u2019à 5 photos de la même plante pour plus de précision',
+    dropSub: 'Jusqu\'à 5 photos de la même plante pour plus de précision',
     organLabel: 'Quelle partie de la plante est visible ?',
     organAuto: 'Automatique', organLeaf: 'Feuille', organFlower: 'Fleur', organFruit: 'Fruit', organBark: 'Écorce', organHabit: 'Plante entière',
     submitBtn: 'Identifier la plante',
@@ -461,7 +462,7 @@ const I18N = {
     matchWord: 'correspondance', matchesWord: 'correspondances', stampLabel: 'score',
     noCommonName: 'Aucun nom courant enregistré',
     unknownSpecies: 'Inconnu',
-    emptyResult: 'Nous n\u2019avons pas pu identifier cette plante. Essayez une photo plus nette ou un autre angle.',
+    emptyResult: 'Nous n\'avons pas pu identifier cette plante. Essayez une photo plus nette ou un autre angle.',
     errorPrefix: 'Erreur : ',
     genericError: 'Impossible de contacter le service PlantNet',
     footerPrefix: 'Propulsé par',
@@ -754,5 +755,6 @@ function renderResults(data){
   applyLanguage(startLang);
 })();
 </script>
+
 </body>
 </html>

@@ -1,0 +1,915 @@
+<html lang="en" dir="ltr"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>SONE | Plateforme intégrée pour une agriculture intelligente</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&amp;family=Cairo:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+    <meta name="theme-color" content="#0A1A12">
+
+    <style>
+:root{--ink:#0A1A12;--forest:#12301F;--leaf:#6FCF8E;--leaf-d:#1F7A4C;--sun:#F0B94D;--paper:#F4F6F1;--text:#E8F1EA;--mute:#9DB8A7;--ink-text:#10241A;--ink-mute:#587061;--line:rgba(255,255,255,.12)}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{font-family:'Cairo',sans-serif;background:var(--ink);color:var(--text);line-height:1.6;overflow-x:hidden}
+h1,h2,h3,h4{font-family:'Bricolage Grotesque','Cairo',sans-serif}
+:focus-visible{outline:2px solid var(--sun);outline-offset:3px}
+.header{position:fixed;inset:0 0 auto 0;z-index:1000;padding:12px 5%;background:rgba(10,26,18,.8);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);transition:padding .3s,background .3s}
+.header.scrolled{padding:8px 5%;background:rgba(10,26,18,.95)}
+.header-content{display:flex;justify-content:space-between;align-items:center;max-width:1280px;margin:0 auto;gap:20px}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+.logo-wrapper{width:46px;height:46px;border-radius:12px;overflow:hidden;flex-shrink:0;border:1px solid var(--line)}
+.logo-wrapper img{width:100%;height:100%;object-fit:cover;display:block}
+.logo-text{display:flex;flex-direction:column;line-height:1.1}
+.logo-text h1{font-size:24px;font-weight:800;letter-spacing:.14em}
+.logo-text .green{color:var(--leaf)}.logo-text .dark{color:#fff}
+.logo-text .tagline{font-size:10px;color:var(--mute);margin-top:3px}
+.nav-links{display:flex;gap:28px;align-items:center}
+.nav-links a{color:var(--mute);text-decoration:none;font-weight:600;font-size:15px;transition:color .2s}
+.nav-links a:hover{color:#fff}
+.mobile-menu{display:none;font-size:22px;cursor:pointer;padding:6px}
+.lang-selector{display:flex;gap:2px;padding:3px;border:1px solid var(--line);border-radius:999px}
+.lang-btn{border:0;background:transparent;color:var(--mute);font:600 13px 'Cairo',sans-serif;padding:5px 12px;border-radius:999px;cursor:pointer;transition:.2s}
+.lang-btn:hover{color:#fff}
+.lang-btn.active{background:var(--leaf);color:var(--ink)}
+.header-space{height:72px}
+.quick-buttons{background:var(--forest);border-block:1px solid var(--line);padding:10px 5%;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+.quick-buttons::-webkit-scrollbar{display:none}
+.quick-buttons-container{display:flex;width:max-content;gap:8px;margin-inline:auto}
+.quick-btn{display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border-radius:999px;border:1px solid var(--line);color:var(--mute);font-size:13px;font-weight:600;text-decoration:none;transition:.2s}
+.quick-btn:hover{color:var(--ink);background:var(--leaf);border-color:var(--leaf)}
+.quick-btn i{font-size:12px}
+.hero{position:relative;isolation:isolate;overflow:hidden;padding:80px 5% 96px}
+.hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;opacity:.45;transition:opacity .6s}
+.hero::before{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(100deg,var(--ink) 15%,rgba(10,26,18,.7) 60%,rgba(10,26,18,.35)),linear-gradient(0deg,var(--ink),transparent 30%)}
+[dir=rtl] .hero::before{background:linear-gradient(260deg,var(--ink) 15%,rgba(10,26,18,.7) 60%,rgba(10,26,18,.35)),linear-gradient(0deg,var(--ink),transparent 30%)}
+.hero-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1.25fr .75fr;gap:56px;align-items:center}
+.hero-content{max-width:660px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;border:1px solid rgba(240,185,77,.5);color:var(--sun);font-size:13px;font-weight:700;margin-bottom:22px}
+.hero h1{font-size:clamp(34px,5vw,60px);line-height:1.1;font-weight:800;letter-spacing:-.02em;color:#fff;margin-bottom:20px}
+.hero p{font-size:18px;color:#C3D6C8;max-width:54ch;margin-bottom:32px}
+.btn-primary{display:inline-flex;align-items:center;gap:10px;padding:14px 28px;border-radius:12px;background:var(--sun);color:#1b1503;font-weight:700;font-size:16px;text-decoration:none;transition:transform .2s,background .2s}
+.btn-primary:hover{background:#f6c966;transform:translateY(-2px)}
+.hero-panel{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:20px;background:rgba(18,48,31,.62);backdrop-filter:blur(10px);overflow:hidden}
+.stat-card{padding:30px 24px;border-bottom:1px solid var(--line)}
+.stat-card:nth-child(odd){border-inline-end:1px solid var(--line)}
+.stat-card:nth-child(n+3){border-bottom:0}
+.stat-number{font:800 40px/1 'Bricolage Grotesque',sans-serif;color:var(--leaf)}
+.stat-label{font-size:14px;color:var(--mute);margin-top:10px}
+.services-section{background:var(--paper);color:var(--ink-text);padding:88px 5%}
+.section-header{max-width:1280px;margin:0 auto 44px}
+.section-header .kicker{display:none}
+.section-header h2{font-size:clamp(28px,3.4vw,42px);font-weight:800;letter-spacing:-.01em;line-height:1.2;max-width:22ch;margin-bottom:12px}
+.section-header p{color:var(--ink-mute);font-size:17px;max-width:60ch}
+[dir=rtl] .hero h1,[dir=rtl] .section-header h2{letter-spacing:0;line-height:1.4}
+.services-grid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:22px}
+.service-card{display:flex;flex-direction:column;background:#fff;border:1px solid #DDE5DC;border-radius:16px;overflow:hidden;text-decoration:none;color:inherit;transition:transform .25s,box-shadow .25s,border-color .25s}
+.service-card:hover{transform:translateY(-4px);border-color:var(--leaf-d);box-shadow:0 18px 36px -18px rgba(16,36,26,.35)}
+.card-media{position:relative;aspect-ratio:16/10;background:#DDE5DC}
+.service-img{width:100%;height:100%;object-fit:cover;display:block}
+.service-icon{position:absolute;inset-block-end:-18px;inset-inline-start:18px;width:40px;height:40px;border-radius:10px;background:var(--leaf-d);color:#fff;display:grid;place-items:center;font-size:17px;box-shadow:0 0 0 4px #fff}
+.card-body{padding:30px 18px 20px;display:flex;flex-direction:column;gap:6px;flex:1}
+.service-card h3{font-size:18px;font-weight:700;line-height:1.3}
+.service-card p{font-size:14px;color:var(--ink-mute);flex:1}
+.service-tag{align-self:flex-start;margin-top:10px;padding:3px 10px;border-radius:999px;background:#E4F1E7;color:var(--leaf-d);font-size:12px;font-weight:700}
+.footer{background:var(--ink);padding:64px 5% 28px}
+.footer-container{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 1fr 1.2fr;gap:40px}
+.footer-col h4{font-size:16px;margin-bottom:16px;color:#fff}
+.footer-col p,.footer-col a{display:block;color:var(--mute);text-decoration:none;font-size:14px;margin-bottom:10px}
+.footer-col a:hover{color:var(--leaf)}
+.footer-col p i{margin-inline-end:8px;color:var(--leaf)}
+.social-links{display:flex;gap:10px;margin-top:18px}
+.footer-col .social-links a{width:38px;height:38px;border:1px solid var(--line);border-radius:10px;display:grid;place-items:center;margin:0;color:var(--text)}
+.footer-col .social-links a:hover{background:var(--leaf);color:var(--ink);border-color:var(--leaf)}
+.copyright{max-width:1280px;margin:44px auto 0;padding-top:22px;border-top:1px solid var(--line);color:var(--mute);font-size:13px}
+.scroll-top{position:fixed;inset-block-end:24px;inset-inline-end:24px;width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--forest);color:var(--leaf);cursor:pointer;opacity:0;visibility:hidden;transition:.25s;z-index:999}
+.scroll-top.show{opacity:1;visibility:visible}
+@media(max-width:960px){.hero-inner{grid-template-columns:1fr}.footer-container{grid-template-columns:1fr 1fr}}
+@media(max-width:768px){.nav-links{display:none;position:absolute;top:100%;inset-inline:0;flex-direction:column;align-items:flex-start;gap:16px;padding:20px 5%;background:rgba(10,26,18,.98);border-bottom:1px solid var(--line)}.nav-links.active{display:flex}.mobile-menu{display:block}.hero{padding:48px 5% 64px}.footer-container{grid-template-columns:1fr}.logo-text .tagline{display:none}.services-section{padding:64px 5%}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body style="direction: ltr;">
+
+    <!-- ===== HEADER ===== -->
+    <header class="header scrolled" id="header">
+        <div class="header-content">
+            <a href="#" class="logo">
+                <div class="logo-wrapper">
+                    <img src="https://sone-solutions.github.io/SONE/SONELOGE.jpg" alt="SONE Logo" id="siteLogo">
+                </div>
+                <div class="logo-text">
+                    <h1><span class="dark">S</span><span class="green">O</span><span class="dark">N</span><span class="green">E</span></h1>
+                    <div class="tagline" id="tagline">SMART SOLUTIONS · GREEN FUTURE</div>
+                </div>
+            </a>
+            <div class="mobile-menu" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+            <div class="nav-links" id="navLinks">
+                <a href="#home" id="nav-home">Home</a>
+                <a href="#services" id="nav-services">Services</a>
+                <a href="#contact" id="nav-contact">Contact</a>
+                <!-- Language Selector -->
+                <div class="lang-selector">
+                    <button class="lang-btn" data-lang="fr" title="Français">
+                        FR
+                    </button>
+                    <button class="lang-btn" data-lang="ar" title="العربية">
+                        عربي
+                    </button>
+                    <button class="lang-btn active" data-lang="en" title="English">
+                        EN
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="header-space"></div>
+
+    <!-- ===== BOUTONS RAPIDES ===== -->
+    <div class="quick-buttons">
+        <div class="quick-buttons-container" id="quickButtons">
+                    <a href="#home" class="quick-btn"><i class="fas fa-home"></i> Home</a>
+                
+                    <a href="#services" class="quick-btn"><i class="fas fa-cogs"></i> Services</a>
+                
+                    <a href="agri-manager.html" class="quick-btn"><i class="fas fa-chalkboard-user"></i> Manager</a>
+                
+                    <a href="market.html" class="quick-btn"><i class="fas fa-store"></i> Market</a>
+                
+                    <a href="mylibrary.html" class="quick-btn"><i class="fas fa-book"></i> My library</a>
+                
+                    <a href="ndvi.html" class="quick-btn"><i class="fas fa-satellite"></i> NDVI</a>
+                
+                    <a href="disease.html" class="quick-btn"><i class="fas fa-biohazard"></i> Diseases</a>
+                
+                    <a href="weather.html" class="quick-btn"><i class="fas fa-cloud-sun"></i> Weather</a>
+                
+                    <a href="pesticides.html" class="quick-btn"><i class="fas fa-bug"></i> Pesticides</a>
+                
+                    <a href="equipment.html" class="quick-btn"><i class="fas fa-tractor"></i> Equipment</a>
+                
+                    <a href="fertilizers.html" class="quick-btn"><i class="fas fa-leaf"></i> Fertilizers</a>
+                
+                    <a href="news.html" class="quick-btn"><i class="fas fa-newspaper"></i> News</a>
+                
+                    <a href="courses.html" class="quick-btn"><i class="fas fa-graduation-cap"></i> Courses</a>
+                
+                    <a href="offers.html" class="quick-btn"><i class="fas fa-building"></i> Offers</a>
+                
+                    <a href="jobs.html" class="quick-btn"><i class="fas fa-briefcase"></i> Jobs</a>
+                
+                    <a href="trainings.html" class="quick-btn"><i class="fas fa-chalkboard-user"></i> Training</a>
+                
+                    <a href="agritech.html" class="quick-btn"><i class="fas fa-microchip"></i> AgriTech</a>
+                
+                    <a href="livestock.html" class="quick-btn"><i class="fas fa-paw"></i> Livestock</a>
+                
+                    <a href="sone.html" class="quick-btn"><i class="fas fa-microchip"></i> SONE Space</a>
+                
+                    <a href="agrinet.html" class="quick-btn"><i class="fas fa-network-wired"></i> AGRI NET</a>
+                </div>
+    </div>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero" id="home">
+        <img class="hero-bg" id="heroBg" src="https://www.mapleleaffoods.com/fr/wp-content/uploads/sites/7/2025/04/MLF-RegenerativeAgriculture-Cover.jpg" alt="" style="opacity: 0.45;">
+        <div class="hero-inner">
+            <div class="hero-content">
+                <span class="hero-badge" id="hero-badge"><i class="fas fa-leaf"></i> Agricultural Revolution 4.0</span>
+                <h1 id="hero-title">Precision agriculture with real-time data</h1>
+                <p id="hero-desc">An integrated platform combining satellite analysis, weather monitoring, disease mapping, and market prices.</p>
+                <a href="#services" class="btn-primary" id="hero-btn"><i class="fas fa-arrow-down"></i> Explore Services</a>
+            </div>
+            <div class="hero-panel">
+                <div class="stat-card"><div class="stat-number">92%</div><div class="stat-label" id="stat1">NDVI Accuracy</div></div>
+                <div class="stat-card"><div class="stat-number">200+</div><div class="stat-label" id="stat2">Moroccan cities</div></div>
+                <div class="stat-card"><div class="stat-number">48h</div><div class="stat-label" id="stat3">Early warning</div></div>
+                <div class="stat-card"><div class="stat-number">24/7</div><div class="stat-label" id="stat4">Live data</div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SECTION SERVICES ===== -->
+    <section class="services-section" id="services">
+        <div class="section-header">
+            <span class="kicker" id="services-kicker"><i class="fas fa-cogs"></i> Our Services</span>
+            <h2 id="services-title">Everything you need on one platform</h2>
+            <p id="services-desc">We offer a complete range of smart agricultural services</p>
+        </div>
+        <div class="services-grid" id="servicesGrid">
+                    <a href="agri-manager.html" class="service-card">
+                        <div class="card-media">
+                            <img class="service-img" src="https://sone-solutions.github.io/SONE/Espace%20SONE.webp" alt="" loading="lazy">
+                            <div class="service-icon"><i class="fas fa-chalkboard-user"></i></div>
+                        </div>
+                        <div class="card-body">
+                            <h3>Agricultural Manager</h3>
+                            <p>Integrated management system for farms</p>
+                            <span class="service-tag">Complete system</span>
+                        </div>
+                    </a>
+                
+                    <a href="plant-identifier.html" class="service-card">
+                        <div class="card-media">
+                            <img class="service-img" src="https://sone-solutions.github.io/SONE/Identificateur%20de%20plantes.webp" alt="" loading="lazy">
+                            <div class="service-icon"><i class="fas fa-leaf"></i></div>
+                        </div>
+                        <div class="card-body">
+                            <h3>Plant Identifier</h3>
+                            <p>Identify plants using artificial intelligence</p>
+                            <span class="service-tag">Free</span>
+                        </div>
+                    </a>
+                
+                    <a href="ndvi.html" class="service-card">
+                        <div class="card-media">
+                            <img class="service-img" src="https://sone-solutions.github.io/SONE/ANALYSE%20NDVI.webp" alt="" loading="lazy">
+                            <div class="service-icon"><i class="fas fa-satellite"></i></div>
+                        </div>
+                        <div class="card-body">
+                            <h3>NDVI Analysis</h3>
+                            <p>Monitor crop health via satellite</p>
+                            <span class="service-tag">High precision</span>
+                        </div>
+                    </a>
+                
+                    <a href="disease.html" class="service-card">
+                        <div class="card-media">
+                            <img class="service-img" src="https://sone-solutions.github.io/SONE/Syst%C3%A8me%20d%E2%80%99alerte%20pr%C3%A9coce%20des%20maladies%20agricoles.webp" alt="" loading="lazy">
+                            <div class="service-icon"><i class="fas fa-biohazard"></i></div>
+                        </div>
+                        <div class="card-body">
+                            <h3>Disease Mapping</h3>
+                            <p>Early detection of agricultural infections</p>
+                            <span class="service-tag">Early alert</span>
+                        </div>
+                    </a>
+                
+                    <a href="weather.html" class="service-card">
+                        <div class="card-media">
+                            <img class="service-img" src="https://sone-solutions.github.io/SONE/syst%C3%A8me%20d%E2%80%99alerte%20climatique%20intelligent.webp" alt="" loading="lazy">
+                            <div class="service-icon"><i class="fas fa-cloud-sun"></i></div>
+                        </div>
+                        <div class="card-body">
+                            <h3>Precise Weather</h3>
+                            <p>Detailed weather forecasts</p>
+                            <span class="service-tag">Instant update</span>
+                        </div>
+                    </a>
+                
+                    <a href="pesticides.html" class="service-card">
+                        <div class="card-media">
+                            <img class="service-img" src="https://sone-solutions.github.io/SONE/PRODUITS%20PHYTOSANITAIRES.webp" alt="" loading="lazy">
+                            <div class="service-icon"><i class="fas fa-bug"></i></div>
+                        </div>
+                        <div class="card-body">
+                            <h3>Phytosanitary products</h3>
+                            <p>List of approved products</p>
+                            <span class="service-tag">Certified</span>
+                        </div>
+                    </a>
+                
+                    <a href="equipment.html" class="service-card">
+                        <div class="card-media">
+                            <img class="service-img" src="https://sone-solutions.github.io/SONE/EQUIPEMENTS%20AGRICOLES.jpg" alt="" loading="lazy">
+                            <div class="service-icon"><i class="fas fa-tractor"></i></div>
+                        </div>
+                        <div class="card-body">
+                            <h3>Agricultural Equipment</h3>
+                            <p>Latest machines and tractors</p>
+                            <span class="service-tag">High quality</span>
+                        </div>
+                    </a>
+                
+                    <a href="fertilizers.html" class="service-card">
+                        <div class="card-media">
+                            <img class="service-img" src="https://sone-solutions.github.io/SONE/engrais%20agricoles.webp" alt="" loading="lazy">
+                            <div class="service-icon"><i class="fas fa-leaf"></i></div>
+                        </div>
+                        <div class="card-body">
+                            <h3>Agricultural Fertilizers</h3>
+                            <p>Organic and chemical fertilizers</p>
+                            <span class="service-tag">Diverse</span>
+                        </div>
+                    </a>
+                
+                    <a href="news.html" class="service-card">
+                        <div class="card-media">
+                            <img class="service-img" src="https://sone-solutions.github.io/SONE/ACTUALIT%C3%89S%20DU%20SECTEUR%20AGRICOLE.webp" alt="" loading="lazy">
+                            <div class="service-icon"><i class="fas fa-newspaper"></i></div>
+                        </div>
+                        <div class="card-body">
+                            <h3>Sector News</h3>
+                            <p>Latest agricultural news</p>
+                            <span class="service-tag">Latest info</span>
+                        </div>
+                    </a>
+                
+                    <a href="courses.html" class="service-card">
+                        <div class="card-media">
+                            <img class="service-img" src="https://sone-solutions.github.io/SONE/FORMATIOMS%20AGRICOLES.jpg" alt="" loading="lazy">
+                            <div class="service-icon"><i class="fas fa-graduation-cap"></i></div>
+                        </div>
+                        <div class="card-body">
+                            <h3>Agricultural Courses</h3>
+                            <p>Courses with recognized certificates</p>
+                            <span class="service-tag">Official certificate</span>
+                        </div>
+                    </a>
+                
+                    <a href="offers.html" class="service-card">
+                        <div class="card-media">
+                            <img class="service-img" src="https://sone-solutions.github.io/SONE/OFFRES%20DES%20ENTREPRISES.webp" alt="" loading="lazy">
+                            <div class="service-icon"><i class="fas fa-building"></i></div>
+                        </div>
+                        <div class="card-body">
+                            <h3>Company Offers</h3>
+                            <p>Career opportunities in companies</p>
+                            <span class="service-tag">Job offers</span>
+                        </div>
+                    </a>
+                
+                    <a href="jobs.html" class="service-card">
+                        <div class="card-media">
+                            <img class="service-img" src="https://sone-solutions.github.io/SONE/Plateforme%20d'emploi.jpg" alt="" loading="lazy">
+                            <div class="service-icon"><i class="fas fa-briefcase"></i></div>
+                        </div>
+                        <div class="card-body">
+                            <h3>Job Applications</h3>
+                            <p>Job seekers in the agricultural sector</p>
+                            <span class="service-tag">Candidates</span>
+                        </div>
+                    </a>
+                
+                    <a href="trainings.html" class="service-card">
+                        <div class="card-media">
+                            <img class="service-img" src="https://sone-solutions.github.io/SONE/Demandes%20de%20formation.webp" alt="" loading="lazy">
+                            <div class="service-icon"><i class="fas fa-chalkboard-user"></i></div>
+                        </div>
+                        <div class="card-body">
+                            <h3>Training Applications</h3>
+                            <p>Practical internships and training</p>
+                            <span class="service-tag">Field training</span>
+                        </div>
+                    </a>
+                
+                    <a href="market.html" class="service-card">
+                        <div class="card-media">
+                            <img class="service-img" src="https://sone-solutions.github.io/SONE/March%C3%A9%20agricole%20marocain.webp" alt="" loading="lazy">
+                            <div class="service-icon"><i class="fas fa-store"></i></div>
+                        </div>
+                        <div class="card-body">
+                            <h3>Agricultural Market</h3>
+                            <p>Buy and sell your products</p>
+                            <span class="service-tag">Buy / Sell</span>
+                        </div>
+                    </a>
+                
+                    <a href="mylibrary.html" class="service-card">
+                        <div class="card-media">
+                            <img class="service-img" src="https://sone-solutions.github.io/SONE/Biblioth%C3%A8que%20agricole%20SON%C3%89.webp" alt="" loading="lazy">
+                            <div class="service-icon"><i class="fas fa-book"></i></div>
+                        </div>
+                        <div class="card-body">
+                            <h3>My Library</h3>
+                            <p>Storage space for your favorite content</p>
+                            <span class="service-tag">Personal library</span>
+                        </div>
+                    </a>
+                
+                    <a href="agri-ai.html" class="service-card">
+                        <div class="card-media">
+                            <img class="service-img" src="https://sone-solutions.github.io/SONE/IA%20au%20Service%20de%20l'Agriculture%20Marocaine.webp" alt="" loading="lazy">
+                            <div class="service-icon"><i class="fas fa-robot"></i></div>
+                        </div>
+                        <div class="card-body">
+                            <h3>Agri AI</h3>
+                            <p>Smart assistant based on AI</p>
+                            <span class="service-tag">Immediate help</span>
+                        </div>
+                    </a>
+                
+                    <a href="sun-times.html" class="service-card">
+                        <div class="card-media">
+                            <img class="service-img" src="https://sone-solutions.github.io/SONE/informations%20solaires.webp" alt="" loading="lazy">
+                            <div class="service-icon"><i class="fas fa-sun"></i></div>
+                        </div>
+                        <div class="card-body">
+                            <h3>Sun Times</h3>
+                            <p>Sunrise and sunset times</p>
+                            <span class="service-tag">Precise times</span>
+                        </div>
+                    </a>
+                
+                    <a href="agritech.html" class="service-card">
+                        <div class="card-media">
+                            <img class="service-img" src="https://sone-solutions.github.io/SONE/base%20de%20donn%C3%A9es%20des%20plantes.webp" alt="" loading="lazy">
+                            <div class="service-icon"><i class="fas fa-microchip"></i></div>
+                        </div>
+                        <div class="card-body">
+                            <h3>SONE AGRI DATA</h3>
+                            <p>Smart agricultural data analysis platform</p>
+                            <span class="service-tag">Precise data</span>
+                        </div>
+                    </a>
+                
+                    <a href="sone-sol.html" class="service-card">
+                        <div class="card-media">
+                            <img class="service-img" src="https://sone-solutions.github.io/SONE/SONE%20SOL.png" alt="" loading="lazy">
+                            <div class="service-icon"><i class="fas fa-seedling"></i></div>
+                        </div>
+                        <div class="card-body">
+                            <h3>SONE SOL</h3>
+                            <p>Smart solutions for soil and crop analysis</p>
+                            <span class="service-tag">Precise analysis</span>
+                        </div>
+                    </a>
+                
+                    <a href="livestock.html" class="service-card">
+                        <div class="card-media">
+                            <img class="service-img" src="https://sone-solutions.github.io/SONE/Cat%C3%A9gories%20animales.webp" alt="" loading="lazy">
+                            <div class="service-icon"><i class="fas fa-paw"></i></div>
+                        </div>
+                        <div class="card-body">
+                            <h3>Livestock</h3>
+                            <p>Guide to animal categories</p>
+                            <span class="service-tag">Competitive prices</span>
+                        </div>
+                    </a>
+                
+                    <a href="sone.html" class="service-card">
+                        <div class="card-media">
+                            <img class="service-img" src="https://sone-solutions.github.io/SONE/solutions%20IoT%20pour%20l'agriculture.webp" alt="" loading="lazy">
+                            <div class="service-icon"><i class="fas fa-microchip"></i></div>
+                        </div>
+                        <div class="card-body">
+                            <h3>SONE Space</h3>
+                            <p>Agricultural space management</p>
+                            <span class="service-tag">Interactive maps</span>
+                        </div>
+                    </a>
+                
+                    <a href="agrinet.html" class="service-card">
+                        <div class="card-media">
+                            <img class="service-img" src="https://sone-solutions.github.io/SONE/AGRI%20NET.webp" alt="" loading="lazy">
+                            <div class="service-icon"><i class="fas fa-network-wired"></i></div>
+                        </div>
+                        <div class="card-body">
+                            <h3>AGRI NET Network</h3>
+                            <p>Agricultural social network</p>
+                            <span class="service-tag">Join for free</span>
+                        </div>
+                    </a>
+                
+                    <a href="https://sone-solutions.github.io/SONE/fertilizer-compatibility.html" class="service-card" target="_blank">
+                        <div class="card-media">
+                            <img class="service-img" src="https://sone-solutions.github.io/SONE/V%C3%89RIFICATEUR%20D%E2%80%99ENGRAIS.webp" alt="" loading="lazy">
+                            <div class="service-icon"><i class="fas fa-flask"></i></div>
+                        </div>
+                        <div class="card-body">
+                            <h3>Fertilizer Checker</h3>
+                            <p>Determine fertilizer compatibility with crops and soil</p>
+                            <span class="service-tag">Precise analysis</span>
+                        </div>
+                    </a>
+                
+                    <a href="https://sone-solutions.github.io/pesticide-calculator.html" class="service-card" target="_blank">
+                        <div class="card-media">
+                            <img class="service-img" src="https://sone-solutions.github.io/SONE/calculer%20le%20d%C3%A9bit%20de%20produit%20chimique.webp" alt="" loading="lazy">
+                            <div class="service-icon"><i class="fas fa-calculator"></i></div>
+                        </div>
+                        <div class="card-body">
+                            <h3>Flow Calculator</h3>
+                            <p>Calculate optimal chemical product doses by area and crop</p>
+                            <span class="service-tag">High precision</span>
+                        </div>
+                    </a>
+                
+                    <a href="https://sone-solutions.github.io/SONE/consultation%20agricole.html" class="service-card" target="_blank">
+                        <div class="card-media">
+                            <img class="service-img" src="https://sone-solutions.github.io/SONE/consultation%20agricole.webp" alt="" loading="lazy">
+                            <div class="service-icon"><i class="fas fa-handshake"></i></div>
+                        </div>
+                        <div class="card-body">
+                            <h3>Agricultural Consulting</h3>
+                            <p>Smart consulting service to improve productivity</p>
+                            <span class="service-tag">Professional advice</span>
+                        </div>
+                    </a>
+                
+                    <a href="prices.html" class="service-card">
+                        <div class="card-media">
+                            <img class="service-img" src="https://sone-solutions.github.io/SONE/page%20des%20prix.webp" alt="" loading="lazy">
+                            <div class="service-icon"><i class="fas fa-basket-shopping"></i></div>
+                        </div>
+                        <div class="card-body">
+                            <h3>Vegetables, Fruits &amp; Grains Prices</h3>
+                            <p>Latest prices for vegetables, fruits, grains and other agricultural products</p>
+                            <span class="service-tag">Updated daily</span>
+                        </div>
+                    </a>
+                </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer" id="contact">
+        <div class="footer-container">
+            <div class="footer-col">
+                <h4 id="footer-title"><i class="fas fa-leaf"></i> SONE</h4>
+                <p id="footer-tagline">SMART SOLUTIONS · GREEN FUTURE</p>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/profile.php?id=61589030303257" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4 id="footer-links-title">Quick links</h4>
+                <a href="#home" id="footer-link-home">Home</a>
+                <a href="#services" id="footer-link-services">Services</a>
+                <a href="#contact" id="footer-link-contact">Contact</a>
+            </div>
+            <div class="footer-col">
+                <h4 id="footer-services-title">Our services</h4>
+                <a href="agri-manager.html" id="footer-serv1">Agricultural Manager</a>
+                <a href="ndvi.html" id="footer-serv2">NDVI Analysis</a>
+                <a href="weather.html" id="footer-serv3">Precise Weather</a>
+                <a href="prices.html" id="footer-serv4">Vegetables, Fruits &amp; Grains Prices</a>
+                <a href="sone.html" id="footer-serv5">SONE Space</a>
+                <a href="agrinet.html" id="footer-serv6">AGRI NET Network</a>
+            </div>
+            <div class="footer-col">
+                <h4 id="footer-contact-title">Contact us</h4>
+                <p><i class="fas fa-envelope"></i> contact@sone.ma</p>
+                <p><i class="fas fa-phone"></i> +212 5XX XXX XXX</p>
+                <p><i class="fas fa-map-marker-alt"></i> Maroc</p>
+            </div>
+        </div>
+        <div class="copyright">
+            <p id="copyright">© 2026 SONE - All rights reserved | SMART SOLUTIONS · GREEN FUTURE</p>
+        </div>
+    </footer>
+
+    <button class="scroll-top show" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    
+    <script>
+        // ============================================================
+        //  TRADUCTIONS
+        // ============================================================
+        const translations = {
+            fr: {
+                tagline: "SOLUTIONS INTELLIGENTES · AVENIR VERT",
+                nav: { home: "Accueil", services: "Services", contact: "Contact" },
+                hero: {
+                    badge: "Révolution agricole 4.0",
+                    title: "Agriculture de précision avec données en temps réel",
+                    desc: "Une plateforme intégrée combinant l'analyse satellite, la surveillance météo, la cartographie des maladies et les prix du marché.",
+                    btn: "Explorer les services"
+                },
+                stats: ["Précision NDVI", "Villes marocaines", "Alerte précoce", "Données en temps réel"],
+                services: {
+                    kicker: "Nos Services",
+                    title: "Tout ce dont vous avez besoin sur une seule plateforme",
+                    desc: "Nous vous offrons une gamme complète de services agricoles intelligents"
+                },
+                cards: [
+                    { name: "Gestionnaire agricole", desc: "Système intégré de gestion des exploitations agricoles", tag: "Système complet" },
+                    { name: "Identification des plantes", desc: "Reconnaissez les plantes grâce à l'intelligence artificielle", tag: "Gratuit" },
+                    { name: "Analyse NDVI", desc: "Surveillance de la santé des cultures par satellite", tag: "Haute précision" },
+                    { name: "Cartographie des maladies", desc: "Détection précoce des infections agricoles", tag: "Alerte précoce" },
+                    { name: "Météo précise", desc: "Prévisions météorologiques détaillées", tag: "Mise à jour instantanée" },
+                    { name: "Produits phytosanitaires", desc: "Liste des produits agréés", tag: "Certifié" },
+                    { name: "Équipements agricoles", desc: "Machines et tracteurs dernière génération", tag: "Haute qualité" },
+                    { name: "Engrais agricoles", desc: "Engrais organiques et chimiques", tag: "Diversifié" },
+                    { name: "Actualités du secteur", desc: "Dernières nouvelles agricoles", tag: "Dernières infos" },
+                    { name: "Cours agricoles", desc: "Formations avec certificats reconnus", tag: "Certificat officiel" },
+                    { name: "Offres des entreprises", desc: "Opportunités de carrière dans les entreprises", tag: "Offres d'emploi" },
+                    { name: "Demandes d'emploi", desc: "Chercheurs d'emploi dans le secteur agricole", tag: "Candidats" },
+                    { name: "Demandes de formation", desc: "Stages et formations pratiques", tag: "Formation terrain" },
+                    { name: "Marché agricole", desc: "Achetez et vendez vos produits", tag: "Achat / Vente" },
+                    { name: "Ma bibliothèque", desc: "Espace de stockage de vos contenus favoris", tag: "Bibliothèque personnelle" },
+                    { name: "Agri AI", desc: "Assistant intelligent basé sur l'IA", tag: "Aide immédiate" },
+                    { name: "Heures de soleil", desc: "Horaires du lever et coucher du soleil", tag: "Horaires précis" },
+                    { name: "SONE AGRI DATA", desc: "Plateforme d'analyse de données agricoles intelligentes", tag: "Données précises" },
+                    { name: "SONE SOL", desc: "Solutions intelligentes pour l'analyse du sol et des cultures", tag: "Analyse précise" },
+                    { name: "Élevage", desc: "Guide des catégories animales", tag: "Prix compétitifs" },
+                    { name: "Espace SONE", desc: "Gestion des espaces agricoles", tag: "Cartes interactives" },
+                    { name: "Réseau AGRI NET", desc: "Réseau social agricole", tag: "Rejoignez gratuitement" },
+                    { name: "Vérificateur d'engrais", desc: "Déterminez la compatibilité des engrais avec vos cultures et sols", tag: "Analyse précise" },
+                    { name: "Calculateur de débit", desc: "Calculez les doses optimales de produits chimiques par surface et culture", tag: "Haute précision" },
+                    { name: "Consultation agricole", desc: "Service de conseil intelligent pour améliorer la productivité", tag: "Conseils professionnels" },
+                    { name: "Prix des légumes, fruits et céréales", desc: "Derniers prix des légumes, fruits, céréales et autres produits agricoles", tag: "Mis à jour quotidiennement" }
+                ],
+                footer: {
+                    title: "SONE",
+                    tagline: "SOLUTIONS INTELLIGENTES · AVENIR VERT",
+                    links: "Liens rapides",
+                    services: "Nos services",
+                    contact: "Contactez-nous",
+                    copyright: "© 2026 SONE - Tous droits réservés | SOLUTIONS INTELLIGENTES · AVENIR VERT"
+                },
+                quickButtons: ["Accueil", "Services", "Gestionnaire", "Marché", "Ma bibliothèque", "NDVI", "Maladies", "Météo", "Phytosanitaires", "Équipements", "Engrais", "Actualités", "Cours", "Offres", "Emploi", "Formation", "AgriTech", "Élevage", "Espace SONE", "AGRI NET"]
+            },
+            ar: {
+                tagline: "حلول ذكية · مستقبل أخضر",
+                nav: { home: "الرئيسية", services: "الخدمات", contact: "اتصل بنا" },
+                hero: {
+                    badge: "الثورة الزراعية 4.0",
+                    title: "زراعة دقيقة ببيانات فورية",
+                    desc: "منصة متكاملة تجمع بين تحليل الأقمار الصناعية، مراقبة الطقس، رسم خرائط الأمراض، وأسعار السوق.",
+                    btn: "استكشف الخدمات"
+                },
+                stats: ["دقة تحليل NDVI", "مدينة مغربية", "إنذار مبكر", "بيانات حية"],
+                services: {
+                    kicker: "خدماتنا",
+                    title: "كل ما تحتاجه في منصة واحدة",
+                    desc: "نقدم لك مجموعة متكاملة من الخدمات الزراعية الذكية"
+                },
+                cards: [
+                    { name: "مدبر زراعي", desc: "النظام المتكامل لتدبير الضيعات الفلاحية", tag: "نظام متكامل" },
+                    { name: "معرف النباتات", desc: "تعرف على النباتات بالذكاء الاصطناعي", tag: "مجاني" },
+                    { name: "تحليل NDVI", desc: "مراقبة صحة المحاصيل عبر الأقمار", tag: "دقة عالية" },
+                    { name: "خريطة الأمراض", desc: "رصد الإصابات الزراعية", tag: "إنذار مبكر" },
+                    { name: "الطقس الدقيق", desc: "توقعات جوية دقيقة", tag: "تحديث فوري" },
+                    { name: "المنتجات الصحية النباتية", desc: "قائمة المنتجات المعتمدة", tag: "معتمد" },
+                    { name: "المعدات الفلاحية", desc: "أحدث المعدات والجرارات", tag: "جودة عالية" },
+                    { name: "الأسمدة الزراعية", desc: "أسمدة عضوية وكيميائية", tag: "متنوع" },
+                    { name: "أخبار القطاع", desc: "آخر المستجدات الفلاحية", tag: "مستجدات" },
+                    { name: "دورات زراعية", desc: "دورات مع شهادات معتمدة", tag: "شهادة معتمدة" },
+                    { name: "عروض الشركات", desc: "فرص عمل في الشركات", tag: "فرص عمل" },
+                    { name: "طلبات العمل", desc: "باحثون عن عمل في القطاع الفلاحي", tag: "باحثون" },
+                    { name: "طلبات التدريب", desc: "باحثون عن تدريب", tag: "تدريب ميداني" },
+                    { name: "سوق الفلاحة", desc: "منصة للبيع والشراء", tag: "بيع وشراء" },
+                    { name: "مكتبتي", desc: "تخزين المحتوى المفضل", tag: "مكتبة شخصية" },
+                    { name: "Agri AI", desc: "مساعد ذكي بالذكاء الاصطناعي", tag: "دعم فوري" },
+                    { name: "أوقات الشروق", desc: "مواعيد شروق وغروب الشمس", tag: "مواعيد دقيقة" },
+                    { name: "SONE AGRI DATA", desc: "منصة تحليل البيانات الفلاحية الذكية", tag: "بيانات دقيقة" },
+                    { name: "SONE SOL", desc: "حلول ذكية لتحليل التربة والمحاصيل", tag: "تحليل دقيق" },
+                    { name: "قطاع حيواني", desc: "دليل الثروة الحيوانية", tag: "أسعار تنافسية" },
+                    { name: "مساحة SONE", desc: "إدارة المساحات الزراعية", tag: "خرائط تفاعلية" },
+                    { name: "شبكة AGRI NET", desc: "شبكة تواصل زراعية", tag: "انضم مجاناً" },
+                    { name: "مدقق الأسمدة", desc: "تحديد مدى توافق الأسمدة مع المحاصيل والتربة", tag: "تحليل دقيق" },
+                    { name: "حاسبة التدفق", desc: "حساب الجرعات المثالية للمنتجات الكيميائية", tag: "دقة عالية" },
+                    { name: "الاستشارة الفلاحية", desc: "خدمة استشارية ذكية لتحسين الإنتاجية", tag: "استشارات مهنية" },
+                    { name: "أسعار الخضر والفواكه والحبوب", desc: "أحدث أسعار الخضروات، الفواكه، الحبوب والمنتجات الزراعية", tag: "تحديث يومي" }
+                ],
+                footer: {
+                    title: "SONE",
+                    tagline: "حلول ذكية · مستقبل أخضر",
+                    links: "روابط سريعة",
+                    services: "خدماتنا",
+                    contact: "اتصل بنا",
+                    copyright: "© 2026 SONE - جميع الحقوق محفوظة | حلول ذكية · مستقبل أخضر"
+                },
+                quickButtons: ["الرئيسية", "الخدمات", "مدبر", "سوق", "مكتبتي", "NDVI", "أمراض", "طقس", "مبيدات", "معدات", "أسمدة", "أخبار", "دورات", "عروض", "عمل", "تدريب", "تكنو", "حيواني", "مساحة SONE", "AGRI NET"]
+            },
+            en: {
+                tagline: "SMART SOLUTIONS · GREEN FUTURE",
+                nav: { home: "Home", services: "Services", contact: "Contact" },
+                hero: {
+                    badge: "Agricultural Revolution 4.0",
+                    title: "Precision agriculture with real-time data",
+                    desc: "An integrated platform combining satellite analysis, weather monitoring, disease mapping, and market prices.",
+                    btn: "Explore Services"
+                },
+                stats: ["NDVI Accuracy", "Moroccan cities", "Early warning", "Live data"],
+                services: {
+                    kicker: "Our Services",
+                    title: "Everything you need on one platform",
+                    desc: "We offer a complete range of smart agricultural services"
+                },
+                cards: [
+                    { name: "Agricultural Manager", desc: "Integrated management system for farms", tag: "Complete system" },
+                    { name: "Plant Identifier", desc: "Identify plants using artificial intelligence", tag: "Free" },
+                    { name: "NDVI Analysis", desc: "Monitor crop health via satellite", tag: "High precision" },
+                    { name: "Disease Mapping", desc: "Early detection of agricultural infections", tag: "Early alert" },
+                    { name: "Precise Weather", desc: "Detailed weather forecasts", tag: "Instant update" },
+                    { name: "Phytosanitary products", desc: "List of approved products", tag: "Certified" },
+                    { name: "Agricultural Equipment", desc: "Latest machines and tractors", tag: "High quality" },
+                    { name: "Agricultural Fertilizers", desc: "Organic and chemical fertilizers", tag: "Diverse" },
+                    { name: "Sector News", desc: "Latest agricultural news", tag: "Latest info" },
+                    { name: "Agricultural Courses", desc: "Courses with recognized certificates", tag: "Official certificate" },
+                    { name: "Company Offers", desc: "Career opportunities in companies", tag: "Job offers" },
+                    { name: "Job Applications", desc: "Job seekers in the agricultural sector", tag: "Candidates" },
+                    { name: "Training Applications", desc: "Practical internships and training", tag: "Field training" },
+                    { name: "Agricultural Market", desc: "Buy and sell your products", tag: "Buy / Sell" },
+                    { name: "My Library", desc: "Storage space for your favorite content", tag: "Personal library" },
+                    { name: "Agri AI", desc: "Smart assistant based on AI", tag: "Immediate help" },
+                    { name: "Sun Times", desc: "Sunrise and sunset times", tag: "Precise times" },
+                    { name: "SONE AGRI DATA", desc: "Smart agricultural data analysis platform", tag: "Precise data" },
+                    { name: "SONE SOL", desc: "Smart solutions for soil and crop analysis", tag: "Precise analysis" },
+                    { name: "Livestock", desc: "Guide to animal categories", tag: "Competitive prices" },
+                    { name: "SONE Space", desc: "Agricultural space management", tag: "Interactive maps" },
+                    { name: "AGRI NET Network", desc: "Agricultural social network", tag: "Join for free" },
+                    { name: "Fertilizer Checker", desc: "Determine fertilizer compatibility with crops and soil", tag: "Precise analysis" },
+                    { name: "Flow Calculator", desc: "Calculate optimal chemical product doses by area and crop", tag: "High precision" },
+                    { name: "Agricultural Consulting", desc: "Smart consulting service to improve productivity", tag: "Professional advice" },
+                    { name: "Vegetables, Fruits & Grains Prices", desc: "Latest prices for vegetables, fruits, grains and other agricultural products", tag: "Updated daily" }
+                ],
+                footer: {
+                    title: "SONE",
+                    tagline: "SMART SOLUTIONS · GREEN FUTURE",
+                    links: "Quick links",
+                    services: "Our services",
+                    contact: "Contact us",
+                    copyright: "© 2026 SONE - All rights reserved | SMART SOLUTIONS · GREEN FUTURE"
+                },
+                quickButtons: ["Home", "Services", "Manager", "Market", "My library", "NDVI", "Diseases", "Weather", "Pesticides", "Equipment", "Fertilizers", "News", "Courses", "Offers", "Jobs", "Training", "AgriTech", "Livestock", "SONE Space", "AGRI NET"]
+            }
+        };
+
+        // ============================================================
+        //  DONNÉES DES CARTES (images + liens)
+        // ============================================================
+        const cardData = [
+            { href: "agri-manager.html", img: "https://sone-solutions.github.io/SONE/Espace%20SONE.webp", icon: "fa-chalkboard-user", key: 0 },
+            { href: "plant-identifier.html", img: "https://sone-solutions.github.io/SONE/Identificateur%20de%20plantes.webp", icon: "fa-leaf", key: 1 },
+            { href: "ndvi.html", img: "https://sone-solutions.github.io/SONE/ANALYSE%20NDVI.webp", icon: "fa-satellite", key: 2 },
+            { href: "disease.html", img: "https://sone-solutions.github.io/SONE/Syst%C3%A8me%20d%E2%80%99alerte%20pr%C3%A9coce%20des%20maladies%20agricoles.webp", icon: "fa-biohazard", key: 3 },
+            { href: "weather.html", img: "https://sone-solutions.github.io/SONE/syst%C3%A8me%20d%E2%80%99alerte%20climatique%20intelligent.webp", icon: "fa-cloud-sun", key: 4 },
+            { href: "pesticides.html", img: "https://sone-solutions.github.io/SONE/PRODUITS%20PHYTOSANITAIRES.webp", icon: "fa-bug", key: 5 },
+            { href: "equipment.html", img: "https://sone-solutions.github.io/SONE/EQUIPEMENTS%20AGRICOLES.jpg", icon: "fa-tractor", key: 6 },
+            { href: "fertilizers.html", img: "https://sone-solutions.github.io/SONE/engrais%20agricoles.webp", icon: "fa-leaf", key: 7 },
+            { href: "news.html", img: "https://sone-solutions.github.io/SONE/ACTUALIT%C3%89S%20DU%20SECTEUR%20AGRICOLE.webp", icon: "fa-newspaper", key: 8 },
+            { href: "courses.html", img: "https://sone-solutions.github.io/SONE/FORMATIOMS%20AGRICOLES.jpg", icon: "fa-graduation-cap", key: 9 },
+            { href: "offers.html", img: "https://sone-solutions.github.io/SONE/OFFRES%20DES%20ENTREPRISES.webp", icon: "fa-building", key: 10 },
+            { href: "jobs.html", img: "https://sone-solutions.github.io/SONE/Plateforme%20d'emploi.jpg", icon: "fa-briefcase", key: 11 },
+            { href: "trainings.html", img: "https://sone-solutions.github.io/SONE/Demandes%20de%20formation.webp", icon: "fa-chalkboard-user", key: 12 },
+            { href: "market.html", img: "https://sone-solutions.github.io/SONE/March%C3%A9%20agricole%20marocain.webp", icon: "fa-store", key: 13 },
+            { href: "mylibrary.html", img: "https://sone-solutions.github.io/SONE/Biblioth%C3%A8que%20agricole%20SON%C3%89.webp", icon: "fa-book", key: 14 },
+            { href: "agri-ai.html", img: "https://sone-solutions.github.io/SONE/IA%20au%20Service%20de%20l'Agriculture%20Marocaine.webp", icon: "fa-robot", key: 15 },
+            { href: "sun-times.html", img: "https://sone-solutions.github.io/SONE/informations%20solaires.webp", icon: "fa-sun", key: 16 },
+            { href: "agritech.html", img: "https://sone-solutions.github.io/SONE/base%20de%20donn%C3%A9es%20des%20plantes.webp", icon: "fa-microchip", key: 17 },
+            { href: "sone-sol.html", img: "https://sone-solutions.github.io/SONE/SONE%20SOL.png", icon: "fa-seedling", key: 18 },
+            { href: "livestock.html", img: "https://sone-solutions.github.io/SONE/Cat%C3%A9gories%20animales.webp", icon: "fa-paw", key: 19 },
+            { href: "sone.html", img: "https://sone-solutions.github.io/SONE/solutions%20IoT%20pour%20l'agriculture.webp", icon: "fa-microchip", key: 20 },
+            { href: "agrinet.html", img: "https://sone-solutions.github.io/SONE/AGRI%20NET.webp", icon: "fa-network-wired", key: 21 },
+            { href: "https://sone-solutions.github.io/SONE/fertilizer-compatibility.html", img: "https://sone-solutions.github.io/SONE/V%C3%89RIFICATEUR%20D%E2%80%99ENGRAIS.webp", icon: "fa-flask", key: 22, target: "_blank" },
+            { href: "https://sone-solutions.github.io/pesticide-calculator.html", img: "https://sone-solutions.github.io/SONE/calculer%20le%20d%C3%A9bit%20de%20produit%20chimique.webp", icon: "fa-calculator", key: 23, target: "_blank" },
+            { href: "https://sone-solutions.github.io/SONE/consultation%20agricole.html", img: "https://sone-solutions.github.io/SONE/consultation%20agricole.webp", icon: "fa-handshake", key: 24, target: "_blank" },
+            { href: "prices.html", img: "https://sone-solutions.github.io/SONE/page%20des%20prix.webp", icon: "fa-basket-shopping", key: 25 }
+        ];
+
+        // ============================================================
+        //  FONCTIONS DE TRADUCTION
+        // ============================================================
+        let currentLang = 'fr';
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+
+            // Tagline
+            document.getElementById('tagline').textContent = t.tagline;
+
+            // Nav
+            document.getElementById('nav-home').textContent = t.nav.home;
+            document.getElementById('nav-services').textContent = t.nav.services;
+            document.getElementById('nav-contact').textContent = t.nav.contact;
+
+            // Hero
+            document.getElementById('hero-badge').innerHTML = `<i class="fas fa-leaf"></i> ${t.hero.badge}`;
+            document.getElementById('hero-title').innerHTML = t.hero.title;
+            document.getElementById('hero-desc').textContent = t.hero.desc;
+            document.getElementById('hero-btn').innerHTML = `<i class="fas fa-arrow-down"></i> ${t.hero.btn}`;
+
+            // Stats
+            document.getElementById('stat1').textContent = t.stats[0];
+            document.getElementById('stat2').textContent = t.stats[1];
+            document.getElementById('stat3').textContent = t.stats[2];
+            document.getElementById('stat4').textContent = t.stats[3];
+
+            // Services header
+            document.getElementById('services-kicker').innerHTML = `<i class="fas fa-cogs"></i> ${t.services.kicker}`;
+            document.getElementById('services-title').textContent = t.services.title;
+            document.getElementById('services-desc').textContent = t.services.desc;
+
+            // Cards
+            renderCards(t);
+
+            // Quick buttons
+            renderQuickButtons(t);
+
+            // Footer
+            document.getElementById('footer-title').innerHTML = `<i class="fas fa-leaf"></i> ${t.footer.title}`;
+            document.getElementById('footer-tagline').textContent = t.footer.tagline;
+            document.getElementById('footer-links-title').textContent = t.footer.links;
+            document.getElementById('footer-services-title').textContent = t.footer.services;
+            document.getElementById('footer-contact-title').textContent = t.footer.contact;
+            document.getElementById('footer-link-home').textContent = t.nav.home;
+            document.getElementById('footer-link-services').textContent = t.nav.services;
+            document.getElementById('footer-link-contact').textContent = t.nav.contact;
+            document.getElementById('footer-serv1').textContent = t.cards[0].name;
+            document.getElementById('footer-serv2').textContent = t.cards[2].name;
+            document.getElementById('footer-serv3').textContent = t.cards[4].name;
+            document.getElementById('footer-serv4').textContent = t.cards[25].name;
+            document.getElementById('footer-serv5').textContent = t.cards[20].name;
+            document.getElementById('footer-serv6').textContent = t.cards[21].name;
+            document.getElementById('copyright').textContent = t.footer.copyright;
+
+            // Active language button
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === lang);
+            });
+
+            // Direction
+            const dir = lang === 'ar' ? 'rtl' : 'ltr';
+            document.documentElement.dir = dir;
+            document.documentElement.lang = lang;
+            document.querySelector('body').style.direction = dir;
+        }
+
+        function renderCards(t) {
+            const grid = document.getElementById('servicesGrid');
+            grid.innerHTML = '';
+            cardData.forEach((card, index) => {
+                const c = t.cards[index];
+                const target = card.target ? `target="${card.target}"` : '';
+                grid.innerHTML += `
+                    <a href="${card.href}" class="service-card" ${target}>
+                        <div class="card-media">
+                            <img class="service-img" src="${card.img}" alt="" loading="lazy" />
+                            <div class="service-icon"><i class="fas ${card.icon}"></i></div>
+                        </div>
+                        <div class="card-body">
+                            <h3>${c.name}</h3>
+                            <p>${c.desc}</p>
+                            <span class="service-tag">${c.tag}</span>
+                        </div>
+                    </a>
+                `;
+            });
+        }
+
+        function renderQuickButtons(t) {
+            const container = document.getElementById('quickButtons');
+            const icons = ['fa-home', 'fa-cogs', 'fa-chalkboard-user', 'fa-store', 'fa-book', 'fa-satellite', 'fa-biohazard', 'fa-cloud-sun', 'fa-bug', 'fa-tractor', 'fa-leaf', 'fa-newspaper', 'fa-graduation-cap', 'fa-building', 'fa-briefcase', 'fa-chalkboard-user', 'fa-microchip', 'fa-paw', 'fa-microchip', 'fa-network-wired'];
+            const links = ['#home', '#services', 'agri-manager.html', 'market.html', 'mylibrary.html', 'ndvi.html', 'disease.html', 'weather.html', 'pesticides.html', 'equipment.html', 'fertilizers.html', 'news.html', 'courses.html', 'offers.html', 'jobs.html', 'trainings.html', 'agritech.html', 'livestock.html', 'sone.html', 'agrinet.html'];
+            container.innerHTML = '';
+            t.quickButtons.forEach((label, i) => {
+                container.innerHTML += `
+                    <a href="${links[i] || '#'}" class="quick-btn"><i class="fas ${icons[i] || 'fa-link'}"></i> ${label}</a>
+                `;
+            });
+        }
+
+        // ============================================================
+        //  INIT
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            // Language buttons
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    setLanguage(this.dataset.lang);
+                });
+            });
+
+            // Set default language (French)
+            setLanguage('fr');
+
+            // AOS
+
+            // Scroll header
+            let header = document.getElementById('header');
+            window.addEventListener('scroll', () => {
+                header.classList.toggle('scrolled', window.scrollY > 50);
+                let scrollTop = document.getElementById('scrollTop');
+                if (scrollTop) scrollTop.classList.toggle('show', window.scrollY > 300);
+            });
+
+            // Mobile menu
+            window.toggleMenu = function() {
+                document.getElementById('navLinks').classList.toggle('active');
+            };
+
+            // Hero background rotation
+            const heroImages = [
+                "https://www.agrimaroc.ma/wp-content/uploads/formations_agriculture.jpg",
+                "https://www.hellio.com/hubfs/Blog%20Corporate%20-%20Images/elevage-bovin-vaches-champs-agriculture-coucher-soleil.jpeg",
+                "https://www.mapleleaffoods.com/fr/wp-content/uploads/sites/7/2025/04/MLF-RegenerativeAgriculture-Cover.jpg"
+            ];
+            let currentImageIndex = 0;
+            const heroBgElement = document.getElementById('heroBg');
+
+            function changeHeroBackground() {
+                if (heroBgElement) {
+                    heroBgElement.style.opacity = '0';
+                    setTimeout(() => {
+                        heroBgElement.src = heroImages[currentImageIndex];
+                        heroBgElement.style.opacity = '0.45';
+                    }, 400);
+                    currentImageIndex = (currentImageIndex + 1) % heroImages.length;
+                }
+            }
+            if (heroBgElement) setInterval(changeHeroBackground, 5000);
+        });
+    </script>
+
+
+
+</body></html>

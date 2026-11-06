@@ -1,179 +1,85 @@
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>SONE | توافق الأسمدة - 74 نوعاً</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        /* جميع الأنماط كما هي دون تغيير - تم الحفاظ على التصميم الاحترافي */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Cairo', sans-serif; background: #0A1408; min-height: 100vh; color: #FBFCFB; background-image: radial-gradient(circle at 20% 30%, rgba(168, 132, 66, 0.03) 0%, transparent 60%); }
-        .navbar { background: rgba(10, 20, 8, 0.92); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(168, 132, 66, 0.25); padding: 0.8rem 2rem; position: sticky; top: 0; z-index: 100; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5); }
-        .nav-container { max-width: 1400px; margin: auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
-        .logo { display: flex; align-items: center; gap: 1rem; text-decoration: none; }
-        .logo-image { width: 48px; height: 48px; border-radius: 50%; border: 2px solid rgba(168, 132, 66, 0.5); overflow: hidden; box-shadow: 0 0 20px rgba(168, 132, 66, 0.2); transition: all 0.3s; flex-shrink: 0; }
-        .logo-image:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(168, 132, 66, 0.4); }
-        .logo-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .logo-text { display: flex; flex-direction: column; }
-        .logo-main { font-size: 1.8rem; font-weight: 800; letter-spacing: 1px; background: linear-gradient(135deg, #FBFCFB 60%, #A8842A); -webkit-background-clip: text; background-clip: text; color: transparent; line-height: 1.2; }
-        .logo-slogan { font-size: 0.7rem; letter-spacing: 1px; color: #C1DCB5; font-weight: 500; }
-        .logo-slogan i { color: #A8842A; font-size: 0.6rem; }
-        .nav-links { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-        .nav-links a { text-decoration: none; padding: 0.5rem 1.25rem; border-radius: 50px; font-weight: 600; font-size: 0.95rem; transition: all 0.3s ease; color: #C1DCB5; border: 1px solid transparent; }
-        .nav-links a:hover, .nav-links a.active { background: rgba(168, 132, 66, 0.2); border-color: #A8842A; color: #FBFCFB; box-shadow: 0 0 20px rgba(168, 132, 66, 0.15); }
-        .container { max-width: 1400px; margin: 2rem auto; padding: 0 2rem; }
-        .hero { background: rgba(28, 42, 22, 0.8); backdrop-filter: blur(6px); border-radius: 32px; padding: 2.5rem 2rem; margin-bottom: 2.5rem; border: 1px solid rgba(168, 132, 66, 0.25); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6); text-align: center; position: relative; overflow: hidden; }
-        .hero::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 30% 40%, rgba(168, 132, 66, 0.05), transparent 70%); pointer-events: none; }
-        .hero-icon { font-size: 3rem; color: #A8842A; margin-bottom: 1rem; filter: drop-shadow(0 0 20px rgba(168, 132, 66, 0.3)); }
-        .hero h1 { background: linear-gradient(135deg, #FFFFFF 50%, #A8842A); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 0.5rem; font-size: 2.2rem; font-weight: 800; letter-spacing: 1px; }
-        .hero-slogan { font-size: 1.1rem; color: #C1DCB5; margin-bottom: 0.75rem; letter-spacing: 1px; }
-        .hero-slogan span { color: #A8842A; font-weight: 700; }
-        .hero p { color: #C1DCB5; margin-bottom: 1.5rem; font-size: 1rem; max-width: 700px; margin-left: auto; margin-right: auto; }
-        .stats { display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center; }
-        .stat-badge { background: rgba(168, 132, 66, 0.15); padding: 0.5rem 1.5rem; border-radius: 50px; font-size: 0.9rem; font-weight: 600; color: #A8842A; border: 1px solid rgba(168, 132, 66, 0.25); backdrop-filter: blur(4px); transition: all 0.3s; }
-        .stat-badge:hover { background: rgba(168, 132, 66, 0.25); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(168, 132, 66, 0.15); }
-        .dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 2rem; }
-        .card { background: rgba(28, 42, 22, 0.85); backdrop-filter: blur(8px); border-radius: 28px; padding: 2rem 1.8rem; border: 1px solid rgba(168, 132, 66, 0.2); transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.4); }
-        .card:hover { transform: translateY(-6px); border-color: rgba(168, 132, 66, 0.5); box-shadow: 0 25px 45px -15px rgba(0, 0, 0, 0.6), 0 0 30px rgba(168, 132, 66, 0.05); }
-        .card h3 { color: #A8842A; margin-bottom: 1.8rem; font-size: 1.3rem; font-weight: 700; border-right: 4px solid #A8842A; padding-right: 1rem; display: flex; align-items: center; gap: 0.75rem; }
-        .card h3 i { font-size: 1.1rem; color: #A8842A; }
-        .form-group { margin-bottom: 1.5rem; }
-        label { font-weight: 600; display: block; margin-bottom: 0.5rem; color: #C1DCB5; font-size: 0.95rem; }
-        label i { color: #A8842A; margin-left: 0.4rem; }
-        select, input { width: 100%; padding: 0.9rem 1rem; border: 1px solid rgba(168, 132, 66, 0.25); border-radius: 16px; font-family: 'Cairo', sans-serif; font-size: 1rem; background: rgba(255, 255, 255, 0.06); color: #FBFCFB; transition: all 0.3s; appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23A8842A' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: left 1rem center; padding-left: 2.8rem; }
-        select option { background: #1C2A16; color: #FBFCFB; }
-        select:focus, input:focus { outline: none; border-color: #A8842A; box-shadow: 0 0 0 3px rgba(168, 132, 66, 0.25); background-color: rgba(255, 255, 255, 0.08); }
-        button { background: linear-gradient(135deg, #A8842A, #C49B3A); color: #0A1408; border: none; padding: 1rem 1.5rem; width: 100%; border-radius: 40px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.3s ease; margin-top: 0.5rem; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: center; gap: 0.75rem; box-shadow: 0 4px 15px rgba(168, 132, 66, 0.2); }
-        button:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(168, 132, 66, 0.35); background: linear-gradient(135deg, #C49B3A, #D4A843); }
-        button:active { transform: translateY(0); }
-        .result-box { border-radius: 20px; padding: 1.8rem 1.5rem; text-align: center; margin-top: 1rem; transition: all 0.4s ease; backdrop-filter: blur(4px); }
-        .compatible { background: rgba(76, 175, 80, 0.12); border: 1px solid #4CAF50; color: #C1DCB5; box-shadow: 0 0 30px rgba(76, 175, 80, 0.05); }
-        .incompatible { background: rgba(244, 67, 54, 0.12); border: 1px solid #f44336; color: #fecaca; box-shadow: 0 0 30px rgba(244, 67, 54, 0.05); }
-        .warning { background: rgba(255, 152, 0, 0.12); border: 1px solid #ff9800; color: #fff3e0; box-shadow: 0 0 30px rgba(255, 152, 0, 0.05); }
-        .status-icon { font-size: 2.8rem; margin-bottom: 0.75rem; display: block; animation: fadeInUp 0.5s ease; }
-        .result-box h3 { font-size: 1.15rem; font-weight: 700; border: none; padding: 0; margin-bottom: 0.5rem; color: inherit; }
-        .result-box p { font-size: 0.9rem; opacity: 0.9; margin-top: 0.5rem; }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-        .flex-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-        footer { text-align: center; padding: 2.5rem 2rem 1.5rem; border-top: 1px solid rgba(168, 132, 66, 0.15); margin-top: 3rem; }
-        .footer-logo { display: flex; align-items: center; justify-content: center; gap: 0.75rem; font-size: 1.4rem; font-weight: 700; color: #A8842A; margin-bottom: 0.5rem; }
-        .footer-logo img { width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(168, 132, 66, 0.3); }
-        .footer-slogan { font-size: 0.85rem; color: #C1DCB5; letter-spacing: 1px; }
-        footer p { margin-top: 1rem; font-size: 0.8rem; color: #7a9a6e; }
-        @media (max-width: 768px) { .container { padding: 0 1rem; } .flex-2 { grid-template-columns: 1fr; } .dashboard { grid-template-columns: 1fr; } .logo-main { font-size: 1.4rem; } .hero h1 { font-size: 1.6rem; } .navbar { padding: 0.6rem 1rem; } .nav-links a { padding: 0.4rem 0.9rem; font-size: 0.85rem; } .card { padding: 1.5rem 1.2rem; } .stats { gap: 0.8rem; } .stat-badge { font-size: 0.8rem; padding: 0.4rem 1rem; } }
-        @media (max-width: 480px) { .hero { padding: 1.5rem 1rem; } .hero h1 { font-size: 1.3rem; } .logo-image { width: 38px; height: 38px; } }
-    </style>
+<html lang="ar" dir="rtl"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#18392F">
+<meta name="description" content="أداة SONE الاسترشادية لتقييم مخاطر خلط الأسمدة الزراعية وفق قاعدة بيانات وقواعد تحذيرية واضحة.">
+<title>SONE | نظام مراجعة توافق الأسمدة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{--forest:#102A22;--forest-2:#173B2D;--green:#286247;--green-2:#3D805D;--lime:#D2E824;--lime-soft:#F3F8D8;--ink:#17251E;--muted:#718078;--paper:#F4F7F3;--white:#fff;--line:#E1E9E1;--blue:#245D75;--blue-soft:#EAF4F8;--amber:#8B6418;--amber-soft:#FFF7E5;--red:#963D36;--red-soft:#FFF0EE;--shadow:0 18px 50px rgba(16,42,34,.075)}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}body{font-family:'Cairo',sans-serif;background:var(--paper);color:var(--ink);line-height:1.75}button,select{font:inherit}.topbar{position:sticky;top:0;z-index:50;background:rgba(16,42,34,.97);backdrop-filter:blur(16px);border-bottom:1px solid rgba(210,232,36,.22)}.nav{max-width:1180px;margin:auto;padding:13px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:white}.brand-mark{width:46px;height:46px;border-radius:14px;background:linear-gradient(145deg,#D2E824,#A8C51A);display:grid;place-items:center;color:var(--forest);font-size:21px;box-shadow:0 5px 18px #d2e82430}.brand-name{font-size:1.45rem;font-weight:900;letter-spacing:1.8px;line-height:1.1}.brand-sub{font-size:.62rem;letter-spacing:1px;color:#C8D9CE;font-weight:700}.nav-tag{color:#E7F0E9;font-size:.78rem;border:1px solid #ffffff26;border-radius:30px;padding:7px 13px}.wrap{max-width:1180px;margin:36px auto;padding:0 24px}.hero{position:relative;overflow:hidden;border-radius:28px;padding:42px 42px 38px;background:radial-gradient(circle at 8% 10%,#D2E8241c,transparent 27%),linear-gradient(120deg,#102A22,#1D5039);color:white;box-shadow:0 24px 55px #102a2222}.hero:after{content:"";position:absolute;left:-65px;bottom:-170px;width:360px;height:360px;border:1px solid #d2e82435;border-radius:50%;box-shadow:0 0 0 34px #d2e82408,0 0 0 70px #d2e82406}.eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--lime);font-size:.76rem;font-weight:800;letter-spacing:.5px;margin-bottom:13px}.hero h1{font-size:clamp(1.7rem,4vw,2.55rem);font-weight:900;line-height:1.35;margin-bottom:10px}.hero p{max-width:720px;color:#D6E4DA;font-size:.96rem}.hero-bottom{display:flex;flex-wrap:wrap;gap:10px;margin-top:25px}.metric{display:flex;align-items:center;gap:9px;background:#ffffff12;border:1px solid #ffffff20;border-radius:13px;padding:8px 14px;font-size:.8rem;color:#F1F6F1}.metric i{color:var(--lime)}.section-head{display:flex;align-items:end;justify-content:space-between;gap:15px;margin:30px 2px 15px}.section-head h2{font-size:1.18rem;color:var(--forest);font-weight:900}.section-head p{font-size:.78rem;color:var(--muted)}.workspace{display:grid;grid-template-columns:1fr .92fr;gap:18px;align-items:stretch}.panel{background:var(--white);border:1px solid var(--line);border-radius:22px;padding:25px;box-shadow:var(--shadow)}.panel-title{display:flex;align-items:center;gap:12px;margin-bottom:21px}.panel-icon{width:42px;height:42px;border-radius:13px;background:var(--lime-soft);color:var(--green);display:grid;place-items:center;font-size:17px}.panel-title h3{font-size:1.02rem;font-weight:900;color:var(--forest)}.panel-title p{font-size:.73rem;color:var(--muted)}.field{margin-bottom:17px}.field label{display:block;font-size:.83rem;font-weight:800;color:#34483B;margin-bottom:7px}.field label span{color:var(--green-2);margin-left:6px}.select-wrap{position:relative}.select-wrap:after{content:'⌄';position:absolute;left:15px;top:7px;color:var(--green-2);font-size:1.2rem;pointer-events:none}select{width:100%;appearance:none;background:#FBFCFA;border:1px solid #DCE6DC;border-radius:12px;padding:12px 14px 12px 38px;color:var(--ink);outline:none;transition:.2s}select:focus{border-color:var(--green-2);box-shadow:0 0 0 4px #3d805d18}.selection-actions{display:flex;gap:9px;margin:4px 0 18px}.ghost-btn{border:1px solid var(--line);background:#F8FAF7;color:var(--green);border-radius:10px;padding:7px 12px;font-size:.76rem;font-weight:800;cursor:pointer}.ghost-btn:hover{background:var(--lime-soft);border-color:#DDE9A0}.primary-btn{width:100%;border:0;border-radius:12px;background:var(--lime);color:var(--forest);padding:13px 18px;font-weight:900;cursor:pointer;box-shadow:0 8px 18px #a8be2025;transition:.2s}.primary-btn:hover{transform:translateY(-2px);background:#DDF333}.result-panel{display:flex;flex-direction:column}.result-placeholder{flex:1;min-height:255px;border:1px dashed #CCD9CD;border-radius:16px;background:linear-gradient(145deg,#FBFDF9,#F4F8F1);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:25px}.placeholder-icon{width:66px;height:66px;border-radius:20px;background:#EAF2E7;color:var(--green);display:grid;place-items:center;font-size:25px;margin-bottom:14px}.result-placeholder h4{font-size:1rem;color:var(--forest);font-weight:900}.result-placeholder p{font-size:.78rem;color:var(--muted);max-width:290px;margin-top:5px}.result-card{border-radius:16px;padding:19px;border:1px solid var(--line);animation:appear .3s ease}.result-card h4{font-size:1rem;font-weight:900;margin-bottom:6px}.result-card p{font-size:.82rem;line-height:1.8}.result-card .result-label{display:inline-flex;align-items:center;gap:7px;font-size:.72rem;font-weight:900;margin-bottom:9px}.result-card.blocked{background:var(--red-soft);border-color:#F0C9C4;color:var(--red)}.result-card.caution{background:var(--amber-soft);border-color:#F0DDAF;color:var(--amber)}.result-card.unknown{background:var(--blue-soft);border-color:#C9E0E9;color:var(--blue)}.result-meta{margin-top:13px;padding-top:12px;border-top:1px solid currentColor;opacity:.82;font-size:.74rem}.science-note{margin-top:15px;background:#F5F8F4;border:1px solid var(--line);border-radius:13px;padding:13px 14px;display:flex;gap:10px;color:#53655A;font-size:.75rem;line-height:1.8}.science-note i{color:var(--green-2);margin-top:4px}.info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}.info-card{background:#fff;border:1px solid var(--line);border-radius:17px;padding:17px}.info-card i{color:var(--green-2);font-size:17px;margin-bottom:8px}.info-card h4{font-size:.84rem;color:var(--forest);font-weight:900;margin-bottom:4px}.info-card p{font-size:.73rem;color:var(--muted);line-height:1.8}.method{margin-top:18px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:23px}.method h3{font-size:1rem;color:var(--forest);font-weight:900;margin-bottom:10px}.method p,.method li{font-size:.78rem;color:#5F6E64;line-height:1.9}.method ul{padding-right:20px;margin-top:7px}.disclaimer{margin-top:14px;border-right:3px solid var(--lime);padding:10px 13px;background:#FAFCEB;border-radius:9px;color:#5C651E;font-size:.76rem;line-height:1.9}.footer{margin-top:40px;background:var(--forest);color:#D9E6DD;text-align:center;padding:26px 20px}.footer strong{color:var(--lime);letter-spacing:1.5px;font-size:1.2rem}.footer p{font-size:.72rem;color:#AFC2B5;margin-top:4px}.hidden{display:none!important}@keyframes appear{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:820px){.brand-logo{width:46px;height:46px;flex-basis:46px}.workspace{grid-template-columns:1fr}.info-grid{grid-template-columns:1fr}.wrap{padding:0 15px;margin:22px auto}.hero{padding:30px 22px}.nav{padding:11px 15px}.nav-tag{display:none}}@media(max-width:480px){.panel{padding:19px}.hero{border-radius:20px}.hero h1{font-size:1.55rem}.hero p{font-size:.84rem}.metric{font-size:.72rem}.section-head{align-items:start;flex-direction:column}}
+
+/* SONE CLASSIC AGRICULTURAL IDENTITY — restrained institutional layout */
+:root{
+ --forest:#18392F;--forest-2:#102A23;--green:#496C57;--green-2:#607D68;
+ --lime:#C8D957;--lime-soft:#F0F3DF;--ink:#26332C;--muted:#727C74;
+ --paper:#F7F6F0;--white:#FFFFFF;--line:#DCDDD3;
+ --blue:#315B6A;--blue-soft:#EFF4F5;--amber:#806323;--amber-soft:#F7F2E5;
+ --red:#873F37;--red-soft:#F8EFED;--shadow:0 2px 10px rgba(24,57,47,.045)
+}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:'Cairo',Tahoma,sans-serif;line-height:1.8}
+.topbar{position:relative;background:var(--forest-2);backdrop-filter:none;border-bottom:3px solid var(--lime)}
+.nav{max-width:1160px;padding:12px 26px}
+.brand{gap:13px}.brand-mark{width:42px;height:42px;border-radius:5px;background:var(--lime);color:var(--forest-2);box-shadow:none;font-size:19px}
+.brand-logo{display:block;width:52px;height:52px;object-fit:contain;background:#fff;border:1px solid #D7DED5;border-radius:4px;padding:3px;flex:0 0 52px}
+.brand-name{font-size:1.35rem;letter-spacing:2px}.brand-sub{font-size:.59rem;letter-spacing:1.1px;color:#D4DDD6}
+.nav-tag{border:1px solid #718477;border-radius:3px;padding:5px 12px;color:#E6EAE5;font-size:.74rem}
+.wrap{max-width:1160px;margin:30px auto;padding:0 26px}
+.hero{overflow:hidden;border-radius:5px;padding:34px 38px 30px;background:#EAEDE5;color:var(--forest-2);box-shadow:none;border:1px solid #D9DED4;border-right:5px solid var(--green)}
+.hero:after{display:none}.eyebrow{color:var(--green);font-size:.7rem;letter-spacing:1.15px;margin-bottom:9px}
+.hero h1{font-size:clamp(1.65rem,3.2vw,2.25rem);font-weight:800;line-height:1.4;margin-bottom:8px;color:var(--forest-2)}
+.hero p{max-width:760px;color:#59665D;font-size:.91rem}
+.hero-bottom{gap:8px;margin-top:20px}.metric{background:transparent;border:0;border-left:1px solid #C8D0C5;border-radius:0;padding:2px 13px;color:#4E5D53;font-size:.76rem}.metric:first-child{padding-right:0}.metric i{color:var(--green)}
+.section-head{margin:27px 1px 12px}.section-head h2{font-size:1.08rem;color:var(--forest-2);font-weight:800}.section-head p{font-size:.75rem;color:#777F77}
+.workspace{grid-template-columns:1fr .92fr;gap:14px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:5px;padding:23px;box-shadow:var(--shadow)}
+.panel-title{gap:11px;margin-bottom:19px;padding-bottom:13px;border-bottom:1px solid #E8E8E0}
+.panel-icon{width:36px;height:36px;border-radius:4px;background:#EEF1E9;color:var(--green);font-size:15px}
+.panel-title h3{font-size:.98rem;font-weight:800;color:var(--forest-2)}.panel-title p{font-size:.7rem;color:#7A817B}
+.field{margin-bottom:15px}.field label{font-size:.8rem;color:#3F5045;margin-bottom:6px}.field label span{color:#738B52}
+.select-wrap:after{top:6px;color:#607D68}select{background:#FCFCFA;border:1px solid #D4D9D1;border-radius:3px;padding:11px 13px 11px 36px;color:#26332C;font-size:.85rem;transition:border-color .15s,box-shadow .15s}
+select:focus{border-color:#607D68;box-shadow:0 0 0 2px #607D681A}
+.selection-actions{gap:8px;margin:3px 0 16px}.ghost-btn{border:1px solid #D5DBD3;background:#fff;color:#496C57;border-radius:3px;padding:6px 11px;font-size:.73rem}.ghost-btn:hover{background:#F1F3EA;border-color:#AAB8A8}
+.primary-btn{border-radius:3px;background:var(--forest);color:#fff;padding:12px 17px;font-size:.86rem;box-shadow:none;transition:background .15s}.primary-btn:hover{transform:none;background:#2B5141}
+.result-placeholder{min-height:250px;border:1px dashed #C9D1C8;border-radius:3px;background:#FAFBF8;padding:23px}
+.placeholder-icon{width:54px;height:54px;border-radius:4px;background:#EEF1E9;color:var(--green);font-size:21px;margin-bottom:12px}
+.result-placeholder h4{font-size:.96rem;color:var(--forest-2);font-weight:800}.result-placeholder p{font-size:.75rem;color:#788078}
+.result-card{border-radius:3px;padding:17px;animation:none}.result-card h4{font-size:.95rem;font-weight:800}.result-card p{font-size:.8rem}.result-card .result-label{font-size:.7rem}
+.result-card.blocked{background:#F8EFED;border-color:#E4C9C5;color:#873F37}.result-card.caution{background:#F7F2E5;border-color:#E5D8B8;color:#806323}.result-card.unknown{background:#EFF4F5;border-color:#D1DEE1;color:#315B6A}
+.result-meta{font-size:.73rem}.science-note{margin-top:13px;background:#F5F6F1;border:1px solid #E1E3DA;border-radius:3px;padding:11px 12px;color:#5F6A61;font-size:.73rem}.science-note i{color:#607D68}
+.info-grid{gap:12px;margin-top:15px}.info-card{border:1px solid var(--line);border-radius:4px;padding:15px 16px;box-shadow:none}.info-card i{color:#607D68;font-size:15px;margin-bottom:7px}.info-card h4{font-size:.81rem;color:var(--forest-2);font-weight:800}.info-card p{font-size:.71rem;color:#737C74}
+.method{margin-top:15px;background:#fff;border:1px solid var(--line);border-radius:4px;padding:20px 22px}.method h3{font-size:.96rem;color:var(--forest-2);font-weight:800;margin-bottom:8px}.method p,.method li{font-size:.76rem;color:#606B62;line-height:1.95}.method ul{padding-right:19px;margin-top:6px}.method li{padding-right:2px;margin-bottom:3px}
+.disclaimer{margin-top:12px;border-right:3px solid #A6B65A;padding:9px 12px;background:#F5F5E9;border-radius:2px;color:#626642;font-size:.73rem}
+.footer{margin-top:32px;background:#102A23;color:#D9E1DA;text-align:center;padding:22px 18px;border-top:3px solid #C8D957}.footer strong{color:#D2DE8A;letter-spacing:2px;font-size:1.12rem}.footer p{font-size:.7rem;color:#B4C0B6;margin-top:3px}
+@media(max-width:820px){.workspace{grid-template-columns:1fr}.info-grid{grid-template-columns:1fr}.wrap{padding:0 15px;margin:20px auto}.hero{padding:26px 22px}.nav{padding:10px 15px}.nav-tag{display:none}}
+@media(max-width:480px){.panel{padding:17px}.hero{border-radius:3px}.hero h1{font-size:1.48rem}.hero p{font-size:.82rem}.metric{font-size:.69rem;padding:2px 8px}.section-head{align-items:start;flex-direction:column}.hero-bottom{gap:5px}}
+
+</style>
 </head>
 <body>
-
-    <!-- ===== شريط التنقل ===== -->
-    <div class="navbar">
-        <div class="nav-container">
-            <a href="#" class="logo">
-                <div class="logo-image">
-                    <img src="https://sone-solutions.github.io/SONE/SONELOGE.jpg" alt="SONE Logo">
-                </div>
-                <div class="logo-text">
-                    <span class="logo-main">SONE</span>
-                    <span class="logo-slogan">
-                        <i class="fas fa-microchip"></i> SMART SOLUTIONS, <i class="fas fa-seedling"></i> GREEN FUTURE
-                    </span>
-                </div>
-            </a>
-            <div class="nav-links">
-                <a href="#" class="active">الرئيسية</a>
-                <a href="#">حاسبة الأسمدة</a>
-                <a href="#">توافق الأسمدة</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- ===== المحتوى ===== -->
-    <div class="container">
-        <!-- الهيرو -->
-        <div class="hero">
-            <div class="hero-icon">
-                <i class="fas fa-flask"></i>
-            </div>
-            <h1>تحقق من توافق الأسمدة</h1>
-            <div class="hero-slogan">
-                <span>SONE</span> | SMART SOLUTIONS, GREEN FUTURE
-            </div>
-            <p>قاعدة بيانات محدثة تضم <strong>74 سماداً زراعياً</strong> مع نظام ذكي لتحديد التوافق والتحذيرات</p>
-            <div class="stats">
-                <span class="stat-badge"><i class="fas fa-check-circle"></i> 74 سماد مسجل</span>
-                <span class="stat-badge"><i class="fas fa-chart-line"></i> توافق تلقائي</span>
-                <span class="stat-badge"><i class="fas fa-exclamation-triangle"></i> تحذيرات ذكية</span>
-            </div>
-        </div>
-
-        <!-- الشبكة -->
-        <div class="dashboard">
-            <!-- بطاقة الفحص -->
-            <div class="card">
-                <h3><i class="fas fa-search"></i> اختر الأسمدة</h3>
-                <div class="form-group">
-                    <label><i class="fas fa-flask"></i> السماد الأول</label>
-                    <select id="fertilizer1"><option value="">-- اختر سماد --</option></select>
-                </div>
-                <div class="form-group">
-                    <label><i class="fas fa-flask"></i> السماد الثاني</label>
-                    <select id="fertilizer2"><option value="">-- اختر سماد --</option></select>
-                </div>
-                <button id="checkBtn"><i class="fas fa-microscope"></i> تحقق من التوافق</button>
-            </div>
-
-            <!-- بطاقة النتيجة -->
-            <div class="card">
-                <h3><i class="fas fa-chart-simple"></i> نتيجة التوافق</h3>
-                <div id="resultArea">
-                    <div class="result-box compatible">
-                        <span class="status-icon" style="color: #4CAF50;">✅</span>
-                        <h3 style="font-size: 1.1rem;">متوافق: يمكن خلط NPK 10-52-10 و NPK 14-14-14</h3>
-                        <p style="margin-top: 0.75rem; font-size: 0.85rem;">📌 للتجذير والبداية القوية | 📌 للحدائق المنزلية</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- بطاقة التبليغ -->
-            <div class="card">
-                <h3><i class="fas fa-envelope"></i> إبلاغ عن خطأ</h3>
-                <div class="flex-2">
-                    <div class="form-group">
-                        <label>بريدك الإلكتروني</label>
-                        <input type="email" id="userEmail" placeholder="example@domain.com">
-                    </div>
-                    <div class="form-group">
-                        <label>السماد (إن وجد)</label>
-                        <input type="text" id="reportFertilizer" placeholder="اسم السماد">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>تفاصيل الخطأ</label>
-                    <input type="text" id="errorDetails" placeholder="ماذا تريد الإبلاغ عنه؟">
-                </div>
-                <button id="reportBtn"><i class="fas fa-paper-plane"></i> إرسال التبليغ</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ===== الفوتر ===== -->
-    <footer>
-        <div class="footer-logo">
-            <img src="https://sone-solutions.github.io/SONE/SONELOGE.jpg" alt="SONE Logo">
-            SONE
-        </div>
-        <div class="footer-slogan">
-            SMART SOLUTIONS, GREEN FUTURE
-        </div>
-        <p>© 2025 SONE - جميع الأدوات الزراعية احترافية ومجانية</p>
-    </footer>
-
-    <script>
-        // ============================================
-        // قاعدة البيانات المُصَحَّحَة - 74 سماداً فريداً
-        // ============================================
+<header class="topbar"><nav class="nav"><a class="brand" href="#top"><img class="brand-logo" src="https://sone-solutions.github.io/SONE/SONELOGE.jpg" alt="شعار SONE"><span><span class="brand-name">SONE</span><br><span class="brand-sub">SMART SOLUTIONS · GREEN FUTURE</span></span></a><span class="nav-tag"><i class="fa-solid fa-flask"></i> أداة زراعية استرشادية</span></nav></header>
+<main class="wrap" id="top">
+<section class="hero"><div class="eyebrow"><i class="fa-solid fa-microscope"></i> SONE AGRICULTURAL TOOLS</div><h1>قاعدة توافق الأسمدة</h1><p>أداة استرشادية لمراجعة مخاطر خلط الأسمدة. اختر منتجين لعرض التعارضات المسجلة والتنبيهات الكيميائية التي تستلزم التحقق قبل تحضير محلول الخلط.</p><div class="hero-bottom"><span class="metric"><i class="fa-solid fa-database"></i><b id="fertCount">73</b> مدخل في قاعدة البيانات</span><span class="metric"><i class="fa-solid fa-shield-halved"></i> فحص تحذيري ثنائي الاتجاه</span><span class="metric"><i class="fa-solid fa-circle-info"></i> النتائج استرشادية</span></div></section>
+<div class="section-head"><div><h2>تحليل تركيبة الخلط</h2><p>حدد السمادين لعرض نتيجة المراجعة</p></div></div>
+<section class="workspace">
+<article class="panel"><div class="panel-title"><span class="panel-icon"><i class="fa-solid fa-vials"></i></span><div><h3>اختيار الأسمدة</h3><p>اختر المنتجين كما يظهران على العبوة</p></div></div>
+<div class="field"><label for="fertilizer1"><span>01</span> السماد الأول</label><div class="select-wrap"><select id="fertilizer1"><option value="">— اختر السماد —</option><option value="أكسيد المغنيسيوم">أكسيد المغنيسيوم</option><option value="بوراكس">بوراكس</option><option value="بوليفوسفات الأمونيوم (APP)">بوليفوسفات الأمونيوم (APP)</option><option value="بيوريا">بيوريا</option><option value="بيوفوسفات">بيوفوسفات</option><option value="ثيوسلفات الأمونيوم">ثيوسلفات الأمونيوم</option><option value="ثيوسلفات البوتاسيوم">ثيوسلفات البوتاسيوم</option><option value="جبس زراعي">جبس زراعي</option><option value="حامض الفوسفوريك">حامض الفوسفوريك</option><option value="حمض البوريك">حمض البوريك</option><option value="حمض أميني سائل">حمض أميني سائل</option><option value="سلفات الأمونيوم">سلفات الأمونيوم</option><option value="سلفات البوتاسيوم والمغنيسيوم">سلفات البوتاسيوم والمغنيسيوم</option><option value="سلفات البوتاسيوم SOP">سلفات البوتاسيوم SOP</option><option value="سلفات الحديد">سلفات الحديد</option><option value="سلفات الزنك">سلفات الزنك</option><option value="سلفات الكوبالت">سلفات الكوبالت</option><option value="سلفات المنغنيز">سلفات المنغنيز</option><option value="سلفات النحاس">سلفات النحاس</option><option value="سليكات البوتاسيوم">سليكات البوتاسيوم</option><option value="سوبر فوسفات الأحادي SSP">سوبر فوسفات الأحادي SSP</option><option value="سوبر فوسفات الثلاثي TSP">سوبر فوسفات الثلاثي TSP</option><option value="سياناميد الكالسيوم">سياناميد الكالسيوم</option><option value="صخر الفوسفات">صخر الفوسفات</option><option value="فوسفات أحادي الأمونيوم MAP">فوسفات أحادي الأمونيوم MAP</option><option value="فوسفات أحادي الكالسيوم MCP">فوسفات أحادي الكالسيوم MCP</option><option value="فوسفات الأمونيوم المغنيسيوم">فوسفات الأمونيوم المغنيسيوم</option><option value="فوسفات البوتاسيوم (مونوبوتاسيوم)">فوسفات البوتاسيوم (مونوبوتاسيوم)</option><option value="فوسفات المغنيسيوم">فوسفات المغنيسيوم</option><option value="فوسفات ثنائي الأمونيوم DAP">فوسفات ثنائي الأمونيوم DAP</option><option value="فوسفات ثنائي الكالسيوم DCP">فوسفات ثنائي الكالسيوم DCP</option><option value="فولفيك أسيد">فولفيك أسيد</option><option value="كالسيوم بورون">كالسيوم بورون</option><option value="كبريت زراعي">كبريت زراعي</option><option value="كبريتات المغنيسيوم (أبسوم)">كبريتات المغنيسيوم (أبسوم)</option><option value="كلوريد الأمونيوم">كلوريد الأمونيوم</option><option value="كلوريد البوتاسيوم MOP">كلوريد البوتاسيوم MOP</option><option value="كلوريد الكالسيوم">كلوريد الكالسيوم</option><option value="مستخلص الأعشاب البحرية">مستخلص الأعشاب البحرية</option><option value="موليبدات الصوديوم">موليبدات الصوديوم</option><option value="ميتافوسفات البوتاسيوم">ميتافوسفات البوتاسيوم</option><option value="نترات الأمونيوم">نترات الأمونيوم</option><option value="نترات البوتاسيوم">نترات البوتاسيوم</option><option value="نترات الصوديوم">نترات الصوديوم</option><option value="نترات الكالسيوم">نترات الكالسيوم</option><option value="نترات الكالسيوم المغنيسيوم">نترات الكالسيوم المغنيسيوم</option><option value="نترات الكالسيوم والأمونيوم (CAN)">نترات الكالسيوم والأمونيوم (CAN)</option><option value="نترات الليثيوم">نترات الليثيوم</option><option value="نترات المغنيسيوم">نترات المغنيسيوم</option><option value="هيدروكسيد البوتاسيوم">هيدروكسيد البوتاسيوم</option><option value="هيومات البوتاسيوم">هيومات البوتاسيوم</option><option value="هيومات الصوديوم">هيومات الصوديوم</option><option value="يوريا 46%">يوريا 46%</option><option value="يوريا فوسفات">يوريا فوسفات</option><option value="EDTA-حديد">EDTA-حديد</option><option value="EDTA-زنك">EDTA-زنك</option><option value="EDTA-منغنيز">EDTA-منغنيز</option><option value="EDTA-نحاس">EDTA-نحاس</option><option value="NPK 0-20-20">NPK 0-20-20</option><option value="NPK 10-20-20">NPK 10-20-20</option><option value="NPK 10-52-10">NPK 10-52-10</option><option value="NPK 12-12-36">NPK 12-12-36</option><option value="NPK 13-40-13">NPK 13-40-13</option><option value="NPK 14-14-14">NPK 14-14-14</option><option value="NPK 15-15-30">NPK 15-15-30</option><option value="NPK 15-5-30">NPK 15-5-30</option><option value="NPK 17-17-17">NPK 17-17-17</option><option value="NPK 18-46-0">NPK 18-46-0</option><option value="NPK 19-19-19">NPK 19-19-19</option><option value="NPK 20-10-10">NPK 20-10-10</option><option value="NPK 20-20-20">NPK 20-20-20</option><option value="NPK 5-10-10">NPK 5-10-10</option><option value="NPK 8-24-24">NPK 8-24-24</option></select></div></div>
+<div class="field"><label for="fertilizer2"><span>02</span> السماد الثاني</label><div class="select-wrap"><select id="fertilizer2"><option value="">— اختر السماد —</option><option value="أكسيد المغنيسيوم">أكسيد المغنيسيوم</option><option value="بوراكس">بوراكس</option><option value="بوليفوسفات الأمونيوم (APP)">بوليفوسفات الأمونيوم (APP)</option><option value="بيوريا">بيوريا</option><option value="بيوفوسفات">بيوفوسفات</option><option value="ثيوسلفات الأمونيوم">ثيوسلفات الأمونيوم</option><option value="ثيوسلفات البوتاسيوم">ثيوسلفات البوتاسيوم</option><option value="جبس زراعي">جبس زراعي</option><option value="حامض الفوسفوريك">حامض الفوسفوريك</option><option value="حمض البوريك">حمض البوريك</option><option value="حمض أميني سائل">حمض أميني سائل</option><option value="سلفات الأمونيوم">سلفات الأمونيوم</option><option value="سلفات البوتاسيوم والمغنيسيوم">سلفات البوتاسيوم والمغنيسيوم</option><option value="سلفات البوتاسيوم SOP">سلفات البوتاسيوم SOP</option><option value="سلفات الحديد">سلفات الحديد</option><option value="سلفات الزنك">سلفات الزنك</option><option value="سلفات الكوبالت">سلفات الكوبالت</option><option value="سلفات المنغنيز">سلفات المنغنيز</option><option value="سلفات النحاس">سلفات النحاس</option><option value="سليكات البوتاسيوم">سليكات البوتاسيوم</option><option value="سوبر فوسفات الأحادي SSP">سوبر فوسفات الأحادي SSP</option><option value="سوبر فوسفات الثلاثي TSP">سوبر فوسفات الثلاثي TSP</option><option value="سياناميد الكالسيوم">سياناميد الكالسيوم</option><option value="صخر الفوسفات">صخر الفوسفات</option><option value="فوسفات أحادي الأمونيوم MAP">فوسفات أحادي الأمونيوم MAP</option><option value="فوسفات أحادي الكالسيوم MCP">فوسفات أحادي الكالسيوم MCP</option><option value="فوسفات الأمونيوم المغنيسيوم">فوسفات الأمونيوم المغنيسيوم</option><option value="فوسفات البوتاسيوم (مونوبوتاسيوم)">فوسفات البوتاسيوم (مونوبوتاسيوم)</option><option value="فوسفات المغنيسيوم">فوسفات المغنيسيوم</option><option value="فوسفات ثنائي الأمونيوم DAP">فوسفات ثنائي الأمونيوم DAP</option><option value="فوسفات ثنائي الكالسيوم DCP">فوسفات ثنائي الكالسيوم DCP</option><option value="فولفيك أسيد">فولفيك أسيد</option><option value="كالسيوم بورون">كالسيوم بورون</option><option value="كبريت زراعي">كبريت زراعي</option><option value="كبريتات المغنيسيوم (أبسوم)">كبريتات المغنيسيوم (أبسوم)</option><option value="كلوريد الأمونيوم">كلوريد الأمونيوم</option><option value="كلوريد البوتاسيوم MOP">كلوريد البوتاسيوم MOP</option><option value="كلوريد الكالسيوم">كلوريد الكالسيوم</option><option value="مستخلص الأعشاب البحرية">مستخلص الأعشاب البحرية</option><option value="موليبدات الصوديوم">موليبدات الصوديوم</option><option value="ميتافوسفات البوتاسيوم">ميتافوسفات البوتاسيوم</option><option value="نترات الأمونيوم">نترات الأمونيوم</option><option value="نترات البوتاسيوم">نترات البوتاسيوم</option><option value="نترات الصوديوم">نترات الصوديوم</option><option value="نترات الكالسيوم">نترات الكالسيوم</option><option value="نترات الكالسيوم المغنيسيوم">نترات الكالسيوم المغنيسيوم</option><option value="نترات الكالسيوم والأمونيوم (CAN)">نترات الكالسيوم والأمونيوم (CAN)</option><option value="نترات الليثيوم">نترات الليثيوم</option><option value="نترات المغنيسيوم">نترات المغنيسيوم</option><option value="هيدروكسيد البوتاسيوم">هيدروكسيد البوتاسيوم</option><option value="هيومات البوتاسيوم">هيومات البوتاسيوم</option><option value="هيومات الصوديوم">هيومات الصوديوم</option><option value="يوريا 46%">يوريا 46%</option><option value="يوريا فوسفات">يوريا فوسفات</option><option value="EDTA-حديد">EDTA-حديد</option><option value="EDTA-زنك">EDTA-زنك</option><option value="EDTA-منغنيز">EDTA-منغنيز</option><option value="EDTA-نحاس">EDTA-نحاس</option><option value="NPK 0-20-20">NPK 0-20-20</option><option value="NPK 10-20-20">NPK 10-20-20</option><option value="NPK 10-52-10">NPK 10-52-10</option><option value="NPK 12-12-36">NPK 12-12-36</option><option value="NPK 13-40-13">NPK 13-40-13</option><option value="NPK 14-14-14">NPK 14-14-14</option><option value="NPK 15-15-30">NPK 15-15-30</option><option value="NPK 15-5-30">NPK 15-5-30</option><option value="NPK 17-17-17">NPK 17-17-17</option><option value="NPK 18-46-0">NPK 18-46-0</option><option value="NPK 19-19-19">NPK 19-19-19</option><option value="NPK 20-10-10">NPK 20-10-10</option><option value="NPK 20-20-20">NPK 20-20-20</option><option value="NPK 5-10-10">NPK 5-10-10</option><option value="NPK 8-24-24">NPK 8-24-24</option></select></div></div>
+<div class="selection-actions"><button class="ghost-btn" id="swapBtn" type="button"><i class="fa-solid fa-arrow-right-arrow-left"></i> تبديل الاختيار</button><button class="ghost-btn" id="resetBtn" type="button"><i class="fa-solid fa-rotate-right"></i> إعادة ضبط</button></div>
+<button class="primary-btn" id="checkBtn" type="button"><i class="fa-solid fa-microscope"></i> تحليل التوافق</button>
+</article>
+<article class="panel result-panel"><div class="panel-title"><span class="panel-icon"><i class="fa-solid fa-chart-column"></i></span><div><h3>نتيجة التحليل</h3><p>قراءة قواعد التحذير المسجلة</p></div></div><div id="resultArea" aria-live="polite"><div class="result-card unknown"><div class="result-label"><i class="fa-solid fa-circle-info"></i>لا توجد بيانات تعارض مسجلة</div><h4>لا يوجد تعارض مسجل</h4><p>لم تسجل قاعدة البيانات الحالية مانعاً محدداً لهذا الزوج من الأسمدة.</p><div class="result-meta">هذه النتيجة لا تعني أن الخلط متوافق أو آمن بشكل مؤكد. تحقق من بطاقة المنتج، وتركيز المحلول، وجودة المياه، ثم نفّذ اختباراً مصغراً.</div></div></div><div class="science-note"><i class="fa-solid fa-circle-info"></i><span>عدم ظهور تعارض مسجل لا يثبت أن الخلط آمن؛ فالنتيجة تتأثر بالتركيبة التجارية والتركيز وماء الري وظروف التحضير.</span></div></article>
+</section>
+<section class="info-grid"><article class="info-card"><i class="fa-solid fa-flask"></i><h4>اختبار البرطمان</h4><p>قبل الخلط على نطاق واسع، يُجرى اختبار توافق مصغر بالماء نفسه وبالنسب المستخدمة، مع مراقبة الترسب أو التكتل أو الانفصال.</p></article><article class="info-card"><i class="fa-solid fa-droplet"></i><h4>جودة مياه الري</h4><p>العسر والقلوية والبيكربونات ودرجة الحموضة قد تغير سلوك المحلول؛ لذلك لا تكفي أسماء الأسمدة وحدها للحكم النهائي.</p></article><article class="info-card"><i class="fa-solid fa-book-open"></i><h4>الملصق الفني أولاً</h4><p>يجب الرجوع إلى بطاقة المنتج وتعليمات الشركة المصنّعة، خصوصاً حدود الخلط والتركيز وترتيب الإضافة.</p></article></section>
+<section class="method"><h3><i class="fa-solid fa-diagram-project"></i> كيف تُقرأ النتيجة؟</h3><ul><li><b>تعارض مسجل:</b> يوجد منع صريح في قائمة التحذيرات الحالية لأحد المنتجين.</li><li><b>تحذير احترازي:</b> توجد مجموعة كيميائية معروفة باحتمال تكوين رواسب، مثل بعض تركيبات الكالسيوم والفوسفات؛ يلزم الرجوع إلى التركيبة الفعلية.</li><li><b>لا يوجد تعارض مسجل:</b> لم تعثر القواعد الحالية على مانع محدد، وهذا ليس شهادة توافق أو توصية بالخلط.</li></ul><div class="disclaimer"><b>تنبيه علمي:</b> هذه الأداة ليست بديلاً عن النشرة الفنية أو اختبار الخلط الفعلي. لا تعتمد على قيمة pH اسمية منفردة للتنبؤ بتوافق منتجين؛ فالحكم يتطلب معرفة التركيب والتركيز ومصدر المياه وظروف الاستخدام.</div></section>
+</main>
+<footer class="footer"><strong>SONE</strong><p>SMART SOLUTIONS · GREEN FUTURE</p><p>أداة مساعدة لاتخاذ القرار الزراعي — تحقق دائماً من تعليمات الشركة المصنّعة.</p></footer>
+<script>
         const fertilizersDB = {
             // ---------- الأسمدة النيتروجينية (12) ----------
             "يوريا 46%": { type: "نيتروجيني", ph: 7.0, caution: "لا يخلط مع نترات الكالسيوم والسوبر فوسفات", avoid: ["نترات الكالسيوم", "سوبر فوسفات الثلاثي TSP"] },
@@ -262,90 +168,43 @@
             "بيوفوسفات": { type: "بيولوجي", ph: 7.0, caution: "بكتيريا مذابة للفوسفور - يحسن توفير الفسفور", avoid: [] },
             "بيوريا": { type: "بيولوجي", ph: 7.0, caution: "بكتيريا مثبتة للنيتروجين - تقلل الحاجة لليوريا", avoid: [] }
         };
-
-        // ============================================
-        // دوال التشغيل (بدون تغيير)
-        // ============================================
-        function populateSelectors() {
-            const names = Object.keys(fertilizersDB).sort();
-            const s1 = document.getElementById('fertilizer1');
-            const s2 = document.getElementById('fertilizer2');
-            s1.innerHTML = '<option value="">-- اختر سماد --</option>';
-            s2.innerHTML = '<option value="">-- اختر سماد --</option>';
-            names.forEach(n => {
-                const o1 = document.createElement('option');
-                o1.value = n;
-                o1.textContent = n;
-                s1.appendChild(o1);
-                const o2 = document.createElement('option');
-                o2.value = n;
-                o2.textContent = n;
-                s2.appendChild(o2);
-            });
-            // تحديث العدد في الهيرو تلقائياً
-            document.querySelector('.stat-badge:first-child').innerHTML = `<i class="fas fa-check-circle"></i> ${names.length} سماد مسجل`;
-        }
-
-        function checkCompatibility(f1, f2) {
-            if (!f1 || !f2) return { status: 'warning', message: '⚠️ الرجاء اختيار سمادين للمقارنة', details: '' };
-            if (f1 === f2) return { status: 'warning', message: '⚠️ لا يمكن مقارنة السماد مع نفسه', details: 'اختر سمادين مختلفين' };
-            const d1 = fertilizersDB[f1];
-            const d2 = fertilizersDB[f2];
-            if (!d1 || !d2) return { status: 'warning', message: '⚠️ بيانات غير مكتملة', details: 'الرجاء الإبلاغ عن هذا الخطأ' };
-
-            if (d1.avoid && d1.avoid.includes(f2))
-                return { status: 'incompatible', message: `❌ غير متوافق: لا تخلط ${f1} مع ${f2}`, details: `⚠️ ${d1.caution}` };
-            if (d2.avoid && d2.avoid.includes(f1))
-                return { status: 'incompatible', message: `❌ غير متوافق: لا تخلط ${f2} مع ${f1}`, details: `⚠️ ${d2.caution}` };
-
-            const isCa = f => fertilizersDB[f] && (fertilizersDB[f].type.includes('كالسيوم') || f.includes('كالسيوم') || f.includes('نترات الكالسيوم'));
-            const isPh = f => fertilizersDB[f] && (fertilizersDB[f].type.includes('فوسفاتي') || f.includes('فوسفات') || f.includes('سوبر فوسفات'));
-            if ((isCa(f1) && isPh(f2)) || (isCa(f2) && isPh(f1)))
-                return { status: 'warning', message: `⚠️ تحذير: خلط الكالسيوم مع الفوسفات قد يسبب ترسّبات`, details: 'يُفضل عدم خلط أسمدة الكالسيوم مع أسمدة الفوسفات في محلول واحد' };
-
-            const phDiff = Math.abs((d1.ph || 7) - (d2.ph || 7));
-            if (phDiff > 4)
-                return { status: 'warning', message: `⚠️ تحذير: اختلاف كبير في الحموضة (${phDiff.toFixed(1)} درجة)`, details: `${f1} (pH ${d1.ph}) | ${f2} (pH ${d2.ph}) - قد يحدث تفاعل كيميائي` };
-
-            return { status: 'compatible', message: `✅ متوافق: يمكن خلط ${f1} و ${f2}`, details: `📌 ${d1.caution} | 📌 ${d2.caution}` };
-        }
-
-        function displayResult() {
-            const f1 = document.getElementById('fertilizer1').value;
-            const f2 = document.getElementById('fertilizer2').value;
-            const r = checkCompatibility(f1, f2);
-            const area = document.getElementById('resultArea');
-            let cls = '', icon = '';
-            if (r.status === 'compatible') { cls = 'compatible';
-                icon = '✅'; } else if (r.status === 'incompatible') { cls = 'incompatible';
-                icon = '❌'; } else { cls = 'warning';
-                icon = '⚠️'; }
-            area.innerHTML = `
-                <div class="result-box ${cls}">
-                    <span class="status-icon" style="${r.status === 'compatible' ? 'color:#4CAF50' : r.status === 'incompatible' ? 'color:#f44336' : 'color:#ff9800'}">${icon}</span>
-                    <h3 style="font-size:1.1rem;">${r.message}</h3>
-                    <p style="margin-top:0.75rem;font-size:0.85rem;">${r.details || ''}</p>
-                </div>
-            `;
-        }
-
-        function reportError() {
-            const email = document.getElementById('userEmail').value;
-            const fert = document.getElementById('reportFertilizer').value;
-            const details = document.getElementById('errorDetails').value;
-            if (!email || !details) { alert('⚠️ الرجاء إدخال بريدك الإلكتروني وتفاصيل الخطأ'); return; }
-            alert(`✅ شكراً للإبلاغ!\n\nالخطأ: ${details}\n${fert ? 'السماد: '+fert : ''}\nسنرد على: ${email}`);
-            document.getElementById('userEmail').value = '';
-            document.getElementById('reportFertilizer').value = '';
-            document.getElementById('errorDetails').value = '';
-        }
-
-        window.onload = function() {
-            populateSelectors();
-            document.getElementById('checkBtn').addEventListener('click', displayResult);
-            document.getElementById('reportBtn').addEventListener('click', reportError);
-        };
-    </script>
-
-</body>
-</html>
+function populateSelectors(){
+ const names=Object.keys(fertilizersDB).sort((a,b)=>a.localeCompare(b,'ar'));
+ ['fertilizer1','fertilizer2'].forEach(id=>{const el=document.getElementById(id);el.innerHTML='<option value="">— اختر السماد —</option>';names.forEach(name=>{const opt=document.createElement('option');opt.value=name;opt.textContent=name;el.appendChild(opt);});});
+ document.getElementById('fertCount').textContent=names.length;
+}
+function hasCalcium(name,data){return (data.type||'').includes('كالسيوم')||name.includes('كالسيوم');}
+function hasPhosphate(name,data){return (data.type||'').includes('فوسفاتي')||name.includes('فوسفات')||name.includes('سوبر فوسفات');}
+function evaluate(f1,f2){
+ if(!f1||!f2)return {level:'caution',title:'أكمل الاختيار',message:'يرجى اختيار سمادين قبل بدء التحليل.'};
+ if(f1===f2)return {level:'caution',title:'اختيار غير صالح',message:'اختر منتجين مختلفين لإجراء المقارنة.'};
+ const d1=fertilizersDB[f1],d2=fertilizersDB[f2];
+ if(!d1||!d2)return {level:'caution',title:'بيانات غير مكتملة',message:'تعذر العثور على بيانات أحد المنتجين في قاعدة البيانات.'};
+ const conflicts=[];
+ if((d1.avoid||[]).includes(f2))conflicts.push({name:f1,detail:d1.caution});
+ if((d2.avoid||[]).includes(f1))conflicts.push({name:f2,detail:d2.caution});
+ if(conflicts.length)return {level:'blocked',title:'تعارض مسجل في قاعدة البيانات',message:`توجد ملاحظة منع مسجلة بشأن خلط ${f1} مع ${f2}.`,details:conflicts.map(x=>`${x.name}: ${x.detail}`).join(' | ')};
+ if((hasCalcium(f1,d1)&&hasPhosphate(f2,d2))||(hasCalcium(f2,d2)&&hasPhosphate(f1,d1)))return {level:'caution',title:'تحذير احترازي: احتمال تكوّن رواسب',message:'الجمع بين بعض مصادر الكالسيوم والفوسفات قد يؤدي إلى تكوّن مركبات قليلة الذوبان، بحسب التركيز ودرجة الحموضة وتركيب الماء.',details:'لا تخلط في خزان مركز واحد دون الرجوع إلى النشرة الفنية وإجراء اختبار توافق بالماء المستخدم.'};
+ return {level:'unknown',title:'لا يوجد تعارض مسجل',message:'لم تسجل قاعدة البيانات الحالية مانعاً محدداً لهذا الزوج من الأسمدة.',details:'هذه النتيجة لا تعني أن الخلط متوافق أو آمن بشكل مؤكد. تحقق من بطاقة المنتج، وتركيز المحلول، وجودة المياه، ثم نفّذ اختباراً مصغراً.'};
+}
+function showResult(){
+ const f1=document.getElementById('fertilizer1').value,f2=document.getElementById('fertilizer2').value,r=evaluate(f1,f2),area=document.getElementById('resultArea');
+ const icons={blocked:'fa-ban',caution:'fa-triangle-exclamation',unknown:'fa-circle-info'};
+ const labels={blocked:'منع مسجل',caution:'تحذير / يلزم التحقق',unknown:'لا توجد بيانات تعارض مسجلة'};
+ area.innerHTML='';
+ const card=document.createElement('div');card.className=`result-card ${r.level}`;
+ const label=document.createElement('div');label.className='result-label';const icon=document.createElement('i');icon.className=`fa-solid ${icons[r.level]}`;label.append(icon,document.createTextNode(labels[r.level]));
+ const title=document.createElement('h4');title.textContent=r.title;
+ const msg=document.createElement('p');msg.textContent=r.message;
+ card.append(label,title,msg);
+ if(r.details){const meta=document.createElement('div');meta.className='result-meta';meta.textContent=r.details;card.append(meta);}
+ area.append(card);
+}
+document.addEventListener('DOMContentLoaded',()=>{
+ populateSelectors();
+ document.getElementById('checkBtn').addEventListener('click',showResult);
+ document.getElementById('swapBtn').addEventListener('click',()=>{const a=document.getElementById('fertilizer1'),b=document.getElementById('fertilizer2'),v=a.value;a.value=b.value;b.value=v;});
+ document.getElementById('resetBtn').addEventListener('click',()=>{document.getElementById('fertilizer1').value='';document.getElementById('fertilizer2').value='';document.getElementById('resultArea').innerHTML='<div class="result-placeholder"><span class="placeholder-icon"><i class="fa-solid fa-flask"></i></span><h4>بانتظار اختيار السمادين</h4><p>ستظهر هنا نتيجة الفحص مع توضيح مستوى التحذير وحدود ما يمكن استنتاجه من قاعدة البيانات.</p></div>';});
+});
+</script>
+</body></html>

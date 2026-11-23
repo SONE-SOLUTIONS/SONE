@@ -4,94 +4,113 @@
     <title>SONE | Plateforme intégrée pour une agriculture intelligente</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&amp;family=Cairo:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&amp;family=JetBrains+Mono:wght@400;500&amp;family=Cairo:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
     <meta name="theme-color" content="#0A1A12">
 
     <style>
-:root{--ink:#0A1A12;--forest:#12301F;--leaf:#6FCF8E;--leaf-d:#1F7A4C;--sun:#F0B94D;--paper:#F4F6F1;--text:#E8F1EA;--mute:#9DB8A7;--ink-text:#10241A;--ink-mute:#587061;--line:rgba(255,255,255,.12)}
+:root{--coal:#0B120E;--coal2:#101A14;--cream:#F2F0EA;--cream2:#E9E7E0;--leaf:#6FCF8E;--leaf-d:#1F7A4C;--sun:#F0B94D;--ink:#14201A;--mute:#8FA699;--gray:#5C6B62;--hair:rgba(20,32,26,.16);--line:rgba(255,255,255,.14);--mono:'JetBrains Mono','Cairo',monospace}
 *{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:80px}
-body{font-family:'Cairo',sans-serif;background:var(--ink);color:var(--text);line-height:1.6;overflow-x:hidden}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{font-family:'Cairo',sans-serif;background:var(--coal);color:#E8F1EA;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 h1,h2,h3,h4{font-family:'Bricolage Grotesque','Cairo',sans-serif}
 :focus-visible{outline:2px solid var(--sun);outline-offset:3px}
-.header{position:fixed;inset:0 0 auto 0;z-index:1000;padding:12px 5%;background:rgba(10,26,18,.8);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);transition:padding .3s,background .3s}
-.header.scrolled{padding:8px 5%;background:rgba(10,26,18,.95)}
-.header-content{display:flex;justify-content:space-between;align-items:center;max-width:1280px;margin:0 auto;gap:20px}
+.mono,.nav-links a,.quick-btn,.kicker,.service-tag,.stat-label,.hero-badge,.footer-col h4,.copyright,.lang-btn{font-family:var(--mono);text-transform:uppercase;letter-spacing:.04em}
+[dir=rtl] .mono,[dir=rtl] .nav-links a,[dir=rtl] .quick-btn,[dir=rtl] .kicker,[dir=rtl] .service-tag,[dir=rtl] .stat-label,[dir=rtl] .hero-badge,[dir=rtl] .footer-col h4,[dir=rtl] .copyright,[dir=rtl] .lang-btn{font-family:'Cairo',sans-serif;text-transform:none;letter-spacing:0}
+#progress{position:fixed;inset:0 0 auto 0;height:2px;background:var(--sun);transform:scaleX(0);transform-origin:left;z-index:2000}
+[dir=rtl] #progress{transform-origin:right}
+#cursor{position:fixed;top:0;left:0;width:10px;height:10px;border-radius:50%;background:var(--sun);box-shadow:0 0 18px rgba(240,185,77,.5);pointer-events:none;z-index:2000;opacity:0;transition:opacity .3s}
+.header{position:fixed;inset:0 0 auto 0;z-index:1000;height:58px;padding:0 5%;background:var(--coal);border-bottom:1px solid var(--line)}
+.header-content{display:flex;justify-content:space-between;align-items:center;max-width:1440px;height:100%;margin:0 auto;gap:20px}
 .logo{display:flex;align-items:center;gap:12px;text-decoration:none}
-.logo-wrapper{width:46px;height:46px;border-radius:12px;overflow:hidden;flex-shrink:0;border:1px solid var(--line)}
+.logo-wrapper{width:34px;height:34px;border-radius:8px;overflow:hidden;flex-shrink:0;border:1px solid var(--line)}
 .logo-wrapper img{width:100%;height:100%;object-fit:cover;display:block}
-.logo-text{display:flex;flex-direction:column;line-height:1.1}
-.logo-text h1{font-size:24px;font-weight:800;letter-spacing:.14em}
+.logo-text{display:flex;flex-direction:column;line-height:1}
+.logo-text h1{font-size:20px;font-weight:800;letter-spacing:.16em}
 .logo-text .green{color:var(--leaf)}.logo-text .dark{color:#fff}
-.logo-text .tagline{font-size:10px;color:var(--mute);margin-top:3px}
-.nav-links{display:flex;gap:28px;align-items:center}
-.nav-links a{color:var(--mute);text-decoration:none;font-weight:600;font-size:15px;transition:color .2s}
-.nav-links a:hover{color:#fff}
-.mobile-menu{display:none;font-size:22px;cursor:pointer;padding:6px}
-.lang-selector{display:flex;gap:2px;padding:3px;border:1px solid var(--line);border-radius:999px}
-.lang-btn{border:0;background:transparent;color:var(--mute);font:600 13px 'Cairo',sans-serif;padding:5px 12px;border-radius:999px;cursor:pointer;transition:.2s}
-.lang-btn:hover{color:#fff}
-.lang-btn.active{background:var(--leaf);color:var(--ink)}
-.header-space{height:72px}
-.quick-buttons{background:var(--forest);border-block:1px solid var(--line);padding:10px 5%;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+.logo-text .tagline{font-size:8px;color:var(--mute);margin-top:4px;letter-spacing:.08em}
+.nav-links{display:flex;gap:34px;align-items:center}
+.nav-links a{color:#fff;text-decoration:none;font-size:13px;transition:color .2s}
+.nav-links a:hover{color:var(--sun)}
+.mobile-menu{display:none;font-size:20px;cursor:pointer;padding:6px;color:#fff}
+.lang-selector{display:flex;gap:2px;padding:3px;border:1px solid var(--line);border-radius:8px}
+.lang-btn{border:0;background:transparent;color:var(--mute);font-size:12px;padding:5px 11px;border-radius:6px;cursor:pointer;transition:.2s}
+.lang-btn:hover{color:#fff}.lang-btn.active{background:var(--sun);color:#1b1503}
+.header-space{height:58px}
+.quick-buttons{background:var(--coal2);border-bottom:1px solid var(--line);padding:0 5%;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
 .quick-buttons::-webkit-scrollbar{display:none}
-.quick-buttons-container{display:flex;width:max-content;gap:8px;margin-inline:auto}
-.quick-btn{display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border-radius:999px;border:1px solid var(--line);color:var(--mute);font-size:13px;font-weight:600;text-decoration:none;transition:.2s}
-.quick-btn:hover{color:var(--ink);background:var(--leaf);border-color:var(--leaf)}
-.quick-btn i{font-size:12px}
-.hero{position:relative;isolation:isolate;overflow:hidden;padding:80px 5% 96px}
-.hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;opacity:.45;transition:opacity .6s}
-.hero::before{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(100deg,var(--ink) 15%,rgba(10,26,18,.7) 60%,rgba(10,26,18,.35)),linear-gradient(0deg,var(--ink),transparent 30%)}
-[dir=rtl] .hero::before{background:linear-gradient(260deg,var(--ink) 15%,rgba(10,26,18,.7) 60%,rgba(10,26,18,.35)),linear-gradient(0deg,var(--ink),transparent 30%)}
-.hero-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1.25fr .75fr;gap:56px;align-items:center}
-.hero-content{max-width:660px}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;border:1px solid rgba(240,185,77,.5);color:var(--sun);font-size:13px;font-weight:700;margin-bottom:22px}
-.hero h1{font-size:clamp(34px,5vw,60px);line-height:1.1;font-weight:800;letter-spacing:-.02em;color:#fff;margin-bottom:20px}
-.hero p{font-size:18px;color:#C3D6C8;max-width:54ch;margin-bottom:32px}
-.btn-primary{display:inline-flex;align-items:center;gap:10px;padding:14px 28px;border-radius:12px;background:var(--sun);color:#1b1503;font-weight:700;font-size:16px;text-decoration:none;transition:transform .2s,background .2s}
-.btn-primary:hover{background:#f6c966;transform:translateY(-2px)}
-.hero-panel{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:20px;background:rgba(18,48,31,.62);backdrop-filter:blur(10px);overflow:hidden}
-.stat-card{padding:30px 24px;border-bottom:1px solid var(--line)}
-.stat-card:nth-child(odd){border-inline-end:1px solid var(--line)}
-.stat-card:nth-child(n+3){border-bottom:0}
-.stat-number{font:800 40px/1 'Bricolage Grotesque',sans-serif;color:var(--leaf)}
-.stat-label{font-size:14px;color:var(--mute);margin-top:10px}
-.services-section{background:var(--paper);color:var(--ink-text);padding:88px 5%}
-.section-header{max-width:1280px;margin:0 auto 44px}
-.section-header .kicker{display:none}
-.section-header h2{font-size:clamp(28px,3.4vw,42px);font-weight:800;letter-spacing:-.01em;line-height:1.2;max-width:22ch;margin-bottom:12px}
-.section-header p{color:var(--ink-mute);font-size:17px;max-width:60ch}
-[dir=rtl] .hero h1,[dir=rtl] .section-header h2{letter-spacing:0;line-height:1.4}
-.services-grid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:22px}
-.service-card{display:flex;flex-direction:column;background:#fff;border:1px solid #DDE5DC;border-radius:16px;overflow:hidden;text-decoration:none;color:inherit;transition:transform .25s,box-shadow .25s,border-color .25s}
-.service-card:hover{transform:translateY(-4px);border-color:var(--leaf-d);box-shadow:0 18px 36px -18px rgba(16,36,26,.35)}
-.card-media{position:relative;aspect-ratio:16/10;background:#DDE5DC}
-.service-img{width:100%;height:100%;object-fit:cover;display:block}
-.service-icon{position:absolute;inset-block-end:-18px;inset-inline-start:18px;width:40px;height:40px;border-radius:10px;background:var(--leaf-d);color:#fff;display:grid;place-items:center;font-size:17px;box-shadow:0 0 0 4px #fff}
-.service-icon.logo{width:60px;height:42px;padding:4px;background:#fff;border:1px solid #DDE5DC}
+.quick-buttons-container{display:flex;width:max-content;gap:26px;margin-inline:auto}
+.quick-btn{display:inline-flex;align-items:center;gap:8px;padding:13px 0;color:var(--mute);font-size:11px;text-decoration:none;border-bottom:2px solid transparent;transition:.2s}
+.quick-btn:hover{color:#fff;border-color:var(--sun)}
+.quick-btn i{font-size:11px;color:var(--leaf)}
+.hero{position:relative;isolation:isolate;overflow:hidden;min-height:calc(100svh - 104px);display:flex;flex-direction:column;justify-content:space-between;padding:8vh 5% 0;background:#000}
+.hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-3;transition:opacity .6s}
+.hero::before{content:'';position:absolute;inset:0;z-index:-2;background:linear-gradient(0deg,rgba(0,0,0,.9),rgba(0,0,0,.35) 45%,rgba(0,0,0,.7)),linear-gradient(90deg,rgba(0,0,0,.55),transparent 50%,rgba(0,0,0,.45))}
+.hero::after{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:72px 72px;-webkit-mask-image:linear-gradient(180deg,#000,transparent 80%);mask-image:linear-gradient(180deg,#000,transparent 80%)}
+.hero-inner{max-width:1440px;width:100%;margin:0 auto;display:flex;flex-direction:column;flex:1;justify-content:space-between;gap:40px}
+.hero-content{max-width:1100px}
+.hero-badge{display:inline-flex;align-items:center;gap:10px;font-size:12px;color:var(--sun);margin-bottom:28px}
+.hero-badge i{font-size:11px}
+.hero h1{font-size:clamp(40px,5.8vw,92px);line-height:1.04;font-weight:800;letter-spacing:-.045em;color:#fff;margin-bottom:28px}
+[dir=rtl] .hero h1,[dir=rtl] .section-header h2{letter-spacing:0;line-height:1.3}
+.hero p{font-size:clamp(16px,1.4vw,19px);color:rgba(255,255,255,.78);max-width:56ch;margin-bottom:36px}
+.btn-primary{display:inline-flex;align-items:center;gap:12px;padding:16px 26px;border-radius:6px;background:var(--sun);color:#1b1503;font:500 13px var(--mono);text-transform:uppercase;text-decoration:none;transition:filter .3s,transform .3s}
+[dir=rtl] .btn-primary{font-family:'Cairo',sans-serif;text-transform:none;font-weight:700;font-size:15px}
+.btn-primary:hover{filter:brightness(1.08);transform:translateY(-2px)}
+.btn-primary i{transition:transform .3s}.btn-primary:hover i{transform:translateY(3px)}
+.hero-panel{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);margin-inline:-5%;padding-inline:5%}
+.stat-card{padding:24px 24px 28px 0;border-inline-end:1px solid var(--line);padding-inline-start:24px}
+.stat-card:first-child{padding-inline-start:0}.stat-card:last-child{border-inline-end:0}
+.stat-number{font:800 clamp(40px,5.6vw,84px)/1 'Bricolage Grotesque',sans-serif;letter-spacing:-.04em;color:var(--sun)}
+.stat-label{font-size:11px;color:rgba(255,255,255,.7);margin-top:14px}
+.ticks{height:28px;background:repeating-linear-gradient(90deg,currentColor 0 1px,transparent 1px 8px);opacity:.5}
+.services-section{background:var(--cream);color:var(--ink);padding:clamp(72px,10vw,140px) 5%}
+.section-header{max-width:1440px;margin:0 auto clamp(40px,6vw,80px)}
+.kicker{display:flex!important;align-items:center;gap:18px;font-size:12px;color:var(--gray);margin-bottom:34px}
+.kicker::after{content:"";flex:1;height:2px;background:linear-gradient(var(--leaf-d),var(--leaf-d)) 0 0/24px 2px no-repeat,linear-gradient(var(--hair),var(--hair)) 0 50%/100% 1px no-repeat}
+.kicker i{color:var(--leaf-d)}
+.section-header h2{font-size:clamp(34px,5vw,76px);font-weight:800;letter-spacing:-.05em;line-height:1.02;max-width:20ch;margin-bottom:26px;color:var(--ink)}
+.section-header p{color:var(--gray);font-size:18px;max-width:52ch}
+.services-grid{max-width:1440px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:56px 28px}
+.service-card{position:relative;display:flex;flex-direction:column;background:transparent;text-decoration:none;color:inherit;border-bottom:1px solid var(--hair);padding-bottom:22px}
+.card-media{position:relative;aspect-ratio:16/10;background:#DAD8D0;border-radius:6px;overflow:hidden;box-shadow:0 0 0 1px var(--hair)}
+.service-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .7s cubic-bezier(.2,.7,.2,1)}
+.service-card:hover .service-img{transform:scale(1.06)}
+.service-icon{position:absolute;inset-block-start:12px;inset-inline-start:12px;width:38px;height:38px;border-radius:8px;background:var(--coal);color:var(--leaf);display:grid;place-items:center;font-size:15px}
+.service-icon.logo{width:64px;height:40px;padding:4px;background:#fff}
 .service-icon.logo img{width:100%;height:100%;object-fit:contain;display:block}
-.card-body{padding:30px 18px 20px;display:flex;flex-direction:column;gap:6px;flex:1}
-.service-card h3{font-size:18px;font-weight:700;line-height:1.3}
-.service-card p{font-size:14px;color:var(--ink-mute);flex:1}
-.service-tag{align-self:flex-start;margin-top:10px;padding:3px 10px;border-radius:999px;background:#E4F1E7;color:var(--leaf-d);font-size:12px;font-weight:700}
-.footer{background:var(--ink);padding:64px 5% 28px}
-.footer-container{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 1fr 1.2fr;gap:40px}
-.footer-col h4{font-size:16px;margin-bottom:16px;color:#fff}
-.footer-col p,.footer-col a{display:block;color:var(--mute);text-decoration:none;font-size:14px;margin-bottom:10px}
-.footer-col a:hover{color:var(--leaf)}
-.footer-col p i{margin-inline-end:8px;color:var(--leaf)}
-.social-links{display:flex;gap:10px;margin-top:18px}
-.footer-col .social-links a{width:38px;height:38px;border:1px solid var(--line);border-radius:10px;display:grid;place-items:center;margin:0;color:var(--text)}
-.footer-col .social-links a:hover{background:var(--leaf);color:var(--ink);border-color:var(--leaf)}
-.copyright{max-width:1280px;margin:44px auto 0;padding-top:22px;border-top:1px solid var(--line);color:var(--mute);font-size:13px}
-.scroll-top{position:fixed;inset-block-end:24px;inset-inline-end:24px;width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--forest);color:var(--leaf);cursor:pointer;opacity:0;visibility:hidden;transition:.25s;z-index:999}
+.card-media::after{content:'\2192';position:absolute;inset-block-end:12px;inset-inline-end:12px;width:42px;height:42px;border-radius:10px;background:var(--sun);color:#1b1503;display:grid;place-items:center;font-size:18px;opacity:0;transform:translateX(-14px);transition:.35s}
+[dir=rtl] .card-media::after{content:'\2190';transform:translateX(14px)}
+.service-card:hover .card-media::after{opacity:1;transform:none}
+.card-body{padding:22px 0 0;display:flex;flex-direction:column;gap:8px;flex:1}
+.service-card h3{font-size:22px;font-weight:700;letter-spacing:-.02em;line-height:1.2;transition:color .25s}
+.service-card:hover h3{color:var(--leaf-d)}
+.service-card p{font-size:15px;color:var(--gray);flex:1}
+.service-tag{align-self:flex-start;margin-top:10px;font-size:11px;color:var(--leaf-d)}
+.service-tag::before{content:'+ ';color:var(--sun)}
+@supports(animation-timeline:view()){.service-card,.section-header{animation:rise linear both;animation-timeline:view();animation-range:entry 0% entry 35%}@keyframes rise{from{opacity:0;transform:translateY(36px)}to{opacity:1;transform:none}}}
+.footer{background:var(--cream2);color:var(--ink);padding:0 5% 28px;border-top:1px solid var(--hair)}
+.footer .ticks{margin-inline:-5%;color:var(--ink);opacity:.35;height:36px}
+.footer-container{max-width:1440px;margin:0 auto;padding-top:72px;display:grid;grid-template-columns:1.4fr 1fr 1fr 1.2fr;gap:56px}
+.footer-col h4{font-size:12px;font-weight:500;margin-bottom:18px;padding-bottom:14px;color:var(--gray);border-bottom:1px solid var(--hair)}
+#footer-title{font-family:'Bricolage Grotesque',sans-serif;text-transform:none;letter-spacing:-.02em;font-size:30px;font-weight:800;color:var(--ink);border:0;padding:0;margin-bottom:14px}
+#footer-title i{color:var(--leaf-d)}
+.footer-col p,.footer-col a{display:block;color:var(--gray);text-decoration:none;font-size:15px;margin-bottom:12px;transition:color .2s}
+.footer-col a:hover{color:var(--leaf-d)}
+.footer-col p i{margin-inline-end:8px;color:var(--leaf-d)}
+.social-links{display:flex;gap:10px;margin-top:20px}
+.footer-col .social-links a{width:42px;height:42px;border:1px solid var(--hair);border-radius:10px;display:grid;place-items:center;margin:0;color:var(--ink)}
+.footer-col .social-links a:hover{background:var(--sun);color:#1b1503;border-color:var(--sun)}
+.copyright{max-width:1440px;margin:64px auto 0;padding-top:22px;border-top:1px solid var(--hair);color:var(--gray);font-size:11px}
+.scroll-top{position:fixed;inset-block-end:24px;inset-inline-end:24px;width:44px;height:44px;border-radius:10px;border:0;background:var(--sun);color:#1b1503;cursor:pointer;opacity:0;visibility:hidden;transition:.25s;z-index:999}
 .scroll-top.show{opacity:1;visibility:visible}
-@media(max-width:960px){.hero-inner{grid-template-columns:1fr}.footer-container{grid-template-columns:1fr 1fr}}
-@media(max-width:768px){.nav-links{display:none;position:absolute;top:100%;inset-inline:0;flex-direction:column;align-items:flex-start;gap:16px;padding:20px 5%;background:rgba(10,26,18,.98);border-bottom:1px solid var(--line)}.nav-links.active{display:flex}.mobile-menu{display:block}.hero{padding:48px 5% 64px}.footer-container{grid-template-columns:1fr}.logo-text .tagline{display:none}.services-section{padding:64px 5%}}
-@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media(max-width:960px){.footer-container{grid-template-columns:1fr 1fr}.hero-panel{grid-template-columns:1fr 1fr}.stat-card:nth-child(2){border-inline-end:0}.stat-card:nth-child(n+3){border-top:1px solid var(--line)}.stat-card:nth-child(odd){padding-inline-start:0}}
+@media(max-width:768px){.nav-links{display:none;position:absolute;top:100%;inset-inline:0;flex-direction:column;align-items:flex-start;gap:18px;padding:22px 5%;background:var(--coal);border-bottom:1px solid var(--line)}.nav-links.active{display:flex}.mobile-menu{display:block}.hero{padding-top:8vh}.footer-container{grid-template-columns:1fr}.logo-text .tagline{display:none}.services-grid{gap:44px 20px}}
+@media(hover:none){#cursor{display:none}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body style="direction: ltr;">
+<div id="progress" aria-hidden="true"></div><div id="cursor" aria-hidden="true"></div>
 
     <!-- ===== HEADER ===== -->
     <header class="header scrolled" id="header">
@@ -139,7 +158,7 @@ h1,h2,h3,h4{font-family:'Bricolage Grotesque','Cairo',sans-serif}
                 
                     <a href="market.html" class="quick-btn"><i class="fas fa-store"></i> Marché</a>
                 
-                    <a href="https://kitabiai.unfo-adminsiteweb.workers.dev/" class="quick-btn"><i class="fas fa-book"></i> kitabiai</a>
+                    <a href="https://kitabiai.unfo-adminsiteweb.workers.dev/" class="quick-btn"><i class="fas fa-book"></i> Kitabi AI</a>
                 
                     <a href="ndvi.html" class="quick-btn"><i class="fas fa-satellite"></i> NDVI</a>
                 
@@ -374,7 +393,7 @@ h1,h2,h3,h4{font-family:'Bricolage Grotesque','Cairo',sans-serif}
                             <div class="service-icon"><i class="fas fa-book"></i></div>
                         </div>
                         <div class="card-body">
-                            <h3>kitabiai</h3>
+                            <h3>Kitabi AI</h3>
                             <p>Espace de stockage de vos contenus favoris</p>
                             <span class="service-tag">Bibliothèque personnelle</span>
                         </div>
@@ -516,6 +535,7 @@ h1,h2,h3,h4{font-family:'Bricolage Grotesque','Cairo',sans-serif}
 
     <!-- ===== FOOTER ===== -->
     <footer class="footer" id="contact">
+<div class="ticks" aria-hidden="true"></div>
         <div class="footer-container">
             <div class="footer-col">
                 <h4 id="footer-title"><i class="fas fa-leaf"></i> SONE</h4>
@@ -594,7 +614,7 @@ h1,h2,h3,h4{font-family:'Bricolage Grotesque','Cairo',sans-serif}
                     { name: "Demandes d'emploi", desc: "Chercheurs d'emploi dans le secteur agricole", tag: "Candidats" },
                     { name: "Demandes de formation", desc: "Stages et formations pratiques", tag: "Formation terrain" },
                     { name: "Marché agricole", desc: "Achetez et vendez vos produits", tag: "Achat / Vente" },
-                    { name: "kitabiai", desc: "Espace de stockage de vos contenus favoris", tag: "Bibliothèque personnelle" },
+                    { name: "Kitabi AI", desc: "Espace de stockage de vos contenus favoris", tag: "Bibliothèque personnelle" },
                     { name: "Agri AI", desc: "Assistant intelligent basé sur l'IA", tag: "Aide immédiate" },
                     { name: "Heures de soleil", desc: "Horaires du lever et coucher du soleil", tag: "Horaires précis" },
                     { name: "SONE AGRI DATA", desc: "Plateforme d'analyse de données agricoles intelligentes", tag: "Données précises" },
@@ -615,7 +635,7 @@ h1,h2,h3,h4{font-family:'Bricolage Grotesque','Cairo',sans-serif}
                     contact: "Contactez-nous",
                     copyright: "© 2026 SONE - Tous droits réservés | SOLUTIONS INTELLIGENTES · AVENIR VERT"
                 },
-                quickButtons: ["Accueil", "Services", "Gestionnaire", "Marché", "kitabiai", "NDVI", "Maladies", "Météo", "Phytosanitaires", "Équipements", "Engrais", "Actualités", "Cours", "Offres", "Emploi", "Formation", "AgriTech", "Élevage", "Espace SONE", "AGRI NET"]
+                quickButtons: ["Accueil", "Services", "Gestionnaire", "Marché", "Kitabi AI", "NDVI", "Maladies", "Météo", "Phytosanitaires", "Équipements", "Engrais", "Actualités", "Cours", "Offres", "Emploi", "Formation", "AgriTech", "Élevage", "Espace SONE", "AGRI NET"]
             },
             ar: {
                 tagline: "حلول ذكية · مستقبل أخضر",
@@ -647,7 +667,7 @@ h1,h2,h3,h4{font-family:'Bricolage Grotesque','Cairo',sans-serif}
                     { name: "طلبات العمل", desc: "باحثون عن عمل في القطاع الفلاحي", tag: "باحثون" },
                     { name: "طلبات التدريب", desc: "باحثون عن تدريب", tag: "تدريب ميداني" },
                     { name: "سوق الفلاحة", desc: "منصة للبيع والشراء", tag: "بيع وشراء" },
-                    { name: "kitabiai", desc: "تخزين المحتوى المفضل", tag: "مكتبة شخصية" },
+                    { name: "Kitabi AI", desc: "تخزين المحتوى المفضل", tag: "مكتبة شخصية" },
                     { name: "Agri AI", desc: "مساعد ذكي بالذكاء الاصطناعي", tag: "دعم فوري" },
                     { name: "أوقات الشروق", desc: "مواعيد شروق وغروب الشمس", tag: "مواعيد دقيقة" },
                     { name: "SONE AGRI DATA", desc: "منصة تحليل البيانات الفلاحية الذكية", tag: "بيانات دقيقة" },
@@ -668,7 +688,7 @@ h1,h2,h3,h4{font-family:'Bricolage Grotesque','Cairo',sans-serif}
                     contact: "اتصل بنا",
                     copyright: "© 2026 SONE - جميع الحقوق محفوظة | حلول ذكية · مستقبل أخضر"
                 },
-                quickButtons: ["الرئيسية", "الخدمات", "مدبر", "سوق", "kitabiai", "NDVI", "أمراض", "طقس", "مبيدات", "معدات", "أسمدة", "أخبار", "دورات", "عروض", "عمل", "تدريب", "تكنو", "حيواني", "مساحة SONE", "AGRI NET"]
+                quickButtons: ["الرئيسية", "الخدمات", "مدبر", "سوق", "Kitabi AI", "NDVI", "أمراض", "طقس", "مبيدات", "معدات", "أسمدة", "أخبار", "دورات", "عروض", "عمل", "تدريب", "تكنو", "حيواني", "مساحة SONE", "AGRI NET"]
             },
             en: {
                 tagline: "SMART SOLUTIONS · GREEN FUTURE",
@@ -700,7 +720,7 @@ h1,h2,h3,h4{font-family:'Bricolage Grotesque','Cairo',sans-serif}
                     { name: "Job Applications", desc: "Job seekers in the agricultural sector", tag: "Candidates" },
                     { name: "Training Applications", desc: "Practical internships and training", tag: "Field training" },
                     { name: "Agricultural Market", desc: "Buy and sell your products", tag: "Buy / Sell" },
-                    { name: "kitabiai", desc: "Storage space for your favorite content", tag: "Personal library" },
+                    { name: "Kitabi AI", desc: "Storage space for your favorite content", tag: "Personal library" },
                     { name: "Agri AI", desc: "Smart assistant based on AI", tag: "Immediate help" },
                     { name: "Sun Times", desc: "Sunrise and sunset times", tag: "Precise times" },
                     { name: "SONE AGRI DATA", desc: "Smart agricultural data analysis platform", tag: "Precise data" },
@@ -721,7 +741,7 @@ h1,h2,h3,h4{font-family:'Bricolage Grotesque','Cairo',sans-serif}
                     contact: "Contact us",
                     copyright: "© 2026 SONE - All rights reserved | SMART SOLUTIONS · GREEN FUTURE"
                 },
-                quickButtons: ["Home", "Services", "Manager", "Market", "kitabiai", "NDVI", "Diseases", "Weather", "Pesticides", "Equipment", "Fertilizers", "News", "Courses", "Offers", "Jobs", "Training", "AgriTech", "Livestock", "SONE Space", "AGRI NET"]
+                quickButtons: ["Home", "Services", "Manager", "Market", "Kitabi AI", "NDVI", "Diseases", "Weather", "Pesticides", "Equipment", "Fertilizers", "News", "Courses", "Offers", "Jobs", "Training", "AgriTech", "Livestock", "SONE Space", "AGRI NET"]
             }
         };
 
@@ -920,4 +940,9 @@ h1,h2,h3,h4{font-family:'Bricolage Grotesque','Cairo',sans-serif}
 
 
 
+<script>
+(function(){var bar=document.getElementById('progress'),cur=document.getElementById('cursor');
+addEventListener('scroll',function(){var h=document.documentElement.scrollHeight-innerHeight;bar.style.transform='scaleX('+(h>0?scrollY/h:0)+')'},{passive:true});
+if(matchMedia('(pointer:fine)').matches){addEventListener('mousemove',function(e){cur.style.opacity=1;cur.style.transform='translate('+e.clientX+'px,'+e.clientY+'px) translate(-50%,-50%)'})}})();
+</script>
 </body></html>
